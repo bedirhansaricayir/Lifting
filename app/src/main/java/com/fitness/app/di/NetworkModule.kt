@@ -1,10 +1,12 @@
 package com.fitness.app.di
 
+import android.content.Context
+import com.fitness.app.data.local.datastore.DataStoreRepository
 import com.fitness.app.data.remote.ApiClient
-import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -35,4 +37,10 @@ object NetworkModule {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         return OkHttpClient.Builder().addInterceptor(interceptor).build()
     }
+
+    @Provides
+    @Singleton
+    fun provideDataStoreRepository(
+        @ApplicationContext context: Context
+    ) = DataStoreRepository(context = context)
 }

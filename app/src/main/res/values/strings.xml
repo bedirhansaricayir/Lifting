@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">FitnessApp</string>
+    <string name="FirstOnBoardingPageTitle">1.Başlık</string>
+    <string name="FirstOnBoardingPageDescription">1.Açıklama</string>
+    <string name="SecondOnBoardingPageTitle">2.Başlık</string>
+    <string name="SecondOnBoardingPageDescription">2.Açıklama</string>
+    <string name="ThirdOnBoardingPageTitle">3.Başlık</string>
+    <string name="ThirdOnBoardingPageDescription">3.Açıklama</string>
+    <string name="GetStarted">Şimdi Başla</string>
 </resources>
