@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -55,6 +56,7 @@ fun OnBoarding(
                 Image(
                     modifier = Modifier.fillMaxSize(),
                     painter = painterResource(id = items[it].image),
+                    contentScale = ContentScale.FillHeight,
                     contentDescription = "Image"
                 )
             }
@@ -67,8 +69,6 @@ fun OnBoarding(
                 onGetStartedButtonClick()
             }
         }
-
-
     }
 }
 
@@ -91,8 +91,8 @@ fun BottomSection(modifier: Modifier, pagerState: PagerState, onButtonClick: () 
                 onClick = { onButtonClick() },
                 shape = RoundedCornerShape(50.dp),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    contentColor = MaterialTheme.colorScheme.primary
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.background,
                 ),
             ) {
                 Text(

@@ -55,12 +55,12 @@ class OnBoardingPage(
                     description = R.string.FirstOnBoardingPageDescription
                 ),
                 OnBoardingPage(
-                    image = R.drawable.ic_launcher_foreground,
+                    image = R.drawable.pxfuel,
                     title = R.string.SecondOnBoardingPageTitle,
                     description = R.string.SecondOnBoardingPageDescription
                 ),
                 OnBoardingPage(
-                    image = R.drawable.ic_launcher_foreground,
+                    image = R.drawable.pxfuel,
                     title = R.string.ThirdOnBoardingPageTitle,
                     description = R.string.ThirdOnBoardingPageDescription
                 )
