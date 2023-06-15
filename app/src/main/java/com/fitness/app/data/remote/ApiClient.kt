@@ -12,6 +12,8 @@ interface ApiClient {
     }
 
     //Get isteği ile bu adresten bir veri alma isteğinde bulunuyoruz.
-    @GET("bedirhansaricayir/51bed929bca74d888f3dd5e20a11f80e")
+
+    @GET("bedirhansaricayir/51bed929bca74d888f3dd5e20a11f80e/raw/6b9180124b775f14edb97a709dc035591a8717d3/program_data.json")
     suspend fun getProgramData(): AntrenmanProgramlari
+
 }
