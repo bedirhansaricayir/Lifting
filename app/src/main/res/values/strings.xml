@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">FitnessApp</string>
-    <string name="FirstOnBoardingPageTitle">1.Başlık</string>
-    <string name="FirstOnBoardingPageDescription">1.Açıklama</string>
-    <string name="SecondOnBoardingPageTitle">2.Başlık</string>
-    <string name="SecondOnBoardingPageDescription">2.Açıklama</string>
-    <string name="ThirdOnBoardingPageTitle">3.Başlık</string>
-    <string name="ThirdOnBoardingPageDescription">3.Açıklama</string>
+    <string name="FirstOnBoardingPageTitle">Choose the best workouts</string>
+    <string name="FirstOnBoardingPageDescription">More than 15 workouts will help you to keep fit. You will definitely find what is right for you.</string>
+    <string name="SecondOnBoardingPageTitle">Create your own program or choose existed</string>
+    <string name="SecondOnBoardingPageDescription">Choose any workout, compound it with others and create your personal program.</string>
+    <string name="ThirdOnBoardingPageTitle">Track your bodyweight</string>
+    <string name="ThirdOnBoardingPageDescription">Bodyweight tracker will help you take keep track your bodyweight.</string>
     <string name="GetStarted">Şimdi Başla</string>
+    <string name="BeginnerProgram">Beginner</string>
+    <string name="IntermediateProgram">Intermediate</string>
+    <string name="AdvancedProgram">Advanced</string>
 </resources>

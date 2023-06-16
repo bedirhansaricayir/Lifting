@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.fitness.app.R
 import com.fitness.app.navigation.OnBoardingPage
+import com.fitness.app.ui.theme.White40
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -41,7 +43,6 @@ fun OnBoarding(
 
     val items = OnBoardingPage.getData()
     val pagerState = rememberPagerState()
-    var onClickGetStarted by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -53,23 +54,56 @@ fun OnBoarding(
                 pageCount = items.size,
                 state = pagerState
             ) {
-                Image(
-                    modifier = Modifier.fillMaxSize(),
-                    painter = painterResource(id = items[it].image),
-                    contentScale = ContentScale.FillHeight,
-                    contentDescription = "Image"
-                )
+                OnBoardingItem(items = items[it])
             }
             BottomSection(
                 modifier = Modifier.align(Alignment.BottomCenter),
                 pagerState = pagerState
             ) {
                 onBoardingViewModel.saveOnBoardingState(completed = true)
-                onClickGetStarted = true
                 onGetStartedButtonClick()
             }
         }
     }
+}
+
+@Composable
+fun OnBoardingItem(items: OnBoardingPage, modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(id = items.image),
+            contentScale = ContentScale.FillHeight,
+            contentDescription = "Image"
+        )
+        Column(modifier = modifier
+            .fillMaxSize()
+            .padding(bottom = 150.dp), verticalArrangement = Arrangement.Bottom) {
+            Text(
+                text = stringResource(id = items.title),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+            Spacer(modifier = modifier.padding(vertical = 8.dp))
+            Text(
+                text = stringResource(id = items.description),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.labelSmall,
+                color = White40,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+        }
+
+
+    }
+
+
 }
 
 @OptIn(ExperimentalFoundationApi::class)

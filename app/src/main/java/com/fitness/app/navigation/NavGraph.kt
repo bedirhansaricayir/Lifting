@@ -11,6 +11,7 @@ import com.fitness.app.presentation.home.HomeScreen
 import com.fitness.app.presentation.home.HomeViewModel
 import com.fitness.app.presentation.onboarding.OnBoarding
 import com.fitness.app.presentation.onboarding.OnBoardingViewModel
+import com.fitness.app.presentation.tracker.TrackerScreen
 
 @Composable
 fun NavGraph(navController: NavHostController, startDestination: String) {
@@ -38,6 +39,12 @@ fun NavGraph(navController: NavHostController, startDestination: String) {
                 homeViewModel = homeViewModel,
                 state = state
             )
+        }
+        composable(route = Screen.TrackerScreen.route) {
+            TrackerScreen()
+        }
+        composable(route = Screen.OptionalScreen.route) {
+
         }
     }
 }

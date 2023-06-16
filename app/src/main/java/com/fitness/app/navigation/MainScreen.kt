@@ -1,0 +1,113 @@
+package com.fitness.app.navigation
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.fitness.app.ui.theme.black20
+import com.fitness.app.ui.theme.grey10
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainScreen(navController: NavHostController, startDestination: String) {
+    Scaffold(bottomBar = { BottomNavigationBar(navController = navController) }) {
+        Box(
+            modifier = Modifier.padding(
+                start = 0.dp,
+                end = 0.dp,
+                top = 0.dp,
+                bottom = it.calculateBottomPadding()
+            )
+        ) {
+            NavGraph(navController = navController, startDestination = startDestination)
+        }
+    }
+}
+
+@Composable
+fun BottomNavigationBar(navController: NavHostController, modifier: Modifier = Modifier) {
+    val screens = listOf(
+        Screen.HomeScreen,
+        Screen.TrackerScreen,
+        Screen.OptionalScreen
+    )
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    val bottomBarDestination = screens.any {
+        it.route == currentDestination?.route
+    }
+
+    val onBoardingScreen = Screen.OnBoardingScreen
+    val onBoardingDestination = onBoardingScreen.route == currentDestination?.route
+
+    if (!onBoardingDestination) {
+        NavigationBar(containerColor = black20) {
+            screens.forEach {
+                AddItem(
+                    screen = it,
+                    currentDestination = currentDestination,
+                    navController = navController
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun RowScope.AddItem(
+    screen: Screen,
+    currentDestination: NavDestination?,
+    navController: NavHostController
+) {
+    val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+
+    NavigationBarItem(
+        colors = NavigationBarItemDefaults.colors(
+            selectedIconColor = MaterialTheme.colorScheme.primary,
+            unselectedIconColor = grey10,
+            selectedTextColor = MaterialTheme.colorScheme.primary,
+            unselectedTextColor = grey10,
+            indicatorColor = black20
+        ),
+        label = {
+            Text(
+                text = screen.title,
+                fontSize = 12.sp
+            )
+        },
+        icon = {
+            Icon(
+                painter = rememberVectorPainter(image = screen.icon),
+                contentDescription = "Navigation Icon"
+            )
+        },
+        selected = selected,
+        onClick = {
+            navController.navigate(screen.route) {
+                popUpTo(navController.graph.findStartDestination().id)
+                launchSingleTop = true
+            }
+        }
+    )
+}

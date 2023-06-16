@@ -50,17 +50,17 @@ class OnBoardingPage(
         fun getData(): List<OnBoardingPage> {
             return listOf(
                 OnBoardingPage(
-                    image = R.drawable.ic_launcher_foreground,
+                    image = R.drawable.onboarding_image1,
                     title = R.string.FirstOnBoardingPageTitle,
                     description = R.string.FirstOnBoardingPageDescription
                 ),
                 OnBoardingPage(
-                    image = R.drawable.pxfuel,
+                    image = R.drawable.onboarding_image2,
                     title = R.string.SecondOnBoardingPageTitle,
                     description = R.string.SecondOnBoardingPageDescription
                 ),
                 OnBoardingPage(
-                    image = R.drawable.pxfuel,
+                    image = R.drawable.onboarding_image3,
                     title = R.string.ThirdOnBoardingPageTitle,
                     description = R.string.ThirdOnBoardingPageDescription
                 )
