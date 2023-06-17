@@ -30,10 +30,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fitness.app.R
 import com.fitness.app.data.remote.DusukZorluk
+import com.fitness.app.data.remote.OrtaZorluk
+import com.fitness.app.data.remote.YuksekZorluk
 
 @Composable
-fun ProgramCard(
-    model: DusukZorluk, modifier: Modifier = Modifier, onPlayButtonClick: () -> Unit
+fun BeginnerProgramCard(
+    modifier: Modifier = Modifier,
+    model: DusukZorluk,
+    onPlayButtonClick: (DusukZorluk) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -44,7 +48,7 @@ fun ProgramCard(
     ) {
         Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Image(
-                painter = painterResource(id = R.drawable.onboarding_image2),
+                painter = painterResource(id = R.drawable.beginner_image),
                 contentDescription = "Program Image",
                 contentScale = ContentScale.Crop,
                 modifier = modifier.fillMaxSize()
@@ -78,7 +82,137 @@ fun ProgramCard(
                             textAlign = TextAlign.Center
                         )
                         OutlinedIconButton(border = BorderStroke(1.dp, Color(0xFFCAF76F)),
-                            onClick = { onPlayButtonClick() }) {
+                            onClick = { onPlayButtonClick(model) }) {
+                            Icon(
+                                imageVector = Icons.Default.PlayArrow,
+                                contentDescription = "Play Button",
+                                tint = Color(0xFFCAF76F)
+                            )
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+    Spacer(modifier = modifier.width(8.dp))
+}
+
+@Composable
+fun IntermediateProgramCard(
+    modifier: Modifier = Modifier,
+    model: OrtaZorluk,
+    onPlayButtonClick: (OrtaZorluk) -> Unit
+) {
+    Card(
+        modifier = modifier
+            .height(250.dp)
+            .width(350.dp),
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(8.dp)
+    ) {
+        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Image(
+                painter = painterResource(id = R.drawable.intermediate_image),
+                contentDescription = "Program Image",
+                contentScale = ContentScale.Crop,
+                modifier = modifier.fillMaxSize()
+            )
+
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.BottomStart
+            ) {
+                Column(
+                    modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = model.programAdi.toString(),
+                        color = Color.White,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = modifier.padding(4.dp))
+                    Row(
+                        modifier = modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = model.gunSayisi.toString(),
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
+                        OutlinedIconButton(border = BorderStroke(1.dp, Color(0xFFCAF76F)),
+                            onClick = { onPlayButtonClick(model) }) {
+                            Icon(
+                                imageVector = Icons.Default.PlayArrow,
+                                contentDescription = "Play Button",
+                                tint = Color(0xFFCAF76F)
+                            )
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+    Spacer(modifier = modifier.width(8.dp))
+}
+
+@Composable
+fun AdvancedProgramCard(
+    modifier: Modifier = Modifier,
+    model: YuksekZorluk,
+    onPlayButtonClick: (YuksekZorluk) -> Unit
+) {
+    Card(
+        modifier = modifier
+            .height(250.dp)
+            .width(350.dp),
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(8.dp)
+    ) {
+        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Image(
+                painter = painterResource(id = R.drawable.advanced_image),
+                contentDescription = "Program Image",
+                contentScale = ContentScale.Crop,
+                modifier = modifier.fillMaxSize()
+            )
+
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.BottomStart
+            ) {
+                Column(
+                    modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = model.programAdi.toString(),
+                        color = Color.White,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = modifier.padding(4.dp))
+                    Row(
+                        modifier = modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = model.gunSayisi.toString(),
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
+                        OutlinedIconButton(border = BorderStroke(1.dp, Color(0xFFCAF76F)),
+                            onClick = { onPlayButtonClick(model) }) {
                             Icon(
                                 imageVector = Icons.Default.PlayArrow,
                                 contentDescription = "Play Button",

@@ -1,5 +1,7 @@
 package com.fitness.app.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -13,6 +15,7 @@ import com.fitness.app.presentation.onboarding.OnBoarding
 import com.fitness.app.presentation.onboarding.OnBoardingViewModel
 import com.fitness.app.presentation.tracker.TrackerScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavGraph(navController: NavHostController, startDestination: String) {
     NavHost(
@@ -36,8 +39,8 @@ fun NavGraph(navController: NavHostController, startDestination: String) {
             val homeViewModel: HomeViewModel = hiltViewModel()
             val state: HomePageUiState = homeViewModel.state.collectAsState().value
             HomeScreen(
-                homeViewModel = homeViewModel,
-                state = state
+                state = state,
+                onEvent = homeViewModel::onEvent
             )
         }
         composable(route = Screen.TrackerScreen.route) {

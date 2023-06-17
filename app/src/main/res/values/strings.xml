@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">FitnessApp</string>
-    <string name="FirstOnBoardingPageTitle">Choose the best workouts</string>
-    <string name="FirstOnBoardingPageDescription">More than 15 workouts will help you to keep fit. You will definitely find what is right for you.</string>
-    <string name="SecondOnBoardingPageTitle">Create your own program or choose existed</string>
-    <string name="SecondOnBoardingPageDescription">Choose any workout, compound it with others and create your personal program.</string>
-    <string name="ThirdOnBoardingPageTitle">Track your bodyweight</string>
-    <string name="ThirdOnBoardingPageDescription">Bodyweight tracker will help you take keep track your bodyweight.</string>
+    <string name="FirstOnBoardingPageTitle">En iyi programları seç</string>
+    <string name="FirstOnBoardingPageDescription">Her seviye için oluşturulmuş toplamda 15\'ten fazla egzersiz programı formda kalmanıza yardımcı olacaktır.</string>
+    <string name="SecondOnBoardingPageTitle">Kendi programını oluştur veya mevcut olanı seç</string>
+    <string name="SecondOnBoardingPageDescription">Herhangi bir antrenmanı seçin ve kişisel programınızı oluşturun.</string>
+    <string name="ThirdOnBoardingPageTitle">Vücut ağırlını takip et.</string>
+    <string name="ThirdOnBoardingPageDescription">Vücut ağırlığı takipçisi, günlük olarak girdiğiniz ölçümünüzü sizin için saklar ve takip etmenize yardımcı olur.</string>
     <string name="GetStarted">Şimdi Başla</string>
-    <string name="BeginnerProgram">Beginner</string>
-    <string name="IntermediateProgram">Intermediate</string>
-    <string name="AdvancedProgram">Advanced</string>
+    <string name="BeginnerProgram">Başlangıç Seviye</string>
+    <string name="IntermediateProgram">Orta Seviye</string>
+    <string name="AdvancedProgram">İleri Seviye</string>
 </resources>
