@@ -2,38 +2,34 @@ package com.fitness.app.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.fitness.app.R
 
 sealed class Screen(
     val route: String,
     val title: String,
-    val icon: ImageVector
+    val icon: Int? = null
 ) {
     object HomeScreen : Screen(
         route = "home_screen",
         title = "Programlar",
-        icon = Icons.Filled.Home
+        icon = R.drawable.workout
     )
 
     object OnBoardingScreen : Screen(
         route = "onboarding_screen",
-        title = "OnBoarding",
-        icon = Icons.Filled.Home
+        title = "OnBoarding"
     )
 
     object TrackerScreen : Screen(
         route = "tracker_screen",
         title = "Analiz",
-        icon = Icons.Filled.Home
+        icon = R.drawable.analysis
     )
 
     object OptionalScreen : Screen(
         route = "optional_screen",
         title = "Optional",
-        icon = Icons.Filled.Home
+        icon = R.drawable.workout
     )
 
 }

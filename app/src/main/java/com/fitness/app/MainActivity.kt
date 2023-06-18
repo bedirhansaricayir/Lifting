@@ -1,9 +1,11 @@
 package com.fitness.app
 
 import android.app.Activity
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
@@ -25,6 +27,7 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var splashViewModel: SplashViewModel
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen().setKeepOnScreenCondition {
@@ -47,4 +50,5 @@ fun StatusBarColor(color: Color) {
     val view = LocalView.current
     val window = (view.context as Activity).window
     window.statusBarColor = color.toArgb()
+    window.navigationBarColor = color.toArgb()
 }

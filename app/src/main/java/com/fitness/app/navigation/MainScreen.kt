@@ -1,9 +1,10 @@
 package com.fitness.app.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -14,7 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
@@ -26,7 +27,7 @@ import com.fitness.app.ui.theme.black20
 import com.fitness.app.ui.theme.grey10
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(navController: NavHostController, startDestination: String) {
     Scaffold(bottomBar = { BottomNavigationBar(navController = navController) }) {
@@ -54,10 +55,6 @@ fun BottomNavigationBar(navController: NavHostController, modifier: Modifier = M
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val bottomBarDestination = screens.any {
-        it.route == currentDestination?.route
-    }
-
     val onBoardingScreen = Screen.OnBoardingScreen
     val onBoardingDestination = onBoardingScreen.route == currentDestination?.route
 
@@ -81,7 +78,8 @@ fun RowScope.AddItem(
     navController: NavHostController
 ) {
     val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
-
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val current = navBackStackEntry?.destination
     NavigationBarItem(
         colors = NavigationBarItemDefaults.colors(
             selectedIconColor = MaterialTheme.colorScheme.primary,
@@ -98,15 +96,17 @@ fun RowScope.AddItem(
         },
         icon = {
             Icon(
-                painter = rememberVectorPainter(image = screen.icon),
+                painter = painterResource(id = screen.icon!!),
                 contentDescription = "Navigation Icon"
             )
         },
         selected = selected,
         onClick = {
-            navController.navigate(screen.route) {
-                popUpTo(navController.graph.findStartDestination().id)
-                launchSingleTop = true
+            if (screen.route != current?.route){
+                navController.navigate(screen.route) {
+                    popUpTo(navController.graph.findStartDestination().id)
+                    launchSingleTop = true
+                }
             }
         }
     )

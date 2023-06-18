@@ -43,6 +43,7 @@ data class Hareketler(
 
     @SerializedName("hareket_adi") var hareketAdi: String? = null,
     @SerializedName("set_sayisi") var setSayisi: Int? = null,
-    @SerializedName("tekrar_sayisi") var tekrarSayisi: Int? = null
+    @SerializedName("tekrar_sayisi") var tekrarSayisi: Int? = null,
+    @SerializedName("hareket_form") var hareketForm: String? = null
 
 )
