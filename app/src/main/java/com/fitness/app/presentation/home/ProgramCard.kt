@@ -65,19 +65,19 @@ fun BeginnerProgramCard(
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(
+                    /*Text(
                         text = model.programAdi.toString(),
                         color = Color.White,
                         textAlign = TextAlign.Center
                     )
-                    Spacer(modifier = modifier.padding(4.dp))
+                    Spacer(modifier = modifier.padding(4.dp))*/
                     Row(
                         modifier = modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = model.gunSayisi.toString(),
+                            text = model.programAdi.toString(),
                             color = Color.White,
                             textAlign = TextAlign.Center
                         )
@@ -130,19 +130,19 @@ fun IntermediateProgramCard(
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(
+                    /*Text(
                         text = model.programAdi.toString(),
                         color = Color.White,
                         textAlign = TextAlign.Center
                     )
-                    Spacer(modifier = modifier.padding(4.dp))
+                    Spacer(modifier = modifier.padding(4.dp))*/
                     Row(
                         modifier = modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = model.gunSayisi.toString(),
+                            text = model.programAdi.toString(),
                             color = Color.White,
                             textAlign = TextAlign.Center
                         )
@@ -195,19 +195,19 @@ fun AdvancedProgramCard(
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(
+                    /*Text(
                         text = model.programAdi.toString(),
                         color = Color.White,
                         textAlign = TextAlign.Center
                     )
-                    Spacer(modifier = modifier.padding(4.dp))
+                    Spacer(modifier = modifier.padding(4.dp))*/
                     Row(
                         modifier = modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = model.gunSayisi.toString(),
+                            text = model.programAdi.toString(),
                             color = Color.White,
                             textAlign = TextAlign.Center
                         )

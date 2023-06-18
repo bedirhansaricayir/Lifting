@@ -10,7 +10,8 @@ import com.fitness.app.R
 
 val macPawFixel = FontFamily(
     Font(R.font.fixeltext_regular),
-    Font(R.font.fixeltext_bold, FontWeight.Bold)
+    Font(R.font.fixeltext_bold, FontWeight.Bold),
+    Font(R.font.fixeltext_medium, FontWeight.Medium)
 )
 // Set of Material typography styles to start with
 val Typography = Typography(

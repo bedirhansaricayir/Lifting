@@ -1,14 +1,11 @@
 package com.fitness.app.presentation.home
 
-import android.view.ViewGroup
-import android.webkit.WebView
-import android.webkit.WebViewClient
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,9 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import com.fitness.app.data.remote.Uygulanis
 import com.fitness.app.ui.theme.White40
 import com.fitness.app.ui.theme.grey30
@@ -42,7 +38,6 @@ fun BottomSheetContent(
     onPlayButtonClicked: (String) -> Unit
 ) {
     val expandedStateMap = remember { mutableStateMapOf<Int, Boolean>() }
-    val context = LocalContext.current
     var isVideoAvailable = remember { mutableStateOf(false) }
 
     LazyColumn() {
@@ -63,7 +58,7 @@ fun BottomSheetContent(
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(16.dp)
                 )
                 IconButton(onClick = { expandedState(index) }) {
                     Icon(
@@ -78,7 +73,7 @@ fun BottomSheetContent(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 8.dp)
+                            .padding(horizontal = 16.dp)
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -88,7 +83,6 @@ fun BottomSheetContent(
                                 text = "Hareket Adı: ${it.hareketAdi}",
                                 style = MaterialTheme.typography.labelSmall,
                                 modifier = Modifier
-                                    .padding(8.dp)
                                     .align(Alignment.CenterVertically),
                                 color = White40
                             )
@@ -114,23 +108,22 @@ fun BottomSheetContent(
                         }
                     }
 
-                    Box(modifier = Modifier.fillMaxWidth()) {
+                    Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text(
                                 text = "Set Sayısı: ${it.setSayisi}",
                                 style = MaterialTheme.typography.labelSmall,
-                                modifier = Modifier.padding(8.dp),
                                 color = White40
                             )
                             Text(
                                 text = "Tekrar Sayısı: ${it.tekrarSayisi}",
                                 style = MaterialTheme.typography.labelSmall,
-                                modifier = Modifier.padding(8.dp),
                                 color = White40
                             )
                         }
 
                     }
+                    Divider(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp), thickness = 1.dp,color = grey30)
                     Spacer(modifier = Modifier.height(8.dp))
                 }
             }

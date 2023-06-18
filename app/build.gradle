@@ -96,4 +96,8 @@ dependencies {
 
     //DataStore - ufak çaplı verileri saklamak için
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    //Kilogram seçimi için
+    implementation "com.chargemap.compose:numberpicker:1.0.3"
+
 }
