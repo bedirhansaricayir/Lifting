@@ -61,7 +61,6 @@ fun HomeScreen(
     val bottomSheetState =
         rememberModalBottomSheetState()
     var videoUrl = remember { mutableStateOf("") }
-    val scope = rememberCoroutineScope()
     val openDialog = remember { mutableStateOf(false) }
 
 
@@ -87,7 +86,7 @@ fun HomeScreen(
 
     if (openDialog.value) {
         CustomDialog(
-            onDissmiss = {openDialog.value = !openDialog.value},
+            onDissmiss = { openDialog.value = !openDialog.value },
             dialogState = openDialog.value,
             url = videoUrl.value
         )
@@ -105,6 +104,22 @@ fun HomeScreen(
         val advancedState = state.programData?.antrenmanlar?.yuksekZorluk
 
         if (beginnerState != null) {
+            Text(
+                text = stringResource(id = R.string.PlanSeç),
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp), contentAlignment = Alignment.Center
+            ) {
+                PersonalizedProgramCard() {
+
+                }
+            }
             BeginnerProgramList(
                 state = beginnerState,
                 programLevel = R.string.BeginnerProgram
@@ -144,7 +159,7 @@ fun HomeScreen(
         }
     }
     if (state.isLoading == true) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator(strokeWidth = 2.dp)
         }
     }
@@ -291,14 +306,14 @@ fun CustomDialog(
                 ) {
                     ComposableWebView(url = url)
                     Spacer(modifier = Modifier.height(24.dp))
-                        TextButton(
-                            onClick = {
-                                onDissmiss.invoke()
-                            },
-                            modifier = Modifier.align(Alignment.End)
-                        ) {
-                            Text("Kapat")
-                        }
+                    TextButton(
+                        onClick = {
+                            onDissmiss.invoke()
+                        },
+                        modifier = Modifier.align(Alignment.End)
+                    ) {
+                        Text("Kapat")
+                    }
 
 
                 }
@@ -317,24 +332,24 @@ fun ComposableWebView(url: String) {
     AndroidView(
         modifier = Modifier
             .fillMaxHeight(0.70F)
-            .fillMaxWidth(),factory = {
-        WebView(it).apply {
-            webViewClient = WebViewClient()
-            layoutParams = LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT
-            )
-            settings.javaScriptEnabled = true
-            loadUrl(url)
-            webView = this
-            setOnTouchListener { _, _ -> true }
+            .fillMaxWidth(), factory = {
+            WebView(it).apply {
+                webViewClient = WebViewClient()
+                layoutParams = LayoutParams(
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.WRAP_CONTENT
+                )
+                settings.javaScriptEnabled = true
+                loadUrl(url)
+                webView = this
+                setOnTouchListener { _, _ -> true }
 
 
-        }
-    }, update = {
-        webView = it
-        it.loadUrl(url)
-    })
+            }
+        }, update = {
+            webView = it
+            it.loadUrl(url)
+        })
 
 }
 

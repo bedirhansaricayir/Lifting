@@ -11,4 +11,7 @@
     <string name="IntermediateProgram">Orta Seviye</string>
     <string name="AdvancedProgram">İleri Seviye</string>
     <string name="Güncelle">Güncelle</string>
+    <string name="PlanSeç">Antrenman Planını Seç</string>
+    <string name="Analiz">İlerleme Çizelgen</string>
+    <string name="Gecmis">Geçmiş</string>
 </resources>
