@@ -60,9 +60,13 @@ import java.util.Calendar
 import java.util.Locale
 import kotlin.math.round
 
+/**
+ * Grafik ekranının bulunduğu dosya
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TrackerScreen() {
+    //Ekrandaki bileşenleri içerisinde bulunduran sütun
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -116,6 +120,7 @@ fun TrackerScreen() {
                 }
             }
         }
+        //Sağ alttaki butona tıklandığı zaman veri girişi yapılan dialog
         if (onFabClick) {
             CustomTrackingDialog(
                 dialogState = onFabClick,
@@ -131,6 +136,7 @@ fun TrackerScreen() {
 
 }
 
+//Veri girişi yapabileceğimiz özel olarak oluşturulmuş Sütun grafiği
 @Composable
 fun BarGraph(
     graphBarData: List<Float>,

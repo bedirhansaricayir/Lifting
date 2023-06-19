@@ -4,6 +4,9 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.fitness.app.R
 
+/**
+ * Uygulamada sahip olduğumuz tüm ekranların tanımlamasının yapıldığı dosya
+ */
 sealed class Screen(
     val route: String,
     val title: String,

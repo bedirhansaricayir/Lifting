@@ -16,6 +16,9 @@ import com.fitness.app.presentation.onboarding.OnBoarding
 import com.fitness.app.presentation.onboarding.OnBoardingViewModel
 import com.fitness.app.presentation.tracker.TrackerScreen
 
+/**
+ * Ekranlar arasında gezinme işlemleri için kullanılan navigation dosyası
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavGraph(navController: NavHostController, startDestination: String) {

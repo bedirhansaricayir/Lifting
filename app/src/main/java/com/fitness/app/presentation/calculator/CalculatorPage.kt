@@ -66,7 +66,9 @@ import com.fitness.app.ui.theme.grey50
 import com.fitness.app.ui.theme.white30
 import kotlinx.coroutines.launch
 
-
+/**
+ * Sağlık ekranının bulunduğu dosya
+ */
 @Composable
 fun CalculatorScreen() {
     var selectedCinsiyet by remember { mutableStateOf<String?>(null) }
@@ -83,12 +85,14 @@ fun CalculatorScreen() {
     var showButton by remember { mutableStateOf(false) }
 
 
+    //Seçilen cinsiyete göre BMR hesaplanması
     if (!selectedCinsiyet.isNullOrEmpty()){
         when(selectedCinsiyet) {
             ERKEK -> { BMR = (10 * vucutAgirligi) + (6.25 * boyUzunlugu) - (5 * yasDegeri) + 5 }
             KADIN -> { BMR = (10 * vucutAgirligi) + (6.25 * boyUzunlugu) - (5 * yasDegeri) - 161 }
         }
     }
+    //Seçilen aktiflik seviyesine göre total kalorinin hesaplanması
     if (!selectedOption.isNullOrEmpty() && !selectedCinsiyet.isNullOrEmpty()) {
         showButton = true
         when(selectedOption) {
@@ -98,9 +102,10 @@ fun CalculatorScreen() {
             COK -> { totalCaloriesPerDay = BMR?.times(1.725) }
         }
     }
-
+    //Tüm veriler girilip butona tıklandıktan sonra açılan dialog penceresi
     if (showDialog) CustomCalculatorDialog(dialogState = showDialog,BMR!!,totalCaloriesPerDay!!) { showDialog = !showDialog }
 
+    //Ekrandaki bileşenleri içerisinde barındıran sütun
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -334,18 +339,17 @@ fun CustomCalculatorDialog(
 fun SelectableGroup(
     modifier: Modifier = Modifier,
     options: List<String>,
-    optionData: List<Any>,
     selectedOption: String?,
     onOptionSelected: (String) -> Unit
 ) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(modifier = modifier.padding(horizontal = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         options.forEachIndexed { index, option ->
             val selected = option == selectedOption
-            val data = optionData.getOrNull(index)
+            //val data = optionData.getOrNull(index)
             SelectableItem(
                 selected = selected,
                 title = option,
-                subtitle = data?.toString() ?: "",
+                //subtitle = data?.toString() ?: "",
                 onClick = {
                     if (!selected) {
                         onOptionSelected(option)

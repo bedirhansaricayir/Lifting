@@ -5,6 +5,10 @@ import android.view.ViewGroup.LayoutParams
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,13 +23,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -44,9 +51,27 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.fitness.app.R
+import com.fitness.app.core.Constants
+import com.fitness.app.core.Constants.Companion.BES_GUN
+import com.fitness.app.core.Constants.Companion.BES_GUN_FORM_KORU
+import com.fitness.app.core.Constants.Companion.BES_GUN_KAS_KAZAN
+import com.fitness.app.core.Constants.Companion.BES_GUN_YAG_YAK
+import com.fitness.app.core.Constants.Companion.FORM_KORU
+import com.fitness.app.core.Constants.Companion.HIC
+import com.fitness.app.core.Constants.Companion.HIC_FORM_KORU
+import com.fitness.app.core.Constants.Companion.HIC_KAS_KAZAN
+import com.fitness.app.core.Constants.Companion.HIC_YAG_YAK
+import com.fitness.app.core.Constants.Companion.IKI_UC_GUN
+import com.fitness.app.core.Constants.Companion.IKI_UC_GUN_FORM_KORU
+import com.fitness.app.core.Constants.Companion.IKI_UC_GUN_KAS_KAZAN
+import com.fitness.app.core.Constants.Companion.IKI_UC_GUN_YAG_YAK
+import com.fitness.app.core.Constants.Companion.KAS_KAZAN
+import com.fitness.app.core.Constants.Companion.YAG_YAK
 import com.fitness.app.data.remote.DusukZorluk
 import com.fitness.app.data.remote.OrtaZorluk
 import com.fitness.app.data.remote.YuksekZorluk
+import com.fitness.app.presentation.calculator.SelectableGenderGroup
+import com.fitness.app.presentation.calculator.SelectableGroup
 import com.fitness.app.ui.theme.White40
 import com.fitness.app.ui.theme.black20
 import com.fitness.app.ui.theme.grey30
@@ -61,10 +86,75 @@ fun HomeScreen(
 ) {
     val verticalScroll = rememberScrollState()
     var openBottomSheet by remember { mutableStateOf(false) }
-    val bottomSheetState =
-        rememberModalBottomSheetState()
+    val bottomSheetState = rememberModalBottomSheetState()
     var videoUrl = remember { mutableStateOf("") }
     val openDialog = remember { mutableStateOf(false) }
+    var personalizedOpenBottomSheet by remember { mutableStateOf(false) }
+    val personalizedBottomSheetShate = rememberModalBottomSheetState()
+    val howManyDays = listOf(HIC,IKI_UC_GUN,BES_GUN)
+    var selectedHowManyDays by remember { mutableStateOf<String?>(null) }
+    val whatIsYourGoal = listOf(YAG_YAK,KAS_KAZAN,FORM_KORU)
+    var selectedWhatIsYourGoal by remember { mutableStateOf<String?>(null) }
+    var createdPersonalizedProgram by remember { mutableStateOf<String?>(null) }
+    var showButton by remember { mutableStateOf(false) }
+    var showProgramDialog by remember { mutableStateOf(false) }
+
+
+    if (!selectedHowManyDays.isNullOrEmpty() && !selectedWhatIsYourGoal.isNullOrEmpty()) {
+        showButton = true
+        when(selectedHowManyDays) {
+            HIC -> {
+                when(selectedWhatIsYourGoal) {
+                    YAG_YAK -> {
+                        createdPersonalizedProgram = HIC_YAG_YAK
+                    }
+                    KAS_KAZAN -> {
+                        createdPersonalizedProgram = HIC_KAS_KAZAN
+                    }
+                    FORM_KORU -> {
+                        createdPersonalizedProgram = HIC_FORM_KORU
+                    }
+                }
+            }
+            IKI_UC_GUN -> {
+                when(selectedWhatIsYourGoal) {
+                    YAG_YAK -> {
+                        createdPersonalizedProgram = IKI_UC_GUN_YAG_YAK
+                    }
+                    KAS_KAZAN -> {
+                        createdPersonalizedProgram = IKI_UC_GUN_KAS_KAZAN
+                    }
+                    FORM_KORU -> {
+                        createdPersonalizedProgram = IKI_UC_GUN_FORM_KORU
+                    }
+                }
+            }
+            BES_GUN -> {
+                when(selectedWhatIsYourGoal) {
+                    YAG_YAK -> {
+                        createdPersonalizedProgram = BES_GUN_YAG_YAK
+                    }
+                    KAS_KAZAN -> {
+                        createdPersonalizedProgram = BES_GUN_KAS_KAZAN
+                    }
+                    FORM_KORU -> {
+                        createdPersonalizedProgram = BES_GUN_FORM_KORU
+                    }
+                }
+            }
+        }
+    }
+    if (showProgramDialog) {
+        if (createdPersonalizedProgram != null){
+            CustomCreatedProgramDialog(
+                dialogState = showProgramDialog,
+                program = createdPersonalizedProgram!!
+            ) {
+                showProgramDialog = !showProgramDialog
+            }
+        }
+
+    }
 
     if (openBottomSheet) {
         ModalBottomSheet(
@@ -93,6 +183,83 @@ fun HomeScreen(
             url = videoUrl.value
         )
     }
+    
+    if (personalizedOpenBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { personalizedOpenBottomSheet = false },
+            sheetState = personalizedBottomSheetShate,
+            containerColor = black20
+        ) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Text(text = stringResource(id = R.string.PersonalizedProgramTitle),
+                    color = White40,
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+                Text(
+                    modifier = Modifier.padding(8.dp),
+                    text = "Haftada Kaç gün antrenman yapıyorsun ?",
+                    color = White40,
+                    style = MaterialTheme.typography.labelMedium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SelectableGroup(
+                    options = howManyDays,
+                    selectedOption = selectedHowManyDays,
+                    onOptionSelected = { option ->
+                        selectedHowManyDays = option
+                    }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    modifier = Modifier.padding(8.dp),
+                    text = "Hedefin nedir ?",
+                    color = White40,
+                    style = MaterialTheme.typography.labelMedium
+                )
+                SelectableGroup(
+                    options = whatIsYourGoal,
+                    selectedOption = selectedWhatIsYourGoal,
+                    onOptionSelected = { option ->
+                        selectedWhatIsYourGoal = option
+                    }
+                )
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp), horizontalArrangement = Arrangement.Center) {
+                AnimatedVisibility(
+                    visible = showButton,
+                    enter = slideInVertically(
+                        initialOffsetY = { it },
+                        animationSpec = tween(
+                            durationMillis = 700,
+                            easing = FastOutSlowInEasing
+                        )
+                    )
+                ) {
+                    OutlinedButton(
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .align(Alignment.CenterVertically),
+                        onClick = { showProgramDialog = !showProgramDialog },
+                        shape = RoundedCornerShape(50.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.background,
+                        ),
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.Olustur),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(vertical = 8.dp, horizontal = 40.dp)
+                        )
+                    }
+                }
+            }
+
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -120,7 +287,7 @@ fun HomeScreen(
                     .padding(8.dp), contentAlignment = Alignment.Center
             ) {
                 PersonalizedProgramCard() {
-
+                    personalizedOpenBottomSheet = !personalizedOpenBottomSheet
                 }
             }
             BeginnerProgramList(
@@ -353,6 +520,43 @@ fun ComposableWebView(url: String) {
             webView = it
             it.loadUrl(url)
         })
-
 }
 
+@Composable
+fun CustomCreatedProgramDialog(
+    dialogState: Boolean,
+    program: String,
+    onDissmiss: () -> Unit
+) {
+    val showDialog = remember { mutableStateOf(dialogState) }
+    val verticalScroll = rememberScrollState()
+    if (showDialog.value) {
+        Dialog(
+            onDismissRequest = { onDissmiss.invoke() },
+            properties = DialogProperties(dismissOnClickOutside = true, dismissOnBackPress = true)
+        ) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(verticalScroll),
+                shape = MaterialTheme.shapes.large,
+                elevation = CardDefaults.cardElevation(8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = grey30
+                ),
+            ) {
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(vertical = 12.dp, horizontal = 8.dp),
+                    text = stringResource(id = R.string.KişiselProgram),
+                    style = MaterialTheme.typography.titleSmall
+                )
+                Box(modifier = Modifier) {
+                    Text(modifier = Modifier
+                        .padding(vertical = 8.dp, horizontal = 16.dp),text = program, style = MaterialTheme.typography.labelMedium,color = White40)
+                }
+            }
+        }
+    }
+}

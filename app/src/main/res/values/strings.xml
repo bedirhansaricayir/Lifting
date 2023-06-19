@@ -21,4 +21,7 @@
     <string name="Kapat">Kapat</string>
     <string name="KalorinizHesaplandi">Kaloriniz Hesaplandı</string>
     <string name="customDialogText">Günlük kalori ihtiyacınız mevcut kilonuzu korumaya ve formda kalmanıza yardımcı olur. Kilo almak veya vermek istiyorsanız bu kalori değeri +/- 500 kalori kadar değişebilir.</string>
+    <string name="PersonalizedProgramTitle">Kişisel Antrenman Planınız</string>
+    <string name="Olustur">Oluştur</string>
+    <string name="KişiselProgram">Kişisel programınız oluşturuldu.</string>
 </resources>

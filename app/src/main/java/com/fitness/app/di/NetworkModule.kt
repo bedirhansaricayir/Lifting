@@ -14,6 +14,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+/**
+ * Bağımlılıkların yönetilebilmesi,classların ve fonksiyonların dış bağımlılıklarından kurtulabilmesi için bir dosya
+ * Ağ isteğinde kullanılacak Retrofit'in kurulumu ve küçük dataların saklanmasında kullanılacak dataStore'un yaratılması.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {

@@ -14,6 +14,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * Kullanıcı arayüzü değişikliklerinde yok edilmeyen  kullanıcı arayüzüyle ilgili verileri saklar ve business logic'den sorumludur.
+ * Bu sınıfta hiç bir UI bileşeni bulunmaz.
+ */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getProgramDataUseCase: GetProgramDataUseCase
@@ -26,6 +30,7 @@ class HomeViewModel @Inject constructor(
         getProgramData()
     }
 
+    //Kullanıcı arayüzündeki etkileşimleri bu fonksiyon sayesinde yakalıyoruz ve yönetiyoruz.
     fun onEvent(event: HomePageEvent) {
         when (event) {
             is HomePageEvent.OnWorkoutProgramPlayButtonClicked -> {
@@ -37,6 +42,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    //Programların çekilip data haline getirildiği fonksiyon
     private fun getProgramData() {
         viewModelScope.launch {
             getProgramDataUseCase.invoke().onEach { response ->

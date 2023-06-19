@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
+/**
+ * Küçük verilerin saklanabilmesi için oluşturulmuş dataStore sınıfı, küçük bir veritabanı
+ */
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "on_boarding_pref")
 
 class DataStoreRepository(context: Context) {

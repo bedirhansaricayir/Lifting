@@ -6,6 +6,9 @@ import com.fitness.app.data.remote.OrtaZorluk
 import com.fitness.app.data.remote.Uygulanis
 import com.fitness.app.data.remote.YuksekZorluk
 
+/**
+ * Uygulama boyunca kullanacağımız dataları bu classta saklıyoruz.
+ */
 data class HomePageUiState(
     val isLoading: Boolean? = false,
     val programData: AntrenmanProgramlari? = null,
