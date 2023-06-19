@@ -14,4 +14,11 @@
     <string name="PlanSeç">Antrenman Planını Seç</string>
     <string name="Analiz">İlerleme Çizelgen</string>
     <string name="Gecmis">Geçmiş</string>
+    <string name="Macro">Kalori İhtiyacını Hesapla</string>
+    <string name="Cinsiyet">Cinsiyetini Seç</string>
+    <string name="AktiviteSeviyesi">Aktivite Seviyeni Seç</string>
+    <string name="Hesapla">Hesapla</string>
+    <string name="Kapat">Kapat</string>
+    <string name="KalorinizHesaplandi">Kaloriniz Hesaplandı</string>
+    <string name="customDialogText">Günlük kalori ihtiyacınız mevcut kilonuzu korumaya ve formda kalmanıza yardımcı olur. Kilo almak veya vermek istiyorsanız bu kalori değeri +/- 500 kalori kadar değişebilir.</string>
 </resources>

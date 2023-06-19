@@ -8,6 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.fitness.app.presentation.calculator.CalculatorScreen
 import com.fitness.app.presentation.home.HomePageUiState
 import com.fitness.app.presentation.home.HomeScreen
 import com.fitness.app.presentation.home.HomeViewModel
@@ -46,8 +47,8 @@ fun NavGraph(navController: NavHostController, startDestination: String) {
         composable(route = Screen.TrackerScreen.route) {
             TrackerScreen()
         }
-        composable(route = Screen.OptionalScreen.route) {
-
+        composable(route = Screen.HealthScreen.route) {
+            CalculatorScreen()
         }
     }
 }

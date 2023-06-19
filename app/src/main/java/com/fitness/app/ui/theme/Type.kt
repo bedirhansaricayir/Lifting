@@ -39,6 +39,13 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 18.sp
     ),
+    labelMedium = TextStyle(
+        fontFamily = macPawFixel,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp
+    ),
     labelSmall = TextStyle(
         fontFamily = macPawFixel,
         fontWeight = FontWeight.Normal,

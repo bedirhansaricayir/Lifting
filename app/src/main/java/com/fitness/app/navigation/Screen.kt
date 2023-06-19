@@ -26,10 +26,10 @@ sealed class Screen(
         icon = R.drawable.analysis
     )
 
-    object OptionalScreen : Screen(
-        route = "optional_screen",
-        title = "Optional",
-        icon = R.drawable.workout
+    object HealthScreen : Screen(
+        route = "health_screen",
+        title = "Sağlık",
+        icon = R.drawable.pulse
     )
 
 }

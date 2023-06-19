@@ -59,54 +59,53 @@ fun BeginnerProgramCard(
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
-        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Image(
-                painter = painterResource(id = R.drawable.beginner_image),
-                contentDescription = "Program Image",
-                contentScale = ContentScale.Crop,
-                modifier = modifier.fillMaxSize()
-            )
+            Box(modifier = modifier.fillMaxSize()) {
+                Image(
+                    painter = painterResource(id = R.drawable.beginner_image),
+                    contentDescription = "Program Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier.fillMaxSize()
+                )
 
-            Box(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                contentAlignment = Alignment.BottomStart
-            ) {
-                Column(
-                    modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.Start,
-                    verticalArrangement = Arrangement.Center
+                Box(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.BottomStart
                 ) {
-                    /*Text(
-                        text = model.programAdi.toString(),
-                        color = Color.White,
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(modifier = modifier.padding(4.dp))*/
-                    Row(
-                        modifier = modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                    Column(
+                        modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        Text(
+                        /*Text(
                             text = model.programAdi.toString(),
                             color = Color.White,
                             textAlign = TextAlign.Center
                         )
-                        OutlinedIconButton(border = BorderStroke(1.dp, Color(0xFFCAF76F)),
-                            onClick = { onPlayButtonClick(model) }) {
-                            Icon(
-                                imageVector = Icons.Default.PlayArrow,
-                                contentDescription = "Play Button",
-                                tint = Color(0xFFCAF76F)
+                        Spacer(modifier = modifier.padding(4.dp))*/
+                        Row(
+                            modifier = modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = model.programAdi.toString(),
+                                color = Color.White,
+                                textAlign = TextAlign.Center
                             )
+                            OutlinedIconButton(border = BorderStroke(1.dp, Color(0xFFCAF76F)),
+                                onClick = { onPlayButtonClick(model) }) {
+                                Icon(
+                                    imageVector = Icons.Default.PlayArrow,
+                                    contentDescription = "Play Button",
+                                    tint = Color(0xFFCAF76F)
+                                )
+                            }
                         }
-
                     }
                 }
             }
-        }
     }
     Spacer(modifier = modifier.width(8.dp))
 }

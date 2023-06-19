@@ -10,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement.Top
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -40,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -55,26 +53,23 @@ import com.chargemap.compose.numberpicker.NumberPicker
 import com.fitness.app.R
 import com.fitness.app.ui.theme.black20
 import com.fitness.app.ui.theme.grey30
+import com.fitness.app.ui.theme.grey50
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.Calendar
 import java.util.Locale
 import kotlin.math.round
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun TrackerScreen(){
+fun TrackerScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         val currentDate = getCurrentDateFormatted()
-        var dataList by remember { mutableStateOf(mutableListOf(80, 85, 90,88)) }
-        var datesList by remember{ mutableStateOf(mutableListOf("15.06.23", "15.06.23", "17.06.23",currentDate)) }
-        var currentWeight by remember {
-            mutableStateOf(0)
-        }
+        var dataList by remember { mutableStateOf(mutableListOf(80, 85, 90, 88)) }
+        var datesList by remember { mutableStateOf(mutableListOf("15.06.23", "15.06.23", "17.06.23", currentDate)) }
         var floatValue = mutableListOf<Float>()
         var onFabClick by remember { mutableStateOf(false) }
 
@@ -92,15 +87,22 @@ fun TrackerScreen(){
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = grey30)
+                    .background(color = grey50)
                     .padding(it.calculateBottomPadding())
             ) {
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)) {
-                    Text(text = stringResource(id = R.string.Analiz), style = MaterialTheme.typography.titleMedium, modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.Analiz),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    )
+                    Spacer(modifier = Modifier.height(32.dp))
                     BarGraph(
                         graphBarData = floatValue,
                         xAxisScaleData = datesList,
@@ -111,20 +113,8 @@ fun TrackerScreen(){
                         barColor = MaterialTheme.colorScheme.primary,
                         barArrangement = Arrangement.SpaceEvenly,
                     )
-                    Text(text = stringResource(id = R.string.Gecmis), style = MaterialTheme.typography.titleMedium, modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp))
-                    LazyColumn(modifier = Modifier, verticalArrangement = Arrangement.spacedBy(8.dp)){
-                        items(50){
-                            CustomHistoryCard(model = it, tarih = LocalDateTime.now().toString(), kilo = currentWeight)
-                        }
-                    }
-
-
                 }
-
             }
-
         }
         if (onFabClick) {
             CustomTrackingDialog(
@@ -133,7 +123,6 @@ fun TrackerScreen(){
                 onSaveButtonClicked = {
                     dataList.add(it)
                     datesList.add(currentDate)
-                    currentWeight = it
                     onFabClick = !onFabClick
                 }
             )
@@ -155,18 +144,14 @@ fun BarGraph(
 ) {
     val lazyListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
 
     val barData by remember {
-        mutableStateOf(barData_ +0)
+        mutableStateOf(barData_ + 0)
     }
 
-    // for getting screen width and height you can use LocalConfiguration
     val configuration = LocalConfiguration.current
-    // getting screen width
     val width = configuration.screenWidthDp.dp
 
-    // bottom height of the X-Axis Scale
     val xAxisScaleHeight = 40.dp
 
     val yAxisScaleSpacing by remember {
@@ -176,7 +161,6 @@ fun BarGraph(
         mutableStateOf(100.dp)
     }
 
-    // bar shape
     val barShap =
         when (roundType) {
             BarType.CIRCULAR_TYPE -> CircleShape
@@ -184,7 +168,7 @@ fun BarGraph(
         }
 
     val density = LocalDensity.current
-    // y-axis scale text paint
+
     val textPaint = remember(density) {
         android.graphics.Paint().apply {
             color = Color.White.hashCode()
@@ -193,161 +177,156 @@ fun BarGraph(
         }
     }
 
-    // for y coordinates of y-axis scale to create horizontal dotted line indicating y-axis scale
     val yCoordinates = mutableListOf<Float>()
-    // for dotted line effect
     val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-    // height of vertical line over x-axis scale connecting x-axis horizontal line
     val lineHeightXAxis = 10.dp
-    // height of horizontal line over x-axis scale
     val horizontalLineHeight = 5.dp
 
 
 
 
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopStart) {
-            Column(
+    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopStart) {
+        Column(
+            modifier = Modifier
+                .padding(top = xAxisScaleHeight, end = 3.dp)
+                .height(height)
+                .fillMaxWidth(),
+            horizontalAlignment = CenterHorizontally
+        ) {
+            Canvas(
                 modifier = Modifier
-                    .padding(top = xAxisScaleHeight, end = 3.dp)
-                    .height(height)
-                    .fillMaxWidth(),
-                horizontalAlignment = CenterHorizontally
+                    .padding(bottom = 10.dp)
+                    .fillMaxSize()
             ) {
-                Canvas(
-                    modifier = Modifier
-                        .padding(bottom = 10.dp)
-                        .fillMaxSize()
-                ) {
-                    val yAxisScaleText = (barData.max()) / 3f
-                    (0..3).forEach { i ->
-                        drawContext.canvas.nativeCanvas.apply {
-                            drawText(
-                                round(barData.min() + yAxisScaleText * i).toString(),
-                                30f,
-                                size.height - yAxisScaleSpacing - i * size.height / 3f,
-                                textPaint
-                            )
-                        }
-                        yCoordinates.add(size.height - yAxisScaleSpacing - i * size.height / 3f)
-                    }
-                    (1..3).forEach {
-                        drawLine(
-                            start = Offset(x = yAxisScaleSpacing + 30f, y = yCoordinates[it]),
-                            end = Offset(x = size.width, y = yCoordinates[it]),
-                            color = Color.Gray,
-                            strokeWidth = 5f,
-                            pathEffect = pathEffect
+                val yAxisScaleText = (barData.max()) / 3f
+                (0..3).forEach { i ->
+                    drawContext.canvas.nativeCanvas.apply {
+                        drawText(
+                            round(barData.min() + yAxisScaleText * i).toString(),
+                            30f,
+                            size.height - yAxisScaleSpacing - i * size.height / 3f,
+                            textPaint
                         )
                     }
+                    yCoordinates.add(size.height - yAxisScaleSpacing - i * size.height / 3f)
                 }
-            }
-
-            Box(
-                modifier = Modifier
-                    .padding(start = 50.dp)
-                    .width(width - yAxisTextWidth)
-                    .height(height + xAxisScaleHeight),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    state = lazyListState
-                ) {
-                    if (graphBarData.isNotEmpty()) {
-                        coroutineScope.launch {
-                            lazyListState.animateScrollToItem(graphBarData.size - 1)
-                        }
-                    }
-                    items(graphBarData.size) { index ->
-                        var animationTriggered by remember { mutableStateOf(false) }
-                        val graphBarHeight by animateFloatAsState(
-                            targetValue = if (animationTriggered) graphBarData[index] else 0f,
-                            animationSpec = tween(
-                                durationMillis = 1000,
-                                delayMillis = 0
-                            )
-                        )
-                        LaunchedEffect(key1 = true) {
-                            animationTriggered = true
-                        }
-                        Column(
-                            modifier = Modifier.fillMaxHeight(),
-                            verticalArrangement = Arrangement.Top,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .padding(bottom = 5.dp)
-                                    .clip(barShap)
-                                    .width(barWidth)
-                                    .height(height - 10.dp)
-                                    .background(Color.Transparent),
-                                contentAlignment = Alignment.BottomCenter
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .clip(barShap)
-                                        .fillMaxWidth()
-                                        .fillMaxHeight(graphBarHeight)
-                                        .background(barColor)
-                                        .clickable {
-                                            /*Toast
-                                                .makeText(
-                                                    context,
-                                                    "${xAxisScaleData[index]} Tarihinde ${barData[index]} Kilogramdınız.",
-                                                    Toast.LENGTH_SHORT
-                                                )
-                                                .show()*/
-                                        }
-                                )
-                            }
-                            Column(
-                                modifier = Modifier.height(xAxisScaleHeight),
-                                verticalArrangement = Top,
-                                horizontalAlignment = CenterHorizontally
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .clip(
-                                            RoundedCornerShape(
-                                                bottomStart = 2.dp,
-                                                bottomEnd = 2.dp
-                                            )
-                                        )
-                                        .width(horizontalLineHeight)
-                                        .height(lineHeightXAxis)
-                                        .background(color = Color.Gray)
-                                )
-                                Text(
-                                    modifier = Modifier.padding(bottom = 3.dp, end = 5.dp),
-                                    text = xAxisScaleData[index],
-                                    fontSize = 11.sp,
-                                    fontWeight = FontWeight.Medium,
-                                    textAlign = TextAlign.Center,
-                                    color = Color.White
-                                )
-                            }
-                        }
-                    }
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.Transparent),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(bottom = xAxisScaleHeight + 3.dp)
-                            .clip(RoundedCornerShape(2.dp))
-                            .fillMaxWidth()
-                            .height(horizontalLineHeight)
-                            .background(Color.Gray)
+                (1..3).forEach {
+                    drawLine(
+                        start = Offset(x = yAxisScaleSpacing + 30f, y = yCoordinates[it]),
+                        end = Offset(x = size.width, y = yCoordinates[it]),
+                        color = Color.Gray,
+                        strokeWidth = 5f,
+                        pathEffect = pathEffect
                     )
                 }
             }
         }
 
+        Box(
+            modifier = Modifier
+                .padding(start = 50.dp)
+                .width(width - yAxisTextWidth)
+                .height(height + xAxisScaleHeight),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                state = lazyListState
+            ) {
+                if (graphBarData.isNotEmpty()) {
+                    coroutineScope.launch {
+                        lazyListState.animateScrollToItem(graphBarData.size - 1)
+                    }
+                }
+                items(graphBarData.size) { index ->
+                    var animationTriggered by remember { mutableStateOf(false) }
+                    val graphBarHeight by animateFloatAsState(
+                        targetValue = if (animationTriggered) graphBarData[index] else 0f,
+                        animationSpec = tween(
+                            durationMillis = 1000,
+                            delayMillis = 0
+                        )
+                    )
+                    LaunchedEffect(key1 = true) {
+                        animationTriggered = true
+                    }
+                    Column(
+                        modifier = Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .padding(bottom = 5.dp)
+                                .clip(barShap)
+                                .width(barWidth)
+                                .height(height - 10.dp)
+                                .background(Color.Transparent),
+                            contentAlignment = Alignment.BottomCenter
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .clip(barShap)
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(graphBarHeight)
+                                    .background(barColor)
+                                    .clickable {
+                                        /*Toast
+                                            .makeText(
+                                                context,
+                                                "${xAxisScaleData[index]} Tarihinde ${barData[index]} Kilogramdınız.",
+                                                Toast.LENGTH_SHORT
+                                            )
+                                            .show()*/
+                                    }
+                            )
+                        }
+                        Column(
+                            modifier = Modifier.height(xAxisScaleHeight),
+                            verticalArrangement = Top,
+                            horizontalAlignment = CenterHorizontally
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .clip(
+                                        RoundedCornerShape(
+                                            bottomStart = 2.dp,
+                                            bottomEnd = 2.dp
+                                        )
+                                    )
+                                    .width(horizontalLineHeight)
+                                    .height(lineHeightXAxis)
+                                    .background(color = Color.Gray)
+                            )
+                            Text(
+                                modifier = Modifier.padding(bottom = 3.dp, end = 5.dp),
+                                text = xAxisScaleData[index],
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Medium,
+                                textAlign = TextAlign.Center,
+                                color = Color.White
+                            )
+                        }
+                    }
+                }
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.Transparent),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = xAxisScaleHeight + 3.dp)
+                        .clip(RoundedCornerShape(2.dp))
+                        .fillMaxWidth()
+                        .height(horizontalLineHeight)
+                        .background(Color.Gray)
+                )
+            }
+        }
+    }
 
 
 }
@@ -470,26 +449,4 @@ fun getCurrentDateFormatted(): String {
     val currentDate = Calendar.getInstance().time
     val dateFormat = SimpleDateFormat("dd.MM.yy", Locale.getDefault())
     return dateFormat.format(currentDate)
-}
-
-@Composable
-fun CustomHistoryCard(model: Int,tarih: String,kilo: Int){
-    Card(
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(4.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(75.dp)
-            .padding(horizontal = 8.dp)
-    ) {
-        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically){
-            Column() {
-                Text(text = tarih)
-                Text(text = "$model kg")
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            Text(text = kilo.toString())
-
-        }
-    }
 }

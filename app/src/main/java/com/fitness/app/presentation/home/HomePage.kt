@@ -37,7 +37,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -48,6 +50,7 @@ import com.fitness.app.data.remote.YuksekZorluk
 import com.fitness.app.ui.theme.White40
 import com.fitness.app.ui.theme.black20
 import com.fitness.app.ui.theme.grey30
+import com.fitness.app.ui.theme.grey50
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,7 +65,6 @@ fun HomeScreen(
         rememberModalBottomSheetState()
     var videoUrl = remember { mutableStateOf("") }
     val openDialog = remember { mutableStateOf(false) }
-
 
     if (openBottomSheet) {
         ModalBottomSheet(
@@ -95,7 +97,7 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = grey30)
+            .background(color = grey50)
             .verticalScroll(verticalScroll)
 
     ) {
@@ -106,7 +108,8 @@ fun HomeScreen(
         if (beginnerState != null) {
             Text(
                 text = stringResource(id = R.string.PlanSeç),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
+                fontSize = 24.sp,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
