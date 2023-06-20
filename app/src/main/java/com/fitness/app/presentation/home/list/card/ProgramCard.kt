@@ -36,8 +36,10 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -78,22 +80,23 @@ fun BeginnerProgramCard(
                         horizontalAlignment = Alignment.Start,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        /*Text(
+                        Text(
                             text = model.programAdi.toString(),
                             color = Color.White,
                             textAlign = TextAlign.Center
                         )
-                        Spacer(modifier = modifier.padding(4.dp))*/
+                        Spacer(modifier = modifier.padding(4.dp))
                         Row(
                             modifier = modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
+                            /*Text(
                                 text = model.programAdi.toString(),
                                 color = Color.White,
                                 textAlign = TextAlign.Center
-                            )
+                            )*/
+                            CustomRatingBar(rating = model.gunSayisi!!.toFloat())
                             OutlinedIconButton(border = BorderStroke(1.dp, Color(0xFFCAF76F)),
                                 onClick = { onPlayButtonClick(model) }) {
                                 Icon(
@@ -142,22 +145,23 @@ fun IntermediateProgramCard(
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    /*Text(
+                    Text(
                         text = model.programAdi.toString(),
                         color = Color.White,
                         textAlign = TextAlign.Center
                     )
-                    Spacer(modifier = modifier.padding(4.dp))*/
+                    Spacer(modifier = modifier.padding(4.dp))
                     Row(
                         modifier = modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
+                        /*Text(
                             text = model.programAdi.toString(),
                             color = Color.White,
                             textAlign = TextAlign.Center
-                        )
+                        )*/
+                        CustomRatingBar(rating = model.gunSayisi!!.toFloat())
                         OutlinedIconButton(border = BorderStroke(1.dp, Color(0xFFCAF76F)),
                             onClick = { onPlayButtonClick(model) }) {
                             Icon(
@@ -207,22 +211,23 @@ fun AdvancedProgramCard(
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    /*Text(
+                    Text(
                         text = model.programAdi.toString(),
                         color = Color.White,
                         textAlign = TextAlign.Center
                     )
-                    Spacer(modifier = modifier.padding(4.dp))*/
+                    Spacer(modifier = modifier.padding(4.dp))
                     Row(
                         modifier = modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
+                        /*Text(
                             text = model.programAdi.toString(),
                             color = Color.White,
                             textAlign = TextAlign.Center
-                        )
+                        )*/
+                        CustomRatingBar(rating = model.gunSayisi!!.toFloat())
                         OutlinedIconButton(border = BorderStroke(1.dp, Color(0xFFCAF76F)),
                             onClick = { onPlayButtonClick(model) }) {
                             Icon(
@@ -311,5 +316,29 @@ fun PersonalizedProgramCard(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun CustomRatingBar(rating: Float) {
+    val imageBackground = ImageBitmap.imageResource(id = R.drawable.star_background)
+    val imageForeground = ImageBitmap.imageResource(id = R.drawable.star_foreground)
+    RatingBar(
+        rating = rating,
+        space = 2.dp,
+        imageEmpty = imageBackground,
+        imageFilled = imageForeground,
+        tintEmpty = MaterialTheme.colorScheme.primary,
+        tintFilled = MaterialTheme.colorScheme.primary,
+        animationEnabled = true,
+        gestureEnabled = false,
+        shimmer = Shimmer(
+            colors = listOf(
+                MaterialTheme.colorScheme.primary.copy(.9f),
+                MaterialTheme.colorScheme.primary.copy(.3f),
+                MaterialTheme.colorScheme.primary.copy(.9f))
+            ),
+        itemSize = 20.dp
+    ) {
     }
 }
