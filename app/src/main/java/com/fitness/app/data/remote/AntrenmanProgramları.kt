@@ -2,9 +2,6 @@ package com.fitness.app.data.remote
 
 import com.google.gson.annotations.SerializedName
 
-/**
- * Api servisine istek atılıp cevap geldiğinde karşılanacak verilerin modellenmesi
- */
 data class AntrenmanProgramlari(
     @SerializedName("antrenmanlar") var antrenmanlar: Antrenmanlar? = Antrenmanlar()
 )

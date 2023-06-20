@@ -24,4 +24,6 @@
     <string name="PersonalizedProgramTitle">Kişisel Antrenman Planınız</string>
     <string name="Olustur">Oluştur</string>
     <string name="KişiselProgram">Kişisel programınız oluşturuldu.</string>
+    <string name="HowManyDays">Haftada Kaç gün antrenman yapıyorsun ?</string>
+    <string name="WhatIsYourGoal">Hedefin nedir ?</string>
 </resources>

@@ -1,10 +1,5 @@
 package com.fitness.app.core.util
 
-/**
- * Ağ isteği yapıldıktan sonra isteğin durumlarının(Başarılı,Başarısız,Yükleniyor) kontrol edildiği yardımcı sınıf
- */
-
-
 sealed class Resource<out T> {
     object Loading : Resource<Nothing>()
 

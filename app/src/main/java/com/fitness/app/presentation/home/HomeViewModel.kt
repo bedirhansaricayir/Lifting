@@ -2,8 +2,10 @@ package com.fitness.app.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fitness.app.core.Constants
 import com.fitness.app.core.util.Resource
-import com.fitness.app.domain.GetProgramDataUseCase
+import com.fitness.app.domain.model.programMap
+import com.fitness.app.domain.use_case.GetProgramDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,10 +16,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * Kullanıcı arayüzü değişikliklerinde yok edilmeyen  kullanıcı arayüzüyle ilgili verileri saklar ve business logic'den sorumludur.
- * Bu sınıfta hiç bir UI bileşeni bulunmaz.
- */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getProgramDataUseCase: GetProgramDataUseCase
@@ -30,7 +28,6 @@ class HomeViewModel @Inject constructor(
         getProgramData()
     }
 
-    //Kullanıcı arayüzündeki etkileşimleri bu fonksiyon sayesinde yakalıyoruz ve yönetiyoruz.
     fun onEvent(event: HomePageEvent) {
         when (event) {
             is HomePageEvent.OnWorkoutProgramPlayButtonClicked -> {
@@ -39,10 +36,28 @@ class HomeViewModel @Inject constructor(
                     selectedProgramName = event.isim
                 )
             }
+            is HomePageEvent.OnPersonalizedProgramButtonClicked -> {
+                val personalizedProgram = getProgramForGoal(event.days,event.goal)
+                _state.value = _state.value.copy(
+                    onPersonalizedProgramCreated = personalizedProgram
+                )
+            }
         }
     }
 
-    //Programların çekilip data haline getirildiği fonksiyon
+    private fun getProgramForGoal(days: String, selectedGoal: String?): String? {
+        return selectedGoal?.let { goal ->
+            programMap[days]?.let { program ->
+                when (goal) {
+                    Constants.YAG_YAK -> program.burnFat
+                    Constants.KAS_KAZAN -> program.gainMuscle
+                    Constants.FORM_KORU -> program.maintenance
+                    else -> null
+                }
+            }
+        }
+    }
+
     private fun getProgramData() {
         viewModelScope.launch {
             getProgramDataUseCase.invoke().onEach { response ->

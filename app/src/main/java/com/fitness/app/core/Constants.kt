@@ -2,6 +2,7 @@ package com.fitness.app.core
 
 class Constants {
     companion object{
+        //Sağlık Ekranı
         const val ERKEK = "Erkek"
         const val KADIN = "KADIN"
         const val SEDANTER = "Sedanter"
@@ -13,10 +14,12 @@ class Constants {
         const val ORTA_TEXT = "Her gün en az bir saat egzersiz yapıyorum"
         const val COK_TEXT = "Haftada 4-5 gün en az 2 saat egzersiz yapıyorum"
 
+        //Aktivite Seviyesi
         const val HIC = "Daha önce antrenman yapmadım"
         const val IKI_UC_GUN = "Haftada 2-3 Gün yapıyorum"
         const val BES_GUN = "Haftada 5+ Gün yapıyorum"
 
+        //Hedef
         const val YAG_YAK = "Yağ yakmak"
         const val KAS_KAZAN = "Kas kazanmak"
         const val FORM_KORU = "Form korumak"
@@ -258,5 +261,30 @@ class Constants {
                 "Dumbbell Shoulder Press: 3 set x 12 tekrar\n" +
                 "Leg Press: 3 set x 12 tekrar\n" +
                 "Plank: 3 set x 30 saniye"
+
+
+
+        //DataStore
+        const val ONBOARDING = "on_boarding_pref"
+        const val ONBOARDING_COMPLETED = "on_boarding_completed"
+
+
+        //ApiClient
+        const val BASE = "https://gist.github.com/"
+        const val END_POINT = "bedirhansaricayir/51bed929bca74d888f3dd5e20a11f80e/raw/b3cc5cae248e6667a45be53064f3c9f88589c94f/program_data.json"
+
+        //Screen route ve title
+        const val HOME_SCREEN = "home_screen"
+        const val HOME_SCREEN_TITLE = "Programlar"
+
+        const val ONBOARDING_SCREEN = "onboarding_screen"
+        const val ONBOARDING_SCREEN_TITLE = "OnBoarding"
+
+        const val TRACKER_SCREEN = "tracker_screen"
+        const val TRACKER_SCREEN_TITLE = "Analiz"
+
+        const val HEALTH_SCREEN = "health_screen"
+        const val HEALTH_SCREEN_TITLE = "Sağlık"
+
     }
 }

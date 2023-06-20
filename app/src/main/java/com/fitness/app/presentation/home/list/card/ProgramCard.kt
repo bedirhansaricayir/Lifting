@@ -1,4 +1,4 @@
-package com.fitness.app.presentation.home
+package com.fitness.app.presentation.home.list.card
 
 import android.view.MotionEvent
 import androidx.compose.animation.core.Spring

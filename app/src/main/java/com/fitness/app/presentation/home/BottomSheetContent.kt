@@ -32,9 +32,7 @@ import com.fitness.app.data.remote.Uygulanis
 import com.fitness.app.ui.theme.White40
 import com.fitness.app.ui.theme.grey30
 
-/**
- * Aşağıdan açılan component için verilerin nasıl görüneceğini belirleyen özel composable fonksiyon
- */
+
 @Composable
 fun BottomSheetContent(
     model: ArrayList<Uygulanis>,

@@ -7,20 +7,19 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.fitness.app.core.Constants.Companion.ONBOARDING
+import com.fitness.app.core.Constants.Companion.ONBOARDING_COMPLETED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
-/**
- * Küçük verilerin saklanabilmesi için oluşturulmuş dataStore sınıfı, küçük bir veritabanı
- */
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "on_boarding_pref")
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = ONBOARDING)
 
 class DataStoreRepository(context: Context) {
 
     private object PreferencesKey {
-        val onBoardingKey = booleanPreferencesKey(name = "on_boarding_completed")
+        val onBoardingKey = booleanPreferencesKey(name = ONBOARDING_COMPLETED)
     }
 
     private val dataStore = context.dataStore

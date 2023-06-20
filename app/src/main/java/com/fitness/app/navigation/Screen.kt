@@ -3,35 +3,40 @@ package com.fitness.app.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.fitness.app.R
+import com.fitness.app.core.Constants.Companion.HEALTH_SCREEN
+import com.fitness.app.core.Constants.Companion.HEALTH_SCREEN_TITLE
+import com.fitness.app.core.Constants.Companion.HOME_SCREEN
+import com.fitness.app.core.Constants.Companion.HOME_SCREEN_TITLE
+import com.fitness.app.core.Constants.Companion.ONBOARDING_SCREEN
+import com.fitness.app.core.Constants.Companion.ONBOARDING_SCREEN_TITLE
+import com.fitness.app.core.Constants.Companion.TRACKER_SCREEN
+import com.fitness.app.core.Constants.Companion.TRACKER_SCREEN_TITLE
 
-/**
- * Uygulamada sahip olduğumuz tüm ekranların tanımlamasının yapıldığı dosya
- */
 sealed class Screen(
     val route: String,
     val title: String,
     val icon: Int? = null
 ) {
     object HomeScreen : Screen(
-        route = "home_screen",
-        title = "Programlar",
+        route = HOME_SCREEN,
+        title = HOME_SCREEN_TITLE,
         icon = R.drawable.workout
     )
 
     object OnBoardingScreen : Screen(
-        route = "onboarding_screen",
-        title = "OnBoarding"
+        route = ONBOARDING_SCREEN,
+        title = ONBOARDING_SCREEN_TITLE
     )
 
     object TrackerScreen : Screen(
-        route = "tracker_screen",
-        title = "Analiz",
+        route = TRACKER_SCREEN,
+        title = TRACKER_SCREEN_TITLE,
         icon = R.drawable.analysis
     )
 
     object HealthScreen : Screen(
-        route = "health_screen",
-        title = "Sağlık",
+        route = HEALTH_SCREEN,
+        title = HEALTH_SCREEN_TITLE,
         icon = R.drawable.pulse
     )
 

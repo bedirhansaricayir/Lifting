@@ -1,19 +1,17 @@
 package com.fitness.app.data.remote
 
+import com.fitness.app.core.Constants.Companion.BASE
+import com.fitness.app.core.Constants.Companion.END_POINT
 import retrofit2.http.GET
 
-/**
- * Ağ isteklerinin yapılacağı endpoint(uç nokta)'in belirlendiği sınıf
- */
+
 interface ApiClient {
 
     companion object {
-        const val BASE_URL = "https://gist.github.com/"
+        const val BASE_URL = BASE
     }
 
-    //Get isteği ile bu adresten bir veri alma isteğinde bulunuyoruz.
-
-    @GET("bedirhansaricayir/51bed929bca74d888f3dd5e20a11f80e/raw/b3cc5cae248e6667a45be53064f3c9f88589c94f/program_data.json")
+    @GET(END_POINT)
     suspend fun getProgramData(): AntrenmanProgramlari
 
 }

@@ -34,9 +34,6 @@ import com.fitness.app.R
 import com.fitness.app.navigation.OnBoardingPage
 import com.fitness.app.ui.theme.White40
 
-/**
- * Açılış ekranından sonra gelen ve yalnızca 1 kez görüntülenecek tanıtım ekranlarının bulunduğu dosya
- */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoarding(
@@ -47,14 +44,12 @@ fun OnBoarding(
     val items = OnBoardingPage.getData()
     val pagerState = rememberPagerState()
 
-    //Ekranda bulunan bileşenleri içerisinde bulunduran sütun
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
-            //Ekranları kaydırma işlevini gerçekleştiren component
             HorizontalPager(
                 pageCount = items.size,
                 state = pagerState
