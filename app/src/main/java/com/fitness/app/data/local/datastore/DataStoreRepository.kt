@@ -7,8 +7,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.fitness.app.core.Constants.Companion.ONBOARDING
-import com.fitness.app.core.Constants.Companion.ONBOARDING_COMPLETED
+import com.fitness.app.core.constants.Constants.Companion.ONBOARDING
+import com.fitness.app.core.constants.Constants.Companion.ONBOARDING_COMPLETED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map

@@ -1,7 +1,10 @@
 package com.fitness.app.presentation.tracker
 
 
+import android.annotation.SuppressLint
+import android.graphics.Paint
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -36,9 +39,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -54,12 +62,19 @@ import com.fitness.app.R
 import com.fitness.app.ui.theme.black20
 import com.fitness.app.ui.theme.grey30
 import com.fitness.app.ui.theme.grey50
+import com.github.tehras.charts.line.LineChart
+import com.github.tehras.charts.line.LineChartData
+import com.github.tehras.charts.line.renderer.line.LineDrawer
+import com.github.tehras.charts.line.renderer.line.SolidLineDrawer
+import com.github.tehras.charts.line.renderer.line.SolidLineShader
+import com.github.tehras.charts.line.renderer.point.FilledCircularPointDrawer
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import kotlin.math.round
 
+@SuppressLint("UnrememberedMutableState", "MutableCollectionMutableState")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TrackerScreen() {
@@ -68,10 +83,12 @@ fun TrackerScreen() {
             .fillMaxSize()
     ) {
         val currentDate = getCurrentDateFormatted()
-        var dataList by remember { mutableStateOf(mutableListOf(80, 85, 90, 88)) }
-        var datesList by remember { mutableStateOf(mutableListOf("15.06.23", "15.06.23", "17.06.23", currentDate)) }
+        var dataList by remember { mutableStateOf(mutableListOf(1)) }
+        var datesList by remember { mutableStateOf(mutableListOf(currentDate)) }
         var floatValue = mutableListOf<Float>()
         var onFabClick by remember { mutableStateOf(false) }
+        var bodyWeightList2 by remember { mutableStateOf(listOf(80,82,83)) }
+        var dateList2 by remember { mutableStateOf(listOf("15.06.23", "15.06.23", "17.06.23")) }
 
         dataList.forEachIndexed { index, value ->
             floatValue.add(index = index, element = value.toFloat() / dataList.max().toFloat())
@@ -113,6 +130,42 @@ fun TrackerScreen() {
                         barColor = MaterialTheme.colorScheme.primary,
                         barArrangement = Arrangement.SpaceEvenly,
                     )
+                     fun randomYValue(): Float = (100f * Math.random()).toFloat() + 45f
+
+                    var lineChartData by mutableStateOf(
+                        LineChartData(points = listOf(
+                                LineChartData.Point(randomYValue(), currentDate),
+                                LineChartData.Point(randomYValue(), currentDate),
+                                LineChartData.Point(randomYValue(), currentDate),
+                                LineChartData.Point(randomYValue(), currentDate),
+                                LineChartData.Point(randomYValue(), currentDate),
+                                LineChartData.Point(randomYValue(), currentDate),
+                                LineChartData.Point(randomYValue(), currentDate)
+                        ), lineDrawer = SolidLineDrawer(color = MaterialTheme.colorScheme.primary),
+                        )
+                    )
+
+                    var lineChartData2 by mutableStateOf(
+                        LineChartData(
+                            points = listOf(
+                                LineChartData.Point(randomYValue(), "Label1"),
+                                LineChartData.Point(randomYValue(), "Label2"),
+                                LineChartData.Point(randomYValue(), "Label3"),
+
+                                ),
+                            lineDrawer = SolidLineDrawer(
+                                color = Color(0xFF00FF00)
+                            )
+                        )
+                    )
+                    var horizontalOffset by  remember {
+                        mutableStateOf(5f)
+                    }
+
+                    /*LineChart(linesChartData = listOf(lineChartData),
+                        horizontalOffset = horizontalOffset,
+                        pointDrawer = FilledCircularPointDrawer(),)*/
+                     LineChartView(bodyWeightList = bodyWeightList2, dateList = dateList2)
                 }
             }
         }
@@ -122,6 +175,10 @@ fun TrackerScreen() {
                 dialogState = onFabClick,
                 onDissmiss = { onFabClick = !onFabClick },
                 onSaveButtonClicked = {
+                    bodyWeightList2 = bodyWeightList2 + it
+                    dateList2 = dateList2 + currentDate
+
+                    LineChartData.Point(it.toFloat(),currentDate)
                     dataList.add(it)
                     datesList.add(currentDate)
                     onFabClick = !onFabClick
@@ -132,6 +189,135 @@ fun TrackerScreen() {
 
 }
 
+@Composable
+fun LineChartView(
+    bodyWeightList: List<Int>,
+    dateList: List<String>,
+    circleColor: Color = MaterialTheme.colorScheme.primary,
+    lineColor: Color = MaterialTheme.colorScheme.primary
+) {
+    val maxValue = 200
+    val minValue = 0
+    Canvas(
+        modifier = Modifier.fillMaxSize()
+    ) {
+
+        val startX = 80f // X ekseni başlangıç noktasının x koordinatı
+        val endX = size.width - 50f
+        val startY = size.height - 80f // Y ekseni başlangıç noktasının y koordinatı
+        val endY = 50f
+
+        // Y ekseni için ek düzenlemeler
+        val yRange = maxValue - minValue
+        val yInterval = yRange / 10
+
+        // X ekseni için ek düzenlemeler
+        val xRange = dateList.size - 1
+        val xInterval = (endX - startX - 40f) / xRange
+
+        // Veri noktalarını ve dalgalı çizgiyi çizme
+        val path = Path()
+        for (i in bodyWeightList.indices) {
+            val x = startX + (i * xInterval) + 20f
+            val y = startY - ((bodyWeightList[i] - minValue) * (startY - endY) / yRange)
+
+            if (i == 0) {
+                path.moveTo(x, y)
+            } else {
+                val previousX = startX + ((i - 1) * xInterval) + 20f
+                val previousY = startY - ((bodyWeightList[i - 1] - minValue) * (startY - endY) / yRange)
+
+                val controlPointX1 = previousX + (x - previousX) / 2
+                val controlPointY1 = previousY
+                val controlPointX2 = previousX + (x - previousX) / 2
+                val controlPointY2 = y
+
+                path.cubicTo(
+                    controlPointX1, controlPointY1,
+                    controlPointX2, controlPointY2,
+                    x, y
+                )
+            }
+
+
+            drawCircle(
+                color = circleColor,
+                radius = 12f,
+                center = Offset(x, y)
+            )
+        }
+        // Dalgalı çizgiyi çizme
+        drawPath(
+            path = path,
+            color = lineColor,
+            style = Stroke(width = 12f, cap = StrokeCap.Round)
+        )
+
+        // X ekseni çizgisi
+        drawLine(
+            start = Offset(startX, startY),
+            end = Offset(endX, startY),
+            color = Color.Gray,
+            strokeWidth = 6f
+        )
+
+        // Y ekseni çizgisi
+        drawLine(
+            start = Offset(startX, startY),
+            end = Offset(startX, endY),
+            color = Color.Gray,
+            strokeWidth = 6f
+        )
+
+        // Y ekseni etiketleri
+        for (i in 0..10) {
+            val yValue = minValue + i * yInterval
+            val y = startY - (yValue * (startY - endY) / yRange)
+            val yText = yValue.toString()
+
+            /*
+            Y eksenindeki sayılara denk gelen çentik çizimi
+            drawLine(
+                start = Offset(startX - 10f, y),
+                end = Offset(startX, y),
+                color = Color.Gray,
+                strokeWidth = 2f
+            )*/
+
+            drawIntoCanvas {
+                it.nativeCanvas.drawText(
+                    yText,
+                    startX - 30f,
+                    y + 10f,
+                    Paint().apply {
+                        color = Color.Black.hashCode()
+                        textSize = 20f
+                        textAlign = Paint.Align.RIGHT
+                    }
+                )
+            }
+        }
+
+        // X ekseni etiketleri
+        for (i in dateList.indices) {
+            val x = startX  + (i * xInterval) + 20f
+            val y = startY + 30f
+
+            drawIntoCanvas {
+                it.nativeCanvas.drawText(
+                    dateList[i],
+                    x,
+                    y,
+                    Paint().apply {
+                        color = Color.Black.hashCode()
+                        textSize = 30f
+                        textAlign = Paint.Align.CENTER
+                    }
+                )
+            }
+        }
+    }
+}
 @Composable
 fun BarGraph(
     graphBarData: List<Float>,
@@ -145,9 +331,10 @@ fun BarGraph(
 ) {
     val lazyListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val barData by remember {
-        mutableStateOf(barData_ + 0)
+        mutableStateOf(barData_)
     }
 
     val configuration = LocalConfiguration.current
@@ -272,13 +459,13 @@ fun BarGraph(
                                     .fillMaxHeight(graphBarHeight)
                                     .background(barColor)
                                     .clickable {
-                                        /*Toast
+                                        Toast
                                             .makeText(
                                                 context,
                                                 "${xAxisScaleData[index]} Tarihinde ${barData[index]} Kilogramdınız.",
                                                 Toast.LENGTH_SHORT
                                             )
-                                            .show()*/
+                                            .show()
                                     }
                             )
                         }

@@ -1,4 +1,4 @@
-package com.fitness.app.core
+package com.fitness.app.core.constants
 
 class Constants {
     companion object{

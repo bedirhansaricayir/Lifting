@@ -1,17 +1,17 @@
 package com.fitness.app.domain.model
 
-import com.fitness.app.core.Constants.Companion.BES_GUN
-import com.fitness.app.core.Constants.Companion.BES_GUN_FORM_KORU
-import com.fitness.app.core.Constants.Companion.BES_GUN_KAS_KAZAN
-import com.fitness.app.core.Constants.Companion.BES_GUN_YAG_YAK
-import com.fitness.app.core.Constants.Companion.HIC
-import com.fitness.app.core.Constants.Companion.HIC_FORM_KORU
-import com.fitness.app.core.Constants.Companion.HIC_KAS_KAZAN
-import com.fitness.app.core.Constants.Companion.HIC_YAG_YAK
-import com.fitness.app.core.Constants.Companion.IKI_UC_GUN
-import com.fitness.app.core.Constants.Companion.IKI_UC_GUN_FORM_KORU
-import com.fitness.app.core.Constants.Companion.IKI_UC_GUN_KAS_KAZAN
-import com.fitness.app.core.Constants.Companion.IKI_UC_GUN_YAG_YAK
+import com.fitness.app.core.constants.Constants.Companion.BES_GUN
+import com.fitness.app.core.constants.Constants.Companion.BES_GUN_FORM_KORU
+import com.fitness.app.core.constants.Constants.Companion.BES_GUN_KAS_KAZAN
+import com.fitness.app.core.constants.Constants.Companion.BES_GUN_YAG_YAK
+import com.fitness.app.core.constants.Constants.Companion.HIC
+import com.fitness.app.core.constants.Constants.Companion.HIC_FORM_KORU
+import com.fitness.app.core.constants.Constants.Companion.HIC_KAS_KAZAN
+import com.fitness.app.core.constants.Constants.Companion.HIC_YAG_YAK
+import com.fitness.app.core.constants.Constants.Companion.IKI_UC_GUN
+import com.fitness.app.core.constants.Constants.Companion.IKI_UC_GUN_FORM_KORU
+import com.fitness.app.core.constants.Constants.Companion.IKI_UC_GUN_KAS_KAZAN
+import com.fitness.app.core.constants.Constants.Companion.IKI_UC_GUN_YAG_YAK
 
 data class ProgramState(val burnFat: String, val gainMuscle: String, val maintenance: String)
 

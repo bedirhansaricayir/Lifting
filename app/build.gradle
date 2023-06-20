@@ -100,4 +100,7 @@ dependencies {
     //Kilogram seçimi için
     implementation "com.chargemap.compose:numberpicker:1.0.3"
 
+    implementation "com.github.tehras:charts:0.2.4-alpha"
+
+
 }

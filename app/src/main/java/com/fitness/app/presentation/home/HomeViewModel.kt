@@ -2,7 +2,7 @@ package com.fitness.app.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fitness.app.core.Constants
+import com.fitness.app.core.constants.Constants
 import com.fitness.app.core.util.Resource
 import com.fitness.app.domain.model.programMap
 import com.fitness.app.domain.use_case.GetProgramDataUseCase

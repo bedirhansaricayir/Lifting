@@ -3,14 +3,14 @@ package com.fitness.app.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.fitness.app.R
-import com.fitness.app.core.Constants.Companion.HEALTH_SCREEN
-import com.fitness.app.core.Constants.Companion.HEALTH_SCREEN_TITLE
-import com.fitness.app.core.Constants.Companion.HOME_SCREEN
-import com.fitness.app.core.Constants.Companion.HOME_SCREEN_TITLE
-import com.fitness.app.core.Constants.Companion.ONBOARDING_SCREEN
-import com.fitness.app.core.Constants.Companion.ONBOARDING_SCREEN_TITLE
-import com.fitness.app.core.Constants.Companion.TRACKER_SCREEN
-import com.fitness.app.core.Constants.Companion.TRACKER_SCREEN_TITLE
+import com.fitness.app.core.constants.Constants.Companion.HEALTH_SCREEN
+import com.fitness.app.core.constants.Constants.Companion.HEALTH_SCREEN_TITLE
+import com.fitness.app.core.constants.Constants.Companion.HOME_SCREEN
+import com.fitness.app.core.constants.Constants.Companion.HOME_SCREEN_TITLE
+import com.fitness.app.core.constants.Constants.Companion.ONBOARDING_SCREEN
+import com.fitness.app.core.constants.Constants.Companion.ONBOARDING_SCREEN_TITLE
+import com.fitness.app.core.constants.Constants.Companion.TRACKER_SCREEN
+import com.fitness.app.core.constants.Constants.Companion.TRACKER_SCREEN_TITLE
 
 sealed class Screen(
     val route: String,
