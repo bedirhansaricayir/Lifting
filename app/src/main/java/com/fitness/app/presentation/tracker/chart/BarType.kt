@@ -1,4 +1,4 @@
-package com.fitness.app.presentation.tracker
+package com.fitness.app.presentation.tracker.chart
 
 enum class BarType {
     CIRCULAR_TYPE,
