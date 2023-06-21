@@ -56,6 +56,7 @@ import com.fitness.app.presentation.home.list.card.PersonalizedProgramCard
 import com.fitness.app.ui.theme.White40
 import com.fitness.app.ui.theme.black20
 import com.fitness.app.ui.theme.grey50
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,6 +78,7 @@ fun HomeScreen(
     var selectedWhatIsYourGoal by remember { mutableStateOf<String?>(null) }
     var showButton by remember { mutableStateOf(false) }
     var videoUrl = remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
 
     val beginnerState = state.programData?.antrenmanlar?.dusukZorluk
     val intermediateState = state.programData?.antrenmanlar?.ortaZorluk
@@ -115,7 +117,7 @@ fun HomeScreen(
             url = videoUrl.value
         )
     }
-    
+
     if (personalizedOpenBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = { personalizedOpenBottomSheet = false },
@@ -174,7 +176,16 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
                             .align(Alignment.CenterVertically),
-                        onClick = { showProgramDialog = !showProgramDialog },
+                        onClick = {
+                            showProgramDialog = !showProgramDialog
+                            scope.launch { personalizedBottomSheetShate.hide() }.invokeOnCompletion {
+                                if (!personalizedBottomSheetShate.isVisible) {
+                                    personalizedOpenBottomSheet = false
+                                    selectedHowManyDays = null
+                                    selectedWhatIsYourGoal = null
+                                    showButton = !showButton
+                                }
+                            } },
                         shape = RoundedCornerShape(50.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
                             containerColor = MaterialTheme.colorScheme.primary,
