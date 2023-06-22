@@ -1,8 +1,13 @@
-plugins {
-    id(BuildPlugins.application) version Versions.gradleVersion apply false
-    id(BuildPlugins.library) version Versions.gradleVersion apply false
-    id(BuildPlugins.kotlinPlugin) version Versions.kotlinGradlePluginVersion apply false
-    id(BuildPlugins.hiltPlugin) version Versions.hiltAndroidPluginVersion apply false
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath(BuildPlugins.androidGradlePlugin)
+        classpath(BuildPlugins.kotlinGradlePlugin)
+        classpath(BuildPlugins.hiltPlugin)
+    }
 }
 
 tasks.register("clean", Delete::class) {
