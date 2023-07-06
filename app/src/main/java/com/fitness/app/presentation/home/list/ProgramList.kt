@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.fitness.app.data.remote.DusukZorluk
-import com.fitness.app.data.remote.OrtaZorluk
-import com.fitness.app.data.remote.YuksekZorluk
+import com.fitness.app.data.remote.model.DusukZorluk
+import com.fitness.app.data.remote.model.OrtaZorluk
+import com.fitness.app.data.remote.model.YuksekZorluk
 import com.fitness.app.presentation.home.list.card.AdvancedProgramCard
 import com.fitness.app.presentation.home.list.card.BeginnerProgramCard
 import com.fitness.app.presentation.home.list.card.IntermediateProgramCard

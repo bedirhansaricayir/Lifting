@@ -1,4 +1,4 @@
-package com.fitness.app.data.remote
+package com.fitness.app.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 

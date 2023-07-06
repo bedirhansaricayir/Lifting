@@ -44,6 +44,7 @@ fun TrackerScreen() {
         var onFabClick by remember { mutableStateOf(false) }
 
         Scaffold(
+            modifier = Modifier.statusBarsPadding(),
             floatingActionButton = {
                 CustomFloatingActionButton {
                     onFabClick = !onFabClick

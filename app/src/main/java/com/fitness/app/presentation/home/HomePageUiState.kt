@@ -1,7 +1,7 @@
 package com.fitness.app.presentation.home
 
-import com.fitness.app.data.remote.AntrenmanProgramlari
-import com.fitness.app.data.remote.Uygulanis
+import com.fitness.app.data.remote.model.AntrenmanProgramlari
+import com.fitness.app.data.remote.model.Uygulanis
 
 
 data class HomePageUiState(

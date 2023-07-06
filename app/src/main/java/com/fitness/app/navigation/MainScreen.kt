@@ -23,13 +23,15 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.fitness.app.navigation.graphs.AuthScreen
+import com.fitness.app.navigation.graphs.NavGraph
 import com.fitness.app.ui.theme.black20
 import com.fitness.app.ui.theme.grey10
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MainScreen(navController: NavHostController, startDestination: String) {
+fun MainScreen(navController: NavHostController) {
     Scaffold(bottomBar = { BottomNavigationBar(navController = navController) }) {
         Box(
             modifier = Modifier.padding(
@@ -39,7 +41,12 @@ fun MainScreen(navController: NavHostController, startDestination: String) {
                 bottom = it.calculateBottomPadding()
             )
         ) {
-            NavGraph(navController = navController, startDestination = startDestination)
+            NavGraph(navController = navController, onLogoutClick = {
+                navController.navigate(AuthScreen.SignInScreen.route){
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true
+                }
+            })
         }
     }
 }
@@ -55,7 +62,7 @@ fun BottomNavigationBar(navController: NavHostController, modifier: Modifier = M
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val onBoardingScreen = Screen.OnBoardingScreen
+    val onBoardingScreen = AuthScreen.OnBoardingScreen
     val onBoardingDestination = onBoardingScreen.route == currentDestination?.route
 
     if (!onBoardingDestination) {

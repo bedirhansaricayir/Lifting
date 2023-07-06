@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -29,7 +30,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.fitness.app.R
 import com.fitness.app.navigation.OnBoardingPage
 import com.fitness.app.ui.theme.White40
@@ -38,7 +38,7 @@ import com.fitness.app.ui.theme.White40
 @Composable
 fun OnBoarding(
     onGetStartedButtonClick: () -> Unit,
-    onBoardingViewModel: OnBoardingViewModel = hiltViewModel()
+    saveOnBoardingState: (completed: Boolean) -> Unit,
 ) {
 
     val items = OnBoardingPage.getData()
@@ -57,10 +57,10 @@ fun OnBoarding(
                 OnBoardingItem(items = items[it])
             }
             BottomSection(
-                modifier = Modifier.align(Alignment.BottomCenter),
+                modifier = Modifier.align(Alignment.BottomCenter).navigationBarsPadding(),
                 pagerState = pagerState
             ) {
-                onBoardingViewModel.saveOnBoardingState(completed = true)
+                saveOnBoardingState(true)
                 onGetStartedButtonClick()
             }
         }

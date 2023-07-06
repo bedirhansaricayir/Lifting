@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -43,9 +44,9 @@ import com.fitness.app.core.constants.Constants.Companion.HIC
 import com.fitness.app.core.constants.Constants.Companion.IKI_UC_GUN
 import com.fitness.app.core.constants.Constants.Companion.KAS_KAZAN
 import com.fitness.app.core.constants.Constants.Companion.YAG_YAK
-import com.fitness.app.data.remote.DusukZorluk
-import com.fitness.app.data.remote.OrtaZorluk
-import com.fitness.app.data.remote.YuksekZorluk
+import com.fitness.app.data.remote.model.DusukZorluk
+import com.fitness.app.data.remote.model.OrtaZorluk
+import com.fitness.app.data.remote.model.YuksekZorluk
 import com.fitness.app.presentation.calculator.SelectableGroup
 import com.fitness.app.presentation.home.dialog.CustomCreatedProgramDialog
 import com.fitness.app.presentation.home.dialog.CustomDialog
@@ -213,6 +214,7 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .statusBarsPadding()
             .background(color = grey50)
             .verticalScroll(verticalScroll)
 
