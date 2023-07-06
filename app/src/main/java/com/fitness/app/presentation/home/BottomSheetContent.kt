@@ -28,7 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.fitness.app.data.remote.Uygulanis
+import com.fitness.app.data.remote.model.Uygulanis
 import com.fitness.app.ui.theme.White40
 import com.fitness.app.ui.theme.grey30
 

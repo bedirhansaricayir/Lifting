@@ -273,18 +273,25 @@ class Constants {
         const val BASE = "https://gist.github.com/"
         const val END_POINT = "bedirhansaricayir/51bed929bca74d888f3dd5e20a11f80e/raw/b3cc5cae248e6667a45be53064f3c9f88589c94f/program_data.json"
 
-        //Screen route ve title
+        //MainScreen routes
         const val HOME_SCREEN = "home_screen"
         const val HOME_SCREEN_TITLE = "Programlar"
-
-        const val ONBOARDING_SCREEN = "onboarding_screen"
-        const val ONBOARDING_SCREEN_TITLE = "OnBoarding"
 
         const val TRACKER_SCREEN = "tracker_screen"
         const val TRACKER_SCREEN_TITLE = "Analiz"
 
         const val HEALTH_SCREEN = "health_screen"
         const val HEALTH_SCREEN_TITLE = "Sağlık"
+
+        //AuthScreen routes
+        const val SIGN_IN = "login_screen"
+        const val SIGN_UP = "register_screen"
+        const val FORGOT_PASS = "forgot_screen"
+        const val ONBOARDING_SCREEN = "onboarding_screen"
+
+
+        //DetailScreen routes
+        const val DETAIL_SCREEN = "detail_screen"
 
     }
 }

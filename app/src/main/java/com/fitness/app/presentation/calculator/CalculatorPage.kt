@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -66,9 +67,7 @@ import com.fitness.app.ui.theme.grey50
 import com.fitness.app.ui.theme.white30
 import kotlinx.coroutines.launch
 
-/**
- * Sağlık ekranının bulunduğu dosya
- */
+
 @Composable
 fun CalculatorScreen() {
     var selectedCinsiyet by remember { mutableStateOf<String?>(null) }
@@ -85,14 +84,12 @@ fun CalculatorScreen() {
     var showButton by remember { mutableStateOf(false) }
 
 
-    //Seçilen cinsiyete göre BMR hesaplanması
     if (!selectedCinsiyet.isNullOrEmpty()){
         when(selectedCinsiyet) {
             ERKEK -> { BMR = (10 * vucutAgirligi) + (6.25 * boyUzunlugu) - (5 * yasDegeri) + 5 }
             KADIN -> { BMR = (10 * vucutAgirligi) + (6.25 * boyUzunlugu) - (5 * yasDegeri) - 161 }
         }
     }
-    //Seçilen aktiflik seviyesine göre total kalorinin hesaplanması
     if (!selectedOption.isNullOrEmpty() && !selectedCinsiyet.isNullOrEmpty()) {
         showButton = true
         when(selectedOption) {
@@ -102,13 +99,12 @@ fun CalculatorScreen() {
             COK -> { totalCaloriesPerDay = BMR?.times(1.725) }
         }
     }
-    //Tüm veriler girilip butona tıklandıktan sonra açılan dialog penceresi
     if (showDialog) CustomCalculatorDialog(dialogState = showDialog,BMR!!,totalCaloriesPerDay!!) { showDialog = !showDialog }
 
-    //Ekrandaki bileşenleri içerisinde barındıran sütun
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .statusBarsPadding()
             .background(color = grey50), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -242,7 +238,7 @@ fun SelectableGroupWithGrid(
     onOptionSelected: (String) -> Unit
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        val rows = options.chunked(2) // Listeyi ikişerli olarak bölelim
+        val rows = options.chunked(2)
         rows.forEachIndexed { rowIndex, rowOptions ->
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 rowOptions.forEach { option ->

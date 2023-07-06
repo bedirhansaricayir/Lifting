@@ -1,7 +1,7 @@
 package com.fitness.app.domain.use_case
 
 import com.fitness.app.core.util.Resource
-import com.fitness.app.data.remote.AntrenmanProgramlari
+import com.fitness.app.data.remote.model.AntrenmanProgramlari
 import com.fitness.app.data.repository.Repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
