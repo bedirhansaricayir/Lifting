@@ -26,4 +26,11 @@
     <string name="KişiselProgram">Kişisel programınız oluşturuldu.</string>
     <string name="HowManyDays">Haftada Kaç gün antrenman yapıyorsun ?</string>
     <string name="WhatIsYourGoal">Hedefin nedir ?</string>
+    <string name="password_requirement_characters">At least 8 characters</string>
+    <string name="password_requirement_capital">At least 1 upper-case letter</string>
+    <string name="password_requirement_digit">At least 1 digit</string>
+    <string name="action_sign_up">Sign Up</string>
+    <string name="action_sign_in">Sign In</string>
+    <string name="label_sign_in_to_account">Sign In With</string>
+    <string name="label_sign_up_for_account">Sign Up</string>
 </resources>
