@@ -33,4 +33,12 @@
     <string name="action_sign_in">Sign In</string>
     <string name="label_sign_in_to_account">Sign In With</string>
     <string name="label_sign_up_for_account">Sign Up</string>
+    <string name="Username">Username</string>
+    <string name="Email">Email</string>
+    <string name="Password">Password</string>
+    <string name="EnterYourName">Enter your name</string>
+    <string name="EnterYourEmail">Enter your email</string>
+    <string name="EnterYourPassword">Enter your password</string>
+    <string name="password_requirement_satisfied">%s, satisfied</string>
+    <string name="password_requirement_needed">%s, needed</string>
 </resources>

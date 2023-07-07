@@ -85,7 +85,7 @@ class AuthenticationViewModel @Inject constructor(
         }
         _authState.value = _authState.value.copy(
             password = password,
-            passwordRequirements = requirements.map { it.toString() }
+            passwordRequirements = requirements.toList()
         )
     }
 

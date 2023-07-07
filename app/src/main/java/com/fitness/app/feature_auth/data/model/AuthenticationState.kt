@@ -8,7 +8,7 @@ data class AuthenticationState(
     val username: String? = null,
     val email: String? = null,
     val password: String? = null,
-    val passwordRequirements: List<String> = emptyList(),
+    val passwordRequirements: List<PasswordRequirements> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
 ) {
@@ -18,6 +18,6 @@ data class AuthenticationState(
                 username?.isNotEmpty() == true &&
                 (authenticationMode == AuthenticationMode.SIGN_IN
                         || passwordRequirements.containsAll(
-                    PasswordRequirements.values().map { it.toString() }))
+                    PasswordRequirements.values().toList()))
     }
 }
