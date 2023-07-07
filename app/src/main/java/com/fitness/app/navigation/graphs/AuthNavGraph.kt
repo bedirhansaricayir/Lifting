@@ -1,6 +1,7 @@
 package com.fitness.app.navigation.graphs
 
 import android.util.Log
+import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -10,6 +11,8 @@ import com.fitness.app.core.constants.Constants.Companion.FORGOT_PASS
 import com.fitness.app.core.constants.Constants.Companion.ONBOARDING_SCREEN
 import com.fitness.app.core.constants.Constants.Companion.SIGN_IN
 import com.fitness.app.core.constants.Constants.Companion.SIGN_UP
+import com.fitness.app.feature_auth.presentation.AuthenticationViewModel
+import com.fitness.app.feature_auth.presentation.SignInScreen
 import com.fitness.app.presentation.onboarding.OnBoarding
 import com.fitness.app.presentation.onboarding.OnBoardingViewModel
 
@@ -34,7 +37,12 @@ fun NavGraphBuilder.authNavGraph(navController: NavController,startDestination: 
             )
         }
         composable(route = AuthScreen.SignInScreen.route) {
-            Log.d("authNavGraph","Login Screen")
+            val authenticationViewModel: AuthenticationViewModel = hiltViewModel()
+            val authenticationState = authenticationViewModel.authState.collectAsState().value
+            SignInScreen(
+                authenticationState = authenticationState,
+                authenticationEvent = authenticationViewModel::onEvent
+            )
         }
         composable(route = AuthScreen.SignUpScreen.route) {
             Log.d("authNavGraph","Register Screen")
