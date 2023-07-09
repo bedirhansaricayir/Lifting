@@ -60,4 +60,8 @@ object Versions {
 
     //FirebaseBOM
     val platformFirebaseBomVersion = "32.1.1"
+
+    //Google Auth
+    val googleServicesAuthVersion = "20.6.0"
+    val googleServicesPluginVersion = "4.3.15"
 }

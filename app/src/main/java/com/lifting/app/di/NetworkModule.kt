@@ -3,8 +3,6 @@ package com.lifting.app.di
 import android.content.Context
 import com.lifting.app.data.local.datastore.DataStoreRepository
 import com.lifting.app.data.remote.ApiClient
-import com.lifting.app.feature_auth.data.repository.AuthRepositoryImpl
-import com.lifting.app.feature_auth.domain.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,10 +43,4 @@ object NetworkModule {
     fun provideDataStoreRepository(
         @ApplicationContext context: Context
     ) = DataStoreRepository(context = context)
-
-    @Provides
-    @Singleton
-    fun provideAuthRepository(): AuthRepository {
-        return AuthRepositoryImpl()
-    }
 }

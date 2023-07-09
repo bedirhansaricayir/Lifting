@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -91,4 +92,5 @@ dependencies {
 
     implementation(platform(Dependencies.platformFirebase))
     implementation(Dependencies.firebaseAuth)
+    implementation(Dependencies.googleServicesAuth)
 }

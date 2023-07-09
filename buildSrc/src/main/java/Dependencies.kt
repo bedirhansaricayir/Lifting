@@ -58,4 +58,6 @@ object Dependencies {
     val platformFirebase by lazy { "com.google.firebase:firebase-bom:${Versions.platformFirebaseBomVersion}" }
     val firebaseAuth by lazy { "com.google.firebase:firebase-auth-ktx" }
 
+    //GoogleAuth
+    val googleServicesAuth by lazy { "com.google.android.gms:play-services-auth:${Versions.googleServicesAuthVersion}" }
 }
