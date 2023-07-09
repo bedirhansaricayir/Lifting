@@ -2,10 +2,12 @@ package com.fitness.app.feature_auth.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fitness.app.feature_auth.data.model.AuthenticationMode
+import com.fitness.app.feature_auth.domain.model.AuthenticationMode
 import com.fitness.app.feature_auth.data.model.AuthenticationState
-import com.fitness.app.feature_auth.data.model.PasswordRequirements
+import com.fitness.app.feature_auth.domain.model.PasswordRequirements
+import com.fitness.app.feature_auth.domain.model.InputValidationType
 import com.fitness.app.feature_auth.domain.use_case.AuthenticationUseCase
+import com.fitness.app.feature_auth.domain.use_case.EmailInputValidationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -18,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(
-    private val authenticationUseCase: AuthenticationUseCase
+    private val authenticationUseCase: AuthenticationUseCase,
+    private val emailInputValidationUseCase: EmailInputValidationUseCase
 ) : ViewModel() {
 
     private val _authState = MutableStateFlow(AuthenticationState())
@@ -34,6 +37,7 @@ class AuthenticationViewModel @Inject constructor(
             }
             is AuthenticationEvent.EmailChanged -> {
                 updateEmail(authenticationEvent.emailAddress)
+                checkInputValidation(authenticationEvent.emailAddress)
             }
             is AuthenticationEvent.PasswordChanged -> {
                 updatePassword(authenticationEvent.password)
@@ -110,5 +114,25 @@ class AuthenticationViewModel @Inject constructor(
         _authState.value = _authState.value.copy(
             error = null
         )
+    }
+
+
+    private fun checkInputValidation(email: String) {
+        val result = emailInputValidationUseCase.invoke(email)
+        processInputValidation(result)
+    }
+    private fun processInputValidation(type: InputValidationType) {
+        when(type) {
+           InputValidationType.NoEmail -> {
+               _authState.value = _authState.value.copy(
+                   emailError = "No valid email"
+               )
+           }
+           InputValidationType.Valid -> {
+               _authState.value = _authState.value.copy(
+                   emailError = null
+               )
+           }
+       }
     }
 }

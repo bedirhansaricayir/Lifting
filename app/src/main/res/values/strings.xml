@@ -41,4 +41,8 @@
     <string name="EnterYourPassword">Enter your password</string>
     <string name="password_requirement_satisfied">%s, satisfied</string>
     <string name="password_requirement_needed">%s, needed</string>
+    <string name="action_need_account">Don\'t have an account?</string>
+    <string name="action_already_have_account">Already have an account?</string>
+    <string name="action_sign_in_text_button">Sign Up</string>
+    <string name="action_sign_up_text_button">Login</string>
 </resources>

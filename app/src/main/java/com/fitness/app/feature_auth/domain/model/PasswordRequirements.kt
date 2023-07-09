@@ -1,4 +1,4 @@
-package com.fitness.app.feature_auth.data.model
+package com.fitness.app.feature_auth.domain.model
 
 import androidx.annotation.StringRes
 import com.fitness.app.R

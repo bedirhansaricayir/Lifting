@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.fitness.app.R
-import com.fitness.app.feature_auth.data.model.AuthenticationMode
+import com.fitness.app.feature_auth.domain.model.AuthenticationMode
 import com.fitness.app.ui.theme.Purple40
 import com.fitness.app.ui.theme.White40
 
@@ -29,14 +28,14 @@ fun AuthenticationButton(
     contentColor: Color,
     shape: Dp = 25.dp,
     textStyle: TextStyle = MaterialTheme.typography.titleSmall,
-    enabled: Boolean = false,
+    enabledAuthentication: Boolean = false,
     isLoading: Boolean = false,
-    onButtonClick: () -> Unit
+    onAuthenticate: () -> Unit
 ) {
 
     Button(
         modifier = modifier,
-        onClick = { onButtonClick() },
+        onClick = { onAuthenticate() },
         shape = RoundedCornerShape(shape),
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor,
@@ -45,12 +44,11 @@ fun AuthenticationButton(
             disabledContentColor = contentColor
 
         ),
-        enabled = enabled
+        enabled = enabledAuthentication
     ) {
         if (isLoading) {
-            CircularProgressIndicator(
-                color = contentColor,
-                modifier = Modifier.size(20.dp)
+            CustomCircularProgressIndicatior(
+                modifier = Modifier.size(20.dp),
             )
         } else {
             Text(
@@ -72,7 +70,7 @@ fun AuthenticationButton(
 @Preview(showBackground = true)
 @Composable
 fun AuthenticationButtonPreview() {
-    AuthenticationButton(authenticationMode = AuthenticationMode.SIGN_IN, backgroundColor = Purple40, contentColor = White40, isLoading = false, enabled = true, modifier = Modifier.fillMaxWidth()) {
+    AuthenticationButton(authenticationMode = AuthenticationMode.SIGN_IN, backgroundColor = Purple40, contentColor = White40, isLoading = false, enabledAuthentication = true, modifier = Modifier.fillMaxWidth()) {
 
     }
 }

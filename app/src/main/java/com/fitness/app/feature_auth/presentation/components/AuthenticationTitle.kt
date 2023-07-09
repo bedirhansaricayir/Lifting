@@ -2,7 +2,6 @@ package com.fitness.app.feature_auth.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,7 +12,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fitness.app.R
-import com.fitness.app.feature_auth.data.model.AuthenticationMode
+import com.fitness.app.feature_auth.domain.model.AuthenticationMode
 import com.fitness.app.ui.theme.White40
 
 @Composable

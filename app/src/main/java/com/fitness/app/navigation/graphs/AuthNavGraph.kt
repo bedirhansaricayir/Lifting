@@ -13,6 +13,7 @@ import com.fitness.app.core.constants.Constants.Companion.SIGN_IN
 import com.fitness.app.core.constants.Constants.Companion.SIGN_UP
 import com.fitness.app.feature_auth.presentation.AuthenticationViewModel
 import com.fitness.app.feature_auth.presentation.SignInScreen
+import com.fitness.app.feature_auth.presentation.SignUpScreen
 import com.fitness.app.presentation.onboarding.OnBoarding
 import com.fitness.app.presentation.onboarding.OnBoardingViewModel
 
@@ -39,13 +40,22 @@ fun NavGraphBuilder.authNavGraph(navController: NavController,startDestination: 
         composable(route = AuthScreen.SignInScreen.route) {
             val authenticationViewModel: AuthenticationViewModel = hiltViewModel()
             val authenticationState = authenticationViewModel.authState.collectAsState().value
-            SignInScreen(
-                authenticationState = authenticationState,
-                authenticationEvent = authenticationViewModel::onEvent
-            )
+                SignInScreen(
+                    authenticationState = authenticationState,
+                    authenticationEvent = authenticationViewModel::onEvent,
+                    onToggleModeClick = { navController.navigate(AuthScreen.SignUpScreen.route) }
+                )
+            //CommonAuthentication(authenticationState = authenticationState, authenticationEvent = authenticationViewModel::onEvent, onToggleModeClick = {})
+
         }
         composable(route = AuthScreen.SignUpScreen.route) {
-            Log.d("authNavGraph","Register Screen")
+            val authenticationViewModel: AuthenticationViewModel = hiltViewModel()
+            val authenticationState = authenticationViewModel.authState.collectAsState().value
+            SignUpScreen(
+                authenticationState = authenticationState,
+                authenticationEvent = authenticationViewModel::onEvent,
+                onToggleModeClick = {navController.navigate(AuthScreen.SignInScreen.route)}
+            )
         }
         composable(route = AuthScreen.ForgotPassScreen.route) {
             Log.d("authNavGraph","Forgot Screen")

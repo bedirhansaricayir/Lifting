@@ -13,5 +13,4 @@ sealed class AuthenticationEvent {
 
     object ErrorDismissed: AuthenticationEvent()
 
-
 }
