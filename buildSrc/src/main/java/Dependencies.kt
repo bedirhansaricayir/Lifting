@@ -53,4 +53,9 @@ object Dependencies {
 
     //Numberpicker
     val numberPicker by lazy { "com.chargemap.compose:numberpicker:${Versions.numberpickerVersion}" }
+
+    //Firebase
+    val platformFirebase by lazy { "com.google.firebase:firebase-bom:${Versions.platformFirebaseBomVersion}" }
+    val firebaseAuth by lazy { "com.google.firebase:firebase-auth-ktx" }
+
 }

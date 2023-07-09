@@ -57,4 +57,7 @@ object Versions {
 
     //Numberpicker
     val numberpickerVersion = "1.0.3"
+
+    //FirebaseBOM
+    val platformFirebaseBomVersion = "32.1.1"
 }

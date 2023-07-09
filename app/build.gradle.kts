@@ -88,4 +88,7 @@ dependencies {
     implementation (Dependencies.datastore)
 
     implementation (Dependencies.numberPicker)
+
+    implementation(platform(Dependencies.platformFirebase))
+    implementation(Dependencies.firebaseAuth)
 }
