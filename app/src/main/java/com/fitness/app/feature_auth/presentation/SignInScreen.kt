@@ -7,28 +7,36 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.fitness.app.R
 import com.fitness.app.feature_auth.domain.model.AuthenticationMode
-import com.fitness.app.feature_auth.data.model.AuthenticationState
 import com.fitness.app.feature_auth.presentation.components.AuthenticationButton
 import com.fitness.app.feature_auth.presentation.components.AuthenticationTitle
+import com.fitness.app.feature_auth.presentation.components.DividerText
+import com.fitness.app.feature_auth.presentation.components.ForgotPasswordText
+import com.fitness.app.feature_auth.presentation.components.SwipeButton
 import com.fitness.app.feature_auth.presentation.components.TextEntryModule
 import com.fitness.app.feature_auth.presentation.components.ToggleAuthenticationMode
 import com.fitness.app.ui.theme.grey50
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun SignInScreen(
@@ -50,7 +58,10 @@ fun SignInScreen(
             authenticationEvent(AuthenticationEvent.ToggleAuthenticationMode)
             onToggleModeClick()
         },
-        isLoading = authenticationState.isLoading
+        isLoading = authenticationState.isLoading,
+        isPasswordShown = authenticationState.isPasswordShown,
+        onTrailingIconClick = { authenticationEvent(AuthenticationEvent.ToggleVisualTransformation) },
+        onForgotPasswordClick = {}
     )
 }
 
@@ -65,17 +76,21 @@ fun SignInScreenContent(
     onAuthenticate: () -> Unit,
     enableAuthentication: Boolean,
     onToggleMode: () -> Unit,
-    isLoading: Boolean
+    isLoading: Boolean,
+    isPasswordShown: Boolean,
+    onTrailingIconClick: () -> Unit,
+    onForgotPasswordClick: () -> Unit
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(grey50)
-            .padding(8.dp),
+            .padding(8.dp)
+            .systemBarsPadding(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(64.dp))
         AuthenticationTitle(
             authenticationMode = authenticationMode,
             modifier = modifier.fillMaxWidth()
@@ -92,7 +107,8 @@ fun SignInScreenContent(
             cursorColor = MaterialTheme.colorScheme.primary,
             onValueChanged = onEmailChanged,
             keyboardType = KeyboardType.Email,
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Next,
+            onTrailingIconClick = null
         )
         TextEntryModule(
             text = stringResource(id = R.string.Password),
@@ -104,11 +120,14 @@ fun SignInScreenContent(
             textValue = password ?: "",
             cursorColor = MaterialTheme.colorScheme.primary,
             onValueChanged = onPasswordChanged,
-            visualTransformation = PasswordVisualTransformation(),
-            isPasswordField = true,
+            visualTransformation = if (isPasswordShown) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Done
+            imeAction = ImeAction.Done,
+            trailingIcon = if (isPasswordShown) R.drawable.icon_visibility else R.drawable.icon_visibility_off,
+            onTrailingIconClick = onTrailingIconClick
         )
+        ForgotPasswordText(modifier = Modifier.padding(8.dp), text = stringResource(id = R.string.label_forgot_password), onForgotPasswordClick = onForgotPasswordClick)
+
         AuthenticationButton(
             modifier = modifier
                 .fillMaxWidth()
@@ -120,12 +139,39 @@ fun SignInScreenContent(
             onAuthenticate = onAuthenticate,
             isLoading = isLoading
         )
+
+        //SwipeButtonSample(AuthenticationMode.SIGN_IN,enableAuthentication,true)
+        Spacer(modifier = Modifier.weight(1f))
+
+        DividerText(modifier = Modifier.padding(horizontal = 16.dp), text = stringResource(id = R.string.label_sign_in_to_account))
         Spacer(modifier = Modifier.weight(1f))
 
         ToggleAuthenticationMode(
-            modifier = Modifier.fillMaxWidth().navigationBarsPadding(),
+            modifier = Modifier
+                .fillMaxWidth(),
             authenticationMode = authenticationMode,
             toggleAuthentication = onToggleMode
         )
     }
+}
+
+@Composable
+fun SwipeButtonSample(authenticationMode: AuthenticationMode,enableAuthenticationMode: Boolean, isFail: Boolean) {
+    val coroutineScope = rememberCoroutineScope()
+    val (isComplete, setIsComplete) = remember {
+        mutableStateOf(false)
+    }
+
+    SwipeButton(
+        authenticationMode = authenticationMode,
+        enableAuthenticationMode = enableAuthenticationMode,
+        isComplete = isComplete,
+        isFail = isFail ,
+        onSwipe = {
+            coroutineScope.launch {
+                delay(2000)
+                setIsComplete(true)
+            }
+        },
+    )
 }

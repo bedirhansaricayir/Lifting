@@ -3,7 +3,6 @@ package com.fitness.app.feature_auth.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.fitness.app.feature_auth.domain.model.AuthenticationMode
-import com.fitness.app.feature_auth.data.model.AuthenticationState
 
 @Composable
 fun CommonAuthentication(

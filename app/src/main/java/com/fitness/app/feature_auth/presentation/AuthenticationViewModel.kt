@@ -3,10 +3,8 @@ package com.fitness.app.feature_auth.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fitness.app.feature_auth.domain.model.AuthenticationMode
-import com.fitness.app.feature_auth.data.model.AuthenticationState
 import com.fitness.app.feature_auth.domain.model.PasswordRequirements
 import com.fitness.app.feature_auth.domain.model.InputValidationType
-import com.fitness.app.feature_auth.domain.use_case.AuthenticationUseCase
 import com.fitness.app.feature_auth.domain.use_case.EmailInputValidationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +18,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(
-    private val authenticationUseCase: AuthenticationUseCase,
     private val emailInputValidationUseCase: EmailInputValidationUseCase
 ) : ViewModel() {
 
@@ -47,6 +44,9 @@ class AuthenticationViewModel @Inject constructor(
             }
             is AuthenticationEvent.ErrorDismissed -> {
                 dismissError()
+            }
+            is AuthenticationEvent.ToggleVisualTransformation -> {
+                toggleVisualTransformation()
             }
         }
     }
@@ -116,6 +116,11 @@ class AuthenticationViewModel @Inject constructor(
         )
     }
 
+    private fun toggleVisualTransformation() {
+        _authState.value = _authState.value.copy(
+            isPasswordShown = !_authState.value.isPasswordShown
+        )
+    }
 
     private fun checkInputValidation(email: String) {
         val result = emailInputValidationUseCase.invoke(email)
@@ -125,12 +130,12 @@ class AuthenticationViewModel @Inject constructor(
         when(type) {
            InputValidationType.NoEmail -> {
                _authState.value = _authState.value.copy(
-                   emailError = "No valid email"
+                   emailError = true
                )
            }
            InputValidationType.Valid -> {
                _authState.value = _authState.value.copy(
-                   emailError = null
+                   emailError = false
                )
            }
        }

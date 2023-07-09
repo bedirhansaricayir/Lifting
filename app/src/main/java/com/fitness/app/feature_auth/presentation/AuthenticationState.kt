@@ -1,4 +1,4 @@
-package com.fitness.app.feature_auth.data.model
+package com.fitness.app.feature_auth.presentation
 
 import com.fitness.app.feature_auth.domain.model.AuthenticationMode
 import com.fitness.app.feature_auth.domain.model.PasswordRequirements
@@ -11,7 +11,8 @@ data class AuthenticationState(
     val passwordRequirements: List<PasswordRequirements> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
-    val emailError: String? = null
+    val emailError: Boolean = true,
+    val isPasswordShown: Boolean = false
 ) {
     fun isFormValid(): Boolean {
         return password?.isNotEmpty() == true &&

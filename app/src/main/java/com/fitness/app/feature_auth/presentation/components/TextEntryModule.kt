@@ -10,17 +10,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -29,16 +24,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.fitness.app.R
 import com.fitness.app.ui.theme.White40
 import com.fitness.app.ui.theme.grey10
 import com.fitness.app.ui.theme.grey30
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextEntryModule(
     text: String,
@@ -52,13 +46,14 @@ fun TextEntryModule(
     textStyle: TextStyle = MaterialTheme.typography.titleSmall,
     cursorColor: Color,
     onValueChanged: (String) -> Unit,
+    trailingIcon: Int? = null,
+    trailingIconColor: Color = MaterialTheme.colorScheme.primary,
+    onTrailingIconClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
-    isPasswordField: Boolean = false,
-    imeAction: ImeAction
+    imeAction: ImeAction,
+    isUsernameField: Boolean = false
 ) {
-    var isPasswordHidden by remember {
-        mutableStateOf(true)
-    }
+    val maxChar = 20
     Column(
         modifier = modifier
     ) {
@@ -85,45 +80,58 @@ fun TextEntryModule(
                 focusedTextColor = textColor,
                 unfocusedTextColor = textColor,
             ),
-            onValueChange = onValueChanged,
+            onValueChange = {
+                if (isUsernameField) {
+                    if (it.length <= maxChar) onValueChanged(it)
+                } else onValueChanged(it)
+            },
             shape = RoundedCornerShape(20.dp),
             singleLine = true,
             leadingIcon = {
-                    Icon(
-                        imageVector = leadingIcon,
-                        contentDescription = null,
-                        tint = cursorColor
-                    )
+                Icon(
+                    imageVector = leadingIcon,
+                    contentDescription = null,
+                    tint = cursorColor
+                )
             },
             trailingIcon = {
-                if (isPasswordField) {
+                if (trailingIcon != null) {
                     Icon(
-                        painter = if(isPasswordHidden) painterResource(id = R.drawable.icon_visibility ) else painterResource(id = R.drawable.icon_visibility_off),
+                        painter = painterResource(trailingIcon),
                         contentDescription = null,
-                        tint = cursorColor,
+                        tint = trailingIconColor,
                         modifier = Modifier.clickable {
-                            isPasswordHidden = !isPasswordHidden
+                            if (onTrailingIconClick != null) onTrailingIconClick()
                         }
+                    )
+                }
+                if (isUsernameField) {
+                    Text(
+                        modifier = Modifier.padding(end = 8.dp),
+                        text = "${textValue.length} / $maxChar",
+                        style = textStyle,
+                        fontSize = 12.sp,
+                        color = if (textValue.length == maxChar) MaterialTheme.colorScheme.primary else textColor
                     )
                 }
             },
             placeholder = {
                 Text(
                     text = hint,
-                style = textStyle,
-                color = grey10
+                    style = textStyle,
+                    color = grey10
                 )
             },
             textStyle = textStyle,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
-            visualTransformation = if (isPasswordField && isPasswordHidden) PasswordVisualTransformation() else if(!isPasswordHidden && isPasswordField) VisualTransformation.None else visualTransformation
+            visualTransformation = visualTransformation,
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun TextEntryModulePreview(){
+fun TextEntryModulePreview() {
     TextEntryModule(
         text = "Email",
         modifier = Modifier
@@ -135,6 +143,8 @@ fun TextEntryModulePreview(){
         borderColor = Color.Black,
         cursorColor = MaterialTheme.colorScheme.primary,
         onValueChanged = {},
-        imeAction = ImeAction.Default
+        imeAction = ImeAction.Default,
+        trailingIcon = R.drawable.icon_visibility,
+        onTrailingIconClick = {}
     )
 }

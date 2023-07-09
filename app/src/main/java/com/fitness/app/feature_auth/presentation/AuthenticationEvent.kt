@@ -13,4 +13,5 @@ sealed class AuthenticationEvent {
 
     object ErrorDismissed: AuthenticationEvent()
 
+    object ToggleVisualTransformation: AuthenticationEvent()
 }

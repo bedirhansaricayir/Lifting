@@ -3,6 +3,8 @@ package com.fitness.app.di
 import android.content.Context
 import com.fitness.app.data.local.datastore.DataStoreRepository
 import com.fitness.app.data.remote.ApiClient
+import com.fitness.app.feature_auth.data.repository.AuthRepositoryImpl
+import com.fitness.app.feature_auth.domain.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,4 +45,10 @@ object NetworkModule {
     fun provideDataStoreRepository(
         @ApplicationContext context: Context
     ) = DataStoreRepository(context = context)
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(): AuthRepository {
+        return AuthRepositoryImpl()
+    }
 }

@@ -15,6 +15,12 @@ val macPawFixel = FontFamily(
 )
 // Set of Material typography styles to start with
 val Typography = Typography(
+    headlineMedium = TextStyle(
+        fontFamily = macPawFixel,
+        fontWeight = FontWeight.Normal,
+        fontSize = 28.sp,
+        lineHeight = 28.sp
+    ),
     bodyLarge = TextStyle(
         fontFamily = macPawFixel,
         fontWeight = FontWeight.Normal,

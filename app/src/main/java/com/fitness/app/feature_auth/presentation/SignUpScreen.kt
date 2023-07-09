@@ -1,27 +1,21 @@
 package com.fitness.app.feature_auth.presentation
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,16 +27,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.fitness.app.R
 import com.fitness.app.feature_auth.domain.model.AuthenticationMode
-import com.fitness.app.feature_auth.data.model.AuthenticationState
 import com.fitness.app.feature_auth.domain.model.PasswordRequirements
 import com.fitness.app.feature_auth.presentation.components.AuthenticationButton
 import com.fitness.app.feature_auth.presentation.components.AuthenticationTitle
 import com.fitness.app.feature_auth.presentation.components.Requirement
 import com.fitness.app.feature_auth.presentation.components.TextEntryModule
 import com.fitness.app.feature_auth.presentation.components.ToggleAuthenticationMode
+import com.fitness.app.ui.theme.grey10
 import com.fitness.app.ui.theme.grey50
 
 @Composable
@@ -70,7 +65,9 @@ fun SignUpScreen(
             onToggleModeClick()
         },
         emailError  = authenticationState.emailError,
-        isLoading = authenticationState.isLoading
+        isLoading = authenticationState.isLoading,
+        isPasswordShown = authenticationState.isPasswordShown,
+        onTrailingIconClick = { authenticationEvent(AuthenticationEvent.ToggleVisualTransformation) }
     )
 }
 
@@ -88,23 +85,25 @@ fun SignUpScreenContent(
     onAuthenticate: () -> Unit,
     enableAuthentication: Boolean,
     onToggleMode: () -> Unit,
-    emailError: String?,
-    isLoading: Boolean
+    emailError: Boolean,
+    isLoading: Boolean,
+    isPasswordShown: Boolean,
+    onTrailingIconClick: () -> Unit
 ) {
     val isPasswordValid = PasswordRequirements.values().all { requirement ->
         completedPasswordRequirements.contains(requirement)
     }
     var requirementsVisibility by remember { mutableStateOf(true) }
-    var isEmailError by remember { mutableStateOf(false) }
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(grey50)
-            .padding(8.dp),
+            .padding(8.dp)
+            .systemBarsPadding(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(48.dp))
         AuthenticationTitle(
             authenticationMode = authenticationMode,
             modifier = modifier.fillMaxWidth()
@@ -121,8 +120,11 @@ fun SignUpScreenContent(
             cursorColor = MaterialTheme.colorScheme.primary,
             onValueChanged = onUsernameChanged,
             keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Next,
+            onTrailingIconClick = null,
+            isUsernameField = true
         )
+        Spacer(modifier = Modifier.height(8.dp))
         TextEntryModule(
             text = stringResource(id = R.string.Email),
             modifier = Modifier
@@ -134,19 +136,12 @@ fun SignUpScreenContent(
             cursorColor = MaterialTheme.colorScheme.primary,
             onValueChanged = onEmailChanged,
             keyboardType = KeyboardType.Email,
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Next,
+            trailingIcon = R.drawable.icon_check_circle,
+            trailingIconColor = if (emailError) grey10 else MaterialTheme.colorScheme.primary,
+            onTrailingIconClick = null
         )
-        AnimatedVisibility(
-            visible = isEmailError,
-            enter = fadeIn() + slideInHorizontally(),
-            exit = fadeOut() + slideOutHorizontally(),
-
-        ) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                Text(modifier = Modifier.align(Alignment.CenterVertically),text = emailError ?: "", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
-
-            }
-        }
+        Spacer(modifier = Modifier.height(8.dp))
         TextEntryModule(
             text = stringResource(id = R.string.Password),
             modifier = Modifier
@@ -157,10 +152,11 @@ fun SignUpScreenContent(
             textValue = password ?: "",
             cursorColor = MaterialTheme.colorScheme.primary,
             onValueChanged = onPasswordChanged,
-            visualTransformation = PasswordVisualTransformation(),
-            isPasswordField = true,
+            visualTransformation = if (isPasswordShown) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Done
+            imeAction = ImeAction.Done,
+            trailingIcon = if (isPasswordShown) R.drawable.icon_visibility else R.drawable.icon_visibility_off,
+            onTrailingIconClick = onTrailingIconClick
         )
         AnimatedVisibility(visible = requirementsVisibility) {
             Box(
@@ -171,7 +167,6 @@ fun SignUpScreenContent(
                 PasswordRequirement(satisfiedRequirements = completedPasswordRequirements)
             }
         }
-
         AuthenticationButton(
             modifier = modifier
                 .fillMaxWidth()
@@ -182,22 +177,18 @@ fun SignUpScreenContent(
             enabledAuthentication = enableAuthentication,
             isLoading = isLoading,
             onAuthenticate = {
-                if (emailError != null) {
-                    isEmailError = true
-                }
-                if (isPasswordValid && emailError == null){
+                if (isPasswordValid && !emailError){
                     requirementsVisibility = false
                     onAuthenticate()
 
-                } else requirementsVisibility = true
+                } else requirementsVisibility = !isPasswordValid
             }
         )
         Spacer(modifier = Modifier.weight(1f))
 
         ToggleAuthenticationMode(
             modifier = Modifier
-                .fillMaxWidth()
-                .navigationBarsPadding(),
+                .fillMaxWidth(),
             authenticationMode = authenticationMode,
             toggleAuthentication = onToggleMode
         )

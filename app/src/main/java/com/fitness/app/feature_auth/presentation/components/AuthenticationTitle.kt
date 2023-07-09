@@ -19,15 +19,15 @@ import com.fitness.app.ui.theme.White40
 fun AuthenticationTitle(
     modifier: Modifier = Modifier,
     authenticationMode: AuthenticationMode,
-    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
+    textStyle: TextStyle = MaterialTheme.typography.headlineMedium,
     textColor: Color = White40
 ) {
     Text(
         text = stringResource(
             if (authenticationMode == AuthenticationMode.SIGN_IN) {
-                R.string.label_sign_in_to_account
+                R.string.label_welcome_back
             } else {
-                R.string.label_sign_up_for_account
+                R.string.label_create_an_account
             }
         ),
         textAlign = TextAlign.Center,

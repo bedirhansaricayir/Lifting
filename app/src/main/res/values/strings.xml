@@ -31,7 +31,7 @@
     <string name="password_requirement_digit">At least 1 digit</string>
     <string name="action_sign_up">Sign Up</string>
     <string name="action_sign_in">Sign In</string>
-    <string name="label_sign_in_to_account">Sign In With</string>
+    <string name="label_sign_in_to_account">Sign in with</string>
     <string name="label_sign_up_for_account">Sign Up</string>
     <string name="Username">Username</string>
     <string name="Email">Email</string>
@@ -45,4 +45,8 @@
     <string name="action_already_have_account">Already have an account?</string>
     <string name="action_sign_in_text_button">Sign Up</string>
     <string name="action_sign_up_text_button">Login</string>
+    <string name="or">or</string>
+    <string name="label_welcome_back">Welcome Back</string>
+    <string name="label_create_an_account">Create an Account</string>
+    <string name="label_forgot_password">"Forgot Password ? "</string>
 </resources>
