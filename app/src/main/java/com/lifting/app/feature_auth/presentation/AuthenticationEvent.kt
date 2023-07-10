@@ -1,5 +1,7 @@
 package com.lifting.app.feature_auth.presentation
 
+import com.google.firebase.auth.AuthCredential
+
 sealed class AuthenticationEvent {
     object ToggleAuthenticationMode: AuthenticationEvent()
 
@@ -14,4 +16,6 @@ sealed class AuthenticationEvent {
     object ErrorDismissed: AuthenticationEvent()
 
     object ToggleVisualTransformation: AuthenticationEvent()
+
+    class GoogleSignInClicked(val credential: AuthCredential): AuthenticationEvent()
 }

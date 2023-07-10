@@ -1,8 +1,11 @@
 package com.lifting.app.di
 
 import android.content.Context
+import com.google.firebase.auth.FirebaseAuth
 import com.lifting.app.data.local.datastore.DataStoreRepository
 import com.lifting.app.data.remote.ApiClient
+import com.lifting.app.feature_auth.data.repository.AuthRepositoryImpl
+import com.lifting.app.feature_auth.domain.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,4 +46,14 @@ object NetworkModule {
     fun provideDataStoreRepository(
         @ApplicationContext context: Context
     ) = DataStoreRepository(context = context)
+
+    @Provides
+    @Singleton
+    fun providesFirebaseAuth()  = FirebaseAuth.getInstance()
+
+    @Provides
+    @Singleton
+    fun providesRepositoryImpl(firebaseAuth: FirebaseAuth): AuthRepository {
+        return AuthRepositoryImpl(firebaseAuth)
+    }
 }

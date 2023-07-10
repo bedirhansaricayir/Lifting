@@ -2,10 +2,14 @@ package com.lifting.app.feature_auth.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.AuthCredential
+import com.lifting.app.core.util.Resource
 import com.lifting.app.feature_auth.domain.model.AuthenticationMode
 import com.lifting.app.feature_auth.domain.model.PasswordRequirements
 import com.lifting.app.feature_auth.domain.model.InputValidationType
+import com.lifting.app.feature_auth.domain.repository.AuthRepository
 import com.lifting.app.feature_auth.domain.use_case.EmailInputValidationUseCase
+import com.lifting.app.feature_auth.presentation.sign_in.GoogleSignInState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -18,11 +22,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(
-    private val emailInputValidationUseCase: EmailInputValidationUseCase
+    private val emailInputValidationUseCase: EmailInputValidationUseCase,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _authState = MutableStateFlow(AuthenticationState())
     val authState: StateFlow<AuthenticationState> = _authState.asStateFlow()
+
+    private val  _googleState = MutableStateFlow(GoogleSignInState())
+    val googleState: StateFlow<GoogleSignInState> = _googleState.asStateFlow()
 
     fun onEvent(authenticationEvent: AuthenticationEvent) {
         when(authenticationEvent) {
@@ -48,6 +56,32 @@ class AuthenticationViewModel @Inject constructor(
             is AuthenticationEvent.ToggleVisualTransformation -> {
                 toggleVisualTransformation()
             }
+            is AuthenticationEvent.GoogleSignInClicked -> {
+                googleSignIn(authenticationEvent.credential)
+            }
+        }
+    }
+
+    private fun googleSignIn(credential: AuthCredential) = viewModelScope.launch {
+        authRepository.googleSignIn(credential).collect { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _googleState.value = _googleState.value.copy(
+                        success = result.data
+                    )
+                }
+                is Resource.Loading -> {
+                    _googleState.value = _googleState.value.copy(
+                        loading = true
+                    )                }
+                is Resource.Error -> {
+                    _googleState.value = _googleState.value.copy(
+                        error = result.e ?: "Oops! something went wrong."
+                    )
+                }
+            }
+
+
         }
     }
     private fun toggleAuthenticationMode() {
