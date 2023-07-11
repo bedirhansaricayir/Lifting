@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
+import com.lifting.app.core.util.ShowToast
 import com.lifting.app.feature_auth.domain.model.AuthenticationMode
 import com.lifting.app.feature_auth.domain.model.PasswordRequirements
 import com.lifting.app.feature_auth.presentation.components.AuthenticationButton
@@ -47,7 +49,6 @@ fun SignUpScreen(
     authenticationEvent: (AuthenticationEvent) -> Unit,
     onToggleModeClick: () -> Unit
 ) {
-
     SignUpScreenContent(
         modifier = modifier,
         authenticationMode = AuthenticationMode.SIGN_UP,
@@ -58,13 +59,22 @@ fun SignUpScreen(
         onUsernameChanged = { authenticationEvent(AuthenticationEvent.UsernameChanged(it)) },
         onEmailChanged = { authenticationEvent(AuthenticationEvent.EmailChanged(it)) },
         onPasswordChanged = { authenticationEvent(AuthenticationEvent.PasswordChanged(it)) },
-        onAuthenticate = { authenticationEvent(AuthenticationEvent.Authenticate) },
+        onAuthenticate = { username, email, password ->
+            authenticationEvent(
+                AuthenticationEvent.SignUpButtonClicked(
+                    username,
+                    email,
+                    password
+                )
+            )
+        },
         enableAuthentication = authenticationState.isFormValid(),
         onToggleMode = {
             authenticationEvent(AuthenticationEvent.ToggleAuthenticationMode)
             onToggleModeClick()
         },
-        emailError  = authenticationState.emailError,
+        emailError = authenticationState.emailError,
+        authenticationError = authenticationState.error,
         isLoading = authenticationState.isLoading,
         isPasswordShown = authenticationState.isPasswordShown,
         onTrailingIconClick = { authenticationEvent(AuthenticationEvent.ToggleVisualTransformation) }
@@ -82,10 +92,11 @@ fun SignUpScreenContent(
     onUsernameChanged: (username: String) -> Unit,
     onEmailChanged: (email: String) -> Unit,
     onPasswordChanged: (password: String) -> Unit,
-    onAuthenticate: () -> Unit,
+    onAuthenticate: (String, String, String) -> Unit,
     enableAuthentication: Boolean,
     onToggleMode: () -> Unit,
     emailError: Boolean,
+    authenticationError: String?,
     isLoading: Boolean,
     isPasswordShown: Boolean,
     onTrailingIconClick: () -> Unit
@@ -94,6 +105,8 @@ fun SignUpScreenContent(
         completedPasswordRequirements.contains(requirement)
     }
     var requirementsVisibility by remember { mutableStateOf(true) }
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -177,9 +190,9 @@ fun SignUpScreenContent(
             enabledAuthentication = enableAuthentication,
             isLoading = isLoading,
             onAuthenticate = {
-                if (isPasswordValid && !emailError){
+                if (isPasswordValid && !emailError) {
                     requirementsVisibility = false
-                    onAuthenticate()
+                    onAuthenticate(username!!, email!!, password!!)
 
                 } else requirementsVisibility = !isPasswordValid
             }
@@ -192,7 +205,9 @@ fun SignUpScreenContent(
             authenticationMode = authenticationMode,
             toggleAuthentication = onToggleMode
         )
-
+        if (authenticationError != null) {
+            ShowToast(context,authenticationError)
+        }
     }
 }
 

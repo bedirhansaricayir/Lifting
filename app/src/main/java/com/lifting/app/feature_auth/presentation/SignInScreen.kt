@@ -82,7 +82,7 @@ fun SignInScreen(
         password = authenticationState.password,
         onEmailChanged = { authenticationEvent(AuthenticationEvent.EmailChanged(it)) },
         onPasswordChanged = { authenticationEvent(AuthenticationEvent.PasswordChanged(it)) },
-        onAuthenticate = { authenticationEvent(AuthenticationEvent.Authenticate) },
+        onSignInButtonClicked = { email, password -> authenticationEvent(AuthenticationEvent.SignInButtonClicked(email, password)) },
         enableAuthentication = authenticationState.isLoginFormValid(),
         onToggleMode = {
             authenticationEvent(AuthenticationEvent.ToggleAuthenticationMode)
@@ -113,7 +113,7 @@ fun SignInScreenContent(
     password: String?,
     onEmailChanged: (email: String) -> Unit,
     onPasswordChanged: (password: String) -> Unit,
-    onAuthenticate: () -> Unit,
+    onSignInButtonClicked: (String, String) -> Unit,
     enableAuthentication: Boolean,
     onToggleMode: () -> Unit,
     isLoading: Boolean,
@@ -177,7 +177,7 @@ fun SignInScreenContent(
             backgroundColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.background,
             enabledAuthentication = enableAuthentication,
-            onAuthenticate = onAuthenticate,
+            onAuthenticate = { onSignInButtonClicked(email!!,password!!) },
             isLoading = isLoading
         )
         Button(onClick = onGoogleSignInButtonClicked ) { Text("Sign in with google") }

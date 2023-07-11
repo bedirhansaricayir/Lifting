@@ -1,5 +1,6 @@
 package com.lifting.app.feature_auth.presentation
 
+import com.google.firebase.auth.AuthResult
 import com.lifting.app.feature_auth.domain.model.AuthenticationMode
 import com.lifting.app.feature_auth.domain.model.PasswordRequirements
 
@@ -12,7 +13,8 @@ data class AuthenticationState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val emailError: Boolean = true,
-    val isPasswordShown: Boolean = false
+    val isPasswordShown: Boolean = false,
+    val authResult: AuthResult? = null
 ) {
     fun isFormValid(): Boolean {
         return password?.isNotEmpty() == true &&

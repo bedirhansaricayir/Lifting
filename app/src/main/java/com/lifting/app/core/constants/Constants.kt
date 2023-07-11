@@ -2,6 +2,8 @@ package com.lifting.app.core.constants
 
 class Constants {
     companion object{
+        //Default Error
+        const val DEFAULT_ERROR = "Oops! something went wrong"
         //Sağlık Ekranı
         const val ERKEK = "Erkek"
         const val KADIN = "KADIN"

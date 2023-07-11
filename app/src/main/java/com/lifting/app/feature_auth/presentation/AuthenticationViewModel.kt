@@ -1,5 +1,6 @@
 package com.lifting.app.feature_auth.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
@@ -11,13 +12,10 @@ import com.lifting.app.feature_auth.domain.repository.AuthRepository
 import com.lifting.app.feature_auth.domain.use_case.EmailInputValidationUseCase
 import com.lifting.app.feature_auth.presentation.sign_in.GoogleSignInState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,8 +45,8 @@ class AuthenticationViewModel @Inject constructor(
             is AuthenticationEvent.PasswordChanged -> {
                 updatePassword(authenticationEvent.password)
             }
-            is AuthenticationEvent.Authenticate -> {
-                authenticate()
+            is AuthenticationEvent.SignUpButtonClicked -> {
+                emailPasswordSignUp(authenticationEvent.username,authenticationEvent.email,authenticationEvent.password)
             }
             is AuthenticationEvent.ErrorDismissed -> {
                 dismissError()
@@ -58,6 +56,9 @@ class AuthenticationViewModel @Inject constructor(
             }
             is AuthenticationEvent.GoogleSignInClicked -> {
                 googleSignIn(authenticationEvent.credential)
+            }
+            is AuthenticationEvent.SignInButtonClicked -> {
+                emailPasswordSignIn(authenticationEvent.email,authenticationEvent.password)
             }
         }
     }
@@ -80,8 +81,6 @@ class AuthenticationViewModel @Inject constructor(
                     )
                 }
             }
-
-
         }
     }
     private fun toggleAuthenticationMode() {
@@ -127,21 +126,67 @@ class AuthenticationViewModel @Inject constructor(
         )
     }
 
-    private fun authenticate() {
+    private fun emailPasswordSignIn(email: String, password: String) {
         _authState.value = _authState.value.copy(
             isLoading = true
         )
-        // trigger network request
-        viewModelScope.launch(Dispatchers.IO) {
-            delay(2000L)
-
-            withContext(Dispatchers.Main) {
-                _authState.value = _authState.value.copy(
-                    isLoading = false,
-                    error = "Something went wrong!"
-                )
+        viewModelScope.launch {
+            authRepository.emailAndPasswordSignIn(email, password).collect { result ->
+                when(result) {
+                    is Resource.Success -> {
+                        _authState.value = _authState.value.copy(
+                            authResult = result.data,
+                            isLoading = false
+                        )
+                    }
+                    is Resource.Loading -> {
+                        _authState.value = _authState.value.copy(
+                            isLoading = true
+                        )
+                    }
+                    is Resource.Error -> {
+                        _authState.value = _authState.value.copy(
+                            isLoading = false,
+                            error = result.e
+                        )
+                    }
+                }
             }
         }
+    }
+    private fun emailPasswordSignUp(username: String, email: String, password: String) {
+        _authState.value = _authState.value.copy(
+            isLoading = true
+        )
+        viewModelScope.launch {
+            authRepository.emailAndPasswordSignUp(username, email, password).collect { result ->
+                when(result) {
+                    is Resource.Success -> {
+                        _authState.value = _authState.value.copy(
+                            authResult = result.data,
+                            isLoading = false
+                        )
+                    }
+                    is Resource.Loading -> {
+                        _authState.value = _authState.value.copy(
+                            isLoading = true
+                        )
+                    }
+                    is Resource.Error -> {
+                        _authState.value = _authState.value.copy(
+                            isLoading = false,
+                            error = result.e
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun provideCurrentUser() = authRepository.currentUser
+
+    private fun logout() {
+        authRepository.logout()
     }
 
     private fun dismissError() {

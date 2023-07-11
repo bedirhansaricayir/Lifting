@@ -47,8 +47,6 @@ fun NavGraphBuilder.authNavGraph(navController: NavController,startDestination: 
                     onToggleModeClick = { navController.navigate(AuthScreen.SignUpScreen.route) },
                     googleSignInState = googleSignInState
                 )
-            //CommonAuthentication(authenticationState = authenticationState, authenticationEvent = authenticationViewModel::onEvent, onToggleModeClick = {})
-
         }
         composable(route = AuthScreen.SignUpScreen.route) {
             val authenticationViewModel: AuthenticationViewModel = hiltViewModel()
@@ -56,7 +54,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavController,startDestination: 
             SignUpScreen(
                 authenticationState = authenticationState,
                 authenticationEvent = authenticationViewModel::onEvent,
-                onToggleModeClick = {navController.navigate(AuthScreen.SignInScreen.route)}
+                onToggleModeClick = { navController.navigate(AuthScreen.SignInScreen.route) }
             )
         }
         composable(route = AuthScreen.ForgotPassScreen.route) {
