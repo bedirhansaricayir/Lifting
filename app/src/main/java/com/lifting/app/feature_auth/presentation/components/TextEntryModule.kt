@@ -66,7 +66,6 @@ fun TextEntryModule(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 3.dp)
-                .border(0.5.dp, borderColor, RoundedCornerShape(20.dp))
                 .height(60.dp)
                 .shadow(3.dp, RoundedCornerShape(20.dp)),
             value = textValue,

@@ -111,7 +111,7 @@ fun SignUpScreenContent(
         modifier = modifier
             .fillMaxSize()
             .background(grey50)
-            .padding(8.dp)
+            .padding(16.dp)
             .systemBarsPadding(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -180,6 +180,7 @@ fun SignUpScreenContent(
                 PasswordRequirement(satisfiedRequirements = completedPasswordRequirements)
             }
         }
+        Spacer(modifier = Modifier.height(8.dp))
         AuthenticationButton(
             modifier = modifier
                 .fillMaxWidth()

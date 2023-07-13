@@ -13,9 +13,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +34,7 @@ import com.lifting.app.feature_auth.presentation.components.AuthenticationButton
 import com.lifting.app.feature_auth.presentation.components.AuthenticationTitle
 import com.lifting.app.feature_auth.presentation.components.DividerText
 import com.lifting.app.feature_auth.presentation.components.ForgotPasswordText
+import com.lifting.app.feature_auth.presentation.components.GoogleButton
 import com.lifting.app.feature_auth.presentation.components.SwipeButton
 import com.lifting.app.feature_auth.presentation.components.TextEntryModule
 import com.lifting.app.feature_auth.presentation.components.ToggleAuthenticationMode
@@ -114,7 +113,7 @@ fun SignInScreenContent(
         modifier = modifier
             .fillMaxSize()
             .background(grey50)
-            .padding(8.dp)
+            .padding(16.dp)
             .systemBarsPadding(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -139,6 +138,7 @@ fun SignInScreenContent(
             imeAction = ImeAction.Next,
             onTrailingIconClick = null
         )
+        Spacer(modifier = Modifier.height(8.dp))
         TextEntryModule(
             text = stringResource(id = R.string.Password),
             modifier = Modifier
@@ -156,7 +156,7 @@ fun SignInScreenContent(
             onTrailingIconClick = onTrailingIconClick
         )
         ForgotPasswordText(modifier = Modifier.padding(8.dp), text = stringResource(id = R.string.label_forgot_password), onForgotPasswordClick = onForgotPasswordClick)
-
+        Spacer(modifier = Modifier.height(8.dp))
         AuthenticationButton(
             modifier = modifier
                 .fillMaxWidth()
@@ -168,12 +168,12 @@ fun SignInScreenContent(
             onAuthenticate = { onSignInButtonClicked(email!!,password!!) },
             isLoading = isLoading
         )
-        Button(onClick = onGoogleSignInButtonClicked ) { Text("Sign in with google") }
-
         //SwipeButtonSample(AuthenticationMode.SIGN_IN,enableAuthentication,true)
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(2f))
 
         DividerText(modifier = Modifier.padding(horizontal = 16.dp), text = stringResource(id = R.string.label_sign_in_to_account))
+        Spacer(modifier = Modifier.weight(1f))
+        GoogleButton(text = stringResource(id = R.string.continue_with_google), icon = R.drawable.ic_google_logo, onClicked = {})
         Spacer(modifier = Modifier.weight(1f))
 
         ToggleAuthenticationMode(
@@ -205,3 +205,4 @@ fun SwipeButtonSample(authenticationMode: AuthenticationMode, enableAuthenticati
         },
     )
 }
+

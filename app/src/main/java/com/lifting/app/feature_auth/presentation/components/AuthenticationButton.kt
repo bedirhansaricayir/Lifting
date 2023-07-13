@@ -1,6 +1,7 @@
 package com.lifting.app.feature_auth.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -34,7 +35,7 @@ fun AuthenticationButton(
 ) {
 
     Button(
-        modifier = modifier,
+        modifier = modifier.height(40.dp),
         onClick = { onAuthenticate() },
         shape = RoundedCornerShape(shape),
         colors = ButtonDefaults.buttonColors(
