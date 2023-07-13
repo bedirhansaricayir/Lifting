@@ -1,16 +1,17 @@
 package com.lifting.app.feature_auth.presentation
 
-import android.util.Log
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.AuthCredential
 import com.lifting.app.core.util.Resource
 import com.lifting.app.feature_auth.domain.model.AuthenticationMode
 import com.lifting.app.feature_auth.domain.model.PasswordRequirements
 import com.lifting.app.feature_auth.domain.model.InputValidationType
 import com.lifting.app.feature_auth.domain.repository.AuthRepository
 import com.lifting.app.feature_auth.domain.use_case.EmailInputValidationUseCase
-import com.lifting.app.feature_auth.presentation.sign_in.GoogleSignInState
+import com.lifting.app.feature_auth.presentation.google_auth.GoogleAuthUiClient
+import com.lifting.app.feature_auth.presentation.google_auth.GoogleSignInState
+import com.lifting.app.feature_auth.presentation.google_auth.SignInResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(
     private val emailInputValidationUseCase: EmailInputValidationUseCase,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val googleAuthUiClient: GoogleAuthUiClient
 ) : ViewModel() {
 
     private val _authState = MutableStateFlow(AuthenticationState())
@@ -54,32 +56,11 @@ class AuthenticationViewModel @Inject constructor(
             is AuthenticationEvent.ToggleVisualTransformation -> {
                 toggleVisualTransformation()
             }
-            is AuthenticationEvent.GoogleSignInClicked -> {
-                googleSignIn(authenticationEvent.credential)
-            }
             is AuthenticationEvent.SignInButtonClicked -> {
                 emailPasswordSignIn(authenticationEvent.email,authenticationEvent.password)
             }
-        }
-    }
-
-    private fun googleSignIn(credential: AuthCredential) = viewModelScope.launch {
-        authRepository.googleSignIn(credential).collect { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _googleState.value = _googleState.value.copy(
-                        success = result.data
-                    )
-                }
-                is Resource.Loading -> {
-                    _googleState.value = _googleState.value.copy(
-                        loading = true
-                    )                }
-                is Resource.Error -> {
-                    _googleState.value = _googleState.value.copy(
-                        error = result.e ?: "Oops! something went wrong."
-                    )
-                }
+            is AuthenticationEvent.OnSignInResultGoogle -> {
+                onSignInResult(authenticationEvent.signInResult)
             }
         }
     }
@@ -183,10 +164,19 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
+    suspend fun signInWithIntent(intent: Intent): SignInResult = googleAuthUiClient.signInWithIntent(intent)
+    suspend fun signIn() = googleAuthUiClient.signIn()
+    private  fun onSignInResult(result: SignInResult) {
+        _googleState.value = _googleState.value.copy(
+            isSignInSuccessful = result.data != null,
+            signInError = result.errorMessage
+        )
+    }
+
     private fun provideCurrentUser() = authRepository.currentUser
 
-    private fun logout() {
-        authRepository.logout()
+    private fun signOut() = viewModelScope.launch {
+        authRepository.signOut()
     }
 
     private fun dismissError() {

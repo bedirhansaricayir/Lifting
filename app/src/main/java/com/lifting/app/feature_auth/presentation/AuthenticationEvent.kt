@@ -1,6 +1,6 @@
 package com.lifting.app.feature_auth.presentation
 
-import com.google.firebase.auth.AuthCredential
+import com.lifting.app.feature_auth.presentation.google_auth.SignInResult
 
 sealed class AuthenticationEvent {
     object ToggleAuthenticationMode : AuthenticationEvent()
@@ -19,5 +19,5 @@ sealed class AuthenticationEvent {
 
     object ToggleVisualTransformation : AuthenticationEvent()
 
-    class GoogleSignInClicked(val credential: AuthCredential) : AuthenticationEvent()
+    class OnSignInResultGoogle(val signInResult: SignInResult) : AuthenticationEvent()
 }

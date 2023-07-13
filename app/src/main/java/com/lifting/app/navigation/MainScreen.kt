@@ -23,6 +23,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.lifting.app.navigation.graphs.AuthScreen
 import com.lifting.app.navigation.graphs.NavGraph
 import com.lifting.app.theme.black20
@@ -31,7 +32,7 @@ import com.lifting.app.theme.grey10
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(navController: NavHostController = rememberNavController()) {
     Scaffold(bottomBar = { BottomNavigationBar(navController = navController) }) {
         Box(
             modifier = Modifier.padding(

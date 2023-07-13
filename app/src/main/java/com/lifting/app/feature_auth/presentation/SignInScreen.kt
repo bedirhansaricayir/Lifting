@@ -1,8 +1,6 @@
 package com.lifting.app.feature_auth.presentation
 
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,10 +30,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.GoogleAuthProvider
 import com.lifting.app.R
 import com.lifting.app.feature_auth.domain.model.AuthenticationMode
 import com.lifting.app.feature_auth.presentation.components.AuthenticationButton
@@ -45,7 +39,7 @@ import com.lifting.app.feature_auth.presentation.components.ForgotPasswordText
 import com.lifting.app.feature_auth.presentation.components.SwipeButton
 import com.lifting.app.feature_auth.presentation.components.TextEntryModule
 import com.lifting.app.feature_auth.presentation.components.ToggleAuthenticationMode
-import com.lifting.app.feature_auth.presentation.sign_in.GoogleSignInState
+import com.lifting.app.feature_auth.presentation.google_auth.GoogleSignInState
 import com.lifting.app.theme.grey50
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -56,25 +50,28 @@ fun SignInScreen(
     authenticationState: AuthenticationState,
     googleSignInState: GoogleSignInState,
     authenticationEvent: (AuthenticationEvent) -> Unit,
-    onToggleModeClick: () -> Unit
+    onToggleModeClick: () -> Unit,
+    onGoogleSignInButtonClicked: () -> Unit
 ) {
     val context = LocalContext.current
-    LaunchedEffect(key1 = googleSignInState.success) {
-        if (googleSignInState.success != null) {
-            Toast.makeText(context,"Sign In Success -> ${googleSignInState.success.user?.email},",Toast.LENGTH_LONG).show()
+    LaunchedEffect(key1 = googleSignInState.signInError) {
+        googleSignInState.signInError?.let { error ->
+            Toast.makeText(
+                context,
+                error,
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
-    val launcher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-            val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-            try {
-                val result = account.getResult(ApiException::class.java)
-                val credentials = GoogleAuthProvider.getCredential(result.idToken, null)
-                authenticationEvent(AuthenticationEvent.GoogleSignInClicked(credentials))
-            } catch (it: ApiException) {
-                print(it)
-            }
+    LaunchedEffect(key1 = googleSignInState.isSignInSuccessful) {
+        if(googleSignInState.isSignInSuccessful) {
+            Toast.makeText(
+                context,
+                "Sign in successful",
+                Toast.LENGTH_LONG
+            ).show()
         }
+    }
     SignInScreenContent(
         modifier = modifier,
         authenticationMode = AuthenticationMode.SIGN_IN,
@@ -92,16 +89,7 @@ fun SignInScreen(
         isPasswordShown = authenticationState.isPasswordShown,
         onTrailingIconClick = { authenticationEvent(AuthenticationEvent.ToggleVisualTransformation) },
         onForgotPasswordClick = {},
-        onGoogleSignInButtonClicked = {
-            val gso= GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestIdToken(context.getString(R.string.default_web_client_id))
-                .build()
-
-            val googleSignInClient = GoogleSignIn.getClient(context, gso)
-
-            launcher.launch(googleSignInClient.signInIntent)
-        }
+        onGoogleSignInButtonClicked = onGoogleSignInButtonClicked
     )
 }
 
