@@ -290,6 +290,7 @@ class Constants {
         const val SIGN_UP = "register_screen"
         const val FORGOT_PASS = "forgot_screen"
         const val ONBOARDING_SCREEN = "onboarding_screen"
+        const val VERIFICATION_SCREEN = "verification_screen"
 
 
         //DetailScreen routes

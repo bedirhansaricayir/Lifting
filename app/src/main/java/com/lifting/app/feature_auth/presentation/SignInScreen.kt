@@ -50,7 +50,8 @@ fun SignInScreen(
     googleSignInState: GoogleSignInState,
     authenticationEvent: (AuthenticationEvent) -> Unit,
     onToggleModeClick: () -> Unit,
-    onGoogleSignInButtonClicked: () -> Unit
+    onGoogleSignInButtonClicked: () -> Unit,
+    onSignInNavigate: () -> Unit
 ) {
     val context = LocalContext.current
     LaunchedEffect(key1 = googleSignInState.signInError) {
@@ -69,6 +70,22 @@ fun SignInScreen(
                 "Sign in successful",
                 Toast.LENGTH_LONG
             ).show()
+        }
+    }
+    LaunchedEffect(key1 = authenticationState.error) {
+        authenticationState.error?.let { error ->
+            Toast.makeText(
+                context,
+                error,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+    LaunchedEffect(key1 = authenticationState.authResult) {
+        if (authenticationState.authResult != null) {
+            if (authenticationState.authResult.user?.isEmailVerified == true){
+                onSignInNavigate()
+            }
         }
     }
     SignInScreenContent(

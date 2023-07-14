@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,8 +48,16 @@ fun SignUpScreen(
     modifier: Modifier = Modifier,
     authenticationState: AuthenticationState,
     authenticationEvent: (AuthenticationEvent) -> Unit,
-    onToggleModeClick: () -> Unit
+    onToggleModeClick: () -> Unit,
+    onSignUpNavigate: () -> Unit
 ) {
+
+    LaunchedEffect(key1 = authenticationState.sendEmailVerification) {
+        if (authenticationState.sendEmailVerification) {
+            onSignUpNavigate()
+        }
+    }
+
     SignUpScreenContent(
         modifier = modifier,
         authenticationMode = AuthenticationMode.SIGN_UP,

@@ -20,4 +20,6 @@ sealed class AuthenticationEvent {
     object ToggleVisualTransformation : AuthenticationEvent()
 
     class OnSignInResultGoogle(val signInResult: SignInResult) : AuthenticationEvent()
+
+    object ReloadFirebaseUser : AuthenticationEvent()
 }

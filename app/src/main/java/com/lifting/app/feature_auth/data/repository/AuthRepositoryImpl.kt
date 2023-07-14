@@ -20,7 +20,11 @@ class AuthRepositoryImpl @Inject constructor(
 
     override val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
-    override fun emailAndPasswordSignIn(email: String, password: String): Flow<Resource<AuthResult>> {
+
+    override fun emailAndPasswordSignIn(
+        email: String,
+        password: String
+    ): Flow<Resource<AuthResult>> {
         return flow {
             emit(Resource.Loading)
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
@@ -28,15 +32,40 @@ class AuthRepositoryImpl @Inject constructor(
         }.catch {
             emit(Resource.Error(it.message.toString()))
         }
-
     }
 
-    override fun emailAndPasswordSignUp(username: String, email: String, password: String): Flow<Resource<AuthResult>> {
+    override fun emailAndPasswordSignUp(
+        username: String,
+        email: String,
+        password: String
+    ): Flow<Resource<AuthResult>> {
         return flow {
             emit(Resource.Loading)
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            result.user?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(username).build())?.await()
+            result.user?.updateProfile(
+                UserProfileChangeRequest.Builder().setDisplayName(username).build()
+            )?.await()
             emit(Resource.Success(result))
+        }.catch {
+            emit(Resource.Error(it.message.toString()))
+        }
+    }
+
+    override fun sendEmailVerification(): Flow<Resource<Boolean>> {
+        return flow {
+            emit(Resource.Loading)
+            firebaseAuth.currentUser?.sendEmailVerification()?.await()
+            emit(Resource.Success(true))
+        }.catch {
+            emit(Resource.Error(it.message.toString()))
+        }
+    }
+
+    override fun reloadFirebaseUser(): Flow<Resource<Boolean>> {
+        return flow {
+            emit(Resource.Loading)
+            firebaseAuth.currentUser?.reload()?.await()
+            emit(Resource.Success(true))
         }.catch {
             emit(Resource.Error(it.message.toString()))
         }
@@ -47,7 +76,6 @@ class AuthRepositoryImpl @Inject constructor(
             emit(Resource.Loading)
             val result = firebaseAuth.signInWithCredential(credential).await()
             val isNewUser = result.additionalUserInfo?.isNewUser ?: false
-            Log.d("isNewUser",isNewUser.toString())
             emit(Resource.Success(result))
         }.catch {
             emit(Resource.Error(it.message.toString()))

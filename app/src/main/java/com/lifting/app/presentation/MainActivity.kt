@@ -31,8 +31,7 @@ class MainActivity : ComponentActivity() {
             FitnessAppTheme() {
                 WindowCompat.setDecorFitsSystemWindows(window, false)
                 val screen by splashViewModel.startDestination
-                val navController = rememberNavController()
-                screen?.let { RootNavGraph(navController = navController, startDestination = it) }
+                screen?.let { RootNavGraph(navController = rememberNavController(), startDestination = it) }
 
             }
         }

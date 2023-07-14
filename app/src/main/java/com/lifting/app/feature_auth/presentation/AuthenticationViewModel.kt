@@ -29,41 +29,58 @@ class AuthenticationViewModel @Inject constructor(
     private val _authState = MutableStateFlow(AuthenticationState())
     val authState: StateFlow<AuthenticationState> = _authState.asStateFlow()
 
-    private val  _googleState = MutableStateFlow(GoogleSignInState())
+    private val _googleState = MutableStateFlow(GoogleSignInState())
     val googleState: StateFlow<GoogleSignInState> = _googleState.asStateFlow()
 
     fun onEvent(authenticationEvent: AuthenticationEvent) {
-        when(authenticationEvent) {
+        when (authenticationEvent) {
             is AuthenticationEvent.ToggleAuthenticationMode -> {
                 toggleAuthenticationMode()
             }
+
             is AuthenticationEvent.UsernameChanged -> {
                 updateUsername(authenticationEvent.username)
             }
+
             is AuthenticationEvent.EmailChanged -> {
                 updateEmail(authenticationEvent.emailAddress)
                 checkInputValidation(authenticationEvent.emailAddress)
             }
+
             is AuthenticationEvent.PasswordChanged -> {
                 updatePassword(authenticationEvent.password)
             }
+
             is AuthenticationEvent.SignUpButtonClicked -> {
-                emailPasswordSignUp(authenticationEvent.username,authenticationEvent.email,authenticationEvent.password)
+                emailPasswordSignUp(
+                    authenticationEvent.username,
+                    authenticationEvent.email,
+                    authenticationEvent.password
+                )
             }
+
             is AuthenticationEvent.ErrorDismissed -> {
                 dismissError()
             }
+
             is AuthenticationEvent.ToggleVisualTransformation -> {
                 toggleVisualTransformation()
             }
+
             is AuthenticationEvent.SignInButtonClicked -> {
-                emailPasswordSignIn(authenticationEvent.email,authenticationEvent.password)
+                emailPasswordSignIn(authenticationEvent.email, authenticationEvent.password)
             }
+
             is AuthenticationEvent.OnSignInResultGoogle -> {
                 onSignInResult(authenticationEvent.signInResult)
             }
+
+            is AuthenticationEvent.ReloadFirebaseUser -> {
+                reloadFirebaseUser()
+            }
         }
     }
+
     private fun toggleAuthenticationMode() {
         val authenticationMode = _authState.value.authenticationMode
         val newAuthenticationMode = if (
@@ -113,18 +130,20 @@ class AuthenticationViewModel @Inject constructor(
         )
         viewModelScope.launch {
             authRepository.emailAndPasswordSignIn(email, password).collect { result ->
-                when(result) {
+                when (result) {
                     is Resource.Success -> {
                         _authState.value = _authState.value.copy(
                             authResult = result.data,
                             isLoading = false
                         )
                     }
+
                     is Resource.Loading -> {
                         _authState.value = _authState.value.copy(
                             isLoading = true
                         )
                     }
+
                     is Resource.Error -> {
                         _authState.value = _authState.value.copy(
                             isLoading = false,
@@ -135,24 +154,28 @@ class AuthenticationViewModel @Inject constructor(
             }
         }
     }
+
     private fun emailPasswordSignUp(username: String, email: String, password: String) {
         _authState.value = _authState.value.copy(
             isLoading = true
         )
         viewModelScope.launch {
             authRepository.emailAndPasswordSignUp(username, email, password).collect { result ->
-                when(result) {
+                when (result) {
                     is Resource.Success -> {
                         _authState.value = _authState.value.copy(
                             authResult = result.data,
                             isLoading = false
                         )
+                        sendEmailVerification()
                     }
+
                     is Resource.Loading -> {
                         _authState.value = _authState.value.copy(
                             isLoading = true
                         )
                     }
+
                     is Resource.Error -> {
                         _authState.value = _authState.value.copy(
                             isLoading = false,
@@ -164,20 +187,77 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
-    suspend fun signInWithIntent(intent: Intent): SignInResult = googleAuthUiClient.signInWithIntent(intent)
+    suspend fun sendEmailVerification() {
+        authRepository.sendEmailVerification().collect { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _authState.value = _authState.value.copy(
+                        sendEmailVerification = result.data!!,
+                        isLoading = false
+                    )
+                }
+
+                is Resource.Loading -> {
+                    _authState.value = _authState.value.copy(
+                        isLoading = true
+                    )
+                }
+
+                is Resource.Error -> {
+                    _authState.value = _authState.value.copy(
+                        isLoading = false,
+                        error = result.e
+                    )
+                }
+            }
+        }
+    }
+
+    private fun provideCurrentUser() = authRepository.currentUser
+    var isEmailVerified = authRepository.currentUser?.isEmailVerified ?: false
+
+    private fun reloadFirebaseUser() = viewModelScope.launch {
+        authRepository.reloadFirebaseUser().collect { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _authState.value = _authState.value.copy(
+                        isUserReloaded = result.data!!,
+                        isEmailVerified = authRepository.currentUser?.isEmailVerified ?: false
+                    )
+                }
+
+                is Resource.Loading -> {
+                    _authState.value = _authState.value.copy(
+                        isLoading = true
+                    )
+                }
+
+                is Resource.Error -> {
+                    _authState.value = _authState.value.copy(
+                        isLoading = false,
+                        error = result.e
+                    )
+                }
+            }
+        }
+    }
+
+    suspend fun signInWithIntent(intent: Intent): SignInResult =
+        googleAuthUiClient.signInWithIntent(intent)
+
     suspend fun signIn() = googleAuthUiClient.signIn()
-    private  fun onSignInResult(result: SignInResult) {
+    private fun onSignInResult(result: SignInResult) {
         _googleState.value = _googleState.value.copy(
             isSignInSuccessful = result.data != null,
             signInError = result.errorMessage
         )
     }
 
-    private fun provideCurrentUser() = authRepository.currentUser
 
     private fun signOut() = viewModelScope.launch {
         authRepository.signOut()
     }
+
 
     private fun dismissError() {
         _authState.value = _authState.value.copy(
@@ -195,18 +275,20 @@ class AuthenticationViewModel @Inject constructor(
         val result = emailInputValidationUseCase.invoke(email)
         processInputValidation(result)
     }
+
     private fun processInputValidation(type: InputValidationType) {
-        when(type) {
-           InputValidationType.NoEmail -> {
-               _authState.value = _authState.value.copy(
-                   emailError = true
-               )
-           }
-           InputValidationType.Valid -> {
-               _authState.value = _authState.value.copy(
-                   emailError = false
-               )
-           }
-       }
+        when (type) {
+            InputValidationType.NoEmail -> {
+                _authState.value = _authState.value.copy(
+                    emailError = true
+                )
+            }
+
+            InputValidationType.Valid -> {
+                _authState.value = _authState.value.copy(
+                    emailError = false
+                )
+            }
+        }
     }
 }

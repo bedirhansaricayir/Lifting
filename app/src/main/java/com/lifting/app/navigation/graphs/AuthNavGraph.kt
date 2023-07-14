@@ -16,19 +16,25 @@ import com.lifting.app.core.constants.Constants.Companion.FORGOT_PASS
 import com.lifting.app.core.constants.Constants.Companion.ONBOARDING_SCREEN
 import com.lifting.app.core.constants.Constants.Companion.SIGN_IN
 import com.lifting.app.core.constants.Constants.Companion.SIGN_UP
+import com.lifting.app.core.constants.Constants.Companion.VERIFICATION_SCREEN
 import com.lifting.app.feature_auth.presentation.AuthenticationEvent
 import com.lifting.app.feature_auth.presentation.AuthenticationViewModel
 import com.lifting.app.feature_auth.presentation.SignInScreen
 import com.lifting.app.feature_auth.presentation.SignUpScreen
+import com.lifting.app.feature_auth.presentation.VerificationScreen
 import com.lifting.app.presentation.onboarding.OnBoarding
 import com.lifting.app.presentation.onboarding.OnBoardingViewModel
 import kotlinx.coroutines.launch
 
-fun NavGraphBuilder.authNavGraph(navController: NavHostController,startDestination: String? = null,destination: (route: String) -> Unit) {
+fun NavGraphBuilder.authNavGraph(
+    navController: NavHostController,
+    startDestination: String? = null,
+    destination: (route: String) -> Unit
+) {
     navigation(
         route = Graph.AUTHENTICATION,
         startDestination = startDestination ?: AuthScreen.OnBoardingScreen.route
-    ){
+    ) {
         composable(route = AuthScreen.OnBoardingScreen.route) {
             val onBoardingViewModel: OnBoardingViewModel = hiltViewModel()
             OnBoarding(
@@ -52,32 +58,37 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController,startDestinati
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartIntentSenderForResult(),
                 onResult = { result ->
-                    if(result.resultCode == Activity.RESULT_OK) {
+                    if (result.resultCode == Activity.RESULT_OK) {
                         scope.launch {
                             val signInResult = authenticationViewModel.signInWithIntent(
                                 intent = result.data ?: return@launch
                             )
-                            authenticationViewModel.onEvent(AuthenticationEvent.OnSignInResultGoogle(signInResult))
+                            authenticationViewModel.onEvent(
+                                AuthenticationEvent.OnSignInResultGoogle(
+                                    signInResult
+                                )
+                            )
                         }
                     }
                 }
             )
-                SignInScreen(
-                    authenticationState = authenticationState,
-                    authenticationEvent = authenticationViewModel::onEvent,
-                    onToggleModeClick = { navController.navigate(AuthScreen.SignUpScreen.route) },
-                    googleSignInState = googleSignInState,
-                    onGoogleSignInButtonClicked = {
-                        scope.launch {
-                            val signInIntentSender = authenticationViewModel.signIn()
-                            launcher.launch(
-                                IntentSenderRequest.Builder(
-                                    signInIntentSender ?: return@launch
-                                ).build()
-                            )
-                        }
+            SignInScreen(
+                authenticationState = authenticationState,
+                authenticationEvent = authenticationViewModel::onEvent,
+                onToggleModeClick = { navController.navigate(AuthScreen.SignUpScreen.route) },
+                googleSignInState = googleSignInState,
+                onGoogleSignInButtonClicked = {
+                    scope.launch {
+                        val signInIntentSender = authenticationViewModel.signIn()
+                        launcher.launch(
+                            IntentSenderRequest.Builder(
+                                signInIntentSender ?: return@launch
+                            ).build()
+                        )
                     }
-                )
+                },
+                onSignInNavigate = { navController.navigate(Graph.HOME) }
+            )
         }
         composable(route = AuthScreen.SignUpScreen.route) {
             val authenticationViewModel: AuthenticationViewModel = hiltViewModel()
@@ -85,11 +96,23 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController,startDestinati
             SignUpScreen(
                 authenticationState = authenticationState,
                 authenticationEvent = authenticationViewModel::onEvent,
-                onToggleModeClick = { navController.navigate(AuthScreen.SignInScreen.route) }
+                onToggleModeClick = { navController.navigate(AuthScreen.SignInScreen.route) },
+                onSignUpNavigate = { navController.navigate(AuthScreen.EmailVerificationScreen.route) }
             )
         }
+        composable(route = AuthScreen.EmailVerificationScreen.route) {
+            val authenticationViewModel: AuthenticationViewModel = hiltViewModel()
+            val authenticationState = authenticationViewModel.authState.collectAsState().value
+            VerificationScreen(
+                authenticationState = authenticationState,
+                authenticationEvent = authenticationViewModel::onEvent,
+                isEmailVerified = {
+                    navController.popBackStack()
+                    navController.navigate(Graph.HOME)
+                })
+        }
         composable(route = AuthScreen.ForgotPassScreen.route) {
-            Log.d("authNavGraph","Forgot Screen")
+            Log.d("authNavGraph", "Forgot Screen")
         }
 
     }
@@ -100,4 +123,5 @@ sealed class AuthScreen(val route: String) {
     object SignUpScreen : AuthScreen(route = SIGN_UP)
     object ForgotPassScreen : AuthScreen(route = FORGOT_PASS)
     object OnBoardingScreen : AuthScreen(route = ONBOARDING_SCREEN)
+    object EmailVerificationScreen : AuthScreen(route = VERIFICATION_SCREEN)
 }

@@ -11,7 +11,8 @@ interface AuthRepository {
     val currentUser: FirebaseUser?
     fun emailAndPasswordSignIn(email: String, password: String): Flow<Resource<AuthResult>>
     fun emailAndPasswordSignUp(username: String, email: String, password: String): Flow<Resource<AuthResult>>
+    fun sendEmailVerification(): Flow<Resource<Boolean>>
+    fun reloadFirebaseUser(): Flow<Resource<Boolean>>
     fun googleSignIn(credential: AuthCredential): Flow<Resource<AuthResult>>
-
     fun signOut()
 }

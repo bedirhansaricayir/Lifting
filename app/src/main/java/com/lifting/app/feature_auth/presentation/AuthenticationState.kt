@@ -14,7 +14,10 @@ data class AuthenticationState(
     val error: String? = null,
     val emailError: Boolean = true,
     val isPasswordShown: Boolean = false,
-    val authResult: AuthResult? = null
+    val authResult: AuthResult? = null,
+    val sendEmailVerification: Boolean = false,
+    val isEmailVerified: Boolean = false,
+    val isUserReloaded: Boolean = false,
 ) {
     fun isFormValid(): Boolean {
         return password?.isNotEmpty() == true &&
