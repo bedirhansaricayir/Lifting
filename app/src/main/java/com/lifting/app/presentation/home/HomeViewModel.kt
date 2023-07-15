@@ -1,6 +1,5 @@
 package com.lifting.app.presentation.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
@@ -28,10 +27,8 @@ class HomeViewModel @Inject constructor(
     val state: StateFlow<HomePageUiState> = _state.asStateFlow()
 
     init {
-        firebaseAuth.currentUser?.displayName?.let {
-            Log.d("currentUser",it + " " + firebaseAuth.currentUser?.email)
-        }
         getProgramData()
+        getSignedInUser()
     }
 
     fun onEvent(event: HomePageEvent) {
@@ -84,4 +81,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private fun getSignedInUser() = firebaseAuth.currentUser?.run {
+        _state.value = _state.value.copy(
+            userData = UserData(
+                userId = uid,
+                username = displayName,
+                profilePictureUrl = photoUrl?.toString()
+            )
+        )
+    }
 }

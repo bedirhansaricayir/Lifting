@@ -93,4 +93,5 @@ dependencies {
     implementation(platform(Dependencies.platformFirebase))
     implementation(Dependencies.firebaseAuth)
     implementation(Dependencies.googleServicesAuth)
+    implementation(Dependencies.coil)
 }

@@ -48,6 +48,8 @@ import com.lifting.app.data.remote.model.DusukZorluk
 import com.lifting.app.data.remote.model.OrtaZorluk
 import com.lifting.app.data.remote.model.YuksekZorluk
 import com.lifting.app.presentation.calculator.SelectableGroup
+import com.lifting.app.presentation.components.UserImage
+import com.lifting.app.presentation.components.UserInfoText
 import com.lifting.app.presentation.home.dialog.CustomCreatedProgramDialog
 import com.lifting.app.presentation.home.dialog.CustomDialog
 import com.lifting.app.presentation.home.list.AdvancedProgramList
@@ -225,6 +227,7 @@ fun HomeScreen(
 
     ) {
         if (beginnerState != null) {
+            state.userData?.let { SignedInUserSection(it) }
             PlanSection()
             PersonalizedProgramCardSection {
                 personalizedOpenBottomSheet = !personalizedOpenBottomSheet
@@ -262,6 +265,22 @@ fun HomeScreen(
 
 }
 
+@Composable
+fun SignedInUserSection(userData: UserData) {
+
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 8.dp, vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+        UserImage(modifier = Modifier,userImage = userData.profilePictureUrl!!)
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 16.dp), verticalArrangement = Arrangement.Center) {
+            UserInfoText(text = stringResource(id = R.string.label_homepage_welcome), isSubTitle = true)
+            Spacer(modifier = Modifier.height(2.dp))
+            UserInfoText(text = userData.username!!)
+        }
+    }
+}
 @Composable
 fun PlanSection() {
     Text(

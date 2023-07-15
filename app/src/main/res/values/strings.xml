@@ -53,4 +53,5 @@
     <string name="label_verification_screen">Please Verify Your Email Address</string>
     <string name="label_verification_screen_subtitle">We sent a verification email. Please verify your email to unlock the advanced features</string>
     <string name="action_verification">Confirm</string>
+    <string name="label_homepage_welcome">Welcome,</string>
 </resources>

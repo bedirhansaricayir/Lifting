@@ -36,13 +36,7 @@ class GoogleAuthUiClient(
         return try {
             val user = auth.signInWithCredential(googleCredentials).await().user
             SignInResult(
-                data = user?.run {
-                    UserData(
-                        userId = uid,
-                        username = displayName,
-                        profilePictureUrl = photoUrl?.toString()
-                    )
-                },
+                data = user,
                 errorMessage = null
             )
         } catch(e: Exception) {
@@ -63,14 +57,6 @@ class GoogleAuthUiClient(
             e.printStackTrace()
             if(e is CancellationException) throw e
         }
-    }
-
-    fun getSignedInUser(): UserData? = auth.currentUser?.run {
-        UserData(
-            userId = uid,
-            username = displayName,
-            profilePictureUrl = photoUrl?.toString()
-        )
     }
 
     private fun buildSignInRequest(): BeginSignInRequest {

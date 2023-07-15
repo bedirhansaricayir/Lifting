@@ -60,4 +60,7 @@ object Dependencies {
 
     //GoogleAuth
     val googleServicesAuth by lazy { "com.google.android.gms:play-services-auth:${Versions.googleServicesAuthVersion}" }
+
+    //Coil
+    val coil by lazy { "io.coil-kt:coil-compose:${Versions.coilVersion}" }
 }

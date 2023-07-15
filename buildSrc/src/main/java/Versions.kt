@@ -64,4 +64,7 @@ object Versions {
     //Google Auth
     val googleServicesAuthVersion = "20.6.0"
     val googleServicesPluginVersion = "4.3.15"
+
+    //Coil
+    val coilVersion = "2.4.0"
 }
