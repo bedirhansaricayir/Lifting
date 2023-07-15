@@ -42,12 +42,7 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
                 bottom = it.calculateBottomPadding()
             )
         ) {
-            NavGraph(navController = navController, onLogoutClick = {
-                navController.navigate(AuthScreen.SignInScreen.route){
-                    popUpTo(navController.graph.startDestinationId)
-                    launchSingleTop = true
-                }
-            })
+            NavGraph(navController = navController)
         }
     }
 }

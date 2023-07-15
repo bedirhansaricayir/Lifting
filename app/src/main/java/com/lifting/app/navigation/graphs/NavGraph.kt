@@ -21,7 +21,7 @@ import com.lifting.app.presentation.tracker.TrackerScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NavGraph(navController: NavHostController,onLogoutClick: (route: String) -> Unit) {
+fun NavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         route = Graph.HOME,
@@ -42,7 +42,7 @@ fun NavGraph(navController: NavHostController,onLogoutClick: (route: String) -> 
         composable(route = Screen.HealthScreen.route) {
             CalculatorScreen()
         }
-        authNavGraph(navController = navController, destination = onLogoutClick)
+        authNavGraph(navController = navController)
         detailsNavGraph(navController = navController)
     }
 }

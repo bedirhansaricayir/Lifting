@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lifting.app.core.util.Resource
+import com.lifting.app.data.local.datastore.DataStoreRepository
 import com.lifting.app.feature_auth.domain.model.AuthenticationMode
 import com.lifting.app.feature_auth.domain.model.PasswordRequirements
 import com.lifting.app.feature_auth.domain.model.InputValidationType
@@ -13,6 +14,7 @@ import com.lifting.app.feature_auth.presentation.google_auth.GoogleAuthUiClient
 import com.lifting.app.feature_auth.presentation.google_auth.GoogleSignInState
 import com.lifting.app.feature_auth.presentation.google_auth.SignInResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +25,8 @@ import javax.inject.Inject
 class AuthenticationViewModel @Inject constructor(
     private val emailInputValidationUseCase: EmailInputValidationUseCase,
     private val authRepository: AuthRepository,
-    private val googleAuthUiClient: GoogleAuthUiClient
+    private val googleAuthUiClient: GoogleAuthUiClient,
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
 
     private val _authState = MutableStateFlow(AuthenticationState())
@@ -77,6 +80,9 @@ class AuthenticationViewModel @Inject constructor(
 
             is AuthenticationEvent.ReloadFirebaseUser -> {
                 reloadFirebaseUser()
+            }
+            is AuthenticationEvent.OnSignInSuccessful -> {
+                saveSuccessfullySignInState(authenticationEvent.isSuccessful)
             }
         }
     }
@@ -290,5 +296,9 @@ class AuthenticationViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun saveSuccessfullySignInState(completed: Boolean) = viewModelScope.launch(Dispatchers.IO) {
+        dataStoreRepository.saveSuccessfullySignInState(completed)
     }
 }

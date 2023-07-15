@@ -16,9 +16,6 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,13 +32,10 @@ import com.lifting.app.feature_auth.presentation.components.AuthenticationTitle
 import com.lifting.app.feature_auth.presentation.components.DividerText
 import com.lifting.app.feature_auth.presentation.components.ForgotPasswordText
 import com.lifting.app.feature_auth.presentation.components.GoogleButton
-import com.lifting.app.feature_auth.presentation.components.SwipeButton
 import com.lifting.app.feature_auth.presentation.components.TextEntryModule
 import com.lifting.app.feature_auth.presentation.components.ToggleAuthenticationMode
 import com.lifting.app.feature_auth.presentation.google_auth.GoogleSignInState
 import com.lifting.app.theme.grey50
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun SignInScreen(
@@ -65,11 +59,8 @@ fun SignInScreen(
     }
     LaunchedEffect(key1 = googleSignInState.isSignInSuccessful) {
         if(googleSignInState.isSignInSuccessful) {
-            Toast.makeText(
-                context,
-                "Sign in successful",
-                Toast.LENGTH_LONG
-            ).show()
+            authenticationEvent(AuthenticationEvent.OnSignInSuccessful(true))
+            onSignInNavigate()
         }
     }
     LaunchedEffect(key1 = authenticationState.error) {
@@ -82,10 +73,10 @@ fun SignInScreen(
         }
     }
     LaunchedEffect(key1 = authenticationState.authResult) {
-        if (authenticationState.authResult != null) {
-            if (authenticationState.authResult.user?.isEmailVerified == true){
-                onSignInNavigate()
-            }
+        val authResult = authenticationState.authResult
+        if (authResult != null && authResult.user?.isEmailVerified == true) {
+            authenticationEvent(AuthenticationEvent.OnSignInSuccessful(true))
+            onSignInNavigate()
         }
     }
     SignInScreenContent(
@@ -185,12 +176,11 @@ fun SignInScreenContent(
             onAuthenticate = { onSignInButtonClicked(email!!,password!!) },
             isLoading = isLoading
         )
-        //SwipeButtonSample(AuthenticationMode.SIGN_IN,enableAuthentication,true)
         Spacer(modifier = Modifier.weight(2f))
 
         DividerText(modifier = Modifier.padding(horizontal = 16.dp), text = stringResource(id = R.string.label_sign_in_to_account))
         Spacer(modifier = Modifier.weight(1f))
-        GoogleButton(text = stringResource(id = R.string.continue_with_google), icon = R.drawable.ic_google_logo, onClicked = {})
+        GoogleButton(text = stringResource(id = R.string.continue_with_google), icon = R.drawable.ic_google_logo, onClicked = onGoogleSignInButtonClicked)
         Spacer(modifier = Modifier.weight(1f))
 
         ToggleAuthenticationMode(
@@ -200,26 +190,5 @@ fun SignInScreenContent(
             toggleAuthentication = onToggleMode
         )
     }
-}
-
-@Composable
-fun SwipeButtonSample(authenticationMode: AuthenticationMode, enableAuthenticationMode: Boolean, isFail: Boolean) {
-    val coroutineScope = rememberCoroutineScope()
-    val (isComplete, setIsComplete) = remember {
-        mutableStateOf(false)
-    }
-
-    SwipeButton(
-        authenticationMode = authenticationMode,
-        enableAuthenticationMode = enableAuthenticationMode,
-        isComplete = isComplete,
-        isFail = isFail ,
-        onSwipe = {
-            coroutineScope.launch {
-                delay(2000)
-                setIsComplete(true)
-            }
-        },
-    )
 }
 

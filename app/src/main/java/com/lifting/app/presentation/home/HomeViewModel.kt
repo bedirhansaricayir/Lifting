@@ -1,7 +1,9 @@
 package com.lifting.app.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.lifting.app.core.constants.Constants
 import com.lifting.app.core.util.Resource
 import com.lifting.app.domain.model.programMap
@@ -18,13 +20,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getProgramDataUseCase: GetProgramDataUseCase
+    private val getProgramDataUseCase: GetProgramDataUseCase,
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomePageUiState(isLoading = false))
     val state: StateFlow<HomePageUiState> = _state.asStateFlow()
 
     init {
+        firebaseAuth.currentUser?.displayName?.let {
+            Log.d("currentUser",it + " " + firebaseAuth.currentUser?.email)
+        }
         getProgramData()
     }
 

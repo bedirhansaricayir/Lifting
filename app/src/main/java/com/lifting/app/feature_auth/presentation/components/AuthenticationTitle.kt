@@ -14,25 +14,33 @@ import androidx.compose.ui.unit.dp
 import com.lifting.app.R
 import com.lifting.app.feature_auth.domain.model.AuthenticationMode
 import com.lifting.app.theme.White40
+import com.lifting.app.theme.grey10
 
 @Composable
 fun AuthenticationTitle(
     modifier: Modifier = Modifier,
     authenticationMode: AuthenticationMode,
     textStyle: TextStyle = MaterialTheme.typography.headlineMedium,
-    textColor: Color = White40
+    subTitleStyle: TextStyle = MaterialTheme.typography.labelMedium,
+    textColor: Color = White40,
+    subTitleColor: Color = grey10,
+    isSubTitle: Boolean = false,
 ) {
     Text(
         text = stringResource(
-            if (authenticationMode == AuthenticationMode.SIGN_IN) {
+            if (isSubTitle){
+                R.string.label_verification_screen_subtitle
+            } else if (authenticationMode == AuthenticationMode.SIGN_IN) {
                 R.string.label_welcome_back
-            } else {
+            } else if (authenticationMode == AuthenticationMode.SIGN_UP) {
                 R.string.label_create_an_account
+            } else {
+                R.string.label_verification_screen
             }
         ),
         textAlign = TextAlign.Center,
-        style = textStyle,
-        color = textColor,
+        style = if (isSubTitle) subTitleStyle else textStyle,
+        color = if (isSubTitle) subTitleColor else textColor,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)

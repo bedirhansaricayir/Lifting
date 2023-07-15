@@ -10,9 +10,12 @@ import com.lifting.app.navigation.MainScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun RootNavGraph(navController: NavHostController,startDestination: String) {
-    NavHost(navController = navController, startDestination = Graph.AUTHENTICATION, route = Graph.ROOT) {
-        authNavGraph(navController = navController, startDestination = startDestination, destination = {})
+fun RootNavGraph(navController: NavHostController) {
+
+    //Yeni oluşturduğun splash viewmodeldeki kodu eski splashviewmodelde dene. mainactivityden parametre gönder. burada launchedeffect kullan.
+
+    NavHost(navController = navController, startDestination =  Graph.AUTHENTICATION, route = Graph.ROOT) {
+        authNavGraph(navController = navController)
         composable(route = Graph.HOME){
             MainScreen()
         }

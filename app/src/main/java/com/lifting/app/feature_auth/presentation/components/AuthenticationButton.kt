@@ -58,9 +58,10 @@ fun AuthenticationButton(
                         AuthenticationMode.SIGN_IN
                     ) {
                         R.string.action_sign_in
-                    } else {
+                    } else if (authenticationMode == AuthenticationMode.SIGN_UP) {
                         R.string.action_sign_up
-                    }
+                    } else
+                        R.string.action_verification
                 ),
                 style = textStyle
             )

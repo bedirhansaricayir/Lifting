@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,25 +17,47 @@ import com.lifting.app.core.constants.Constants.Companion.FORGOT_PASS
 import com.lifting.app.core.constants.Constants.Companion.ONBOARDING_SCREEN
 import com.lifting.app.core.constants.Constants.Companion.SIGN_IN
 import com.lifting.app.core.constants.Constants.Companion.SIGN_UP
+import com.lifting.app.core.constants.Constants.Companion.SPLASH_SCREEN
 import com.lifting.app.core.constants.Constants.Companion.VERIFICATION_SCREEN
 import com.lifting.app.feature_auth.presentation.AuthenticationEvent
 import com.lifting.app.feature_auth.presentation.AuthenticationViewModel
 import com.lifting.app.feature_auth.presentation.SignInScreen
 import com.lifting.app.feature_auth.presentation.SignUpScreen
+import com.lifting.app.feature_auth.presentation.splash.SplashScreen
+import com.lifting.app.feature_auth.presentation.splash.SplashScreenViewModel
 import com.lifting.app.feature_auth.presentation.VerificationScreen
 import com.lifting.app.presentation.onboarding.OnBoarding
 import com.lifting.app.presentation.onboarding.OnBoardingViewModel
 import kotlinx.coroutines.launch
 
 fun NavGraphBuilder.authNavGraph(
-    navController: NavHostController,
-    startDestination: String? = null,
-    destination: (route: String) -> Unit
+    navController: NavHostController
 ) {
     navigation(
         route = Graph.AUTHENTICATION,
-        startDestination = startDestination ?: AuthScreen.OnBoardingScreen.route
+        startDestination = AuthScreen.SplashScreen.route
     ) {
+        composable(route = AuthScreen.SplashScreen.route) {
+            val splashScreenViewModel: SplashScreenViewModel = hiltViewModel()
+            val splashScreenState = splashScreenViewModel.startDestination
+
+            SplashScreen()
+            LaunchedEffect(key1 = splashScreenState.value) {
+                if (splashScreenState.value == Graph.HOME) {
+                    navController.navigate(Graph.HOME) {
+                        popUpTo(Graph.AUTHENTICATION){
+                            inclusive = true
+                        }
+                    }
+                } else if (splashScreenState.value == AuthScreen.SignInScreen.route) {
+                    navController.navigate(AuthScreen.SignInScreen.route) {
+                        navController.popBackStack()
+                    }
+                } else navController.navigate(AuthScreen.OnBoardingScreen.route) {
+                    navController.popBackStack()
+                }
+            }
+        }
         composable(route = AuthScreen.OnBoardingScreen.route) {
             val onBoardingViewModel: OnBoardingViewModel = hiltViewModel()
             OnBoarding(
@@ -87,7 +110,13 @@ fun NavGraphBuilder.authNavGraph(
                         )
                     }
                 },
-                onSignInNavigate = { navController.navigate(Graph.HOME) }
+                onSignInNavigate = {
+                    navController.navigate(Graph.HOME) {
+                        popUpTo(Graph.AUTHENTICATION){
+                            inclusive = true
+                        }
+                    }
+                },
             )
         }
         composable(route = AuthScreen.SignUpScreen.route) {
@@ -107,8 +136,11 @@ fun NavGraphBuilder.authNavGraph(
                 authenticationState = authenticationState,
                 authenticationEvent = authenticationViewModel::onEvent,
                 isEmailVerified = {
-                    navController.popBackStack()
-                    navController.navigate(Graph.HOME)
+                    navController.navigate(Graph.HOME){
+                        popUpTo(Graph.AUTHENTICATION){
+                            inclusive = true
+                        }
+                    }
                 })
         }
         composable(route = AuthScreen.ForgotPassScreen.route) {
@@ -124,4 +156,5 @@ sealed class AuthScreen(val route: String) {
     object ForgotPassScreen : AuthScreen(route = FORGOT_PASS)
     object OnBoardingScreen : AuthScreen(route = ONBOARDING_SCREEN)
     object EmailVerificationScreen : AuthScreen(route = VERIFICATION_SCREEN)
+    object SplashScreen : AuthScreen(route = SPLASH_SCREEN)
 }

@@ -269,6 +269,7 @@ class Constants {
         //DataStore
         const val ONBOARDING = "on_boarding_pref"
         const val ONBOARDING_COMPLETED = "on_boarding_completed"
+        const val SUCCESSFULLY_SIGN = "successfully_sign_in"
 
 
         //ApiClient
@@ -291,6 +292,7 @@ class Constants {
         const val FORGOT_PASS = "forgot_screen"
         const val ONBOARDING_SCREEN = "onboarding_screen"
         const val VERIFICATION_SCREEN = "verification_screen"
+        const val SPLASH_SCREEN = "splash_screen"
 
 
         //DetailScreen routes

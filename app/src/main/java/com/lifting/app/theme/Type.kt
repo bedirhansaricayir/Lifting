@@ -21,6 +21,12 @@ val Typography = Typography(
         fontSize = 28.sp,
         lineHeight = 28.sp
     ),
+    headlineSmall = TextStyle(
+        fontFamily = macPawFixel,
+        fontWeight = FontWeight.Normal,
+        fontSize = 24.sp,
+        lineHeight = 24.sp
+    ),
     bodyLarge = TextStyle(
         fontFamily = macPawFixel,
         fontWeight = FontWeight.Normal,

@@ -22,4 +22,6 @@ sealed class AuthenticationEvent {
     class OnSignInResultGoogle(val signInResult: SignInResult) : AuthenticationEvent()
 
     object ReloadFirebaseUser : AuthenticationEvent()
+
+    class OnSignInSuccessful(val isSuccessful: Boolean) : AuthenticationEvent()
 }

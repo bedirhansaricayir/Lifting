@@ -13,13 +13,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CustomSplashScreenTheme"
+        android:theme="@style/Theme.FitnessApp"
         tools:targetApi="31">
         <activity
             android:name="com.lifting.app.presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.CustomSplashScreenTheme">
+            android:theme="@style/Theme.FitnessApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
