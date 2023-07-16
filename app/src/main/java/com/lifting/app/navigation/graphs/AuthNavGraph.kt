@@ -72,7 +72,11 @@ fun NavGraphBuilder.authNavGraph(
             SignInScreen(
                 authenticationState = authenticationState,
                 authenticationEvent = authenticationViewModel::onEvent,
-                onToggleModeClick = { navController.navigate(AuthScreen.SignUpScreen.route) },
+                onToggleModeClick = {
+                    navController.navigate(AuthScreen.SignUpScreen.route) {
+                        navController.popBackStack()
+                    }
+                },
                 googleSignInState = googleSignInState,
                 forgotPasswordState = forgotPasswordState,
                 onGoogleSignInButtonClicked = {
@@ -87,11 +91,12 @@ fun NavGraphBuilder.authNavGraph(
                 },
                 onSignInNavigate = {
                     navController.navigate(Graph.HOME) {
-                        popUpTo(Graph.AUTHENTICATION){
+                        popUpTo(Graph.AUTHENTICATION) {
                             inclusive = true
                         }
                     }
-                }
+                },
+                onVerificationRequired = {}
             )
         }
         composable(route = AuthScreen.SignUpScreen.route) {
@@ -101,15 +106,15 @@ fun NavGraphBuilder.authNavGraph(
                 authenticationState = authenticationState,
                 authenticationEvent = authenticationViewModel::onEvent,
                 onToggleModeClick = {
-                    navController.navigate(AuthScreen.SignInScreen.route){
+                    navController.navigate(AuthScreen.SignInScreen.route) {
                         navController.popBackStack()
 
                     }
-                                    },
+                },
                 onSignUpNavigate = {
-                    navController.navigate(AuthScreen.EmailVerificationScreen.route){
+                    navController.navigate(AuthScreen.EmailVerificationScreen.route) {
                         navController.popBackStack()
-                     }
+                    }
                 }
             )
         }
@@ -120,8 +125,8 @@ fun NavGraphBuilder.authNavGraph(
                 authenticationState = authenticationState,
                 authenticationEvent = authenticationViewModel::onEvent,
                 isEmailVerified = {
-                    navController.navigate(Graph.HOME){
-                        popUpTo(Graph.AUTHENTICATION){
+                    navController.navigate(Graph.HOME) {
+                        popUpTo(Graph.AUTHENTICATION) {
                             inclusive = true
                         }
                     }

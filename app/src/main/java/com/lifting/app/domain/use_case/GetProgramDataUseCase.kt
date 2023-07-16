@@ -2,7 +2,7 @@ package com.lifting.app.domain.use_case
 
 import com.lifting.app.core.util.Resource
 import com.lifting.app.data.remote.model.AntrenmanProgramlari
-import com.lifting.app.data.repository.Repository
+import com.lifting.app.domain.repository.Repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

@@ -2,6 +2,7 @@ package com.lifting.app.presentation.onboarding
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,16 +31,16 @@ class SplashViewModel @Inject constructor(
 
     private fun navigateState() {
         viewModelScope.launch {
-            val onBoardingCompleted = repository.onBoardingState()
-            val onSignInSuccessfully = repository.signInState()
-            if (onSignInSuccessfully == true) {
-                _startDestination.value = Graph.HOME
-
-            } else if (onBoardingCompleted == true) {
-                _startDestination.value = AuthScreen.SignInScreen.route
-
-            } else {
-                _startDestination.value = AuthScreen.OnBoardingScreen.route
+            repository.readSuccessfullySignInState().collect { isLogin ->
+              repository.readOnBoardingState().collect { completed ->
+                    if (isLogin) {
+                        _startDestination.value = Graph.HOME
+                    } else if (completed) {
+                        _startDestination.value = AuthScreen.SignInScreen.route
+                    } else {
+                        _startDestination.value = AuthScreen.OnBoardingScreen.route
+                    }
+                }
             }
             _isLoading.value = false
         }

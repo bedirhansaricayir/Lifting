@@ -1,11 +1,18 @@
 package com.lifting.app.feature_auth.data.repository
 
+import android.util.Log
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.lifting.app.core.util.Resource
+import com.lifting.app.feature_auth.domain.model.AuthException
 import com.lifting.app.feature_auth.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -28,10 +35,25 @@ class AuthRepositoryImpl @Inject constructor(
             emit(Resource.Loading)
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             emit(Resource.Success(result))
-        }.catch {
-            emit(Resource.Error(it.message.toString()))
+        }.catch { throwable ->
+            val signInException = handleSignInException(throwable)
+            Log.d("signInException",throwable.toString())
+            emit(Resource.Error(signInException.message))
         }
     }
+
+    fun handleSignInException(throwable: Throwable) : AuthException {
+        return when (throwable) {
+            is FirebaseAuthInvalidCredentialsException -> AuthException.FirebaseAuthInvalidCredentialsException(throwable.errorCode).handleErrorCode()
+            is FirebaseAuthInvalidUserException -> AuthException.FirebaseAuthInvalidUserException(throwable.errorCode).handleErrorCode()
+            is FirebaseNetworkException -> AuthException.FirebaseNetworkException
+            is FirebaseTooManyRequestsException -> AuthException.FirebaseTooManyRequestsException
+            is FirebaseAuthUserCollisionException -> AuthException.FirebaseAuthUserCollisionException
+            else -> throw throwable
+        }
+    }
+
+
 
     override fun emailAndPasswordSignUp(
         username: String,

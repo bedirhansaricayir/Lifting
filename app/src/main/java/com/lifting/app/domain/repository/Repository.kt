@@ -1,4 +1,4 @@
-package com.lifting.app.data.repository
+package com.lifting.app.domain.repository
 
 import com.lifting.app.data.remote.model.AntrenmanProgramlari
 

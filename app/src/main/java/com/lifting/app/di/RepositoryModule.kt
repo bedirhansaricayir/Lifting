@@ -1,6 +1,6 @@
 package com.lifting.app.di
 
-import com.lifting.app.data.repository.Repository
+import com.lifting.app.domain.repository.Repository
 import com.lifting.app.data.repository.RepositoryImpl
 import dagger.Binds
 import dagger.Module
