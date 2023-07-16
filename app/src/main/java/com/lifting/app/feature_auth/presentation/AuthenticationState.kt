@@ -12,7 +12,7 @@ data class AuthenticationState(
     val passwordRequirements: List<PasswordRequirements> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
-    val emailError: Boolean = true,
+    val emailError: Boolean = false,
     val isPasswordShown: Boolean = false,
     val authResult: AuthResult? = null,
     val sendEmailVerification: Boolean = false,

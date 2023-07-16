@@ -1,7 +1,6 @@
 package com.lifting.app.navigation.graphs
 
 import android.app.Activity
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,7 +11,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.lifting.app.core.constants.Constants.Companion.FORGOT_PASS
 import com.lifting.app.core.constants.Constants.Companion.ONBOARDING_SCREEN
 import com.lifting.app.core.constants.Constants.Companion.SIGN_IN
 import com.lifting.app.core.constants.Constants.Companion.SIGN_UP
@@ -21,7 +19,7 @@ import com.lifting.app.feature_auth.presentation.AuthenticationEvent
 import com.lifting.app.feature_auth.presentation.AuthenticationViewModel
 import com.lifting.app.feature_auth.presentation.SignInScreen
 import com.lifting.app.feature_auth.presentation.SignUpScreen
-import com.lifting.app.feature_auth.presentation.VerificationScreen
+import com.lifting.app.feature_auth.presentation.email_verification.VerificationScreen
 import com.lifting.app.presentation.onboarding.OnBoarding
 import com.lifting.app.presentation.onboarding.OnBoardingViewModel
 import kotlinx.coroutines.launch
@@ -52,6 +50,7 @@ fun NavGraphBuilder.authNavGraph(
             val authenticationViewModel: AuthenticationViewModel = hiltViewModel()
             val authenticationState = authenticationViewModel.authState.collectAsState().value
             val googleSignInState = authenticationViewModel.googleState.collectAsState().value
+            val forgotPasswordState = authenticationViewModel.forgotPasswordState.collectAsState().value
             val scope = rememberCoroutineScope()
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartIntentSenderForResult(),
@@ -75,6 +74,7 @@ fun NavGraphBuilder.authNavGraph(
                 authenticationEvent = authenticationViewModel::onEvent,
                 onToggleModeClick = { navController.navigate(AuthScreen.SignUpScreen.route) },
                 googleSignInState = googleSignInState,
+                forgotPasswordState = forgotPasswordState,
                 onGoogleSignInButtonClicked = {
                     scope.launch {
                         val signInIntentSender = authenticationViewModel.signIn()
@@ -91,7 +91,7 @@ fun NavGraphBuilder.authNavGraph(
                             inclusive = true
                         }
                     }
-                },
+                }
             )
         }
         composable(route = AuthScreen.SignUpScreen.route) {
@@ -100,8 +100,17 @@ fun NavGraphBuilder.authNavGraph(
             SignUpScreen(
                 authenticationState = authenticationState,
                 authenticationEvent = authenticationViewModel::onEvent,
-                onToggleModeClick = { navController.navigate(AuthScreen.SignInScreen.route) },
-                onSignUpNavigate = { navController.navigate(AuthScreen.EmailVerificationScreen.route) }
+                onToggleModeClick = {
+                    navController.navigate(AuthScreen.SignInScreen.route){
+                        navController.popBackStack()
+
+                    }
+                                    },
+                onSignUpNavigate = {
+                    navController.navigate(AuthScreen.EmailVerificationScreen.route){
+                        navController.popBackStack()
+                     }
+                }
             )
         }
         composable(route = AuthScreen.EmailVerificationScreen.route) {
@@ -118,17 +127,12 @@ fun NavGraphBuilder.authNavGraph(
                     }
                 })
         }
-        composable(route = AuthScreen.ForgotPassScreen.route) {
-            Log.d("authNavGraph", "Forgot Screen")
-        }
-
     }
 }
 
 sealed class AuthScreen(val route: String) {
     object SignInScreen : AuthScreen(route = SIGN_IN)
     object SignUpScreen : AuthScreen(route = SIGN_UP)
-    object ForgotPassScreen : AuthScreen(route = FORGOT_PASS)
     object OnBoardingScreen : AuthScreen(route = ONBOARDING_SCREEN)
     object EmailVerificationScreen : AuthScreen(route = VERIFICATION_SCREEN)
 }

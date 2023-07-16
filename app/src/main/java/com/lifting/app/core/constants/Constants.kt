@@ -289,7 +289,6 @@ class Constants {
         //AuthScreen routes
         const val SIGN_IN = "login_screen"
         const val SIGN_UP = "register_screen"
-        const val FORGOT_PASS = "forgot_screen"
         const val ONBOARDING_SCREEN = "onboarding_screen"
         const val VERIFICATION_SCREEN = "verification_screen"
 

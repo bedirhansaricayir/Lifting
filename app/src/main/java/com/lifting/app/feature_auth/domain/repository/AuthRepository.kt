@@ -13,6 +13,7 @@ interface AuthRepository {
     fun emailAndPasswordSignUp(username: String, email: String, password: String): Flow<Resource<AuthResult>>
     fun sendEmailVerification(): Flow<Resource<Boolean>>
     fun reloadFirebaseUser(): Flow<Resource<Boolean>>
+    fun sendPasswordResetEmail(email: String): Flow<Resource<Boolean>>
     fun googleSignIn(credential: AuthCredential): Flow<Resource<AuthResult>>
     fun signOut()
 }

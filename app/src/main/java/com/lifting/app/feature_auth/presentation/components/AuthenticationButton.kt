@@ -25,8 +25,8 @@ import com.lifting.app.theme.White40
 fun AuthenticationButton(
     modifier: Modifier = Modifier,
     authenticationMode: AuthenticationMode,
-    backgroundColor: Color,
-    contentColor: Color,
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    contentColor: Color = MaterialTheme.colorScheme.background,
     shape: Dp = 25.dp,
     textStyle: TextStyle = MaterialTheme.typography.titleSmall,
     enabledAuthentication: Boolean = false,
@@ -60,8 +60,11 @@ fun AuthenticationButton(
                         R.string.action_sign_in
                     } else if (authenticationMode == AuthenticationMode.SIGN_UP) {
                         R.string.action_sign_up
-                    } else
+                    } else if (authenticationMode == AuthenticationMode.VERIFICATION) {
                         R.string.action_verification
+                    } else {
+                        R.string.action_reset_password
+                    }
                 ),
                 style = textStyle
             )

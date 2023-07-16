@@ -1,5 +1,6 @@
 package com.lifting.app.feature_auth.presentation
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -51,41 +52,35 @@ fun SignUpScreen(
     onToggleModeClick: () -> Unit,
     onSignUpNavigate: () -> Unit
 ) {
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = authenticationState.sendEmailVerification) {
         if (authenticationState.sendEmailVerification) {
             onSignUpNavigate()
         }
     }
+    LaunchedEffect(key1 = authenticationState.error) {
+        if (authenticationState.error != null) {
+            Toast.makeText(context,authenticationState.error,Toast.LENGTH_LONG).show()
+            authenticationEvent(AuthenticationEvent.ErrorDismissed)
+        }
+    }
 
     SignUpScreenContent(
         modifier = modifier,
         authenticationMode = AuthenticationMode.SIGN_UP,
-        username = authenticationState.username,
-        email = authenticationState.email,
-        password = authenticationState.password,
+        authenticationState = authenticationState,
         completedPasswordRequirements = authenticationState.passwordRequirements,
         onUsernameChanged = { authenticationEvent(AuthenticationEvent.UsernameChanged(it)) },
         onEmailChanged = { authenticationEvent(AuthenticationEvent.EmailChanged(it)) },
         onPasswordChanged = { authenticationEvent(AuthenticationEvent.PasswordChanged(it)) },
         onAuthenticate = { username, email, password ->
-            authenticationEvent(
-                AuthenticationEvent.SignUpButtonClicked(
-                    username,
-                    email,
-                    password
-                )
-            )
+            authenticationEvent(AuthenticationEvent.SignUpButtonClicked(username, email, password))
         },
-        enableAuthentication = authenticationState.isFormValid(),
         onToggleMode = {
             authenticationEvent(AuthenticationEvent.ToggleAuthenticationMode)
             onToggleModeClick()
         },
-        emailError = authenticationState.emailError,
-        authenticationError = authenticationState.error,
-        isLoading = authenticationState.isLoading,
-        isPasswordShown = authenticationState.isPasswordShown,
         onTrailingIconClick = { authenticationEvent(AuthenticationEvent.ToggleVisualTransformation) }
     )
 }
@@ -94,27 +89,19 @@ fun SignUpScreen(
 fun SignUpScreenContent(
     modifier: Modifier = Modifier,
     authenticationMode: AuthenticationMode,
-    username: String?,
-    email: String?,
-    password: String?,
+    authenticationState: AuthenticationState,
     completedPasswordRequirements: List<PasswordRequirements>,
     onUsernameChanged: (username: String) -> Unit,
     onEmailChanged: (email: String) -> Unit,
     onPasswordChanged: (password: String) -> Unit,
     onAuthenticate: (String, String, String) -> Unit,
-    enableAuthentication: Boolean,
     onToggleMode: () -> Unit,
-    emailError: Boolean,
-    authenticationError: String?,
-    isLoading: Boolean,
-    isPasswordShown: Boolean,
     onTrailingIconClick: () -> Unit
 ) {
     val isPasswordValid = PasswordRequirements.values().all { requirement ->
         completedPasswordRequirements.contains(requirement)
     }
     var requirementsVisibility by remember { mutableStateOf(true) }
-    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -138,7 +125,7 @@ fun SignUpScreenContent(
                 .padding(10.dp, 0.dp, 10.dp, 5.dp),
             hint = stringResource(id = R.string.EnterYourName),
             leadingIcon = Icons.Default.Person,
-            textValue = username ?: "",
+            textValue = authenticationState.username ?: "",
             cursorColor = MaterialTheme.colorScheme.primary,
             onValueChanged = onUsernameChanged,
             keyboardType = KeyboardType.Text,
@@ -154,13 +141,13 @@ fun SignUpScreenContent(
                 .padding(10.dp, 0.dp, 10.dp, 5.dp),
             hint = stringResource(id = R.string.EnterYourEmail),
             leadingIcon = Icons.Default.Email,
-            textValue = email ?: "",
+            textValue = authenticationState.email ?: "",
             cursorColor = MaterialTheme.colorScheme.primary,
             onValueChanged = onEmailChanged,
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next,
             trailingIcon = R.drawable.icon_check_circle,
-            trailingIconColor = if (emailError) grey10 else MaterialTheme.colorScheme.primary,
+            trailingIconColor = if (!authenticationState.emailError && authenticationState.email?.isNotEmpty() == true) MaterialTheme.colorScheme.primary else grey10,
             onTrailingIconClick = null
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -171,13 +158,13 @@ fun SignUpScreenContent(
                 .padding(10.dp, 0.dp, 10.dp, 5.dp),
             hint = stringResource(id = R.string.EnterYourPassword),
             leadingIcon = Icons.Default.Lock,
-            textValue = password ?: "",
+            textValue = authenticationState.password ?: "",
             cursorColor = MaterialTheme.colorScheme.primary,
             onValueChanged = onPasswordChanged,
-            visualTransformation = if (isPasswordShown) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (authenticationState.isPasswordShown) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Done,
-            trailingIcon = if (isPasswordShown) R.drawable.icon_visibility else R.drawable.icon_visibility_off,
+            trailingIcon = if (authenticationState.isPasswordShown) R.drawable.icon_visibility else R.drawable.icon_visibility_off,
             onTrailingIconClick = onTrailingIconClick
         )
         AnimatedVisibility(visible = requirementsVisibility) {
@@ -195,29 +182,23 @@ fun SignUpScreenContent(
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
             authenticationMode = authenticationMode,
-            backgroundColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.background,
-            enabledAuthentication = enableAuthentication,
-            isLoading = isLoading,
+            enabledAuthentication = authenticationState.isFormValid(),
+            isLoading = authenticationState.isLoading,
             onAuthenticate = {
-                if (isPasswordValid && !emailError) {
+                if (isPasswordValid && !authenticationState.emailError) {
                     requirementsVisibility = false
-                    onAuthenticate(username!!, email!!, password!!)
+                    onAuthenticate(authenticationState.username!!, authenticationState.email!!, authenticationState.password!!)
 
                 } else requirementsVisibility = !isPasswordValid
             }
         )
         Spacer(modifier = Modifier.weight(1f))
-
         ToggleAuthenticationMode(
             modifier = Modifier
                 .fillMaxWidth(),
             authenticationMode = authenticationMode,
             toggleAuthentication = onToggleMode
         )
-        if (authenticationError != null) {
-            ShowToast(context,authenticationError)
-        }
     }
 }
 

@@ -24,4 +24,11 @@ sealed class AuthenticationEvent {
     object ReloadFirebaseUser : AuthenticationEvent()
 
     class OnSignInSuccessful(val isSuccessful: Boolean) : AuthenticationEvent()
+
+    //ForgotPasswordEvent
+    class ForgotPasswordEmailChanged(val emailAddress: String) : AuthenticationEvent()
+    object ForgotPasswordErrorDismissed : AuthenticationEvent()
+    object ClearForgotPasswordState : AuthenticationEvent()
+    class OnResetPasswordRequest(val email: String) : AuthenticationEvent()
+
 }

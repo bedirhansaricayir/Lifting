@@ -10,6 +10,7 @@ import com.lifting.app.feature_auth.domain.model.PasswordRequirements
 import com.lifting.app.feature_auth.domain.model.InputValidationType
 import com.lifting.app.feature_auth.domain.repository.AuthRepository
 import com.lifting.app.feature_auth.domain.use_case.EmailInputValidationUseCase
+import com.lifting.app.feature_auth.presentation.forgot_password.ForgotPasswordState
 import com.lifting.app.feature_auth.presentation.google_auth.GoogleAuthUiClient
 import com.lifting.app.feature_auth.presentation.google_auth.GoogleSignInState
 import com.lifting.app.feature_auth.presentation.google_auth.SignInResult
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(
@@ -34,6 +36,9 @@ class AuthenticationViewModel @Inject constructor(
 
     private val _googleState = MutableStateFlow(GoogleSignInState())
     val googleState: StateFlow<GoogleSignInState> = _googleState.asStateFlow()
+
+    private val _forgotPasswordState = MutableStateFlow(ForgotPasswordState())
+    val forgotPasswordState: StateFlow<ForgotPasswordState> = _forgotPasswordState.asStateFlow()
 
     fun onEvent(authenticationEvent: AuthenticationEvent) {
         when (authenticationEvent) {
@@ -84,6 +89,19 @@ class AuthenticationViewModel @Inject constructor(
             is AuthenticationEvent.OnSignInSuccessful -> {
                 saveSuccessfullySignInState(authenticationEvent.isSuccessful)
             }
+            is AuthenticationEvent.ClearForgotPasswordState -> {
+                clearForgotPasswordState()
+            }
+            is AuthenticationEvent.ForgotPasswordEmailChanged -> {
+                updateForgotPasswordEmail(authenticationEvent.emailAddress)
+                checkInputValidation(authenticationEvent.emailAddress)
+            }
+            is AuthenticationEvent.ForgotPasswordErrorDismissed -> {
+                dismissForgotPasswordError()
+            }
+            is AuthenticationEvent.OnResetPasswordRequest -> {
+                sendPasswordResetEmail(authenticationEvent.email)
+            }
         }
     }
 
@@ -129,6 +147,8 @@ class AuthenticationViewModel @Inject constructor(
             passwordRequirements = requirements.toList()
         )
     }
+
+
 
     private fun emailPasswordSignIn(email: String, password: String) {
         _authState.value = _authState.value.copy(
@@ -248,6 +268,8 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
+
+
     suspend fun signInWithIntent(intent: Intent): SignInResult =
         googleAuthUiClient.signInWithIntent(intent)
 
@@ -271,10 +293,55 @@ class AuthenticationViewModel @Inject constructor(
         )
     }
 
+
+
     private fun toggleVisualTransformation() {
         _authState.value = _authState.value.copy(
             isPasswordShown = !_authState.value.isPasswordShown
         )
+    }
+
+    private fun clearForgotPasswordState() {
+        _forgotPasswordState.value = _forgotPasswordState.value.copy(
+            email = null,
+            error = null,
+            isEmailValid = true,
+            isLoading = false,
+            isSend = false
+        )
+    }
+    private fun updateForgotPasswordEmail(email: String) {
+        _forgotPasswordState.value = _forgotPasswordState.value.copy(
+            email = email
+        )
+    }
+    private fun dismissForgotPasswordError() {
+        _forgotPasswordState.value = _forgotPasswordState.value.copy(
+            error = null
+        )
+    }
+    private fun sendPasswordResetEmail(email: String) = viewModelScope.launch {
+        authRepository.sendPasswordResetEmail(email).collect { result ->
+            when(result) {
+                is Resource.Success -> {
+                    _forgotPasswordState.value = _forgotPasswordState.value.copy(
+                        isSend = result.data!!,
+                        isLoading = false,
+                    )
+                }
+                is Resource.Loading -> {
+                    _forgotPasswordState.value = _forgotPasswordState.value.copy(
+                        isLoading = true
+                    )
+                }
+                is Resource.Error -> {
+                    _forgotPasswordState.value = _forgotPasswordState.value.copy(
+                        error = result.e,
+                        isLoading = false,
+                    )
+                }
+            }
+        }
     }
 
     private fun checkInputValidation(email: String) {
@@ -288,11 +355,17 @@ class AuthenticationViewModel @Inject constructor(
                 _authState.value = _authState.value.copy(
                     emailError = true
                 )
+                _forgotPasswordState.value = _forgotPasswordState.value.copy(
+                    isEmailValid = false
+                )
             }
 
             InputValidationType.Valid -> {
                 _authState.value = _authState.value.copy(
                     emailError = false
+                )
+                _forgotPasswordState.value = _forgotPasswordState.value.copy(
+                    isEmailValid = true
                 )
             }
         }

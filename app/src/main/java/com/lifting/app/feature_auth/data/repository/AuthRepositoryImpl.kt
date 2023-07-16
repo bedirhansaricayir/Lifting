@@ -1,6 +1,5 @@
 package com.lifting.app.feature_auth.data.repository
 
-import android.util.Log
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -65,6 +64,16 @@ class AuthRepositoryImpl @Inject constructor(
         return flow {
             emit(Resource.Loading)
             firebaseAuth.currentUser?.reload()?.await()
+            emit(Resource.Success(true))
+        }.catch {
+            emit(Resource.Error(it.message.toString()))
+        }
+    }
+
+    override fun sendPasswordResetEmail(email: String): Flow<Resource<Boolean>> {
+        return flow {
+            emit(Resource.Loading)
+            firebaseAuth.sendPasswordResetEmail(email).await()
             emit(Resource.Success(true))
         }.catch {
             emit(Resource.Error(it.message.toString()))

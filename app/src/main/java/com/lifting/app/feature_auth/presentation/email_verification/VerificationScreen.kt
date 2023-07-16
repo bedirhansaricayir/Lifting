@@ -1,4 +1,4 @@
-package com.lifting.app.feature_auth.presentation
+package com.lifting.app.feature_auth.presentation.email_verification
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,6 +21,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
 import com.lifting.app.feature_auth.domain.model.AuthenticationMode
+import com.lifting.app.feature_auth.presentation.AuthenticationEvent
+import com.lifting.app.feature_auth.presentation.AuthenticationState
 import com.lifting.app.feature_auth.presentation.components.AuthenticationButton
 import com.lifting.app.feature_auth.presentation.components.AuthenticationTitle
 import com.lifting.app.theme.grey50
@@ -87,8 +89,6 @@ fun VerificationScreenContent(
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
             authenticationMode = authenticationMode,
-            backgroundColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.background,
             enabledAuthentication = true,
             onAuthenticate = onReload
         )
