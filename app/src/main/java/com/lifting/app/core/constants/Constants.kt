@@ -278,13 +278,8 @@ class Constants {
 
         //MainScreen routes
         const val HOME_SCREEN = "home_screen"
-        const val HOME_SCREEN_TITLE = "Programlar"
-
         const val TRACKER_SCREEN = "tracker_screen"
-        const val TRACKER_SCREEN_TITLE = "Analiz"
-
         const val HEALTH_SCREEN = "health_screen"
-        const val HEALTH_SCREEN_TITLE = "Sağlık"
 
         //AuthScreen routes
         const val SIGN_IN = "login_screen"

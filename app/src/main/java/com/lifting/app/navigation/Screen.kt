@@ -4,32 +4,30 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.lifting.app.R
 import com.lifting.app.core.constants.Constants.Companion.HEALTH_SCREEN
-import com.lifting.app.core.constants.Constants.Companion.HEALTH_SCREEN_TITLE
 import com.lifting.app.core.constants.Constants.Companion.HOME_SCREEN
-import com.lifting.app.core.constants.Constants.Companion.HOME_SCREEN_TITLE
 import com.lifting.app.core.constants.Constants.Companion.TRACKER_SCREEN
-import com.lifting.app.core.constants.Constants.Companion.TRACKER_SCREEN_TITLE
 
 sealed class Screen(
     val route: String,
-    val title: String,
+    @StringRes
+    val title: Int,
     val icon: Int? = null
 ) {
     object HomeScreen : Screen(
         route = HOME_SCREEN,
-        title = HOME_SCREEN_TITLE,
+        title = R.string.label_navbar_workouts,
         icon = R.drawable.workout
     )
 
     object TrackerScreen : Screen(
         route = TRACKER_SCREEN,
-        title = TRACKER_SCREEN_TITLE,
+        title = R.string.label_navbar_analysis,
         icon = R.drawable.analysis
     )
 
     object HealthScreen : Screen(
         route = HEALTH_SCREEN,
-        title = HEALTH_SCREEN_TITLE,
+        title = R.string.label_navbar_health,
         icon = R.drawable.pulse
     )
 

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FitnessApp</string>
+    <string name="FirstOnBoardingPageTitle">En iyi programları seç</string>
+    <string name="FirstOnBoardingPageDescription">Her seviye için oluşturulmuş toplamda 15\'ten fazla egzersiz programı formda kalmanıza yardımcı olacaktır.</string>
+    <string name="SecondOnBoardingPageTitle">Kendi programını oluştur veya mevcut olanı seç</string>
+    <string name="SecondOnBoardingPageDescription">Herhangi bir antrenmanı seçin, daha hızlı sonuçlar için kişiselleştirilmiş plana sahip olun.</string>
+    <string name="ThirdOnBoardingPageTitle">Etkinliklerini takip et.</string>
+    <string name="ThirdOnBoardingPageDescription">Etkinlik izleyici, günlük ölçümlerinizi sizin için saklar ve bunları analiz etmenize yardımcı olur.</string>
+    <string name="GetStarted">Şimdi Başla</string>
+    <string name="BeginnerProgram">Başlangıç Seviye</string>
+    <string name="IntermediateProgram">Orta Seviye</string>
+    <string name="AdvancedProgram">İleri Seviye</string>
+    <string name="Güncelle">Güncelle</string>
+    <string name="PlanSeç">Antrenman Planını Seç</string>
+    <string name="Analiz">İlerleme Çizelgen</string>
+    <string name="Gecmis">Geçmiş</string>
+    <string name="Macro">Kalori İhtiyacını Hesapla</string>
+    <string name="Cinsiyet">Cinsiyetini Seç</string>
+    <string name="AktiviteSeviyesi">Aktivite Seviyeni Seç</string>
+    <string name="Hesapla">Hesapla</string>
+    <string name="Kapat">Kapat</string>
+    <string name="KalorinizHesaplandi">Kaloriniz Hesaplandı</string>
+    <string name="customDialogText">Günlük kalori ihtiyacınız mevcut kilonuzu korumaya ve formda kalmanıza yardımcı olur. Kilo almak veya vermek istiyorsanız bu kalori değeri +/- 500 kalori kadar değişebilir.</string>
+    <string name="PersonalizedProgramTitle">Kişisel Antrenman Planınız</string>
+    <string name="Olustur">Oluştur</string>
+    <string name="KişiselProgram">Kişisel programınız oluşturuldu.</string>
+    <string name="HowManyDays">Haftada Kaç gün antrenman yapıyorsun ?</string>
+    <string name="WhatIsYourGoal">Hedefin nedir ?</string>
+    <string name="password_requirement_characters">En az 8 karakter</string>
+    <string name="password_requirement_capital">En az 1 büyük harf</string>
+    <string name="password_requirement_digit">En az 1 rakam</string>
+    <string name="action_sign_up">Kayıt ol</string>
+    <string name="action_sign_in">Giriş yap</string>
+    <string name="label_sign_in_to_account">veya</string>
+    <string name="label_sign_up_for_account">Kayıt Ol</string>
+    <string name="Username">Ad</string>
+    <string name="Email">E-posta</string>
+    <string name="Password">Şifre</string>
+    <string name="EnterYourName">Adınızı giriniz</string>
+    <string name="EnterYourEmail">E-posta adresinizi giriniz</string>
+    <string name="EnterYourPassword">Şifrenizi giriniz</string>
+    <string name="password_requirement_satisfied">%s, satisfied</string>
+    <string name="password_requirement_needed">%s, needed</string>
+    <string name="action_need_account">Hesabın Yok mu? </string>
+    <string name="action_already_have_account">Zaten bir hesabın var mı?</string>
+    <string name="action_sign_in_text_button">Kayıt ol</string>
+    <string name="action_sign_up_text_button">Giriş yap</string>
+    <string name="or">veya</string>
+    <string name="label_welcome_back">Tekrar Hoşgeldin</string>
+    <string name="label_create_an_account">Hesap Oluştur</string>
+    <string name="label_forgot_password">"Şifreni mi unuttun?"</string>
+    <string name="continue_with_google">Google ile giriş yap</string>
+    <string name="label_verification_screen">Lütfen E-posta Adresini Doğrula</string>
+    <string name="label_verification_screen_subtitle">Bir doğrulama e-postası gönderdik. Gelişmiş özelliklerin kilidini açmak için lütfen e-postanızı doğrulayın</string>
+    <string name="action_verification">Onayladım</string>
+    <string name="label_homepage_welcome">Hoşgeldin,</string>
+    <string name="label_forgot_password_subtitle">E-posta adresinizi girin, size yeni bir şifre oluşturmak için bir bağlantı gönderelim</string>
+    <string name="action_reset_password">Gönder</string>
+    <string name="label_personalized_plan">Kişiselleştirilmiş Plan </string>
+    <string name="label_navbar_workouts">Programlar</string>
+    <string name="label_navbar_analysis">Analiz</string>
+    <string name="label_navbar_health">Sağlık</string>
+    <string name="label_analysis_dialog_title">Vücut ağırlığını güncelle</string>
+
+
+</resources>

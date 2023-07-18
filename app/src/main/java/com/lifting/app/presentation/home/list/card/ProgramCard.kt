@@ -41,6 +41,7 @@ import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
@@ -267,7 +268,11 @@ fun PersonalizedProgramCard(
                         true
                     }
 
-                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    MotionEvent.ACTION_CANCEL -> {
+                        isCardScaled = false
+                        true
+                    }
+                    MotionEvent.ACTION_UP -> {
                         isCardScaled = false
                         onButtonClicked.invoke()
                         true
@@ -306,7 +311,7 @@ fun PersonalizedProgramCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Kişiselleştirilmiş Plan",
+                            text = stringResource(id = R.string.label_personalized_plan),
                             color = MaterialTheme.colorScheme.primary,
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleMedium

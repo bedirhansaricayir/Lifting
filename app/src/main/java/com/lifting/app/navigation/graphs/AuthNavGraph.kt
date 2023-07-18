@@ -1,6 +1,7 @@
 package com.lifting.app.navigation.graphs
 
 import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -47,6 +48,7 @@ fun NavGraphBuilder.authNavGraph(
             )
         }
         composable(route = AuthScreen.SignInScreen.route) {
+            BackHandler(true) {}
             val authenticationViewModel: AuthenticationViewModel = hiltViewModel()
             val authenticationState = authenticationViewModel.authState.collectAsState().value
             val googleSignInState = authenticationViewModel.googleState.collectAsState().value
@@ -114,6 +116,7 @@ fun NavGraphBuilder.authNavGraph(
             )
         }
         composable(route = AuthScreen.EmailVerificationScreen.route) {
+            BackHandler(true) {}
             val authenticationViewModel: AuthenticationViewModel = hiltViewModel()
             val authenticationState = authenticationViewModel.authState.collectAsState().value
             VerificationScreen(

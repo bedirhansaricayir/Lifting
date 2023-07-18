@@ -61,7 +61,7 @@ fun CustomTrackingDialog(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(8.dp),
-                    text = "Vücut ağırlığını güncelle",
+                    text = stringResource(id = R.string.label_analysis_dialog_title),
                     style = MaterialTheme.typography.titleSmall
                 )
 

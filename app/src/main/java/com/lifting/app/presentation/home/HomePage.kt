@@ -223,6 +223,7 @@ fun HomeScreen(
             .fillMaxSize()
             .statusBarsPadding()
             .background(color = grey50)
+            .padding(horizontal = 8.dp)
             .verticalScroll(verticalScroll)
 
     ) {
