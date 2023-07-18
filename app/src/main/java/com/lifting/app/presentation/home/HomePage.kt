@@ -272,7 +272,7 @@ fun SignedInUserSection(userData: UserData) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 8.dp, vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-        UserImage(modifier = Modifier,userImage = userData.profilePictureUrl!!)
+        UserImage(modifier = Modifier,userImage = userData.profilePictureUrl ?: "")
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(start = 16.dp), verticalArrangement = Arrangement.Center) {

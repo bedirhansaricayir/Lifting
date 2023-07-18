@@ -54,16 +54,6 @@ class DataStoreRepository(context: Context) {
             }
     }
 
-    suspend fun signInState(): Boolean? {
-        val prefsKey = booleanPreferencesKey(SUCCESSFULLY_SIGN)
-        val prefs = dataStore.data.first()
-        return prefs[prefsKey]
-    }
-    suspend fun onBoardingState(): Boolean? {
-        val prefsKey = booleanPreferencesKey(ONBOARDING_COMPLETED)
-        val prefs = dataStore.data.first()
-        return prefs[prefsKey]
-    }
     fun readSuccessfullySignInState(): Flow<Boolean> {
         return dataStore.data
             .catch {exception ->

@@ -55,7 +55,8 @@ fun SignInScreen(
     authenticationEvent: (AuthenticationEvent) -> Unit,
     onToggleModeClick: () -> Unit,
     onGoogleSignInButtonClicked: () -> Unit,
-    onSignInNavigate: () -> Unit
+    onSignInNavigate: () -> Unit,
+    onVerificationRequired: () -> Unit
 ) {
     val context = LocalContext.current
     LaunchedEffect(key1 = googleSignInState.signInError) {
@@ -87,6 +88,9 @@ fun SignInScreen(
         if (authResult != null && authResult.user?.isEmailVerified == true) {
             authenticationEvent(AuthenticationEvent.OnSignInSuccessful(true))
             onSignInNavigate()
+        }
+        if (authResult != null && authResult.user?.isEmailVerified == false) {
+            onVerificationRequired()
         }
     }
 
