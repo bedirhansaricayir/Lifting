@@ -8,7 +8,7 @@ import com.lifting.app.data.local.datastore.DataStoreRepository
 import com.lifting.app.feature_auth.domain.model.AuthenticationMode
 import com.lifting.app.feature_auth.domain.model.PasswordRequirements
 import com.lifting.app.feature_auth.domain.model.InputValidationType
-import com.lifting.app.feature_auth.domain.repository.AuthRepository
+import com.lifting.app.feature_auth.domain.use_case.AuthenticationUseCase
 import com.lifting.app.feature_auth.domain.use_case.EmailInputValidationUseCase
 import com.lifting.app.feature_auth.presentation.forgot_password.ForgotPasswordState
 import com.lifting.app.feature_auth.presentation.google_auth.GoogleAuthUiClient
@@ -26,9 +26,9 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(
     private val emailInputValidationUseCase: EmailInputValidationUseCase,
-    private val authRepository: AuthRepository,
     private val googleAuthUiClient: GoogleAuthUiClient,
-    private val dataStoreRepository: DataStoreRepository
+    private val dataStoreRepository: DataStoreRepository,
+    private val authenticationUseCase: AuthenticationUseCase
 ) : ViewModel() {
 
     private val _authState = MutableStateFlow(AuthenticationState())
@@ -86,19 +86,24 @@ class AuthenticationViewModel @Inject constructor(
             is AuthenticationEvent.ReloadFirebaseUser -> {
                 reloadFirebaseUser()
             }
+
             is AuthenticationEvent.OnSignInSuccessful -> {
                 saveSuccessfullySignInState(authenticationEvent.isSuccessful)
             }
+
             is AuthenticationEvent.ClearForgotPasswordState -> {
                 clearForgotPasswordState()
             }
+
             is AuthenticationEvent.ForgotPasswordEmailChanged -> {
                 updateForgotPasswordEmail(authenticationEvent.emailAddress)
                 checkInputValidation(authenticationEvent.emailAddress)
             }
+
             is AuthenticationEvent.ForgotPasswordErrorDismissed -> {
                 dismissForgotPasswordError()
             }
+
             is AuthenticationEvent.OnResetPasswordRequest -> {
                 sendPasswordResetEmail(authenticationEvent.email)
             }
@@ -149,13 +154,12 @@ class AuthenticationViewModel @Inject constructor(
     }
 
 
-
     private fun emailPasswordSignIn(email: String, password: String) {
         _authState.value = _authState.value.copy(
             isLoading = true
         )
         viewModelScope.launch {
-            authRepository.emailAndPasswordSignIn(email, password).collect { result ->
+            authenticationUseCase.emailPasswordSignIn(email, password).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         _authState.value = _authState.value.copy(
@@ -186,7 +190,7 @@ class AuthenticationViewModel @Inject constructor(
             isLoading = true
         )
         viewModelScope.launch {
-            authRepository.emailAndPasswordSignUp(username, email, password).collect { result ->
+            authenticationUseCase.emailPasswordSignUp(username, email, password).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         _authState.value = _authState.value.copy(
@@ -214,7 +218,7 @@ class AuthenticationViewModel @Inject constructor(
     }
 
     suspend fun sendEmailVerification() {
-        authRepository.sendEmailVerification().collect { result ->
+        authenticationUseCase.sendEmailVerification().collect { result ->
             when (result) {
                 is Resource.Success -> {
                     _authState.value = _authState.value.copy(
@@ -239,16 +243,13 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
-    private fun provideCurrentUser() = authRepository.currentUser
-    var isEmailVerified = authRepository.currentUser?.isEmailVerified ?: false
-
     private fun reloadFirebaseUser() = viewModelScope.launch {
-        authRepository.reloadFirebaseUser().collect { result ->
+        authenticationUseCase.reloadFirebaseUser().collect { result ->
             when (result) {
                 is Resource.Success -> {
                     _authState.value = _authState.value.copy(
                         isUserReloaded = result.data!!,
-                        isEmailVerified = authRepository.currentUser?.isEmailVerified ?: false
+                        isEmailVerified = authenticationUseCase.provideCurrentUser()?.isEmailVerified ?: false
                     )
                 }
 
@@ -269,7 +270,6 @@ class AuthenticationViewModel @Inject constructor(
     }
 
 
-
     suspend fun signInWithIntent(intent: Intent): SignInResult =
         googleAuthUiClient.signInWithIntent(intent)
 
@@ -282,9 +282,7 @@ class AuthenticationViewModel @Inject constructor(
     }
 
 
-    private fun signOut() = viewModelScope.launch {
-        authRepository.signOut()
-    }
+    private fun signOut() = authenticationUseCase.signOut()
 
 
     private fun dismissError() {
@@ -292,7 +290,6 @@ class AuthenticationViewModel @Inject constructor(
             error = null
         )
     }
-
 
 
     private fun toggleVisualTransformation() {
@@ -310,30 +307,35 @@ class AuthenticationViewModel @Inject constructor(
             isSend = false
         )
     }
+
     private fun updateForgotPasswordEmail(email: String) {
         _forgotPasswordState.value = _forgotPasswordState.value.copy(
             email = email
         )
     }
+
     private fun dismissForgotPasswordError() {
         _forgotPasswordState.value = _forgotPasswordState.value.copy(
             error = null
         )
     }
+
     private fun sendPasswordResetEmail(email: String) = viewModelScope.launch {
-        authRepository.sendPasswordResetEmail(email).collect { result ->
-            when(result) {
+        authenticationUseCase.sendPasswordResetEmail(email).collect { result ->
+            when (result) {
                 is Resource.Success -> {
                     _forgotPasswordState.value = _forgotPasswordState.value.copy(
                         isSend = result.data!!,
                         isLoading = false,
                     )
                 }
+
                 is Resource.Loading -> {
                     _forgotPasswordState.value = _forgotPasswordState.value.copy(
                         isLoading = true
                     )
                 }
+
                 is Resource.Error -> {
                     _forgotPasswordState.value = _forgotPasswordState.value.copy(
                         error = result.e,
@@ -371,7 +373,8 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
-    private fun saveSuccessfullySignInState(completed: Boolean) = viewModelScope.launch(Dispatchers.IO) {
-        dataStoreRepository.saveSuccessfullySignInState(completed)
-    }
+    private fun saveSuccessfullySignInState(completed: Boolean) =
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreRepository.saveSuccessfullySignInState(completed)
+        }
 }

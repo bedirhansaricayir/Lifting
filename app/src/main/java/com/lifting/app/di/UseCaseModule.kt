@@ -1,5 +1,6 @@
 package com.lifting.app.di
 
+import com.lifting.app.feature_auth.data.repository.AuthRepositoryImpl
 import com.lifting.app.feature_auth.domain.use_case.AuthenticationUseCase
 import com.lifting.app.feature_auth.domain.use_case.EmailInputValidationUseCase
 import dagger.Module
@@ -14,7 +15,7 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideAuthenticationUseCase(): AuthenticationUseCase = AuthenticationUseCase()
+    fun provideAuthenticationUseCase(authRepositoryImpl: AuthRepositoryImpl): AuthenticationUseCase = AuthenticationUseCase(authRepositoryImpl)
 
     @Provides
     @Singleton

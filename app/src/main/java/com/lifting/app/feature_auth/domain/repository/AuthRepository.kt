@@ -1,19 +1,15 @@
 package com.lifting.app.feature_auth.domain.repository
 
-import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
-import com.lifting.app.core.util.Resource
-import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
 
     val currentUser: FirebaseUser?
-    fun emailAndPasswordSignIn(email: String, password: String): Flow<Resource<AuthResult>>
-    fun emailAndPasswordSignUp(username: String, email: String, password: String): Flow<Resource<AuthResult>>
-    fun sendEmailVerification(): Flow<Resource<Boolean>>
-    fun reloadFirebaseUser(): Flow<Resource<Boolean>>
-    fun sendPasswordResetEmail(email: String): Flow<Resource<Boolean>>
-    fun googleSignIn(credential: AuthCredential): Flow<Resource<AuthResult>>
+    suspend fun emailAndPasswordSignIn(email: String, password: String): AuthResult
+    suspend fun emailAndPasswordSignUp(username: String, email: String, password: String): AuthResult
+    suspend fun sendEmailVerification(): Boolean
+    suspend fun reloadFirebaseUser(): Boolean
+    suspend fun sendPasswordResetEmail(email: String): Boolean
     fun signOut()
 }
