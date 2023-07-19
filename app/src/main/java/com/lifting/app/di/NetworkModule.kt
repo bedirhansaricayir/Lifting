@@ -61,11 +61,13 @@ object NetworkModule {
     }
 
     @Provides
+    @Singleton
     fun provideOneTapClient(
         @ApplicationContext
         context: Context
     ) = Identity.getSignInClient(context)
     @Provides
+    @Singleton
     fun provideGoogleAuthUiClient(
         @ApplicationContext
         context: Context,

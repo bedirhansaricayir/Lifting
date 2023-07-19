@@ -15,6 +15,8 @@ sealed class AuthenticationEvent {
 
     class SignInButtonClicked(val email: String, val password: String) : AuthenticationEvent()
 
+    object OnVerificationRequired : AuthenticationEvent()
+
     object ErrorDismissed : AuthenticationEvent()
 
     object ToggleVisualTransformation : AuthenticationEvent()

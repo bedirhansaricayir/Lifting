@@ -41,7 +41,7 @@ fun Requirement(
     }
     val tint = if (satisfied) {
         MaterialTheme.colorScheme.primary
-    } else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+    } else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
     Row(
         modifier = Modifier
             .padding(6.dp)

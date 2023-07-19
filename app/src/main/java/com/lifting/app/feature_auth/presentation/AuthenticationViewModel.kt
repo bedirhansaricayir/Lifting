@@ -10,6 +10,11 @@ import com.lifting.app.feature_auth.domain.model.PasswordRequirements
 import com.lifting.app.feature_auth.domain.model.InputValidationType
 import com.lifting.app.feature_auth.domain.use_case.AuthenticationUseCase
 import com.lifting.app.feature_auth.domain.use_case.EmailInputValidationUseCase
+import com.lifting.app.feature_auth.domain.use_case.ReloadUserUseCase
+import com.lifting.app.feature_auth.domain.use_case.SendEmailVerificationUseCase
+import com.lifting.app.feature_auth.domain.use_case.SendPasswordResetUseCase
+import com.lifting.app.feature_auth.domain.use_case.SignInUseCase
+import com.lifting.app.feature_auth.domain.use_case.SignUpUseCase
 import com.lifting.app.feature_auth.presentation.forgot_password.ForgotPasswordState
 import com.lifting.app.feature_auth.presentation.google_auth.GoogleAuthUiClient
 import com.lifting.app.feature_auth.presentation.google_auth.GoogleSignInState
@@ -28,7 +33,12 @@ class AuthenticationViewModel @Inject constructor(
     private val emailInputValidationUseCase: EmailInputValidationUseCase,
     private val googleAuthUiClient: GoogleAuthUiClient,
     private val dataStoreRepository: DataStoreRepository,
-    private val authenticationUseCase: AuthenticationUseCase
+    private val authenticationUseCase: AuthenticationUseCase,
+    private val signInUseCase: SignInUseCase,
+    private val signUpUseCase: SignUpUseCase,
+    private val sendEmailVerificationUseCase: SendEmailVerificationUseCase,
+    private val reloadUserUseCase: ReloadUserUseCase,
+    private val sendPasswordResetUseCase: SendPasswordResetUseCase
 ) : ViewModel() {
 
     private val _authState = MutableStateFlow(AuthenticationState())
@@ -65,6 +75,10 @@ class AuthenticationViewModel @Inject constructor(
                     authenticationEvent.email,
                     authenticationEvent.password
                 )
+            }
+
+            is AuthenticationEvent.OnVerificationRequired -> {
+                sendEmailVerification()
             }
 
             is AuthenticationEvent.ErrorDismissed -> {
@@ -159,7 +173,7 @@ class AuthenticationViewModel @Inject constructor(
             isLoading = true
         )
         viewModelScope.launch {
-            authenticationUseCase.emailPasswordSignIn(email, password).collect { result ->
+            signInUseCase.invoke(email, password).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         _authState.value = _authState.value.copy(
@@ -190,7 +204,7 @@ class AuthenticationViewModel @Inject constructor(
             isLoading = true
         )
         viewModelScope.launch {
-            authenticationUseCase.emailPasswordSignUp(username, email, password).collect { result ->
+            signUpUseCase.invoke(username, email, password).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         _authState.value = _authState.value.copy(
@@ -217,34 +231,37 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
-    suspend fun sendEmailVerification() {
-        authenticationUseCase.sendEmailVerification().collect { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _authState.value = _authState.value.copy(
-                        sendEmailVerification = result.data!!,
-                        isLoading = false
-                    )
-                }
+    private fun sendEmailVerification() {
+        viewModelScope.launch {
+            sendEmailVerificationUseCase.invoke().collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        _authState.value = _authState.value.copy(
+                            sendEmailVerification = result.data!!,
+                            isLoading = false
+                        )
+                    }
 
-                is Resource.Loading -> {
-                    _authState.value = _authState.value.copy(
-                        isLoading = true
-                    )
-                }
+                    is Resource.Loading -> {
+                        _authState.value = _authState.value.copy(
+                            isLoading = true
+                        )
+                    }
 
-                is Resource.Error -> {
-                    _authState.value = _authState.value.copy(
-                        isLoading = false,
-                        error = result.e
-                    )
+                    is Resource.Error -> {
+                        _authState.value = _authState.value.copy(
+                            isLoading = false,
+                            error = result.e
+                        )
+                    }
                 }
             }
         }
+
     }
 
     private fun reloadFirebaseUser() = viewModelScope.launch {
-        authenticationUseCase.reloadFirebaseUser().collect { result ->
+        reloadUserUseCase.invoke().collect { result ->
             when (result) {
                 is Resource.Success -> {
                     _authState.value = _authState.value.copy(
@@ -321,7 +338,7 @@ class AuthenticationViewModel @Inject constructor(
     }
 
     private fun sendPasswordResetEmail(email: String) = viewModelScope.launch {
-        authenticationUseCase.sendPasswordResetEmail(email).collect { result ->
+        sendPasswordResetUseCase.invoke(email).collect { result ->
             when (result) {
                 is Resource.Success -> {
                     _forgotPasswordState.value = _forgotPasswordState.value.copy(

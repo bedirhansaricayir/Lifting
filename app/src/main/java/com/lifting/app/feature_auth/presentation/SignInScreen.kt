@@ -90,6 +90,7 @@ fun SignInScreen(
             onSignInNavigate()
         }
         if (authResult != null && authResult.user?.isEmailVerified == false) {
+            authenticationEvent(AuthenticationEvent.OnVerificationRequired)
             onVerificationRequired()
         }
     }

@@ -98,7 +98,11 @@ fun NavGraphBuilder.authNavGraph(
                         }
                     }
                 },
-                onVerificationRequired = {}
+                onVerificationRequired = {
+                    navController.navigate(AuthScreen.EmailVerificationScreen.route) {
+                        navController.popBackStack()
+                    }
+                }
             )
         }
         composable(route = AuthScreen.SignUpScreen.route) {
