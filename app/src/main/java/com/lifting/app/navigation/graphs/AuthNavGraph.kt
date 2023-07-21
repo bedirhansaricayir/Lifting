@@ -77,21 +77,6 @@ fun NavGraphBuilder.authNavGraph(
                         }
                     }
                     authenticationViewModel.onEvent(AuthenticationEvent.OnGoogleButtonEnabled)
-/*                    if (result.resultCode == Activity.RESULT_OK) {
-                        scope.launch {
-                            val signInResult = authenticationViewModel.signInWithIntent(
-                                intent = result.data ?: return@launch
-                            )
-                            authenticationViewModel.onEvent(
-                                AuthenticationEvent.OnSignInResultGoogle(
-                                    signInResult
-                                )
-                            )
-                        }
-                    }
-                    if (result.resultCode == Activity.RESULT_CANCELED) {
-                        Log.d("Iptal","iptal edildi")
-                    }*/
                 }
             )
             SignInScreen(

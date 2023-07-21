@@ -1,6 +1,5 @@
 package com.lifting.app.feature_home.data.repository
 
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.lifting.app.common.constants.Constants.Companion.USERS
 import com.lifting.app.feature_home.domain.model.UserInfo

@@ -71,8 +71,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesFirebaseRepositoryImpl(firebaseAuth: FirebaseAuth, firestore: FirebaseFirestore): FirebaseRepository {
-        return FirebaseRepositoryImpl(firebaseAuth, firestore)
+    fun providesFirebaseRepositoryImpl(firestore: FirebaseFirestore): FirebaseRepository {
+        return FirebaseRepositoryImpl(firestore)
     }
 
     @Provides
