@@ -3,11 +3,12 @@ package com.lifting.app.feature_auth.presentation
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lifting.app.core.util.Resource
-import com.lifting.app.data.local.datastore.DataStoreRepository
+import com.lifting.app.common.util.Resource
+import com.lifting.app.feature_home.data.local.datastore.DataStoreRepository
 import com.lifting.app.feature_auth.domain.model.AuthenticationMode
 import com.lifting.app.feature_auth.domain.model.PasswordRequirements
 import com.lifting.app.feature_auth.domain.model.InputValidationType
+import com.lifting.app.feature_auth.domain.use_case.AddUserToFirestoreUseCase
 import com.lifting.app.feature_auth.domain.use_case.AuthenticationUseCase
 import com.lifting.app.feature_auth.domain.use_case.EmailInputValidationUseCase
 import com.lifting.app.feature_auth.domain.use_case.ReloadUserUseCase
@@ -38,7 +39,8 @@ class AuthenticationViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
     private val sendEmailVerificationUseCase: SendEmailVerificationUseCase,
     private val reloadUserUseCase: ReloadUserUseCase,
-    private val sendPasswordResetUseCase: SendPasswordResetUseCase
+    private val sendPasswordResetUseCase: SendPasswordResetUseCase,
+    private val addUserToFirestoreUseCase: AddUserToFirestoreUseCase
 ) : ViewModel() {
 
     private val _authState = MutableStateFlow(AuthenticationState())
@@ -97,8 +99,20 @@ class AuthenticationViewModel @Inject constructor(
                 onSignInResult(authenticationEvent.signInResult)
             }
 
+            is AuthenticationEvent.OnGoogleButtonDisabled -> {
+                onGoogleButtonDisabled()
+            }
+
+            is AuthenticationEvent.OnGoogleButtonEnabled -> {
+                onGoogleButtonEnabled()
+            }
+
             is AuthenticationEvent.ReloadFirebaseUser -> {
                 reloadFirebaseUser()
+            }
+
+            is AuthenticationEvent.AddUserToFirestore -> {
+                addUserToFirestore()
             }
 
             is AuthenticationEvent.OnSignInSuccessful -> {
@@ -286,6 +300,10 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
+    private fun addUserToFirestore() = viewModelScope.launch {
+        addUserToFirestoreUseCase.invoke()
+    }
+
 
     suspend fun signInWithIntent(intent: Intent): SignInResult =
         googleAuthUiClient.signInWithIntent(intent)
@@ -295,6 +313,18 @@ class AuthenticationViewModel @Inject constructor(
         _googleState.value = _googleState.value.copy(
             isSignInSuccessful = result.data != null,
             signInError = result.errorMessage
+        )
+    }
+
+    private fun onGoogleButtonDisabled() {
+        _googleState.value = _googleState.value.copy(
+            googleButtonClickableState = false
+        )
+    }
+
+    private fun onGoogleButtonEnabled() {
+        _googleState.value = _googleState.value.copy(
+            googleButtonClickableState = true
         )
     }
 

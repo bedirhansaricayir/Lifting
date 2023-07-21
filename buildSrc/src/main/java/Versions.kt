@@ -65,6 +65,10 @@ object Versions {
     val googleServicesAuthVersion = "20.6.0"
     val googleServicesPluginVersion = "4.3.15"
 
+    val crashlyticsPluginVersion = "2.9.7"
+
     //Coil
     val coilVersion = "2.4.0"
+
+    val youtubePlayerVersion = "0.28"
 }

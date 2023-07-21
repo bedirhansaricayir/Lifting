@@ -57,10 +57,14 @@ object Dependencies {
     //Firebase
     val platformFirebase by lazy { "com.google.firebase:firebase-bom:${Versions.platformFirebaseBomVersion}" }
     val firebaseAuth by lazy { "com.google.firebase:firebase-auth-ktx" }
+    val crashlytics by lazy { "com.google.firebase:firebase-crashlytics-ktx" }
+    val firestore by lazy { "com.google.firebase:firebase-firestore-ktx" }
 
     //GoogleAuth
     val googleServicesAuth by lazy { "com.google.android.gms:play-services-auth:${Versions.googleServicesAuthVersion}" }
 
     //Coil
     val coil by lazy { "io.coil-kt:coil-compose:${Versions.coilVersion}" }
+
+    val youtubePlayer by lazy { "com.pierfrancescosoffritti.androidyoutubeplayer:chromecast-sender:${Versions.youtubePlayerVersion}" }
 }

@@ -11,13 +11,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.lifting.app.core.constants.Constants.Companion.DETAIL_SCREEN
+import com.lifting.app.common.constants.Constants.Companion.DETAIL_SCREEN
 import com.lifting.app.navigation.Screen
-import com.lifting.app.presentation.calculator.CalculatorScreen
-import com.lifting.app.presentation.home.HomePageUiState
-import com.lifting.app.presentation.home.HomeScreen
-import com.lifting.app.presentation.home.HomeViewModel
-import com.lifting.app.presentation.tracker.TrackerScreen
+import com.lifting.app.feature_home.presentation.calculator.CalculatorScreen
+import com.lifting.app.feature_home.presentation.home.HomePageUiState
+import com.lifting.app.feature_home.presentation.home.HomeScreen
+import com.lifting.app.feature_home.presentation.home.HomeViewModel
+import com.lifting.app.feature_home.presentation.tracker.TrackerScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

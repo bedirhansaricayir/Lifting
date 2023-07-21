@@ -38,6 +38,7 @@ fun VerificationScreen(
     LaunchedEffect(key1 = authenticationState.isEmailVerified) {
         if (authenticationState.isEmailVerified) {
             authenticationEvent(AuthenticationEvent.OnSignInSuccessful(true))
+            authenticationEvent(AuthenticationEvent.AddUserToFirestore)
             isEmailVerified()
         }
     }

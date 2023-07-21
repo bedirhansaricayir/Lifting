@@ -67,6 +67,7 @@ fun SignInScreen(
     LaunchedEffect(key1 = googleSignInState.isSignInSuccessful) {
         if (googleSignInState.isSignInSuccessful) {
             authenticationEvent(AuthenticationEvent.OnSignInSuccessful(true))
+            authenticationEvent(AuthenticationEvent.AddUserToFirestore)
             onSignInNavigate()
         }
     }
@@ -100,6 +101,7 @@ fun SignInScreen(
         authenticationMode = AuthenticationMode.SIGN_IN,
         forgotPasswordState = forgotPasswordState,
         authenticationState = authenticationState,
+        googleSignInState = googleSignInState,
         onEmailChanged = { authenticationEvent(AuthenticationEvent.EmailChanged(it)) },
         onPasswordChanged = { authenticationEvent(AuthenticationEvent.PasswordChanged(it)) },
         onForgotPasswordEmailChanged = { authenticationEvent(AuthenticationEvent.ForgotPasswordEmailChanged(it)) },
@@ -111,7 +113,10 @@ fun SignInScreen(
             onToggleModeClick()
         },
         onTrailingIconClick = { authenticationEvent(AuthenticationEvent.ToggleVisualTransformation) },
-        onGoogleSignInButtonClicked = onGoogleSignInButtonClicked,
+        onGoogleSignInButtonClicked = {
+            onGoogleSignInButtonClicked()
+            authenticationEvent(AuthenticationEvent.OnGoogleButtonDisabled)
+        },
         onResetPasswordSend = { authenticationEvent(AuthenticationEvent.OnResetPasswordRequest(it)) },
         clearStateWhenResetPasswordSend = { authenticationEvent(AuthenticationEvent.ClearForgotPasswordState) }
     )
@@ -124,6 +129,7 @@ fun SignInScreenContent(
     authenticationMode: AuthenticationMode,
     forgotPasswordState: ForgotPasswordState,
     authenticationState: AuthenticationState,
+    googleSignInState: GoogleSignInState,
     onEmailChanged: (email: String) -> Unit,
     onPasswordChanged: (password: String) -> Unit,
     onForgotPasswordEmailChanged: (email: String) -> Unit,
@@ -239,7 +245,8 @@ fun SignInScreenContent(
         GoogleButton(
             text = stringResource(id = R.string.continue_with_google),
             icon = R.drawable.ic_google_logo,
-            onClicked = onGoogleSignInButtonClicked
+            onClicked = onGoogleSignInButtonClicked,
+            isClickable = googleSignInState.googleButtonClickableState
         )
         Spacer(modifier = Modifier.weight(1f))
 

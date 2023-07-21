@@ -1,6 +1,7 @@
 package com.lifting.app.navigation.graphs
 
 import android.app.Activity
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
@@ -12,17 +13,17 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.lifting.app.core.constants.Constants.Companion.ONBOARDING_SCREEN
-import com.lifting.app.core.constants.Constants.Companion.SIGN_IN
-import com.lifting.app.core.constants.Constants.Companion.SIGN_UP
-import com.lifting.app.core.constants.Constants.Companion.VERIFICATION_SCREEN
+import com.lifting.app.common.constants.Constants.Companion.ONBOARDING_SCREEN
+import com.lifting.app.common.constants.Constants.Companion.SIGN_IN
+import com.lifting.app.common.constants.Constants.Companion.SIGN_UP
+import com.lifting.app.common.constants.Constants.Companion.VERIFICATION_SCREEN
 import com.lifting.app.feature_auth.presentation.AuthenticationEvent
 import com.lifting.app.feature_auth.presentation.AuthenticationViewModel
 import com.lifting.app.feature_auth.presentation.SignInScreen
 import com.lifting.app.feature_auth.presentation.SignUpScreen
 import com.lifting.app.feature_auth.presentation.email_verification.VerificationScreen
-import com.lifting.app.presentation.onboarding.OnBoarding
-import com.lifting.app.presentation.onboarding.OnBoardingViewModel
+import com.lifting.app.feature_home.presentation.onboarding.OnBoarding
+import com.lifting.app.feature_home.presentation.onboarding.OnBoardingViewModel
 import kotlinx.coroutines.launch
 
 fun NavGraphBuilder.authNavGraph(
@@ -57,7 +58,26 @@ fun NavGraphBuilder.authNavGraph(
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartIntentSenderForResult(),
                 onResult = { result ->
-                    if (result.resultCode == Activity.RESULT_OK) {
+
+                    when(result.resultCode) {
+                        Activity.RESULT_OK -> {
+                            scope.launch {
+                                val signInResult = authenticationViewModel.signInWithIntent(
+                                    intent = result.data ?: return@launch
+                                )
+                                authenticationViewModel.onEvent(
+                                    AuthenticationEvent.OnSignInResultGoogle(
+                                        signInResult
+                                    )
+                                )
+                            }
+                        }
+                        Activity.RESULT_CANCELED -> {
+                            Log.d("Iptal","iptal edildi")
+                        }
+                    }
+                    authenticationViewModel.onEvent(AuthenticationEvent.OnGoogleButtonEnabled)
+/*                    if (result.resultCode == Activity.RESULT_OK) {
                         scope.launch {
                             val signInResult = authenticationViewModel.signInWithIntent(
                                 intent = result.data ?: return@launch
@@ -69,6 +89,9 @@ fun NavGraphBuilder.authNavGraph(
                             )
                         }
                     }
+                    if (result.resultCode == Activity.RESULT_CANCELED) {
+                        Log.d("Iptal","iptal edildi")
+                    }*/
                 }
             )
             SignInScreen(

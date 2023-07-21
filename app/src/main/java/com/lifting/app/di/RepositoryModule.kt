@@ -1,7 +1,7 @@
 package com.lifting.app.di
 
-import com.lifting.app.domain.repository.Repository
-import com.lifting.app.data.repository.RepositoryImpl
+import com.lifting.app.feature_home.domain.repository.Repository
+import com.lifting.app.feature_home.data.repository.RepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

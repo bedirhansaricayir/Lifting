@@ -11,5 +11,7 @@ interface AuthRepository {
     suspend fun sendEmailVerification(): Boolean
     suspend fun reloadFirebaseUser(): Boolean
     suspend fun sendPasswordResetEmail(email: String): Boolean
+
+    suspend fun addUserToFirestore()
     fun signOut()
 }

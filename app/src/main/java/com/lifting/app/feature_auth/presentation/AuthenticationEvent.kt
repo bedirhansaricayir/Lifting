@@ -23,7 +23,13 @@ sealed class AuthenticationEvent {
 
     class OnSignInResultGoogle(val signInResult: SignInResult) : AuthenticationEvent()
 
+    object OnGoogleButtonDisabled : AuthenticationEvent()
+
+    object OnGoogleButtonEnabled : AuthenticationEvent()
+
     object ReloadFirebaseUser : AuthenticationEvent()
+
+    object AddUserToFirestore: AuthenticationEvent()
 
     class OnSignInSuccessful(val isSuccessful: Boolean) : AuthenticationEvent()
 

@@ -4,6 +4,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -92,6 +93,10 @@ dependencies {
 
     implementation(platform(Dependencies.platformFirebase))
     implementation(Dependencies.firebaseAuth)
+    implementation(Dependencies.crashlytics)
+    implementation(Dependencies.firestore)
     implementation(Dependencies.googleServicesAuth)
     implementation(Dependencies.coil)
+    implementation(Dependencies.youtubePlayer)
+
 }

@@ -1,6 +1,6 @@
 package com.lifting.app.feature_auth.domain.use_case
 
-import com.lifting.app.core.util.Resource
+import com.lifting.app.common.util.Resource
 import com.lifting.app.feature_auth.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

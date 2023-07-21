@@ -8,6 +8,7 @@ buildscript {
         classpath(BuildPlugins.kotlinGradlePlugin)
         classpath(BuildPlugins.hiltPlugin)
         classpath(BuildPlugins.googleServices)
+        classpath(BuildPlugins.crashlytics)
     }
 }
 

@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.lifting.app.theme.White40
 import com.lifting.app.theme.grey50
+import kotlinx.coroutines.delay
 
 @Composable
 fun GoogleButton(
@@ -26,11 +27,19 @@ fun GoogleButton(
     shape: Dp = 4.dp,
     borderColor: Color = Color.LightGray,
     backgroundColor: Color = grey50,
+    progressIndicatorColor: Color = Color.White,
+    isClickable: Boolean,
     onClicked: () -> Unit
 ) {
-
+    var clicked by remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = isClickable) {
+        if (!isClickable) {
+            delay(2000)
+            clicked = false
+        }
+    }
     Surface(
-        modifier = modifier.clickable {  onClicked() },
+        modifier = modifier.clickable(enabled = isClickable) {  clicked = !clicked },
         shape = RoundedCornerShape(shape),
         border = BorderStroke(width = 1.dp, color = borderColor),
         color = backgroundColor
@@ -59,6 +68,17 @@ fun GoogleButton(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = text, color =  White40)
+            if (clicked) {
+                Spacer(modifier = Modifier.width(16.dp))
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .height(16.dp)
+                        .width(16.dp),
+                    strokeWidth = 2.dp,
+                    color = progressIndicatorColor
+                )
+                onClicked()
+            }
         }
     }
 }

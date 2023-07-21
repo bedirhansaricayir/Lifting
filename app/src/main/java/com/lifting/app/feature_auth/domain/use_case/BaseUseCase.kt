@@ -5,7 +5,7 @@ import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.lifting.app.core.util.Resource
+import com.lifting.app.common.util.Resource
 import com.lifting.app.feature_auth.domain.model.AuthException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

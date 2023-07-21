@@ -33,7 +33,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
-import com.lifting.app.core.util.ShowToast
 import com.lifting.app.feature_auth.domain.model.AuthenticationMode
 import com.lifting.app.feature_auth.domain.model.PasswordRequirements
 import com.lifting.app.feature_auth.presentation.components.AuthenticationButton
