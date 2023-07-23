@@ -39,7 +39,10 @@ fun GoogleButton(
         }
     }
     Surface(
-        modifier = modifier.clickable(enabled = isClickable) {  clicked = !clicked },
+        modifier = modifier.clickable(enabled = isClickable && !clicked) {
+            clicked = true
+            onClicked()
+        },
         shape = RoundedCornerShape(shape),
         border = BorderStroke(width = 1.dp, color = borderColor),
         color = backgroundColor
@@ -77,7 +80,6 @@ fun GoogleButton(
                     strokeWidth = 2.dp,
                     color = progressIndicatorColor
                 )
-                onClicked()
             }
         }
     }

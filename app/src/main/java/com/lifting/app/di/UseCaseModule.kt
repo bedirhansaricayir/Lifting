@@ -1,6 +1,7 @@
 package com.lifting.app.di
 
 import com.lifting.app.feature_auth.data.repository.AuthRepositoryImpl
+import com.lifting.app.feature_auth.domain.use_case.AddUserToFirestoreUseCase
 import com.lifting.app.feature_auth.domain.use_case.AuthenticationUseCase
 import com.lifting.app.feature_auth.domain.use_case.EmailInputValidationUseCase
 import com.lifting.app.feature_auth.domain.use_case.ReloadUserUseCase
@@ -47,6 +48,10 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideEmailInputValidationUseCase(): EmailInputValidationUseCase = EmailInputValidationUseCase()
+
+    @Provides
+    @Singleton
+    fun provideAddUserToFirestoreUseCase(authRepositoryImpl: AuthRepositoryImpl) = AddUserToFirestoreUseCase(authRepositoryImpl)
 
     @Provides
     @Singleton

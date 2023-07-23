@@ -59,10 +59,11 @@ fun BottomNavigationBar(navController: NavHostController, modifier: Modifier = M
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val onBoardingScreen = AuthScreen.OnBoardingScreen
-    val onBoardingDestination = onBoardingScreen.route == currentDestination?.route
+    val bottomBarDestination = screens.any{
+        it.route == currentDestination?.route
+    }
 
-    if (!onBoardingDestination) {
+    if (bottomBarDestination) {
         NavigationBar(containerColor = black20) {
             screens.forEach {
                 AddItem(

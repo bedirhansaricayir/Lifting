@@ -4,9 +4,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.FieldValue.serverTimestamp
 import com.google.firebase.firestore.FirebaseFirestore
-import com.lifting.app.common.constants.Constants.Companion.CREATED_AT
 import com.lifting.app.common.constants.Constants.Companion.DISPLAY_NAME
 import com.lifting.app.common.constants.Constants.Companion.EMAIL
 import com.lifting.app.common.constants.Constants.Companion.PHOTO_URL
@@ -70,11 +68,10 @@ class AuthRepositoryImpl @Inject constructor(
             firestore.collection(USERS).document(uid).set(user).await()
         }
     }
-    fun FirebaseUser.toUser() = mapOf(
+    private fun FirebaseUser.toUser() = mapOf(
         DISPLAY_NAME to displayName,
         EMAIL to email,
-        PHOTO_URL to photoUrl?.toString(),
-        CREATED_AT to serverTimestamp()
+        PHOTO_URL to photoUrl?.toString()
     )
 
 }

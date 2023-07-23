@@ -17,6 +17,8 @@ import com.lifting.app.feature_home.presentation.calculator.CalculatorScreen
 import com.lifting.app.feature_home.presentation.home.HomePageUiState
 import com.lifting.app.feature_home.presentation.home.HomeScreen
 import com.lifting.app.feature_home.presentation.home.HomeViewModel
+import com.lifting.app.feature_home.presentation.profile.ProfileScreen
+import com.lifting.app.feature_home.presentation.profile.ProfileScreenViewModel
 import com.lifting.app.feature_home.presentation.tracker.TrackerScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -33,7 +35,10 @@ fun NavGraph(navController: NavHostController) {
             val state: HomePageUiState = homeViewModel.state.collectAsState().value
             HomeScreen(
                 state = state,
-                onEvent = homeViewModel::onEvent
+                onEvent = homeViewModel::onEvent,
+                onProfilePictureClicked = {
+                    navController.navigate(DetailScreen.ProfileScreen.route)
+                }
             )
         }
         composable(route = Screen.TrackerScreen.route) {
@@ -53,7 +58,8 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
         startDestination = DetailScreen.ProfileScreen.route
     ) {
         composable(route = DetailScreen.ProfileScreen.route) {
-            Log.d("detailsNavGraph","Profile Screen")
+            val profileScreenViewModel : ProfileScreenViewModel = hiltViewModel()
+            ProfileScreen(profileScreenEvent = profileScreenViewModel::onEvent)
         }
     }
 }

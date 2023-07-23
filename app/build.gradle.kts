@@ -95,7 +95,10 @@ dependencies {
     implementation(Dependencies.firebaseAuth)
     implementation(Dependencies.crashlytics)
     implementation(Dependencies.firestore)
+    implementation(Dependencies.storage)
+
     implementation(Dependencies.googleServicesAuth)
+
     implementation(Dependencies.coil)
     implementation(Dependencies.youtubePlayer)
 

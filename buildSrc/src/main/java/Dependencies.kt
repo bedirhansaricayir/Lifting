@@ -59,6 +59,7 @@ object Dependencies {
     val firebaseAuth by lazy { "com.google.firebase:firebase-auth-ktx" }
     val crashlytics by lazy { "com.google.firebase:firebase-crashlytics-ktx" }
     val firestore by lazy { "com.google.firebase:firebase-firestore-ktx" }
+    val storage by lazy { "com.google.firebase:firebase-storage-ktx" }
 
     //GoogleAuth
     val googleServicesAuth by lazy { "com.google.android.gms:play-services-auth:${Versions.googleServicesAuthVersion}" }

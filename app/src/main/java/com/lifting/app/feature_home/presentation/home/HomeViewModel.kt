@@ -36,7 +36,6 @@ class HomeViewModel @Inject constructor(
     init {
         getUserInfo()
         getProgramData()
-        //getSignedInUser()
     }
 
     fun onEvent(event: HomePageEvent) {
@@ -73,19 +72,25 @@ class HomeViewModel @Inject constructor(
             getUserInfoUseCase.invoke(currentUser?.uid.toString()).collect { response ->
                 when(response) {
                     is Resource.Loading -> {
-                        Log.d("Loading","Loading")
+                        _state.value = _state.value.copy(
+                            isLoading = true
+                        )
                     }
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
                             userData = UserData(
                                 userId = currentUser?.uid,
-                                username  = response.data?.displayName,
-                                profilePictureUrl  = response.data?.photoUrl
-                            )
+                                username  = response.data?.displayName ?: currentUser?.displayName,
+                                profilePictureUrl  = response.data?.photoUrl ?: currentUser?.photoUrl.toString()
+                            ),
+                            isLoading = false
                         )
                     }
                     is Resource.Error -> {
-                        Log.d("Error",response.e.toString())
+                        _state.value = _state.value.copy(
+                            isLoading = false,
+                            error = response.e
+                        )
                     }
                 }
             }
@@ -111,14 +116,4 @@ class HomeViewModel @Inject constructor(
             }.collect()
         }
     }
-
-    /*private fun getSignedInUser() = firebaseAuth.currentUser?.run {
-        _state.value = _state.value.copy(
-            userData = UserData(
-                userId = uid,
-                username = displayName,
-                profilePictureUrl = photoUrl?.toString()
-            )
-        )
-    }*/
 }

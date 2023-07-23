@@ -67,7 +67,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     state: HomePageUiState,
-    onEvent: (HomePageEvent) -> Unit
+    onEvent: (HomePageEvent) -> Unit,
+    onProfilePictureClicked: () -> Unit
 ) {
     val verticalScroll = rememberScrollState()
     var openBottomSheet by remember { mutableStateOf(false) }
@@ -227,8 +228,8 @@ fun HomeScreen(
             .verticalScroll(verticalScroll)
 
     ) {
-        if (beginnerState != null) {
-            SignedInUserSection(userData = state.userData)
+        if (state.userData != null && beginnerState != null) {
+            SignedInUserSection(userData = state.userData, onProfilePictureClicked = onProfilePictureClicked)
             PlanSection()
             PersonalizedProgramCardSection {
                 personalizedOpenBottomSheet = !personalizedOpenBottomSheet
@@ -267,7 +268,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun SignedInUserSection(modifier: Modifier = Modifier, userData: UserData?) {
+fun SignedInUserSection(modifier: Modifier = Modifier, userData: UserData?, onProfilePictureClicked: () -> Unit) {
 
     RoundedCornersSurface(
         modifier = modifier,
@@ -277,7 +278,7 @@ fun SignedInUserSection(modifier: Modifier = Modifier, userData: UserData?) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
             userData?.let {
-                UserImage(modifier = Modifier,userImage = userData.profilePictureUrl ?: "")
+                UserImage(modifier = Modifier,userImage = userData.profilePictureUrl ?: "", onProfilePictureClicked = onProfilePictureClicked)
                 Column(modifier = Modifier
                     .fillMaxSize()
                     .padding(start = 16.dp), verticalArrangement = Arrangement.Center) {
