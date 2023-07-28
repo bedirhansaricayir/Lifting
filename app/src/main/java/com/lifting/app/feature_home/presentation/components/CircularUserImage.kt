@@ -8,8 +8,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 
 @Composable
 fun UserImage(
@@ -23,7 +26,11 @@ fun UserImage(
             .clip(CircleShape)
             .border(width = 1.dp, color = MaterialTheme.colorScheme.primary, shape = CircleShape)
             .clickable { onProfilePictureClicked() },
-        model = userImage,
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(userImage)
+            .crossfade(true)
+            .build(),
+        contentScale = ContentScale.Crop,
         contentDescription = "Circular User Image",
     )
 }

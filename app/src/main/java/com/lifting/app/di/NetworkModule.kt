@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.lifting.app.feature_home.data.local.datastore.DataStoreRepository
 import com.lifting.app.feature_home.data.remote.ApiClient
 import com.lifting.app.feature_auth.data.repository.AuthRepositoryImpl
@@ -65,14 +66,17 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun providesFirebaseStorage() = FirebaseStorage.getInstance()
+    @Provides
+    @Singleton
     fun providesRepositoryImpl(firebaseAuth: FirebaseAuth, firestore: FirebaseFirestore): AuthRepository {
         return AuthRepositoryImpl(firebaseAuth, firestore)
     }
 
     @Provides
     @Singleton
-    fun providesFirebaseRepositoryImpl(firebaseAuth: FirebaseAuth,firestore: FirebaseFirestore): FirebaseRepository {
-        return FirebaseRepositoryImpl(firebaseAuth,firestore)
+    fun providesFirebaseRepositoryImpl(firebaseAuth: FirebaseAuth,firestore: FirebaseFirestore,storage: FirebaseStorage): FirebaseRepository {
+        return FirebaseRepositoryImpl(firebaseAuth,firestore,storage)
     }
 
     @Provides

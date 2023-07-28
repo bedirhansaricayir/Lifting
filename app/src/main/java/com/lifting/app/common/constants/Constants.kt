@@ -301,5 +301,8 @@ class Constants {
         const val PHOTO_URL = "photoUrl"
         const val CREATED_AT = "createdAt"
 
+        //Storage
+        const val IMAGES = "images"
+
     }
 }

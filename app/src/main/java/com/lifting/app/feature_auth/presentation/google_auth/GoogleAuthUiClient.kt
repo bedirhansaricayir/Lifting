@@ -29,14 +29,15 @@ class GoogleAuthUiClient(
         return result?.pendingIntent?.intentSender
     }
 
-    suspend fun signInWithIntent(intent: Intent): SignInResult {
+    suspend fun signInWithIntent(intent: Intent,isNewUser: () -> Unit): SignInResult {
         val credential = oneTapClient.getSignInCredentialFromIntent(intent)
         val googleIdToken = credential.googleIdToken
         val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
         return try {
-            val user = auth.signInWithCredential(googleCredentials).await().user
+            val user = auth.signInWithCredential(googleCredentials).await()
+            if (user.additionalUserInfo?.isNewUser == true) isNewUser()
             SignInResult(
-                data = user,
+                data = user.user,
                 errorMessage = null
             )
         } catch(e: Exception) {

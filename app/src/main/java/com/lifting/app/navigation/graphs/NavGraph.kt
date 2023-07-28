@@ -11,13 +11,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.lifting.app.R
 import com.lifting.app.common.constants.Constants.Companion.DETAIL_SCREEN
 import com.lifting.app.navigation.Screen
 import com.lifting.app.feature_home.presentation.calculator.CalculatorScreen
 import com.lifting.app.feature_home.presentation.home.HomePageUiState
 import com.lifting.app.feature_home.presentation.home.HomeScreen
 import com.lifting.app.feature_home.presentation.home.HomeViewModel
+import com.lifting.app.feature_home.presentation.home.UserDataState
+import com.lifting.app.feature_home.presentation.profile.ProfileDataState
 import com.lifting.app.feature_home.presentation.profile.ProfileScreen
+import com.lifting.app.feature_home.presentation.profile.ProfileScreenState
 import com.lifting.app.feature_home.presentation.profile.ProfileScreenViewModel
 import com.lifting.app.feature_home.presentation.tracker.TrackerScreen
 
@@ -33,8 +37,10 @@ fun NavGraph(navController: NavHostController) {
         composable(route = Screen.HomeScreen.route) {
             val homeViewModel: HomeViewModel = hiltViewModel()
             val state: HomePageUiState = homeViewModel.state.collectAsState().value
+            val userDataState: UserDataState = homeViewModel.userDataState.collectAsState().value
             HomeScreen(
                 state = state,
+                userState = userDataState,
                 onEvent = homeViewModel::onEvent,
                 onProfilePictureClicked = {
                     navController.navigate(DetailScreen.ProfileScreen.route)
@@ -59,7 +65,21 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
     ) {
         composable(route = DetailScreen.ProfileScreen.route) {
             val profileScreenViewModel : ProfileScreenViewModel = hiltViewModel()
-            ProfileScreen(profileScreenEvent = profileScreenViewModel::onEvent)
+            val state: ProfileScreenState = profileScreenViewModel.state.collectAsState().value
+            ProfileScreen(
+                state = state,
+                profileScreenEvent = profileScreenViewModel::onEvent,
+                onBackNavigationIconClicked = { navController.popBackStack() },
+                onForwardNavigationIconClicked = {
+                    when(it){
+                        R.string.account_information -> {
+                            Log.d("account","burda")
+                        }
+
+                    }
+                    Log.d("geldi",it.toString())
+                }
+            )
         }
     }
 }

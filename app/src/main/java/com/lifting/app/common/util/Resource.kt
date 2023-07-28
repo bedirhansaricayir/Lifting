@@ -11,3 +11,7 @@ sealed class Resource<out T> {
         val e: String?
     ) : Resource<Nothing>()
 }
+
+fun <T> Resource<T>.successOr(fallback: T): T {
+    return (this as? Resource.Success<T>)?.data ?: fallback
+}

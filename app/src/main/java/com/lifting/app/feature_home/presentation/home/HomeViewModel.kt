@@ -1,10 +1,7 @@
 package com.lifting.app.feature_home.presentation.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.lifting.app.common.constants.Constants
 import com.lifting.app.common.util.Resource
 import com.lifting.app.feature_home.domain.model.programMap
@@ -23,16 +20,14 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getProgramDataUseCase: GetProgramDataUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val firebaseAuth: FirebaseAuth
+    private val getUserInfoUseCase: GetUserInfoUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomePageUiState(isLoading = false))
     val state: StateFlow<HomePageUiState> = _state.asStateFlow()
 
-    private val currentUser : FirebaseUser?
-        get() = firebaseAuth.currentUser
-
+    private val _userDataState = MutableStateFlow(UserDataState())
+    val userDataState: StateFlow<UserDataState> = _userDataState.asStateFlow()
     init {
         getUserInfo()
         getProgramData()
@@ -69,27 +64,25 @@ class HomeViewModel @Inject constructor(
     }
     private fun getUserInfo() {
         viewModelScope.launch {
-            getUserInfoUseCase.invoke(currentUser?.uid.toString()).collect { response ->
+            getUserInfoUseCase.invoke().collect { response ->
                 when(response) {
                     is Resource.Loading -> {
-                        _state.value = _state.value.copy(
-                            isLoading = true
+                        _userDataState.value = _userDataState.value.copy(
+                            userDataLoading = true
                         )
                     }
                     is Resource.Success -> {
-                        _state.value = _state.value.copy(
-                            userData = UserData(
-                                userId = currentUser?.uid,
-                                username  = response.data?.displayName ?: currentUser?.displayName,
-                                profilePictureUrl  = response.data?.photoUrl ?: currentUser?.photoUrl.toString()
-                            ),
-                            isLoading = false
+                        _userDataState.value = _userDataState.value.copy(
+                            email = response.data?.email,
+                            username  = response.data?.displayName,
+                            profilePictureUrl  = response.data?.photoUrl,
+                            userDataLoading = false
                         )
                     }
                     is Resource.Error -> {
-                        _state.value = _state.value.copy(
-                            isLoading = false,
-                            error = response.e
+                        _userDataState.value = _userDataState.value.copy(
+                            userDataLoading = false,
+                            userDataError = response.e
                         )
                     }
                 }

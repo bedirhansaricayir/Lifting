@@ -62,6 +62,15 @@
     <string name="label_navbar_analysis">Analiz</string>
     <string name="label_navbar_health">Sağlık</string>
     <string name="label_analysis_dialog_title">Vücut ağırlığını güncelle</string>
+    <string name="account_information">Hesap Bilgileri</string>
+    <string name="notification_settings">Bildirim Ayarları</string>
+    <string name="privacy_policy">Gizlilik Sözleşmesi</string>
+    <string name="send_feedback">Geribildirim Gönder</string>
+    <string name="logout">Çıkış Yap</string>
+    <string name="label_profile_screen">Profil</string>
+
+
+
 
 
 </resources>

@@ -11,12 +11,11 @@ data class HomePageUiState(
     val selectedProgram: ArrayList<Uygulanis> = arrayListOf(),
     val error: String? = null,
     val onPersonalizedProgramCreated: String? = null,
-    val userData: UserData? = null
 )
-
-
-data class UserData(
-    val userId: String? = null,
+data class UserDataState(
+    val email: String? = null,
     val username: String? = null,
-    val profilePictureUrl: String? = null
+    val profilePictureUrl: String? = null,
+    val userDataLoading: Boolean = false,
+    val userDataError: String? = null
 )

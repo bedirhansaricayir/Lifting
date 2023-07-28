@@ -10,6 +10,8 @@ import com.lifting.app.feature_auth.domain.use_case.SendPasswordResetUseCase
 import com.lifting.app.feature_auth.domain.use_case.SignInUseCase
 import com.lifting.app.feature_auth.domain.use_case.SignUpUseCase
 import com.lifting.app.feature_home.data.repository.FirebaseRepositoryImpl
+import com.lifting.app.feature_home.data.repository.ProfileSettingsRepositoryImpl
+import com.lifting.app.feature_home.domain.use_case.GetProfileSettingsUseCase
 import com.lifting.app.feature_home.domain.use_case.GetUserInfoUseCase
 import dagger.Module
 import dagger.Provides
@@ -56,4 +58,8 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideGetUserInfoUseCase(firebaseRepositoryImpl: FirebaseRepositoryImpl) = GetUserInfoUseCase(firebaseRepositoryImpl)
+
+    @Provides
+    @Singleton
+    fun provideGetProfileSettingsUseCase(profileSettingsRepositoryImpl: ProfileSettingsRepositoryImpl) = GetProfileSettingsUseCase(profileSettingsRepositoryImpl)
 }

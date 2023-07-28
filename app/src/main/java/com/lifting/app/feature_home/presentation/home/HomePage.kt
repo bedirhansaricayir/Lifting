@@ -67,6 +67,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     state: HomePageUiState,
+    userState: UserDataState,
     onEvent: (HomePageEvent) -> Unit,
     onProfilePictureClicked: () -> Unit
 ) {
@@ -228,8 +229,8 @@ fun HomeScreen(
             .verticalScroll(verticalScroll)
 
     ) {
-        if (state.userData != null && beginnerState != null) {
-            SignedInUserSection(userData = state.userData, onProfilePictureClicked = onProfilePictureClicked)
+        if (beginnerState != null) {
+            SignedInUserSection(userData = userState, onProfilePictureClicked = onProfilePictureClicked)
             PlanSection()
             PersonalizedProgramCardSection {
                 personalizedOpenBottomSheet = !personalizedOpenBottomSheet
@@ -268,7 +269,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun SignedInUserSection(modifier: Modifier = Modifier, userData: UserData?, onProfilePictureClicked: () -> Unit) {
+fun SignedInUserSection(modifier: Modifier = Modifier, userData: UserDataState?, onProfilePictureClicked: () -> Unit) {
 
     RoundedCornersSurface(
         modifier = modifier,
@@ -284,7 +285,7 @@ fun SignedInUserSection(modifier: Modifier = Modifier, userData: UserData?, onPr
                     .padding(start = 16.dp), verticalArrangement = Arrangement.Center) {
                     UserInfoText(text = stringResource(id = R.string.label_homepage_welcome), isSubTitle = true)
                     Spacer(modifier = Modifier.height(2.dp))
-                    UserInfoText(text = userData.username!!)
+                    UserInfoText(text = userData.username ?: "")
                 }
             }
         }

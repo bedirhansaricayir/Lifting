@@ -9,7 +9,6 @@ import javax.inject.Inject
 class GetUserInfoUseCase @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 ) {
-    suspend operator fun invoke(userId: String): Flow<Resource<UserInfo?>> =
-         firebaseRepository.getUserInfo(userId)
+    suspend operator fun invoke(): Flow<Resource<UserInfo?>> = firebaseRepository.getUserInfo()
 
 }

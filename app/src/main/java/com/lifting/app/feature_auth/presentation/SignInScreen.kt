@@ -67,7 +67,6 @@ fun SignInScreen(
     LaunchedEffect(key1 = googleSignInState.isSignInSuccessful) {
         if (googleSignInState.isSignInSuccessful) {
             authenticationEvent(AuthenticationEvent.OnSignInSuccessful(true))
-            authenticationEvent(AuthenticationEvent.AddUserToFirestore)
             onSignInNavigate()
         }
     }

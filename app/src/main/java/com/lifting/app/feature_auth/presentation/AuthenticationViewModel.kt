@@ -306,7 +306,7 @@ class AuthenticationViewModel @Inject constructor(
 
 
     suspend fun signInWithIntent(intent: Intent): SignInResult =
-        googleAuthUiClient.signInWithIntent(intent)
+        googleAuthUiClient.signInWithIntent(intent, isNewUser = { addUserToFirestore() })
 
     suspend fun signIn() = googleAuthUiClient.signIn()
     private fun onSignInResult(result: SignInResult) {

@@ -61,4 +61,10 @@
     <string name="label_navbar_analysis">Analysis</string>
     <string name="label_navbar_health">Health</string>
     <string name="label_analysis_dialog_title">Update bodyweight</string>
+    <string name="account_information">Account Information</string>
+    <string name="notification_settings">Notification Settings</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="logout">Logout</string>
+    <string name="label_profile_screen">Profile</string>
 </resources>
