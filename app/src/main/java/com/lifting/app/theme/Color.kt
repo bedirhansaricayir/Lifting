@@ -20,3 +20,5 @@ val grey10 = Color(0XFFA0A0A0)
 val grey30 = Color(0xFF606060)
 val grey50 = Color(0xFF404040)
 val black20 = Color(0xFF202020)
+
+val PremiumPrimaryColor = Color(0xFFFFD700)

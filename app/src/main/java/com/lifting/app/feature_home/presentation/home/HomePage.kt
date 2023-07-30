@@ -1,6 +1,7 @@
 package com.lifting.app.feature_home.presentation.home
 
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -20,7 +21,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -38,7 +38,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lifting.app.R
+import com.lifting.app.common.components.CommonProgressIndicatior
 import com.lifting.app.common.constants.Constants.Companion.BES_GUN
+import com.lifting.app.common.constants.Constants.Companion.DEFAULT_AVATAR_STORAGE
 import com.lifting.app.common.constants.Constants.Companion.FORM_KORU
 import com.lifting.app.common.constants.Constants.Companion.HIC
 import com.lifting.app.common.constants.Constants.Companion.IKI_UC_GUN
@@ -69,7 +71,8 @@ fun HomeScreen(
     state: HomePageUiState,
     userState: UserDataState,
     onEvent: (HomePageEvent) -> Unit,
-    onProfilePictureClicked: () -> Unit
+    onProfilePictureClicked: () -> Unit,
+    onPersonalizedProgramCardClicked: () -> Unit
 ) {
     val verticalScroll = rememberScrollState()
     var openBottomSheet by remember { mutableStateOf(false) }
@@ -233,7 +236,8 @@ fun HomeScreen(
             SignedInUserSection(userData = userState, onProfilePictureClicked = onProfilePictureClicked)
             PlanSection()
             PersonalizedProgramCardSection {
-                personalizedOpenBottomSheet = !personalizedOpenBottomSheet
+                //personalizedOpenBottomSheet = !personalizedOpenBottomSheet
+                onPersonalizedProgramCardClicked()
             }
             BeginnerProgramListSection(beginnerState) { program ->
                 openBottomSheet = !openBottomSheet
@@ -279,7 +283,7 @@ fun SignedInUserSection(modifier: Modifier = Modifier, userData: UserDataState?,
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
             userData?.let {
-                UserImage(modifier = Modifier,userImage = userData.profilePictureUrl ?: "", onProfilePictureClicked = onProfilePictureClicked)
+                UserImage(modifier = Modifier,userImage = userData.profilePictureUrl ?: DEFAULT_AVATAR_STORAGE, isPremium = userData.isPremium ?: false, onProfilePictureClicked = onProfilePictureClicked)
                 Column(modifier = Modifier
                     .fillMaxSize()
                     .padding(start = 16.dp), verticalArrangement = Arrangement.Center) {
@@ -348,7 +352,7 @@ fun LoadingSection(
 ) {
     if (state == true) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(strokeWidth = 2.dp)
+            CommonProgressIndicatior(strokeWidth = 2.dp)
         }
     }
 }

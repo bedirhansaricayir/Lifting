@@ -20,10 +20,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.lifting.app.feature_home.presentation.components.YoutubePlayer
 import com.lifting.app.theme.grey30
 
 @Composable
@@ -33,6 +35,7 @@ fun CustomDialog(
     url: String
 ) {
     val showDialog = remember { mutableStateOf(dialogState) }
+    val lifecycleOwner = LocalLifecycleOwner.current
 
 
     if (showDialog.value) {
@@ -54,7 +57,7 @@ fun CustomDialog(
                         .fillMaxSize()
                         .padding(16.dp)
                 ) {
-                    ComposableWebView(url = url)
+                    YoutubePlayer(youtubeVideoId = url, lifecycleOwner = lifecycleOwner)
                     Spacer(modifier = Modifier.height(24.dp))
                     TextButton(
                         onClick = {

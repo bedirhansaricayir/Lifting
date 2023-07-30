@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
@@ -48,6 +50,7 @@ import com.lifting.app.R
 import com.lifting.app.feature_home.data.remote.model.DusukZorluk
 import com.lifting.app.feature_home.data.remote.model.OrtaZorluk
 import com.lifting.app.feature_home.data.remote.model.YuksekZorluk
+import com.lifting.app.theme.Black40
 
 @Composable
 fun BeginnerProgramCard(
@@ -58,7 +61,8 @@ fun BeginnerProgramCard(
     Card(
         modifier = modifier
             .height(250.dp)
-            .width(350.dp),
+            .width(350.dp)
+            .clickable { onPlayButtonClick(model) },
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
@@ -92,18 +96,13 @@ fun BeginnerProgramCard(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            /*Text(
-                                text = model.programAdi.toString(),
-                                color = Color.White,
-                                textAlign = TextAlign.Center
-                            )*/
                             CustomRatingBar(rating = model.gunSayisi!!.toFloat())
-                            OutlinedIconButton(border = BorderStroke(1.dp, Color(0xFFCAF76F)),
+                            OutlinedIconButton(border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
                                 onClick = { onPlayButtonClick(model) }) {
                                 Icon(
                                     imageVector = Icons.Default.PlayArrow,
                                     contentDescription = "Play Button",
-                                    tint = Color(0xFFCAF76F)
+                                    tint = MaterialTheme.colorScheme.primary
                                 )
                             }
                         }
@@ -123,7 +122,8 @@ fun IntermediateProgramCard(
     Card(
         modifier = modifier
             .height(250.dp)
-            .width(350.dp),
+            .width(350.dp)
+            .clickable { onPlayButtonClick(model) },
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
@@ -157,18 +157,13 @@ fun IntermediateProgramCard(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        /*Text(
-                            text = model.programAdi.toString(),
-                            color = Color.White,
-                            textAlign = TextAlign.Center
-                        )*/
                         CustomRatingBar(rating = model.gunSayisi!!.toFloat())
-                        OutlinedIconButton(border = BorderStroke(1.dp, Color(0xFFCAF76F)),
+                        OutlinedIconButton(border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
                             onClick = { onPlayButtonClick(model) }) {
                             Icon(
                                 imageVector = Icons.Default.PlayArrow,
                                 contentDescription = "Play Button",
-                                tint = Color(0xFFCAF76F)
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
 
@@ -189,7 +184,8 @@ fun AdvancedProgramCard(
     Card(
         modifier = modifier
             .height(250.dp)
-            .width(350.dp),
+            .width(350.dp)
+            .clickable { onPlayButtonClick(model) },
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
@@ -223,18 +219,13 @@ fun AdvancedProgramCard(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        /*Text(
-                            text = model.programAdi.toString(),
-                            color = Color.White,
-                            textAlign = TextAlign.Center
-                        )*/
                         CustomRatingBar(rating = model.gunSayisi!!.toFloat())
-                        OutlinedIconButton(border = BorderStroke(1.dp, Color(0xFFCAF76F)),
+                        OutlinedIconButton(border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
                             onClick = { onPlayButtonClick(model) }) {
                             Icon(
                                 imageVector = Icons.Default.PlayArrow,
                                 contentDescription = "Play Button",
-                                tint = Color(0xFFCAF76F)
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
 
@@ -310,12 +301,15 @@ fun PersonalizedProgramCard(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = stringResource(id = R.string.label_personalized_plan),
-                            color = MaterialTheme.colorScheme.primary,
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleMedium
-                        )
+                        Box(modifier = Modifier.wrapContentSize().background(color = MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+                            Text(
+                                text = stringResource(id = R.string.label_personalized_plan),
+                                color = Black40,
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.labelSmall,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        }
 
                     }
                 }
@@ -337,12 +331,12 @@ fun CustomRatingBar(rating: Float) {
         tintFilled = MaterialTheme.colorScheme.primary,
         animationEnabled = true,
         gestureEnabled = false,
-        shimmer = Shimmer(
+        /*shimmer = Shimmer(
             colors = listOf(
                 MaterialTheme.colorScheme.primary.copy(.9f),
                 MaterialTheme.colorScheme.primary.copy(.3f),
                 MaterialTheme.colorScheme.primary.copy(.9f))
-            ),
+            ),*/
         itemSize = 20.dp
     ) {
     }

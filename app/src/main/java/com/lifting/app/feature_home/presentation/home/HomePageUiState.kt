@@ -16,6 +16,7 @@ data class UserDataState(
     val email: String? = null,
     val username: String? = null,
     val profilePictureUrl: String? = null,
+    val isPremium: Boolean? = false,
     val userDataLoading: Boolean = false,
     val userDataError: String? = null
 )

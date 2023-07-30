@@ -76,6 +76,7 @@ class HomeViewModel @Inject constructor(
                             email = response.data?.email,
                             username  = response.data?.displayName,
                             profilePictureUrl  = response.data?.photoUrl,
+                            isPremium = response.data?.isPremium,
                             userDataLoading = false
                         )
                     }

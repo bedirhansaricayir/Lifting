@@ -274,7 +274,7 @@ class Constants {
 
         //ApiClient
         const val BASE = "https://gist.github.com/"
-        const val END_POINT = "bedirhansaricayir/51bed929bca74d888f3dd5e20a11f80e/raw/b3cc5cae248e6667a45be53064f3c9f88589c94f/program_data.json"
+        const val END_POINT = "bedirhansaricayir/51bed929bca74d888f3dd5e20a11f80e/raw/32616c6deb1717437e817eeffb5027154a1457ee/program_data.json"
 
         //MainScreen routes
         const val HOME_SCREEN = "home_screen"
@@ -290,6 +290,7 @@ class Constants {
 
         //DetailScreen routes
         const val DETAIL_SCREEN = "detail_screen"
+        const val PURCHASE_SCREEN = "purchase_screen"
 
 
         //Collection References
@@ -299,7 +300,9 @@ class Constants {
         const val DISPLAY_NAME = "displayName"
         const val EMAIL = "email"
         const val PHOTO_URL = "photoUrl"
+        const val IS_PREMIUM = "isPremium"
         const val CREATED_AT = "createdAt"
+        const val DEFAULT_AVATAR_STORAGE = "https://firebasestorage.googleapis.com/v0/b/fitnessapp-d21de.appspot.com/o/images%2Fdefault_avatar.jpg?alt=media&token=83269274-d9ba-497f-844d-b0ae8e9c7366"
 
         //Storage
         const val IMAGES = "images"

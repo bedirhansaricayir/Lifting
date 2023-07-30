@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             FitnessAppTheme {
                 val state = splashViewModel.startDestination.collectAsState().value
+                actionBar?.hide()
                 WindowCompat.setDecorFitsSystemWindows(window, false)
                 if (state != null) {
                     RootNavGraph(navController = rememberNavController(), startDestination = state)

@@ -13,16 +13,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.lifting.app.R
 import com.lifting.app.common.constants.Constants.Companion.DETAIL_SCREEN
+import com.lifting.app.common.constants.Constants.Companion.PURCHASE_SCREEN
 import com.lifting.app.navigation.Screen
 import com.lifting.app.feature_home.presentation.calculator.CalculatorScreen
 import com.lifting.app.feature_home.presentation.home.HomePageUiState
 import com.lifting.app.feature_home.presentation.home.HomeScreen
 import com.lifting.app.feature_home.presentation.home.HomeViewModel
 import com.lifting.app.feature_home.presentation.home.UserDataState
-import com.lifting.app.feature_home.presentation.profile.ProfileDataState
 import com.lifting.app.feature_home.presentation.profile.ProfileScreen
 import com.lifting.app.feature_home.presentation.profile.ProfileScreenState
 import com.lifting.app.feature_home.presentation.profile.ProfileScreenViewModel
+import com.lifting.app.feature_home.presentation.purchase.PurchaseScreen
+import com.lifting.app.feature_home.presentation.purchase.PurchaseScreenState
+import com.lifting.app.feature_home.presentation.purchase.PurchaseScreenViewModel
 import com.lifting.app.feature_home.presentation.tracker.TrackerScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -44,6 +47,9 @@ fun NavGraph(navController: NavHostController) {
                 onEvent = homeViewModel::onEvent,
                 onProfilePictureClicked = {
                     navController.navigate(DetailScreen.ProfileScreen.route)
+                },
+                onPersonalizedProgramCardClicked = {
+                    navController.navigate(DetailScreen.PurchaseScreen.route)
                 }
             )
         }
@@ -81,9 +87,18 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
                 }
             )
         }
+        composable(route = DetailScreen.PurchaseScreen.route) {
+            val purchaseScreenViewModel : PurchaseScreenViewModel = hiltViewModel()
+            val state: PurchaseScreenState = purchaseScreenViewModel.state.collectAsState().value
+            PurchaseScreen(
+                state = state,
+                onNavigationClick = { navController.popBackStack() }
+            )
+        }
     }
 }
 
 sealed class DetailScreen(val route: String) {
+    object PurchaseScreen : DetailScreen(route = PURCHASE_SCREEN)
     object ProfileScreen : DetailScreen(route = DETAIL_SCREEN)
 }

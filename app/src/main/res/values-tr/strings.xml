@@ -68,6 +68,20 @@
     <string name="send_feedback">Geribildirim Gönder</string>
     <string name="logout">Çıkış Yap</string>
     <string name="label_profile_screen">Profil</string>
+    <string name="label_upgrade_to_premium">Premiuma Yükselt</string>
+    <string name="label_upgrade_to_premium_description">Kişiselleştirilmiş plana, grafik analizlere ve diğer tüm premium özelliklere erişmek için premium\'a geçin</string>
+    <string name="label_personalized_program_purchase">Kişiselleştirilmiş antrenman programı</string>
+    <string name="label_detailed_graphic_analysis_purchase">Detaylandırılmış grafik analizleri</string>
+    <string name="label_custom_notifications_purchase">Özel bildirimler ve çok daha fazlası</string>
+    <string name="label_8_week_purchase">8\nHafta</string>
+    <string name="label_8_week_purchase_payment">134.99₺</string>
+    <string name="label_12_week_purchase">12\nHafta</string>
+    <string name="label_12_week_purchase_payment">269.99₺</string>
+    <string name="label_16_week_purchase">16\nHafta</string>
+    <string name="label_16_week_purchase_payment">429.99₺</string>
+    <string name="label_recommended_program">Önerilen</string>
+    <string name="label_purchase_button">Devam et</string>
+
 
 
 

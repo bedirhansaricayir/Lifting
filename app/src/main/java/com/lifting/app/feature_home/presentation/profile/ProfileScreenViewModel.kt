@@ -59,7 +59,8 @@ class ProfileScreenViewModel @Inject constructor(
                             profileDataState = ProfileDataState(
                                 email = response.data?.email,
                                 username = response.data?.displayName,
-                                profilePictureUrl = response.data?.photoUrl
+                                profilePictureUrl = response.data?.photoUrl,
+                                isPremium = response.data?.isPremium
                             )
                         )
                     }

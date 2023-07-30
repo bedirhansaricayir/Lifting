@@ -67,4 +67,18 @@
     <string name="send_feedback">Send Feedback</string>
     <string name="logout">Logout</string>
     <string name="label_profile_screen">Profile</string>
+    <string name="label_upgrade_to_premium">Upgrade to premium</string>
+    <string name="label_upgrade_to_premium_description">Go premium to access personalized plan, graphic analytics and all other premium features</string>
+    <string name="label_personalized_program_purchase">Personalized training program</string>
+    <string name="label_detailed_graphic_analysis_purchase">Detailed graphic analysis</string>
+    <string name="label_custom_notifications_purchase">Custom notifications and much more</string>
+    <string name="label_8_week_purchase">8\nWeek</string>
+    <string name="label_8_week_purchase_payment">4.99$</string>
+    <string name="label_12_week_purchase">12\nWeek</string>
+    <string name="label_12_week_purchase_payment">9.99$</string>
+    <string name="label_16_week_purchase">16\nWeek</string>
+    <string name="label_16_week_purchase_payment">14.99$</string>
+    <string name="label_recommended_program">Recommended</string>
+    <string name="label_purchase_button">Continue</string>
+
 </resources>

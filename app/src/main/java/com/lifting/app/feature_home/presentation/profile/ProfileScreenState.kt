@@ -20,6 +20,7 @@ data class ProfileDataState(
     val email: String? = null,
     val username: String? = null,
     val profilePictureUrl: String? = null,
+    val isPremium: Boolean? = false,
     val profileDataLoading: Boolean = false,
     val profileDataError: String? =  null
 
