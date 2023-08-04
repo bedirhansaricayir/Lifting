@@ -307,5 +307,11 @@ class Constants {
         //Storage
         const val IMAGES = "images"
 
+        //Profile Settings
+        const val ACCOUNT_INFO = 2131755266
+        const val NOTIFICATION = 2131755275
+        const val FEEDBACK = 2131755282
+        const val LOGOUT = 2131755237
+
     }
 }

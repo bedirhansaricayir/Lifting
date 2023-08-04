@@ -33,7 +33,7 @@ import com.lifting.app.theme.grey10
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MainScreen(navController: NavHostController = rememberNavController()) {
+fun MainScreen(navController: NavHostController = rememberNavController(),isPremiumUser: (Boolean) -> Unit) {
     Scaffold(bottomBar = { BottomNavigationBar(navController = navController) }) {
         Box(
             modifier = Modifier.padding(
@@ -43,7 +43,7 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
                 bottom = it.calculateBottomPadding()
             )
         ) {
-            NavGraph(navController = navController)
+            NavGraph(navController = navController, isPremiumUser = isPremiumUser)
         }
     }
 }

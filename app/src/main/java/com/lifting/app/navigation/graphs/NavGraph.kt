@@ -26,11 +26,13 @@ import com.lifting.app.feature_home.presentation.profile.ProfileScreenViewModel
 import com.lifting.app.feature_home.presentation.purchase.PurchaseScreen
 import com.lifting.app.feature_home.presentation.purchase.PurchaseScreenState
 import com.lifting.app.feature_home.presentation.purchase.PurchaseScreenViewModel
+import com.lifting.app.feature_home.presentation.tracker.TrackerPageUiState
+import com.lifting.app.feature_home.presentation.tracker.TrackerPageViewModel
 import com.lifting.app.feature_home.presentation.tracker.TrackerScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(navController: NavHostController,isPremiumUser: (Boolean) -> Unit) {
     NavHost(
         navController = navController,
         route = Graph.HOME,
@@ -41,6 +43,7 @@ fun NavGraph(navController: NavHostController) {
             val homeViewModel: HomeViewModel = hiltViewModel()
             val state: HomePageUiState = homeViewModel.state.collectAsState().value
             val userDataState: UserDataState = homeViewModel.userDataState.collectAsState().value
+            userDataState.isPremium?.let { premium -> isPremiumUser.invoke(premium) }
             HomeScreen(
                 state = state,
                 userState = userDataState,
@@ -54,17 +57,22 @@ fun NavGraph(navController: NavHostController) {
             )
         }
         composable(route = Screen.TrackerScreen.route) {
-            TrackerScreen()
+            val trackerViewModel: TrackerPageViewModel = hiltViewModel()
+            val state: TrackerPageUiState = trackerViewModel.state.collectAsState().value
+            TrackerScreen(
+                state = state,
+                onEvent = trackerViewModel::onEvent
+            )
         }
         composable(route = Screen.HealthScreen.route) {
             CalculatorScreen()
         }
         authNavGraph(navController = navController)
-        detailsNavGraph(navController = navController)
+        detailsNavGraph(navController = navController, onUserLogout = { isPremiumUser.invoke(false) })
     }
 }
 
-fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogout: () -> Unit) {
     navigation(
         route = Graph.DETAILS,
         startDestination = DetailScreen.ProfileScreen.route
@@ -76,14 +84,17 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
                 state = state,
                 profileScreenEvent = profileScreenViewModel::onEvent,
                 onBackNavigationIconClicked = { navController.popBackStack() },
-                onForwardNavigationIconClicked = {
-                    when(it){
-                        R.string.account_information -> {
-                            Log.d("account","burda")
+                onForwardNavigationIconClicked = { route ->
+                    when(route){
+                        R.string.logout -> {
+                            navController.navigate(AuthScreen.SignInScreen.route) {
+                                popUpTo(Graph.HOME) {
+                                    inclusive = true
+                                }
+                                onUserLogout.invoke()
+                            }
                         }
-
                     }
-                    Log.d("geldi",it.toString())
                 }
             )
         }

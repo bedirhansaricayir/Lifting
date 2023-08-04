@@ -67,5 +67,13 @@ object Dependencies {
     //Coil
     val coil by lazy { "io.coil-kt:coil-compose:${Versions.coilVersion}" }
 
+    //Player
     val youtubePlayer by lazy { "com.pierfrancescosoffritti.androidyoutubeplayer:chromecast-sender:${Versions.youtubePlayerVersion}" }
+
+    //Chart
+    val chart by lazy { "com.github.PhilJay:MPAndroidChart:${Versions.chartVersion}" }
+
+    val room by lazy { "androidx.room:room-ktx:${Versions.roomVersion}" }
+    val roomRuntime by lazy { "androidx.room:room-runtime:${Versions.roomVersion}" }
+    val roomCompiler by lazy { "androidx.room:room-compiler:${Versions.roomVersion}" }
 }

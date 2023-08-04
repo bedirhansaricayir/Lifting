@@ -101,5 +101,8 @@ dependencies {
 
     implementation(Dependencies.coil)
     implementation(Dependencies.youtubePlayer)
-
+    implementation(Dependencies.chart)
+    implementation(Dependencies.room)
+    kapt(Dependencies.roomCompiler)
+    implementation(Dependencies.roomRuntime)
 }

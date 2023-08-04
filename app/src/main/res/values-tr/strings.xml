@@ -81,6 +81,14 @@
     <string name="label_16_week_purchase_payment">429.99₺</string>
     <string name="label_recommended_program">Önerilen</string>
     <string name="label_purchase_button">Devam et</string>
+    <string name="short_seven_days">7g</string>
+    <string name="short_thirty_days">30g</string>
+    <string name="short_sixty_days">60g</string>
+    <string name="short_ninety_days">90g</string>
+    <string name="short_one_year">1y</string>
+
+
+
 
 
 

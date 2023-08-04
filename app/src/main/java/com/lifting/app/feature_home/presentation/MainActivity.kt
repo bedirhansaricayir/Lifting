@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.lifting.app.feature_home.presentation.onboarding.SplashViewModel
@@ -22,12 +23,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            FitnessAppTheme {
+             var isPremiumUser by remember { mutableStateOf(false) }
+            FitnessAppTheme(isPremiumUser = isPremiumUser) {
                 val state = splashViewModel.startDestination.collectAsState().value
-                actionBar?.hide()
                 WindowCompat.setDecorFitsSystemWindows(window, false)
                 if (state != null) {
-                    RootNavGraph(navController = rememberNavController(), startDestination = state)
+                    RootNavGraph(navController = rememberNavController(), startDestination = state, isPremiumUser = { isPremiumUser = it})
                 }
             }
         }

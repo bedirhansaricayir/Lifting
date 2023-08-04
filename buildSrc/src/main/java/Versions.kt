@@ -1,7 +1,7 @@
 object Versions {
 
     //Root Build Plugins
-    val gradleVersion = "8.1.0"
+    val gradleVersion = "8.0.2"
     val kotlinGradlePluginVersion = "1.8.0"
     val hiltAndroidPluginVersion = "2.44.2"
 
@@ -70,5 +70,12 @@ object Versions {
     //Coil
     val coilVersion = "2.4.0"
 
+    //Player
     val youtubePlayerVersion = "0.28"
+
+    //Chart
+    val chartVersion = "3.1.0"
+
+    //Room
+    val roomVersion = "2.5.0"
 }

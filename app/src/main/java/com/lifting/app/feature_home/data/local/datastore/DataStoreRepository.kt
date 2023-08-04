@@ -17,7 +17,7 @@ import java.io.IOException
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = ONBOARDING)
 
-class DataStoreRepository(context: Context) {
+class DataStoreRepository(val context: Context) {
 
     private object PreferencesKey {
         val onBoardingKey = booleanPreferencesKey(name = ONBOARDING_COMPLETED)
@@ -67,4 +67,8 @@ class DataStoreRepository(context: Context) {
                 successfullySignInState
             }
     }
+
+        suspend fun clearDataStore() = context.dataStore.edit { preferences ->
+            preferences[PreferencesKey.successfullySignInKey] = false
+        }
 }

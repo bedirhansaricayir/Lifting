@@ -80,5 +80,10 @@
     <string name="label_16_week_purchase_payment">14.99$</string>
     <string name="label_recommended_program">Recommended</string>
     <string name="label_purchase_button">Continue</string>
+    <string name="short_seven_days">7d</string>
+    <string name="short_thirty_days">30d</string>
+    <string name="short_sixty_days">60d</string>
+    <string name="short_ninety_days">90d</string>
+    <string name="short_one_year">1y</string>
 
 </resources>

@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lifting.app.common.util.Resource
 import com.lifting.app.common.util.successOr
+import com.lifting.app.feature_auth.presentation.google_auth.GoogleAuthUiClient
+import com.lifting.app.feature_home.data.local.datastore.DataStoreRepository
 import com.lifting.app.feature_home.domain.use_case.AddImageToStorageUseCase
 import com.lifting.app.feature_home.domain.use_case.AddImageUrlToFirestoreUseCase
 import com.lifting.app.feature_home.domain.use_case.GetProfileSettingsUseCase
@@ -14,6 +16,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +25,9 @@ class ProfileScreenViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val addImageToStorageUseCase: AddImageToStorageUseCase,
     private val addImageUrlToFirestoreUseCase: AddImageUrlToFirestoreUseCase,
-    private val getProfileSettingsUseCase: GetProfileSettingsUseCase
+    private val getProfileSettingsUseCase: GetProfileSettingsUseCase,
+    private val googleAuthUiClient: GoogleAuthUiClient,
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ProfileScreenState())
@@ -36,6 +41,9 @@ class ProfileScreenViewModel @Inject constructor(
             }
             is ProfileScreenEvent.OnProfilePictureAddedToStorage -> {
                 addImageToFirestore(event.downloadUrl)
+            }
+            is ProfileScreenEvent.OnLogoutClicked -> {
+                signOut()
             }
         }
     }
@@ -144,5 +152,22 @@ class ProfileScreenViewModel @Inject constructor(
         _state.value = _state.value.copy(
             profileDataState = ProfileDataState(profilePictureUrl = uri.toString())
         )
+    }
+
+    private fun signOut() {
+        viewModelScope.launch {
+            googleAuthUiClient.signOut()
+            clearSignInState()
+            clearUiState()
+        }
+    }
+    private suspend fun clearSignInState() {
+        dataStoreRepository.clearDataStore()
+    }
+
+    private  fun clearUiState() {
+        _state.update {
+            ProfileScreenState(profileDataState = ProfileDataState(isPremium = false))
+        }
     }
 }

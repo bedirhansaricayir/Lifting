@@ -1,6 +1,7 @@
 package com.lifting.app.feature_home.presentation.profile
 
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -50,6 +51,11 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.lifting.app.R
 import com.lifting.app.common.components.CommonProgressIndicatior
+import com.lifting.app.common.constants.Constants
+import com.lifting.app.common.constants.Constants.Companion.ACCOUNT_INFO
+import com.lifting.app.common.constants.Constants.Companion.FEEDBACK
+import com.lifting.app.common.constants.Constants.Companion.LOGOUT
+import com.lifting.app.common.constants.Constants.Companion.NOTIFICATION
 import com.lifting.app.feature_home.domain.repository.ProfileSettingsData
 import com.lifting.app.feature_home.presentation.components.RoundedCornersSurface
 import com.lifting.app.theme.Black40
@@ -81,7 +87,18 @@ fun ProfileScreen(
             )
         },
         onBackNavigationIconClicked = onBackNavigationIconClicked,
-        onForwardNavigationIconClicked = { onForwardNavigationIconClicked(it) }
+        onForwardNavigationIconClicked = { route ->
+            when (route) {
+                ACCOUNT_INFO -> { }
+
+                NOTIFICATION -> {}
+
+                FEEDBACK -> {  }
+
+                LOGOUT -> { profileScreenEvent(ProfileScreenEvent.OnLogoutClicked) }
+            }
+            onForwardNavigationIconClicked(route)
+        }
     )
 }
 
@@ -158,9 +175,7 @@ fun ProfileScreenContent(
                 items(profileScreenState.settings.size) {
                     ProfileSettingsItem(
                         data = profileScreenState.settings[it],
-                        onClick = { route ->
-                            onForwardNavigationIconClicked(route)
-                        }
+                        onClick = { route -> onForwardNavigationIconClicked(route) }
                     )
                 }
             }
