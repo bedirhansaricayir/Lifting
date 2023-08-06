@@ -1,7 +1,7 @@
 object Versions {
 
     //Root Build Plugins
-    val gradleVersion = "8.0.2"
+    val gradleVersion = "8.1.0"
     val kotlinGradlePluginVersion = "1.8.0"
     val hiltAndroidPluginVersion = "2.44.2"
 

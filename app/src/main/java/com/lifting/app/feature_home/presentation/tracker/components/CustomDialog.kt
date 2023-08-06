@@ -1,4 +1,4 @@
-package com.lifting.app.feature_home.presentation.tracker.dialog
+package com.lifting.app.feature_home.presentation.tracker.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

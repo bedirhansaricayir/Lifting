@@ -313,5 +313,12 @@ class Constants {
         const val FEEDBACK = 2131755282
         const val LOGOUT = 2131755237
 
+
+        //Room Constants
+        const val ANALYSIS_DATA_TABLE = "analysis_data_table"
+        const val DATE_COLUMN = "date_column"
+        const val BW_COLUMN = "bodyweight_column"
+        const val ANALYSIS_DATABASE = "analysis_database"
+
     }
 }

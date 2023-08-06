@@ -1,4 +1,4 @@
-package com.lifting.app.feature_home.presentation.tracker.chart
+package com.lifting.app.feature_home.presentation.tracker.components
 
 import android.graphics.Paint
 import androidx.compose.animation.core.animateFloatAsState
@@ -30,7 +30,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -51,7 +50,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import kotlin.math.round
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BarGraph(
     graphBarData: List<Float>,

@@ -2,7 +2,6 @@ package com.lifting.app.feature_home.presentation.tracker.components
 
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredHeight
@@ -26,10 +25,8 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.lifting.app.feature_home.domain.model.ChartState
 import com.lifting.app.theme.Black40
 import com.lifting.app.theme.White40
-import java.text.DateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -37,7 +34,8 @@ fun Chart(
     modifier: Modifier = Modifier,
     chartState: List<ChartState>,
     isCircleVisible: Boolean,
-    isValuesVisible: Boolean
+    isValuesVisible: Boolean,
+    onValueSelected: (val1: String, val2: Float) -> Unit
 ) {
 
     val label = "Your Bodyweight Datas"
@@ -52,10 +50,6 @@ fun Chart(
                 val today: LocalDate = state.dateWithoutTime
                 val dateformatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yy")
                 today.format(dateformatter)
-
-               /* DateTimeFormatter.ofPattern("dd.MM.yy").format(state.dateWithoutTime)
-                DateFormat.getDateInstance(DateFormat.SHORT)
-                    .format(state.dateWithoutTime)*/
             }
         )
 
@@ -90,8 +84,14 @@ fun Chart(
                 LineChart(context).apply {
                     setOnChartValueSelectedListener(object: OnChartValueSelectedListener {
                         override fun onValueSelected(e: Entry?, h: Highlight?) {
-                            Log.d("secildi5",e.toString())
-                            Toast.makeText(context,"${e?.x} Tarihinde ${e?.y} Kilogramdınız.",Toast.LENGTH_SHORT).show()
+                            chartState.map {
+                               //Toast.makeText(context,"${it.dateWithoutTime} Tarihinde ${e?.y} Kilogramdınız.",Toast.LENGTH_SHORT).show()
+                                e?.y?.let { weight ->
+                                    onValueSelected(it.dateWithoutTime.toString(),
+                                        weight
+                                    )
+                                }
+                            }
                         }
 
                         override fun onNothingSelected() {
@@ -112,7 +112,7 @@ fun Chart(
                         position = XAxis.XAxisPosition.BOTTOM
                         setDrawGridLines(false)
                         setDrawLabels(true)
-                        isEnabled = true
+                        isEnabled = false
                         textSize = 5f
                         textColor = White40.toArgb()
                         valueFormatter = xAxisformatter
@@ -129,11 +129,14 @@ fun Chart(
                     axisRight.apply {
                         isEnabled = false
                     }
-                    data = LineData(lineDataSet)
-                    invalidate()
-
 
                 }
+            },
+            update = {
+                     it.apply {
+                         data = LineData(lineDataSet)
+                         invalidate()
+                     }
             },
             modifier = modifier
                 .fillMaxWidth()

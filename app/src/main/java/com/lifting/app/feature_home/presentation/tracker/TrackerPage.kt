@@ -21,11 +21,10 @@ import androidx.compose.ui.unit.dp
 import com.lifting.app.R
 import com.lifting.app.feature_home.presentation.tracker.components.Chart
 import com.lifting.app.feature_home.presentation.tracker.components.TimeRangePicker
-import com.lifting.app.feature_home.presentation.tracker.dialog.CustomTrackingDialog
+import com.lifting.app.feature_home.presentation.tracker.components.CustomTrackingDialog
 import com.lifting.app.theme.black20
 import com.lifting.app.theme.grey50
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -74,7 +73,9 @@ fun TrackerScreen(
                     }
                     Chart(modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp),chartState = state.chartState,isCircleVisible = true, isValuesVisible = true)
+                        .padding(top = 16.dp),chartState = state.chartState,isCircleVisible = true, isValuesVisible = true) { val1, val2 ->
+                        Log.d("OnChartValueSelected","$val1 Tarihinde $val2 Kilogram")
+                    }
                 }
             }
         }
