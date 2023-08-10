@@ -16,8 +16,8 @@ import com.lifting.app.R
 import com.lifting.app.theme.Black40
 
 
-enum class TimeRange {
-     SEVEN_DAYS, THIRTY_DAYS, SIXTY_DAYS, NINETY_DAYS, ONE_YEAR;
+enum class TimeRange(val minusDay: Long) {
+     SEVEN_DAYS(7), THIRTY_DAYS(30), SIXTY_DAYS(60), NINETY_DAYS(90), ONE_YEAR(365);
 }
 
 @Composable

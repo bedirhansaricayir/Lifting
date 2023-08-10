@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -37,7 +38,7 @@ fun TrackerScreen(
             .fillMaxSize()
     ) {
         var onFabClick by remember { mutableStateOf(false) }
-
+        var isSecondLineSet by remember { mutableStateOf(false) }
         Scaffold(
             modifier = Modifier.statusBarsPadding(),
             floatingActionButton = {
@@ -71,10 +72,19 @@ fun TrackerScreen(
                         .padding(start = 16.dp, end = 16.dp, top = 16.dp), selectedTimeRange = state.getTimeRange()){ timeRange ->
                         onEvent(TrackerPageEvent.OnTimeRangeClicked(timeRange))
                     }
-                    Chart(modifier = Modifier
+                    Chart(
+                        modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp),chartState = state.chartState,isCircleVisible = true, isValuesVisible = true) { val1, val2 ->
+                        .padding(top = 16.dp),
+                        chartState = state.chartState,
+                        isCircleVisible = true, isValuesVisible = true, isMoveViewToAnimated = false,
+                    ) { val1, val2 ->
                         Log.d("OnChartValueSelected","$val1 Tarihinde $val2 Kilogram")
+                    }
+                    Button(onClick = {
+                        isSecondLineSet = !isSecondLineSet
+                    }) {
+
                     }
                 }
             }

@@ -5,7 +5,7 @@
     <string name="FirstOnBoardingPageDescription">Her seviye için oluşturulmuş toplamda 15\'ten fazla egzersiz programı formda kalmanıza yardımcı olacaktır.</string>
     <string name="SecondOnBoardingPageTitle">Kendi programını oluştur veya mevcut olanı seç</string>
     <string name="SecondOnBoardingPageDescription">Herhangi bir antrenmanı seçin, daha hızlı sonuçlar için kişiselleştirilmiş plana sahip olun.</string>
-    <string name="ThirdOnBoardingPageTitle">Etkinliklerini takip et.</string>
+    <string name="ThirdOnBoardingPageTitle">Etkinliklerini takip et</string>
     <string name="ThirdOnBoardingPageDescription">Etkinlik izleyici, günlük ölçümlerinizi sizin için saklar ve bunları analiz etmenize yardımcı olur.</string>
     <string name="GetStarted">Şimdi Başla</string>
     <string name="BeginnerProgram">Başlangıç Seviye</string>

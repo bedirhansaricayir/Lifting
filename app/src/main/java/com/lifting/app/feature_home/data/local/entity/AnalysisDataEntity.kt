@@ -11,6 +11,7 @@ import java.time.LocalDate
 @Entity(tableName = ANALYSIS_DATA_TABLE)
 data class AnalysisDataEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
+
     @ColumnInfo(name = DATE_COLUMN)val date: LocalDate,
     @ColumnInfo(name = BW_COLUMN)val bodyweight: Float
 )

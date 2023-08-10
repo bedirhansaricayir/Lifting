@@ -16,6 +16,9 @@ interface AnalysisDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAnalysisData(analysisDataEntity: AnalysisDataEntity)
 
-    @Query("SELECT * FROM $ANALYSIS_DATA_TABLE WHERE $DATE_COLUMN BETWEEN :currentDate AND :endDate")
-    fun getAnalysisDataWhereTimeRange(currentDate: LocalDate,endDate: LocalDate): Flow<List<AnalysisDataEntity>>
+    @Query("SELECT * FROM $ANALYSIS_DATA_TABLE")
+    fun getAllAnalysisData(): Flow<List<AnalysisDataEntity>>
+
+    @Query("SELECT * FROM $ANALYSIS_DATA_TABLE WHERE $DATE_COLUMN BETWEEN :startDate AND :endDate")
+    fun getAnalysisDataWhereTimeRange(startDate: LocalDate,endDate: LocalDate): Flow<List<AnalysisDataEntity>>
 }

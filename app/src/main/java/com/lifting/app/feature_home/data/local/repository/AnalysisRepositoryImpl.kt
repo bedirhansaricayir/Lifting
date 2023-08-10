@@ -12,11 +12,14 @@ class AnalysisRepositoryImpl @Inject constructor(
     override suspend fun insertAnalysisData(analysisDataEntity: AnalysisDataEntity) =
         dao.insertAnalysisData(analysisDataEntity)
 
+    override fun getAllAnalysisData(): Flow<List<AnalysisDataEntity>> =
+        dao.getAllAnalysisData()
+
 
     override fun getAnalysisDataWhereTimeRange(
-        currentDate: LocalDate,
+        startDate: LocalDate,
         endDate: LocalDate
     ): Flow<List<AnalysisDataEntity>> =
-        dao.getAnalysisDataWhereTimeRange(currentDate, endDate)
+        dao.getAnalysisDataWhereTimeRange(startDate, endDate)
 
 }

@@ -15,6 +15,7 @@ import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -22,6 +23,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.github.mikephil.charting.utils.Utils
 import com.lifting.app.feature_home.domain.model.ChartState
 import com.lifting.app.theme.Black40
 import com.lifting.app.theme.White40
@@ -35,10 +37,12 @@ fun Chart(
     chartState: List<ChartState>,
     isCircleVisible: Boolean,
     isValuesVisible: Boolean,
-    onValueSelected: (val1: String, val2: Float) -> Unit
+    isMoveViewToAnimated: Boolean,
+    onValueSelected: (val1: String, val2: Float) -> Unit,
 ) {
 
     val label = "Your Bodyweight Datas"
+    val primaryColor = MaterialTheme.colorScheme.primary
 
     if (chartState.isNotEmpty()) {
         val entries = chartState.mapIndexed { index, state ->
@@ -48,7 +52,7 @@ fun Chart(
         val xAxisformatter = IndexAxisValueFormatter(
             chartState.map { state ->
                 val today: LocalDate = state.dateWithoutTime
-                val dateformatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yy")
+                val dateformatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM")
                 today.format(dateformatter)
             }
         )
@@ -65,49 +69,54 @@ fun Chart(
         }
         val lineDataSet = LineDataSet(entries, label).apply {
             mode = LineDataSet.Mode.HORIZONTAL_BEZIER
-            color = MaterialTheme.colorScheme.primary.toArgb()
-            highLightColor = MaterialTheme.colorScheme.primary.toArgb()
-            //lineWidth = 2f
+            color = primaryColor.toArgb()
+            highLightColor = primaryColor.toArgb()
+            lineWidth = 1.5f
             setDrawFilled(true)
-            fillColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f).toArgb()
+            fillColor = primaryColor.copy(alpha = 0.5f).toArgb()
+            fillAlpha = 70
             setDrawCircles(isCircleVisible)
-            setCircleColor(MaterialTheme.colorScheme.primary.toArgb())
+            setCircleColor(primaryColor.toArgb())
             circleHoleColor = Black40.toArgb()
             setDrawValues(isValuesVisible)
-            //valueTextSize = 8f
-            valueTextColor = MaterialTheme.colorScheme.primary.toArgb()
+            valueTextSize = 5f
+            valueTextColor = primaryColor.toArgb()
         }
 
 
         AndroidView(
             factory = { context ->
+                Utils.init(context)
                 LineChart(context).apply {
-                    setOnChartValueSelectedListener(object: OnChartValueSelectedListener {
+                    setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                         override fun onValueSelected(e: Entry?, h: Highlight?) {
-                            chartState.map {
-                               //Toast.makeText(context,"${it.dateWithoutTime} Tarihinde ${e?.y} Kilogramdınız.",Toast.LENGTH_SHORT).show()
-                                e?.y?.let { weight ->
-                                    onValueSelected(it.dateWithoutTime.toString(),
-                                        weight
+                            chartState.map { chartState ->
+                                e?.y?.let { bodyweight ->
+                                    onValueSelected(
+                                        chartState.dateWithoutTime.toString(),
+                                        bodyweight
                                     )
                                 }
                             }
                         }
 
                         override fun onNothingSelected() {
-                            Log.d("seçilmedi","Seçilmedi")
+                            Log.d("seçilmedi", "Seçilmedi")
                         }
 
                     })
+                    //animateX(500, Easing.EaseInBounce)
+                    animateXY(500, 500)
                     description.isEnabled = false
-                    isDragEnabled = false
+                    isDragEnabled = true
                     setTouchEnabled(true)
-                    setScaleEnabled(false)
-                    setPinchZoom(false)
+                    setScaleEnabled(true)
+                    setPinchZoom(true)
                     legend.isEnabled = false
                     legend.form = Legend.LegendForm.CIRCLE
                     isDoubleTapToZoomEnabled = false
-                    isHighlightPerDragEnabled = false
+                    isHighlightPerDragEnabled = true
+                    isHorizontalScrollBarEnabled = true
                     xAxis.apply {
                         position = XAxis.XAxisPosition.BOTTOM
                         setDrawGridLines(false)
@@ -119,7 +128,7 @@ fun Chart(
 
                     }
                     axisLeft.apply {
-                        axisMinimum = 0f
+                        //axisMinimum = 0f  Y eksenini 0'dan başlatır.
                         textSize = 8f
                         textColor = White40.toArgb()
                         setDrawAxisLine(false)
@@ -129,14 +138,21 @@ fun Chart(
                     axisRight.apply {
                         isEnabled = false
                     }
-
                 }
             },
             update = {
-                     it.apply {
-                         data = LineData(lineDataSet)
-                         invalidate()
-                     }
+                it.apply {
+                    data = LineData(lineDataSet)
+                    //invalidate()
+                    setVisibleXRangeMaximum(30f)
+                    if (!isMoveViewToAnimated) moveViewToX(entries.size.toFloat())
+                    else moveViewToAnimated(
+                        entries.size.toFloat(),
+                        10f,
+                        YAxis.AxisDependency.RIGHT,
+                        1000
+                    )
+                }
             },
             modifier = modifier
                 .fillMaxWidth()

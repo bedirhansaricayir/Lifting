@@ -8,6 +8,7 @@ interface AnalysisRepository {
 
     suspend fun insertAnalysisData(analysisDataEntity: AnalysisDataEntity)
 
-    fun getAnalysisDataWhereTimeRange(currentDate: LocalDate, endDate: LocalDate): Flow<List<AnalysisDataEntity>>
+    fun getAllAnalysisData(): Flow<List<AnalysisDataEntity>>
+    fun getAnalysisDataWhereTimeRange(startDate: LocalDate, endDate: LocalDate): Flow<List<AnalysisDataEntity>>
 
 }

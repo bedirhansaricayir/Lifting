@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.*
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
+import com.github.mikephil.charting.utils.Utils
 import com.lifting.app.feature_home.presentation.onboarding.SplashViewModel
 import com.lifting.app.navigation.graphs.RootNavGraph
 import com.lifting.app.theme.FitnessAppTheme
@@ -27,7 +28,8 @@ class MainActivity : ComponentActivity() {
             FitnessAppTheme(isPremiumUser = isPremiumUser) {
                 val state = splashViewModel.startDestination.collectAsState().value
                 WindowCompat.setDecorFitsSystemWindows(window, false)
-                if (state != null) {
+                Utils.init(this)
+                if (!state.isNullOrEmpty()) {
                     RootNavGraph(navController = rememberNavController(), startDestination = state, isPremiumUser = { isPremiumUser = it})
                 }
             }
