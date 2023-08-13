@@ -86,6 +86,11 @@
     <string name="short_sixty_days">60g</string>
     <string name="short_ninety_days">90g</string>
     <string name="short_one_year">1y</string>
+    <string name="sort_by">Şuna Göre Sırala</string>
+    <string name="sort_by_date">Tarih</string>
+    <string name="sort_by_records">Kayıtlar</string>
+
+
 
 
 

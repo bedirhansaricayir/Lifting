@@ -26,7 +26,9 @@ object DatabaseModule {
         context,
         AnalysisDatabase::class.java,
         ANALYSIS_DATABASE
-    ).build()
+    ).fallbackToDestructiveMigration()
+        .allowMainThreadQueries()
+        .build()
 
     @Provides
     @Singleton

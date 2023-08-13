@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
 @Dao
-interface AnalysisDao {
+    interface AnalysisDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAnalysisData(analysisDataEntity: AnalysisDataEntity)
@@ -21,4 +21,7 @@ interface AnalysisDao {
 
     @Query("SELECT * FROM $ANALYSIS_DATA_TABLE WHERE $DATE_COLUMN BETWEEN :startDate AND :endDate")
     fun getAnalysisDataWhereTimeRange(startDate: LocalDate,endDate: LocalDate): Flow<List<AnalysisDataEntity>>
+
+    @Query("SELECT * FROM $ANALYSIS_DATA_TABLE WHERE cj_column IS NOT NULL")
+    fun getNonNullCjData(): Flow<List<AnalysisDataEntity>>
 }

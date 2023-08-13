@@ -49,7 +49,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import kotlin.math.round
-
+enum class BarType {
+    CIRCULAR_TYPE,
+    TOP_CURVED
+}
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BarGraph(

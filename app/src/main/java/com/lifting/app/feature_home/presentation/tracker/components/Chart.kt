@@ -7,7 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -22,6 +27,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.Utils
 import com.lifting.app.feature_home.domain.model.ChartState
@@ -37,16 +43,43 @@ fun Chart(
     chartState: List<ChartState>,
     isCircleVisible: Boolean,
     isValuesVisible: Boolean,
+    isSecondLineSet: Boolean,
     isMoveViewToAnimated: Boolean,
+    setDrawFilled: Boolean,
     onValueSelected: (val1: String, val2: Float) -> Unit,
 ) {
 
     val label = "Your Bodyweight Datas"
     val primaryColor = MaterialTheme.colorScheme.primary
+    var lineset: List<Entry> by remember {
+        mutableStateOf(emptyList())
+    }
+    if (isSecondLineSet){
+        lineset =  chartState.mapIndexed { index, chartState ->
+            Entry(index.toFloat(),chartState.cj ?: 0f)
+        }
+    }
+
+
+    val lineDataSet2 = LineDataSet(lineset,label).apply {
+        mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+        color = Color.Red.toArgb()
+        highLightColor = Color.Red.toArgb()
+        lineWidth = 1.5f
+        setDrawFilled(setDrawFilled)
+        fillColor = Color.Red.copy(alpha = 0.5f).toArgb()
+        fillAlpha = 70
+        setDrawCircles(isCircleVisible)
+        setCircleColor(Color.Red.toArgb())
+        circleHoleColor = Black40.toArgb()
+        setDrawValues(isValuesVisible)
+        valueTextSize = 5f
+        valueTextColor = Color.Red.toArgb()
+    }
 
     if (chartState.isNotEmpty()) {
         val entries = chartState.mapIndexed { index, state ->
-            Entry(index.toFloat(), state.bodyweight)
+            Entry(index.toFloat(), state.bodyweight?:0f)
         }
 
         val xAxisformatter = IndexAxisValueFormatter(
@@ -72,7 +105,7 @@ fun Chart(
             color = primaryColor.toArgb()
             highLightColor = primaryColor.toArgb()
             lineWidth = 1.5f
-            setDrawFilled(true)
+            setDrawFilled(setDrawFilled)
             fillColor = primaryColor.copy(alpha = 0.5f).toArgb()
             fillAlpha = 70
             setDrawCircles(isCircleVisible)
@@ -82,6 +115,16 @@ fun Chart(
             valueTextSize = 5f
             valueTextColor = primaryColor.toArgb()
         }
+
+        val lineData: ArrayList<ILineDataSet> = ArrayList()
+        lineData.add(lineDataSet)
+        if (isSecondLineSet) {
+            lineData.add(lineDataSet2)
+        } else {
+            lineData.remove(lineDataSet2)
+        }
+
+
 
 
         AndroidView(
@@ -142,7 +185,7 @@ fun Chart(
             },
             update = {
                 it.apply {
-                    data = LineData(lineDataSet)
+                    data = LineData(lineData)
                     //invalidate()
                     setVisibleXRangeMaximum(30f)
                     if (!isMoveViewToAnimated) moveViewToX(entries.size.toFloat())

@@ -5,10 +5,12 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lifting.app.feature_home.data.local.entity.AnalysisDataEntity
+import com.lifting.app.feature_home.domain.model.AnalysisSortBy
 import com.lifting.app.feature_home.domain.model.AnalysisTimeRange
 import com.lifting.app.feature_home.domain.use_case.AddAnalysisDataUseCase
 import com.lifting.app.feature_home.domain.use_case.GetAllAnalysisDataUseCase
 import com.lifting.app.feature_home.domain.use_case.GetAnalysisDataUseCase
+import com.lifting.app.feature_home.presentation.tracker.components.SortBy
 import com.lifting.app.feature_home.presentation.tracker.components.TimeRange
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +38,9 @@ class TrackerPageViewModel @Inject constructor(
                 addAnalysisData(
                     AnalysisDataEntity(
                         date = event.localDate,
-                        bodyweight = event.bw
+                        bodyweight = event.bw,
+                        cj = event.cj,
+                        snatch = event.snatch
                     )
                 )
             }
@@ -44,6 +48,10 @@ class TrackerPageViewModel @Inject constructor(
             is TrackerPageEvent.OnTimeRangeClicked -> {
                 setChipSelection(timeRange = event.timeRange)
                 getChartDataByFilter(getLocalDateNow().minusDays(event.timeRange.minusDay),getLocalDateNow())
+            }
+
+            is TrackerPageEvent.OnSortByClicked -> {
+                getSortBy(event.sortBy)
             }
         }
     }
@@ -79,6 +87,12 @@ class TrackerPageViewModel @Inject constructor(
         }
     }
 
+    private fun getSortBy(sortBy: SortBy) {
+        when(sortBy){
+            SortBy.DATE -> _state.value = _state.value.copy(sortBy = AnalysisSortBy.DATE)
+            SortBy.RECORD -> _state.value = _state.value.copy(sortBy = AnalysisSortBy.RECORD)
+        }
+    }
     private fun setChipSelection(timeRange: TimeRange) {
         when (timeRange) {
             TimeRange.SEVEN_DAYS -> _state.value = _state.value.copy(timeRange = AnalysisTimeRange.TIMERANGE_7DAYS)

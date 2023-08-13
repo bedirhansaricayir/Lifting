@@ -13,5 +13,7 @@ data class AnalysisDataEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
 
     @ColumnInfo(name = DATE_COLUMN)val date: LocalDate,
-    @ColumnInfo(name = BW_COLUMN)val bodyweight: Float
+    @ColumnInfo(name = BW_COLUMN)val bodyweight: Float?,
+    @ColumnInfo(name = "cj_column")val cj: Float?,
+    @ColumnInfo(name = "snatch_column")val snatch: Float?
 )
