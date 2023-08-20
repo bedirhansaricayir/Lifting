@@ -89,6 +89,16 @@
     <string name="sort_by">Şuna Göre Sırala</string>
     <string name="sort_by_date">Tarih</string>
     <string name="sort_by_records">Kayıtlar</string>
+    <string name="filters_label">Filtreler</string>
+    <string name="graphic_settings">Grafik Ayarları</string>
+    <string name="values_visible">Değerleri göster</string>
+    <string name="circle_visible">Noktaları Göster</string>
+    <string name="filled_visible">Grafiği Doldur</string>
+
+
+
+
+
 
 
 

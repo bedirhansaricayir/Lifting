@@ -88,6 +88,11 @@
     <string name="sort_by">Sort By</string>
     <string name="sort_by_date">Date</string>
     <string name="sort_by_records">Records</string>
+    <string name="filters_label">Filters</string>
+    <string name="graphic_settings">Graphic Settings</string>
+    <string name="values_visible">Show values</string>
+    <string name="circle_visible">Show points</string>
+    <string name="filled_visible">Fill the chart</string>
 
 
 </resources>

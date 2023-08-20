@@ -20,6 +20,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -27,14 +28,16 @@ import com.lifting.app.R
 import com.lifting.app.feature_home.presentation.tracker.components.Chart
 import com.lifting.app.feature_home.presentation.tracker.components.TimeRangePicker
 import com.lifting.app.feature_home.presentation.tracker.components.CustomTrackingDialog
+import com.lifting.app.feature_home.presentation.tracker.components.FilterChip
 import com.lifting.app.feature_home.presentation.tracker.components.FiltersChip
 import com.lifting.app.feature_home.presentation.tracker.components.SelectableSortBy
 import com.lifting.app.feature_home.presentation.tracker.components.SortBy
+import com.lifting.app.feature_home.presentation.tracker.components.TimeRange
+import com.lifting.app.theme.White40
 import com.lifting.app.theme.black20
 import com.lifting.app.theme.grey10
 import com.lifting.app.theme.grey50
 import java.time.LocalDate
-import java.util.ArrayList
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -43,13 +46,33 @@ fun TrackerScreen(
     onEvent: (TrackerPageEvent) -> Unit,
 ) {
     var openModalBottomSheet by remember { mutableStateOf(false) }
-
+    var selectedTimeRange by remember { mutableStateOf(TimeRange.THIRTY_DAYS) }
+    var selectedSortBy by remember { mutableStateOf(SortBy.DATE) }
+    var isCircleVisible by remember { mutableStateOf(false) }
+    var isValuesVisible by remember { mutableStateOf(true) }
+    var setDrawFilled by remember { mutableStateOf(false) }
+    var onFabClick by remember { mutableStateOf(false) }
 
     if (openModalBottomSheet) {
         CustomModalBottomSheet(
             state = state,
             onDismiss = { openModalBottomSheet = false },
-            onSortByClicked = { onEvent(TrackerPageEvent.OnSortByClicked(it)) }
+            onSortByClicked = {
+                selectedSortBy = it
+                onEvent(TrackerPageEvent.OnSortByClicked(selectedSortBy, selectedTimeRange))
+            },
+            onFilterChipClicked = { selectedFilterChips ->
+                isCircleVisible = false
+                isValuesVisible = false
+                setDrawFilled = false
+                selectedFilterChips.forEach { filterChip ->
+                    when (filterChip) {
+                        FilterChip.CIRCLE -> isCircleVisible = true
+                        FilterChip.VALUES -> isValuesVisible = true
+                        FilterChip.FILLED -> setDrawFilled = true
+                    }
+                }
+            }
         )
     }
 
@@ -57,11 +80,7 @@ fun TrackerScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        var onFabClick by remember { mutableStateOf(false) }
-        var isSecondLineSet by remember { mutableStateOf(false) }
-        var isCircleVisible by remember { mutableStateOf(true) }
-        var isValuesVisible by remember { mutableStateOf(true) }
-        var setDrawFilled by remember { mutableStateOf(true) }
+
         Scaffold(
             modifier = Modifier.statusBarsPadding(),
             floatingActionButton = {
@@ -98,7 +117,8 @@ fun TrackerScreen(
                             .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                         selectedTimeRange = state.getTimeRange()
                     ) { timeRange ->
-                        onEvent(TrackerPageEvent.OnTimeRangeClicked(timeRange))
+                        selectedTimeRange = timeRange
+                        onEvent(TrackerPageEvent.OnTimeRangeClicked(selectedSortBy, timeRange))
                     }
 
                     Chart(
@@ -109,7 +129,6 @@ fun TrackerScreen(
                         isCircleVisible = isCircleVisible,
                         isValuesVisible = isValuesVisible,
                         isMoveViewToAnimated = false,
-                        isSecondLineSet = isSecondLineSet,
                         setDrawFilled = setDrawFilled
                     ) { val1, val2 ->
                         Log.d("OnChartValueSelected", "$val1 Tarihinde $val2 Kilogram")
@@ -117,9 +136,6 @@ fun TrackerScreen(
 
                     Button(onClick = { openModalBottomSheet = !openModalBottomSheet }) {
 
-                    }
-                    Button(onClick = { isSecondLineSet = !isSecondLineSet }) {
-                        
                     }
                 }
             }
@@ -165,7 +181,8 @@ fun CustomFloatingActionButton(
 fun CustomModalBottomSheet(
     state: TrackerPageUiState,
     onDismiss: () -> Unit,
-    onSortByClicked: (sortBy: SortBy) -> Unit
+    onSortByClicked: (sortBy: SortBy) -> Unit,
+    onFilterChipClicked: (filterChip: MutableList<FilterChip>) -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState()
     ModalBottomSheet(
@@ -179,20 +196,33 @@ fun CustomModalBottomSheet(
                 .fillMaxSize()
         ) {
             Text(
+                text = stringResource(id = R.string.filters_label),
+                style = MaterialTheme.typography.titleSmall,
+                color = White40,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 8.dp, vertical = 16.dp)
+            )
+            Text(
                 modifier = Modifier.padding(8.dp),
                 text = stringResource(id = R.string.sort_by),
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.labelMedium,
                 color = grey10
             )
             SelectableSortBy(selectedSortBy = state.getSortBy()) { sortBy ->
                 onSortByClicked(sortBy)
             }
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                modifier = Modifier.padding(8.dp),
+                text = stringResource(id = R.string.graphic_settings),
+                style = MaterialTheme.typography.labelMedium,
+                color = grey10
+            )
 
-            FiltersChip(onChipSelected = {
-                it.forEach { string ->
-
-                }
-            })
+            FiltersChip() { selectedChip ->
+                onFilterChipClicked(selectedChip)
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ import com.lifting.app.feature_home.domain.model.AnalysisTimeRange
 import com.lifting.app.feature_home.domain.use_case.AddAnalysisDataUseCase
 import com.lifting.app.feature_home.domain.use_case.GetAllAnalysisDataUseCase
 import com.lifting.app.feature_home.domain.use_case.GetAnalysisDataUseCase
+import com.lifting.app.feature_home.presentation.tracker.components.FilterChip
 import com.lifting.app.feature_home.presentation.tracker.components.SortBy
 import com.lifting.app.feature_home.presentation.tracker.components.TimeRange
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,17 +48,19 @@ class TrackerPageViewModel @Inject constructor(
 
             is TrackerPageEvent.OnTimeRangeClicked -> {
                 setChipSelection(timeRange = event.timeRange)
-                getChartDataByFilter(getLocalDateNow().minusDays(event.timeRange.minusDay),getLocalDateNow())
+                getChartData(event.sortBy,event.timeRange)
+
             }
 
             is TrackerPageEvent.OnSortByClicked -> {
                 getSortBy(event.sortBy)
+                getChartData(event.sortBy,event.timeRange)
             }
         }
     }
 
     init {
-        getChartDataByFilter(getLocalDateNow().minusDays(TimeRange.THIRTY_DAYS.minusDay),getLocalDateNow())
+        getChartDataByFilter(getLocalDateNow().minusDays(TimeRange.SEVEN_DAYS.minusDay),getLocalDateNow())
     }
 
 
@@ -67,11 +70,17 @@ class TrackerPageViewModel @Inject constructor(
         }
     }
 
-    private fun getAllChartData() {
+    private fun getChartData(sortBy: SortBy,timeRange: TimeRange) {
+        when(sortBy) {
+            SortBy.RECORD -> getChartDataByRecords(timeRange.minusDay.toInt())
+            SortBy.DATE -> getChartDataByFilter(getLocalDateNow().minusDays(timeRange.minusDay),getLocalDateNow())
+        }
+    }
+    private fun getChartDataByRecords(takeLast: Int) {
         viewModelScope.launch {
             getAllAnalysisDataUseCase.invoke().collect { response ->
                 _state.value = _state.value.copy(
-                    chartState = response
+                    chartState = response.takeLast(takeLast)
                 )
             }
         }
@@ -101,6 +110,18 @@ class TrackerPageViewModel @Inject constructor(
             TimeRange.NINETY_DAYS -> _state.value = _state.value.copy(timeRange = AnalysisTimeRange.TIMERANGE_90DAYS)
             TimeRange.ONE_YEAR -> _state.value = _state.value.copy(timeRange = AnalysisTimeRange.TIMERANGE_1YEAR)
         }
+    }
+
+    private fun setFilterChipSelection(filterChip: MutableList<FilterChip>) {
+        /*val updatedSelectedChips = _state.value.selectedFilterChip
+
+        filterChip.forEach { selectedChip ->
+            if (selectedChip !in updatedSelectedChips) {
+                updatedSelectedChips.add(selectedChip)
+            }
+        }
+
+        _state.value = _state.value.copy(selectedFilterChip = updatedSelectedChips)*/
     }
 
     private fun getLocalDateNow() : LocalDate = LocalDate.now()
