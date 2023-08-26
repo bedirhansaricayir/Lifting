@@ -2,6 +2,7 @@ package com.lifting.app.feature_home.presentation.tracker
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lifting.app.feature_home.data.local.entity.AnalysisDataEntity
@@ -55,6 +56,10 @@ class TrackerPageViewModel @Inject constructor(
             is TrackerPageEvent.OnSortByClicked -> {
                 getSortBy(event.sortBy)
                 getChartData(event.sortBy,event.timeRange)
+            }
+
+            is TrackerPageEvent.OnFilterChipClicked -> {
+                setFilterChipSelection(event.filterChipGroup)
             }
         }
     }
@@ -113,7 +118,8 @@ class TrackerPageViewModel @Inject constructor(
     }
 
     private fun setFilterChipSelection(filterChip: MutableList<FilterChip>) {
-        /*val updatedSelectedChips = _state.value.selectedFilterChip
+        _state.value.selectedFilterChip.clear()
+        val updatedSelectedChips = _state.value.selectedFilterChip.toMutableStateList()
 
         filterChip.forEach { selectedChip ->
             if (selectedChip !in updatedSelectedChips) {
@@ -121,7 +127,7 @@ class TrackerPageViewModel @Inject constructor(
             }
         }
 
-        _state.value = _state.value.copy(selectedFilterChip = updatedSelectedChips)*/
+        _state.value = _state.value.copy(selectedFilterChip = updatedSelectedChips)
     }
 
     private fun getLocalDateNow() : LocalDate = LocalDate.now()

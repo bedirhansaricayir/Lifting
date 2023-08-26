@@ -62,6 +62,7 @@ fun TrackerScreen(
                 onEvent(TrackerPageEvent.OnSortByClicked(selectedSortBy, selectedTimeRange))
             },
             onFilterChipClicked = { selectedFilterChips ->
+                onEvent(TrackerPageEvent.OnFilterChipClicked(selectedFilterChips))
                 isCircleVisible = false
                 isValuesVisible = false
                 setDrawFilled = false
@@ -220,7 +221,7 @@ fun CustomModalBottomSheet(
                 color = grey10
             )
 
-            FiltersChip() { selectedChip ->
+            FiltersChip(state.selectedFilterChip) { selectedChip ->
                 onFilterChipClicked(selectedChip)
             }
         }

@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -41,7 +42,7 @@ data class ChipsModel(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FiltersChip(onChipSelected: (selectedItems: MutableList<FilterChip>) -> Unit) {
+fun FiltersChip(selectedChipGroup: MutableList<FilterChip>,onChipSelected: (selectedItems: MutableList<FilterChip>) -> Unit) {
     val filterList = listOf(
         ChipsModel(
             name = R.string.values_visible,
@@ -59,7 +60,9 @@ fun FiltersChip(onChipSelected: (selectedItems: MutableList<FilterChip>) -> Unit
             leadingIcon = Icons.Default.Check,
         )
     )
-    val selectedItems = remember { mutableStateListOf<FilterChip>(FilterChip.VALUES) }
+
+    val selectedItems = remember { selectedChipGroup.toMutableStateList() }
+    //val selectedItems2 = remember { mutableStateListOf<FilterChip>(FilterChip.VALUES) }
     var isSelected by remember { mutableStateOf(false) }
     LazyRow {
         items(filterList) { item ->
