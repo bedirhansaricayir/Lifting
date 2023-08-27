@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.lifting.app.feature_home.data.local.entity.AnalysisDataEntity
 import com.lifting.app.feature_home.data.local.entity.AnalysisDataTypeConverter
 
-@Database(entities = [AnalysisDataEntity::class], version = 2, exportSchema = false)
+@Database(entities = [AnalysisDataEntity::class], version = 3, exportSchema = false)
 @TypeConverters(AnalysisDataTypeConverter::class)
 abstract class AnalysisDatabase: RoomDatabase() {
     abstract fun analysisDao(): AnalysisDao

@@ -22,6 +22,4 @@ import java.time.LocalDate
     @Query("SELECT * FROM $ANALYSIS_DATA_TABLE WHERE $DATE_COLUMN BETWEEN :startDate AND :endDate")
     fun getAnalysisDataWhereTimeRange(startDate: LocalDate,endDate: LocalDate): Flow<List<AnalysisDataEntity>>
 
-    @Query("SELECT * FROM $ANALYSIS_DATA_TABLE WHERE cj_column IS NOT NULL")
-    fun getNonNullCjData(): Flow<List<AnalysisDataEntity>>
 }

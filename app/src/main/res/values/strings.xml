@@ -93,6 +93,8 @@
     <string name="values_visible">Show values</string>
     <string name="circle_visible">Show points</string>
     <string name="filled_visible">Fill the chart</string>
+    <string name="fab_filter_label">Filter</string>
+    <string name="fab_insert_data">Add</string>
 
 
 </resources>

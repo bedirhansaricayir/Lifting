@@ -11,6 +11,4 @@ interface AnalysisRepository {
     fun getAllAnalysisData(): Flow<List<AnalysisDataEntity>>
     fun getAnalysisDataWhereTimeRange(startDate: LocalDate, endDate: LocalDate): Flow<List<AnalysisDataEntity>>
 
-    fun getNonNullCjData(): Flow<List<AnalysisDataEntity>>
-
 }

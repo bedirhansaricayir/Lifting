@@ -94,6 +94,10 @@
     <string name="values_visible">Değerleri göster</string>
     <string name="circle_visible">Noktaları Göster</string>
     <string name="filled_visible">Grafiği Doldur</string>
+    <string name="fab_filter_label">Filtrele</string>
+    <string name="fab_insert_data">Ekle</string>
+
+
 
 
 

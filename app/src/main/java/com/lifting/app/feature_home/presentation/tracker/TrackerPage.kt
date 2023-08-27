@@ -4,16 +4,11 @@ package com.lifting.app.feature_home.presentation.tracker
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -30,15 +25,19 @@ import com.lifting.app.feature_home.presentation.tracker.components.TimeRangePic
 import com.lifting.app.feature_home.presentation.tracker.components.CustomTrackingDialog
 import com.lifting.app.feature_home.presentation.tracker.components.FilterChip
 import com.lifting.app.feature_home.presentation.tracker.components.FiltersChip
+import com.lifting.app.feature_home.presentation.tracker.components.MultiFloatingActionButton
 import com.lifting.app.feature_home.presentation.tracker.components.SelectableSortBy
 import com.lifting.app.feature_home.presentation.tracker.components.SortBy
 import com.lifting.app.feature_home.presentation.tracker.components.TimeRange
+import com.lifting.app.feature_home.presentation.tracker.components.custom_fab.FabIcon
+import com.lifting.app.feature_home.presentation.tracker.components.custom_fab.FabItemType
 import com.lifting.app.theme.White40
 import com.lifting.app.theme.black20
 import com.lifting.app.theme.grey10
 import com.lifting.app.theme.grey50
 import java.time.LocalDate
 
+@OptIn(ExperimentalAnimationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TrackerScreen(
@@ -46,7 +45,7 @@ fun TrackerScreen(
     onEvent: (TrackerPageEvent) -> Unit,
 ) {
     var openModalBottomSheet by remember { mutableStateOf(false) }
-    var selectedTimeRange by remember { mutableStateOf(TimeRange.THIRTY_DAYS) }
+    var selectedTimeRange by remember { mutableStateOf(TimeRange.SEVEN_DAYS) }
     var selectedSortBy by remember { mutableStateOf(SortBy.DATE) }
     var isCircleVisible by remember { mutableStateOf(false) }
     var isValuesVisible by remember { mutableStateOf(true) }
@@ -81,13 +80,18 @@ fun TrackerScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-
         Scaffold(
             modifier = Modifier.statusBarsPadding(),
             floatingActionButton = {
-                CustomFloatingActionButton {
-                    onFabClick = !onFabClick
-                }
+                MultiFloatingActionButton(
+                    fabIcon = FabIcon(iconRes = R.drawable.fab_add,iconRotate = 45f),
+                    onFabItemClicked = {
+                        when(it.fabItemType) {
+                            FabItemType.INSERT -> onFabClick =!onFabClick
+                            FabItemType.FILTER -> openModalBottomSheet = !openModalBottomSheet
+                        }
+                    },
+                )
             }
         ) {
             Box(
@@ -134,10 +138,6 @@ fun TrackerScreen(
                     ) { val1, val2 ->
                         Log.d("OnChartValueSelected", "$val1 Tarihinde $val2 Kilogram")
                     }
-
-                    Button(onClick = { openModalBottomSheet = !openModalBottomSheet }) {
-
-                    }
                 }
             }
         }
@@ -150,9 +150,7 @@ fun TrackerScreen(
                     onEvent(
                         TrackerPageEvent.OnDialogButtonClicked(
                             localDate = LocalDate.now(),
-                            bw = it.toFloat(),
-                            cj = 85.5f,
-                            snatch = 70f
+                            bw = it.toFloat()
                         )
                     )
                     onFabClick = !onFabClick
@@ -161,20 +159,6 @@ fun TrackerScreen(
         }
     }
 
-}
-
-@Composable
-fun CustomFloatingActionButton(
-    modifier: Modifier = Modifier,
-    onFabClicked: () -> Unit
-) {
-    FloatingActionButton(
-        containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = black20,
-        shape = RoundedCornerShape(40.dp),
-        onClick = { onFabClicked.invoke() }) {
-        Icon(Icons.Filled.Add, contentDescription = "Localized description")
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

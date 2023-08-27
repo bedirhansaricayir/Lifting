@@ -15,9 +15,7 @@ class GetAnalysisDataUseCase @Inject constructor(
             list.map { analysisDataEntity ->
                 ChartState(
                     dateWithoutTime = analysisDataEntity.date,
-                    bodyweight = analysisDataEntity.bodyweight ?: 0f,
-                    cj = analysisDataEntity.cj ?: 0f,
-                    snatch = analysisDataEntity.snatch ?: 0f
+                    bodyweight = analysisDataEntity.bodyweight
                 )
             }
         }

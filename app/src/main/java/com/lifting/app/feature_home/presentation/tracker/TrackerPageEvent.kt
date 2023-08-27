@@ -8,7 +8,7 @@ import java.time.LocalDate
 
 sealed class TrackerPageEvent {
 
-    data class OnDialogButtonClicked(val localDate: LocalDate,val bw: Float, val cj: Float?, val snatch: Float?) : TrackerPageEvent()
+    data class OnDialogButtonClicked(val localDate: LocalDate,val bw: Float) : TrackerPageEvent()
 
     data class OnTimeRangeClicked(val sortBy: SortBy,val timeRange: TimeRange): TrackerPageEvent()
 

@@ -1,7 +1,6 @@
 package com.lifting.app.feature_home.presentation.home
 
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -17,9 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -74,7 +72,6 @@ fun HomeScreen(
     onProfilePictureClicked: () -> Unit,
     onPersonalizedProgramCardClicked: () -> Unit
 ) {
-    val verticalScroll = rememberScrollState()
     var openBottomSheet by remember { mutableStateOf(false) }
     var personalizedOpenBottomSheet by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState()
@@ -224,48 +221,48 @@ fun HomeScreen(
         ) { showProgramDialog = !showProgramDialog }
     }
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
             .background(grey50)
-            .verticalScroll(verticalScroll)
-
     ) {
-        if (beginnerState != null) {
-            SignedInUserSection(userData = userState, onProfilePictureClicked = onProfilePictureClicked)
-            PlanSection()
-            PersonalizedProgramCardSection {
-                //personalizedOpenBottomSheet = !personalizedOpenBottomSheet
-                onPersonalizedProgramCardClicked()
-            }
-            BeginnerProgramListSection(beginnerState) { program ->
-                openBottomSheet = !openBottomSheet
-                onEvent(
-                    HomePageEvent.OnWorkoutProgramPlayButtonClicked(
-                        program.uygulanis,
-                        program.programAdi!!
+        item {
+            if (beginnerState != null) {
+                SignedInUserSection(userData = userState, onProfilePictureClicked = onProfilePictureClicked)
+                PlanSection()
+                PersonalizedProgramCardSection {
+                    //personalizedOpenBottomSheet = !personalizedOpenBottomSheet
+                    onPersonalizedProgramCardClicked()
+                }
+                BeginnerProgramListSection(beginnerState) { program ->
+                    openBottomSheet = !openBottomSheet
+                    onEvent(
+                        HomePageEvent.OnWorkoutProgramPlayButtonClicked(
+                            program.uygulanis,
+                            program.programAdi!!
+                        )
                     )
-                )
-            }
-            IntermediateProgramListSection(intermediateState!!) { program ->
-                openBottomSheet = !openBottomSheet
-                onEvent(
-                    HomePageEvent.OnWorkoutProgramPlayButtonClicked(
-                        program.uygulanis,
-                        program.programAdi!!
+                }
+                IntermediateProgramListSection(intermediateState!!) { program ->
+                    openBottomSheet = !openBottomSheet
+                    onEvent(
+                        HomePageEvent.OnWorkoutProgramPlayButtonClicked(
+                            program.uygulanis,
+                            program.programAdi!!
+                        )
                     )
-                )
+                }
+                AdvancedProgramListSection(advancedState!!) { program ->
+                    openBottomSheet = !openBottomSheet
+                    onEvent(
+                        HomePageEvent.OnWorkoutProgramPlayButtonClicked(
+                            program.uygulanis,
+                            program.programAdi!!
+                        )
+                    )
+                }
             }
-            AdvancedProgramListSection(advancedState!!) { program ->
-               openBottomSheet = !openBottomSheet
-               onEvent(
-                   HomePageEvent.OnWorkoutProgramPlayButtonClicked(
-                       program.uygulanis,
-                       program.programAdi!!
-                   )
-               )
-           }
         }
     }
     LoadingSection(state.isLoading)
