@@ -29,6 +29,7 @@ import com.lifting.app.feature_home.presentation.tracker.components.MultiFloatin
 import com.lifting.app.feature_home.presentation.tracker.components.SelectableSortBy
 import com.lifting.app.feature_home.presentation.tracker.components.SortBy
 import com.lifting.app.feature_home.presentation.tracker.components.TimeRange
+import com.lifting.app.feature_home.presentation.tracker.components.custom_calendar.Calendar
 import com.lifting.app.feature_home.presentation.tracker.components.custom_fab.FabIcon
 import com.lifting.app.feature_home.presentation.tracker.components.custom_fab.FabItemType
 import com.lifting.app.theme.White40
@@ -138,6 +139,19 @@ fun TrackerScreen(
                     ) { val1, val2 ->
                         Log.d("OnChartValueSelected", "$val1 Tarihinde $val2 Kilogram")
                     }
+                    Calendar(
+                        modifier = Modifier.padding(16.dp),
+                        isValueAvailable = state.chartState.map { chartState ->
+                            chartState.dateWithoutTime
+                        },
+                        onDateClickListener = { date ->
+                            state.chartState.forEach { chartState ->
+                                if (chartState.dateWithoutTime.isEqual(date)) {
+                                    Log.d("bla",chartState.toString())
+                                }
+                            }
+                        }
+                    )
                 }
             }
         }

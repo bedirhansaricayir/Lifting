@@ -73,12 +73,12 @@
     <string name="label_personalized_program_purchase">Kişiselleştirilmiş antrenman programı</string>
     <string name="label_detailed_graphic_analysis_purchase">Detaylandırılmış grafik analizleri</string>
     <string name="label_custom_notifications_purchase">Özel bildirimler ve çok daha fazlası</string>
+    <string name="label_4_week_purchase">4\nHafta</string>
+    <string name="label_4_week_purchase_payment">134.99₺</string>
     <string name="label_8_week_purchase">8\nHafta</string>
-    <string name="label_8_week_purchase_payment">134.99₺</string>
+    <string name="label_8_week_purchase_payment">269.99₺</string>
     <string name="label_12_week_purchase">12\nHafta</string>
-    <string name="label_12_week_purchase_payment">269.99₺</string>
-    <string name="label_16_week_purchase">16\nHafta</string>
-    <string name="label_16_week_purchase_payment">429.99₺</string>
+    <string name="label_12_week_purchase_payment">429.99₺</string>
     <string name="label_recommended_program">Önerilen</string>
     <string name="label_purchase_button">Devam et</string>
     <string name="short_seven_days">7g</string>
@@ -96,6 +96,10 @@
     <string name="filled_visible">Grafiği Doldur</string>
     <string name="fab_filter_label">Filtrele</string>
     <string name="fab_insert_data">Ekle</string>
+    <string name="label_notification_screen_title">Bildirimler</string>
+    <string name="label_daily_reminder">Günlük hatırlatıcı</string>
+    <string name="calendar_today">Bugün</string>
+
 
 
 

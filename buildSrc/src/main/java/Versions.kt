@@ -2,12 +2,12 @@ object Versions {
 
     //Root Build Plugins
     val gradleVersion = "8.1.0"
-    val kotlinGradlePluginVersion = "1.8.0"
-    val hiltAndroidPluginVersion = "2.44.2"
+    val kotlinGradlePluginVersion = "1.9.0"
+    val hiltAndroidPluginVersion = "2.48"
 
 
     //ComposeOptions
-    val kotlinCompilerExtensionVersion = "1.4.0"
+    val kotlinCompilerExtensionVersion = "1.5.0"
 
 
     //Core
@@ -47,8 +47,8 @@ object Versions {
     val splashScreenVersion = "1.0.1"
 
     //Dagger - Hilt
-    val hiltAndroidVersion = "2.44.2"
-    val hiltAndroidCompilerVersion = "2.44.2"
+    val hiltAndroidVersion = "2.48"
+    val hiltAndroidCompilerVersion = "2.48"
     val hiltNavigationComposeVersion = "1.1.0-alpha01"
     val hiltCompilerVersion = "1.0.0"
 
@@ -77,5 +77,5 @@ object Versions {
     val chartVersion = "3.1.0"
 
     //Room
-    val roomVersion = "2.5.0"
+    val roomVersion = "2.5.2"
 }

@@ -16,6 +16,7 @@ import com.lifting.app.theme.Black40
 
 const val CORNERS_SIZE = 48
 
+
 @Composable
 fun RoundedCornersSurface(
     modifier: Modifier = Modifier,

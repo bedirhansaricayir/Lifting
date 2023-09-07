@@ -1,7 +1,6 @@
 package com.lifting.app.feature_home.presentation.profile
 
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,22 +13,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,16 +44,14 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.lifting.app.R
 import com.lifting.app.common.components.CommonProgressIndicatior
-import com.lifting.app.common.constants.Constants
 import com.lifting.app.common.constants.Constants.Companion.ACCOUNT_INFO
 import com.lifting.app.common.constants.Constants.Companion.FEEDBACK
 import com.lifting.app.common.constants.Constants.Companion.LOGOUT
 import com.lifting.app.common.constants.Constants.Companion.NOTIFICATION
 import com.lifting.app.feature_home.domain.repository.ProfileSettingsData
-import com.lifting.app.feature_home.presentation.components.RoundedCornersSurface
+import com.lifting.app.feature_home.presentation.components.CommonTopBar
 import com.lifting.app.theme.Black40
 import com.lifting.app.theme.White40
-import com.lifting.app.theme.grey50
 import com.lifting.app.theme.white10
 
 @Composable
@@ -89,13 +80,15 @@ fun ProfileScreen(
         onBackNavigationIconClicked = onBackNavigationIconClicked,
         onForwardNavigationIconClicked = { route ->
             when (route) {
-                ACCOUNT_INFO -> { }
+                ACCOUNT_INFO -> {}
 
                 NOTIFICATION -> {}
 
-                FEEDBACK -> {  }
+                FEEDBACK -> {}
 
-                LOGOUT -> { profileScreenEvent(ProfileScreenEvent.OnLogoutClicked) }
+                LOGOUT -> {
+                    profileScreenEvent(ProfileScreenEvent.OnLogoutClicked)
+                }
             }
             onForwardNavigationIconClicked(route)
         }
@@ -121,34 +114,14 @@ fun ProfileScreenContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .background(grey50),
+            .statusBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        RoundedCornersSurface(modifier = Modifier) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .background(Black40), verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(modifier = Modifier, onClick = onBackNavigationIconClicked) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_arrow_back_ios_new_24),
-                        contentDescription = "Back Button",
-                        tint = Color.White
-                    )
-                }
-                Text(
-                    modifier = Modifier,
-                    text = stringResource(id = R.string.label_profile_screen),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = White40
-                )
-            }
-        }
+        CommonTopBar(
+            title = R.string.label_profile_screen,
+            onBackNavigationIconClicked = onBackNavigationIconClicked
+        )
         Spacer(modifier = Modifier.height(16.dp))
 
         profileScreenState.profileDataState.let { user ->
@@ -162,22 +135,13 @@ fun ProfileScreenContent(
             Spacer(modifier = Modifier.height(16.dp))
             ProfileUserSection(username = user.username, email = user.email)
         }
-
-        Card(
-            modifier = Modifier
-                .statusBarsPadding()
-                .wrapContentSize()
-                .padding(16.dp),
-            colors = CardDefaults.cardColors(containerColor = Black40, contentColor = White40),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            LazyColumn() {
-                items(profileScreenState.settings.size) {
-                    ProfileSettingsItem(
-                        data = profileScreenState.settings[it],
-                        onClick = { route -> onForwardNavigationIconClicked(route) }
-                    )
-                }
+        Spacer(modifier = Modifier.height(32.dp))
+        LazyColumn(modifier) {
+            items(profileScreenState.settings.size) {
+                ProfileSettingsItem(
+                    data = profileScreenState.settings[it],
+                    onClick = { route -> onForwardNavigationIconClicked(route) }
+                )
             }
         }
     }
@@ -210,7 +174,7 @@ fun ProfilePhotoSection(
         if (imageState) {
             Box(
                 modifier = Modifier
-                    .border(2.dp, grey50, CircleShape)
+                    .border(2.dp, Black40, CircleShape)
                     .padding(2.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.primary)
@@ -219,7 +183,7 @@ fun ProfilePhotoSection(
             )
             {
                 Icon(
-                    imageVector = Icons.Default.Edit,
+                    painter = painterResource(id = R.drawable.outline_photo_camera_24),
                     contentDescription = "",
                     tint = Color.Black,
                     modifier = Modifier
@@ -278,7 +242,8 @@ fun ProfileSettingsItem(
             Text(
                 text = stringResource(id = data.itemTitle), modifier = Modifier
                     .padding(16.dp)
-                    .weight(1f)
+                    .weight(1f),
+                style = MaterialTheme.typography.labelMedium
             )
             Spacer(Modifier.width(16.dp))
             Icon(

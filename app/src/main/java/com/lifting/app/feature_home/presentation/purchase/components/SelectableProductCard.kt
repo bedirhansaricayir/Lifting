@@ -42,7 +42,7 @@ fun SelectableProductCard(
     bagdeContentColor: Color = Black40,
     onClick: () -> Unit
 ) {
-    val recommendedProgram = R.string.label_12_week_purchase
+    val recommendedProgram = R.string.label_8_week_purchase
     Box {
         Column(
             modifier = modifier

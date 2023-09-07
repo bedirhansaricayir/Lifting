@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("com.google.dagger.hilt.android")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
@@ -83,9 +83,9 @@ dependencies {
     implementation (Dependencies.splash)
 
     implementation (Dependencies.hiltAndroid)
-    kapt (Dependencies.hiltAndroidCompiler)
+    ksp (Dependencies.hiltAndroidCompiler)
     implementation (Dependencies.hiltNavigationCompose)
-    kapt (Dependencies.hiltCompiler)
+    ksp (Dependencies.hiltCompiler)
 
     implementation (Dependencies.datastore)
 
@@ -103,6 +103,6 @@ dependencies {
     implementation(Dependencies.youtubePlayer)
     implementation(Dependencies.chart)
     implementation(Dependencies.room)
-    kapt(Dependencies.roomCompiler)
+    ksp(Dependencies.roomCompiler)
     implementation(Dependencies.roomRuntime)
 }

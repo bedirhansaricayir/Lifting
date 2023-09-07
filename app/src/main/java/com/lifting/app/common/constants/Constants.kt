@@ -291,6 +291,7 @@ class Constants {
         //DetailScreen routes
         const val DETAIL_SCREEN = "detail_screen"
         const val PURCHASE_SCREEN = "purchase_screen"
+        const val NOTIFICATION_SETTINGS_SCREEN = "notification_settings_screen"
 
 
         //Collection References

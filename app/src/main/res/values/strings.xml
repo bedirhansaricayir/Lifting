@@ -72,12 +72,12 @@
     <string name="label_personalized_program_purchase">Personalized training program</string>
     <string name="label_detailed_graphic_analysis_purchase">Detailed graphic analysis</string>
     <string name="label_custom_notifications_purchase">Custom notifications and much more</string>
+    <string name="label_4_week_purchase">4\nWeek</string>
+    <string name="label_4_week_purchase_payment">4.99$</string>
     <string name="label_8_week_purchase">8\nWeek</string>
-    <string name="label_8_week_purchase_payment">4.99$</string>
+    <string name="label_8_week_purchase_payment">9.99$</string>
     <string name="label_12_week_purchase">12\nWeek</string>
-    <string name="label_12_week_purchase_payment">9.99$</string>
-    <string name="label_16_week_purchase">16\nWeek</string>
-    <string name="label_16_week_purchase_payment">14.99$</string>
+    <string name="label_12_week_purchase_payment">14.99$</string>
     <string name="label_recommended_program">Recommended</string>
     <string name="label_purchase_button">Continue</string>
     <string name="short_seven_days">7d</string>
@@ -95,6 +95,9 @@
     <string name="filled_visible">Fill the chart</string>
     <string name="fab_filter_label">Filter</string>
     <string name="fab_insert_data">Add</string>
+    <string name="label_notification_screen_title">Notifications</string>
+    <string name="label_daily_reminder">Daily reminder</string>
+    <string name="calendar_today">Today</string>
 
 
 </resources>

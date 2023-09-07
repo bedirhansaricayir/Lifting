@@ -1,7 +1,6 @@
 package com.lifting.app.navigation.graphs
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.lifting.app.R
 import com.lifting.app.common.constants.Constants.Companion.DETAIL_SCREEN
+import com.lifting.app.common.constants.Constants.Companion.NOTIFICATION_SETTINGS_SCREEN
 import com.lifting.app.common.constants.Constants.Companion.PURCHASE_SCREEN
 import com.lifting.app.navigation.Screen
 import com.lifting.app.feature_home.presentation.calculator.CalculatorScreen
@@ -20,6 +20,7 @@ import com.lifting.app.feature_home.presentation.home.HomePageUiState
 import com.lifting.app.feature_home.presentation.home.HomeScreen
 import com.lifting.app.feature_home.presentation.home.HomeViewModel
 import com.lifting.app.feature_home.presentation.home.UserDataState
+import com.lifting.app.feature_home.presentation.notification.NotificationSettingsScreen
 import com.lifting.app.feature_home.presentation.profile.ProfileScreen
 import com.lifting.app.feature_home.presentation.profile.ProfileScreenState
 import com.lifting.app.feature_home.presentation.profile.ProfileScreenViewModel
@@ -94,6 +95,9 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                                 onUserLogout.invoke()
                             }
                         }
+                        R.string.notification_settings -> {
+                            navController.navigate(DetailScreen.NotificationSettingsScreen.route)
+                        }
                     }
                 }
             )
@@ -106,10 +110,17 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                 onNavigationClick = { navController.popBackStack() }
             )
         }
+        composable(route = DetailScreen.NotificationSettingsScreen.route) {
+            NotificationSettingsScreen(
+                onBackNavigationIconClicked = { navController.popBackStack() }
+            )
+        }
     }
 }
 
 sealed class DetailScreen(val route: String) {
     object PurchaseScreen : DetailScreen(route = PURCHASE_SCREEN)
     object ProfileScreen : DetailScreen(route = DETAIL_SCREEN)
+
+    object NotificationSettingsScreen : DetailScreen(route = NOTIFICATION_SETTINGS_SCREEN)
 }

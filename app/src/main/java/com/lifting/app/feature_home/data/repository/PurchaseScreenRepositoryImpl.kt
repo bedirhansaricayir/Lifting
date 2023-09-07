@@ -14,16 +14,16 @@ class PurchaseScreenRepositoryImpl @Inject constructor(
     private val productCardData by lazy {
         listOf(
             ProductCardData(
+                title = R.string.label_4_week_purchase,
+                subTitle = R.string.label_4_week_purchase_payment
+            ),
+            ProductCardData(
                 title = R.string.label_8_week_purchase,
                 subTitle = R.string.label_8_week_purchase_payment
             ),
             ProductCardData(
                 title = R.string.label_12_week_purchase,
                 subTitle = R.string.label_12_week_purchase_payment
-            ),
-            ProductCardData(
-                title = R.string.label_16_week_purchase,
-                subTitle = R.string.label_16_week_purchase_payment
             )
 
         )
