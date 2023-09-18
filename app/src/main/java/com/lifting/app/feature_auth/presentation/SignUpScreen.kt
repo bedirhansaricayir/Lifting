@@ -1,6 +1,7 @@
 package com.lifting.app.feature_auth.presentation
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -63,6 +64,9 @@ fun SignUpScreen(
             Toast.makeText(context,authenticationState.error,Toast.LENGTH_LONG).show()
             authenticationEvent(AuthenticationEvent.ErrorDismissed)
         }
+    }
+    BackHandler(true) {
+        onToggleModeClick()
     }
 
     SignUpScreenContent(

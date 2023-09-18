@@ -318,7 +318,8 @@ class Constants {
         //Room Constants
         const val ANALYSIS_DATA_TABLE = "analysis_data_table"
         const val DATE_COLUMN = "date_column"
-        const val BW_COLUMN = "bodyweight_column"
+        const val DATA_COLUMN = "data_column"
+        const val DESC_COLUMN = "desc_column"
         const val ANALYSIS_DATABASE = "analysis_database"
 
     }

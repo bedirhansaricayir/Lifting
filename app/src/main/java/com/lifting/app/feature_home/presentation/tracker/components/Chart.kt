@@ -39,7 +39,7 @@ fun Chart(
     isValuesVisible: Boolean,
     isMoveViewToAnimated: Boolean,
     setDrawFilled: Boolean,
-    onValueSelected: (val1: String, val2: Float) -> Unit,
+    onValueSelected: (a:String,b:String, c:String) -> Unit,
 ) {
 
     val label = "Your Bodyweight Datas"
@@ -47,12 +47,12 @@ fun Chart(
 
     if (chartState.isNotEmpty()) {
         val entries = chartState.mapIndexed { index, state ->
-            Entry(index.toFloat(), state.bodyweight?:0f)
+            Entry(index.toFloat(), state.data)
         }
 
         val xAxisformatter = IndexAxisValueFormatter(
             chartState.map { state ->
-                val today: LocalDate = state.dateWithoutTime
+                val today: LocalDate = state.date
                 val dateformatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM")
                 today.format(dateformatter)
             }
@@ -92,10 +92,9 @@ fun Chart(
                     setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                         override fun onValueSelected(e: Entry?, h: Highlight?) {
                             chartState.map { chartState ->
-                                e?.y?.let { bodyweight ->
+                                e?.let {
                                     onValueSelected(
-                                        chartState.dateWithoutTime.toString(),
-                                        bodyweight
+                                        x.toString(),y.toString(),"qwe"
                                     )
                                 }
                             }

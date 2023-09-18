@@ -87,7 +87,11 @@ fun MultiFloatingActionButton(
                     MiniFabItem(
                         item = items[index],
                         fabOption = fabOption,
-                        onFabItemClicked = onFabItemClicked
+                        onFabItemClicked = {
+                            onFabItemClicked(it)
+                            fabState.value = fabState.value.toggleValue()
+                            stateChanged(fabState.value)
+                        }
                     )
                 }
 
@@ -134,7 +138,10 @@ fun MiniFabItem(
                 fontSize = 12.sp,
                 color = fabOption.iconTint,
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(16.dp))
+                    .background(
+                        MaterialTheme.colorScheme.primary,
+                        shape = RoundedCornerShape(16.dp)
+                    )
                     .padding(horizontal = 6.dp, vertical = 4.dp)
             )
         }

@@ -39,7 +39,7 @@ fun Calendar(
     val dataSource = CalendarDataSource()
     var data by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
 
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(modifier = modifier) {
         Header(
             data = data,
             onPrevClickListener = { startDate ->
@@ -168,16 +168,16 @@ fun ContentItem(
                 .width(40.dp)
                 .height(48.dp)
                 .padding(4.dp)
+                .align(Alignment.CenterHorizontally),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = date.day,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
                 style = MaterialTheme.typography.bodySmall,
                 color = if (date.isSelected) Black40 else Color.White
             )
             Text(
                 text = date.date.dayOfMonth.toString(),
-                modifier = Modifier.align(Alignment.CenterHorizontally),
                 style = MaterialTheme.typography.bodyMedium,
                 color = if (date.isSelected) Black40 else Color.White
             )
@@ -186,7 +186,6 @@ fun ContentItem(
                 Canvas(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .align(Alignment.CenterHorizontally)
                 ) {
                     drawCircle(
                         color = if (date.isSelected) Black40 else primaryColor,

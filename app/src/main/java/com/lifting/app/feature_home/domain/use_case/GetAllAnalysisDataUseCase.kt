@@ -14,8 +14,9 @@ class GetAllAnalysisDataUseCase @Inject constructor(
         return analysisRepository.getAllAnalysisData().map { list ->
             list.map { analysisDataEntity ->
                 ChartState(
-                    dateWithoutTime = analysisDataEntity.date,
-                    bodyweight = analysisDataEntity.bodyweight
+                    date = analysisDataEntity.date,
+                    data = analysisDataEntity.data,
+                    description = analysisDataEntity.desc
                 )
             }
         }

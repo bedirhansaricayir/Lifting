@@ -40,7 +40,8 @@ class TrackerPageViewModel @Inject constructor(
                 addAnalysisData(
                     AnalysisDataEntity(
                         date = event.localDate,
-                        bodyweight = event.bw
+                        data = event.data,
+                        desc = event.desc
                     )
                 )
             }

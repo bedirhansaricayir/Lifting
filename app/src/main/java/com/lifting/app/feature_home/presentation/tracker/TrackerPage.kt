@@ -20,9 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
+import com.lifting.app.feature_home.domain.model.ChartState
 import com.lifting.app.feature_home.presentation.tracker.components.Chart
 import com.lifting.app.feature_home.presentation.tracker.components.TimeRangePicker
 import com.lifting.app.feature_home.presentation.tracker.components.CustomTrackingDialog
+import com.lifting.app.feature_home.presentation.tracker.components.ExpandableTableCard
 import com.lifting.app.feature_home.presentation.tracker.components.FilterChip
 import com.lifting.app.feature_home.presentation.tracker.components.FiltersChip
 import com.lifting.app.feature_home.presentation.tracker.components.MultiFloatingActionButton
@@ -52,6 +54,7 @@ fun TrackerScreen(
     var isValuesVisible by remember { mutableStateOf(true) }
     var setDrawFilled by remember { mutableStateOf(false) }
     var onFabClick by remember { mutableStateOf(false) }
+    var selectedDayValue by remember { mutableStateOf<ChartState?>(null) }
 
     if (openModalBottomSheet) {
         CustomModalBottomSheet(
@@ -85,10 +88,10 @@ fun TrackerScreen(
             modifier = Modifier.statusBarsPadding(),
             floatingActionButton = {
                 MultiFloatingActionButton(
-                    fabIcon = FabIcon(iconRes = R.drawable.fab_add,iconRotate = 45f),
+                    fabIcon = FabIcon(iconRes = R.drawable.fab_add, iconRotate = 45f),
                     onFabItemClicked = {
-                        when(it.fabItemType) {
-                            FabItemType.INSERT -> onFabClick =!onFabClick
+                        when (it.fabItemType) {
+                            FabItemType.INSERT -> onFabClick = !onFabClick
                             FabItemType.FILTER -> openModalBottomSheet = !openModalBottomSheet
                         }
                     },
@@ -104,7 +107,6 @@ fun TrackerScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding()
                 ) {
                     Text(
                         text = stringResource(id = R.string.Analiz),
@@ -113,9 +115,6 @@ fun TrackerScreen(
                             .fillMaxWidth()
                             .padding(8.dp)
                     )
-
-                    Spacer(modifier = Modifier.height(32.dp))
-
 
                     TimeRangePicker(
                         modifier = Modifier
@@ -136,22 +135,27 @@ fun TrackerScreen(
                         isValuesVisible = isValuesVisible,
                         isMoveViewToAnimated = false,
                         setDrawFilled = setDrawFilled
-                    ) { val1, val2 ->
-                        Log.d("OnChartValueSelected", "$val1 Tarihinde $val2 Kilogram")
+                    ) { selectedChartState,b,c ->
+                        Log.d("OnChartValueSelected", "$selectedChartState $b $c")
+                        //selectedDayValue = selectedChartState
                     }
                     Calendar(
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier,
                         isValueAvailable = state.chartState.map { chartState ->
-                            chartState.dateWithoutTime
+                            chartState.date
                         },
                         onDateClickListener = { date ->
                             state.chartState.forEach { chartState ->
-                                if (chartState.dateWithoutTime.isEqual(date)) {
-                                    Log.d("bla",chartState.toString())
+                                if (chartState.date.isEqual(date)) {
+                                    selectedDayValue = chartState
                                 }
                             }
                         }
                     )
+
+                    selectedDayValue?.let { selectedState -> ExpandableTableCard(chartState = selectedState) }
+
+
                 }
             }
         }
@@ -164,7 +168,8 @@ fun TrackerScreen(
                     onEvent(
                         TrackerPageEvent.OnDialogButtonClicked(
                             localDate = LocalDate.now(),
-                            bw = it.toFloat()
+                            data = it.toFloat(),
+                            desc = "İlk deneme"
                         )
                     )
                     onFabClick = !onFabClick
