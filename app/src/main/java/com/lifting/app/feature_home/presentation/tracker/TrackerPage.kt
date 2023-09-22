@@ -5,8 +5,13 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -17,6 +22,8 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
@@ -38,9 +45,10 @@ import com.lifting.app.theme.White40
 import com.lifting.app.theme.black20
 import com.lifting.app.theme.grey10
 import com.lifting.app.theme.grey50
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TrackerScreen(
@@ -54,8 +62,20 @@ fun TrackerScreen(
     var isValuesVisible by remember { mutableStateOf(true) }
     var setDrawFilled by remember { mutableStateOf(false) }
     var onFabClick by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
     var selectedDayValue by remember { mutableStateOf<ChartState?>(null) }
-
+    var isChartPage by remember {
+        mutableStateOf(true)
+    }
+    val pagerState = rememberPagerState()
+    LaunchedEffect(key1 = pagerState.currentPage) {
+        isChartPage = pagerState.currentPage == 0
+    }
+    state.chartState.forEach {
+        if (it.date.isEqual(LocalDate.now())) {
+            selectedDayValue = it
+        }
+    }
     if (openModalBottomSheet) {
         CustomModalBottomSheet(
             state = state,
@@ -87,15 +107,17 @@ fun TrackerScreen(
         Scaffold(
             modifier = Modifier.statusBarsPadding(),
             floatingActionButton = {
-                MultiFloatingActionButton(
-                    fabIcon = FabIcon(iconRes = R.drawable.fab_add, iconRotate = 45f),
-                    onFabItemClicked = {
-                        when (it.fabItemType) {
-                            FabItemType.INSERT -> onFabClick = !onFabClick
-                            FabItemType.FILTER -> openModalBottomSheet = !openModalBottomSheet
-                        }
-                    },
-                )
+                if (isChartPage) {
+                    MultiFloatingActionButton(
+                        fabIcon = FabIcon(iconRes = R.drawable.fab_add, iconRotate = 45f),
+                        onFabItemClicked = {
+                            when (it.fabItemType) {
+                                FabItemType.INSERT -> onFabClick = !onFabClick
+                                FabItemType.FILTER -> openModalBottomSheet = !openModalBottomSheet
+                            }
+                        },
+                    )
+                }
             }
         ) {
             Box(
@@ -104,58 +126,104 @@ fun TrackerScreen(
                     .background(color = grey50)
                     .padding(it.calculateBottomPadding())
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.Analiz),
-                        style = MaterialTheme.typography.titleMedium,
+                HorizontalPager(pageCount = 2, state = pagerState) { page ->
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                    )
+                            .fillMaxSize()
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.Analiz),
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                        )
+                        when (page) {
+                            CurrentPage.CHART -> {
+                                TimeRangePicker(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                                    selectedTimeRange = state.getTimeRange()
+                                ) { timeRange ->
+                                    selectedTimeRange = timeRange
+                                    onEvent(
+                                        TrackerPageEvent.OnTimeRangeClicked(
+                                            selectedSortBy,
+                                            timeRange
+                                        )
+                                    )
+                                }
 
-                    TimeRangePicker(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                        selectedTimeRange = state.getTimeRange()
-                    ) { timeRange ->
-                        selectedTimeRange = timeRange
-                        onEvent(TrackerPageEvent.OnTimeRangeClicked(selectedSortBy, timeRange))
-                    }
+                                Chart(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 16.dp),
+                                    chartState = state.chartState,
+                                    isCircleVisible = isCircleVisible,
+                                    isValuesVisible = isValuesVisible,
+                                    isMoveViewToAnimated = false,
+                                    setDrawFilled = setDrawFilled
+                                ) { selectedChartState, b, c ->
+                                    Log.d("OnChartValueSelected", "$selectedChartState $b $c")
+                                    scope.launch {
+                                        pagerState.animateScrollToPage(2)
+                                    }
+                                    //selectedDayValue = selectedChartState
+                                }
 
-                    Chart(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        chartState = state.chartState,
-                        isCircleVisible = isCircleVisible,
-                        isValuesVisible = isValuesVisible,
-                        isMoveViewToAnimated = false,
-                        setDrawFilled = setDrawFilled
-                    ) { selectedChartState,b,c ->
-                        Log.d("OnChartValueSelected", "$selectedChartState $b $c")
-                        //selectedDayValue = selectedChartState
-                    }
-                    Calendar(
-                        modifier = Modifier,
-                        isValueAvailable = state.chartState.map { chartState ->
-                            chartState.date
-                        },
-                        onDateClickListener = { date ->
-                            state.chartState.forEach { chartState ->
-                                if (chartState.date.isEqual(date)) {
-                                    selectedDayValue = chartState
+                            }
+
+                            CurrentPage.CALENDAR -> {
+                                Calendar(
+                                    modifier = Modifier,
+                                    isValueAvailable = state.chartState.map { chartState ->
+                                        chartState.date
+                                    },
+                                    onDateClickListener = { date ->
+                                        state.chartState.forEach { chartState ->
+                                            if (chartState.date.isEqual(date)) {
+                                                selectedDayValue = chartState
+                                            }
+                                        }
+                                    }
+                                )
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                selectedDayValue?.let { selectedState ->
+                                    ExpandableTableCard(
+                                        chartState = selectedState
+                                    )
                                 }
                             }
                         }
-                    )
+                    }
 
-                    selectedDayValue?.let { selectedState -> ExpandableTableCard(chartState = selectedState) }
+                }
+                Row(
+                    Modifier
+                        .height(50.dp)
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    repeat(2) { iteration ->
+                        val color = if (pagerState.currentPage == iteration) Color.White else Color.White.copy(alpha = 0.5f)
+                        Box(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .clip(CircleShape)
+                                .background(color)
+                                .size(8.dp)
+                                .clickable {
+                                    scope.launch {
+                                        pagerState.animateScrollToPage(iteration)
+                                    }
+                                }
 
-
+                        )
+                    }
                 }
             }
         }
@@ -231,3 +299,7 @@ fun CustomModalBottomSheet(
     }
 }
 
+object CurrentPage {
+    const val CHART = 0
+    const val CALENDAR = 1
+}
