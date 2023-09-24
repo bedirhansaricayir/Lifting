@@ -22,4 +22,6 @@ class AnalysisRepositoryImpl @Inject constructor(
     ): Flow<List<AnalysisDataEntity>> =
         dao.getAnalysisDataWhereTimeRange(startDate, endDate)
 
+    override fun checkExistLocalDate(selectedDate: LocalDate): AnalysisDataEntity? = dao.checkExistLocalDate(selectedDate)
+
 }

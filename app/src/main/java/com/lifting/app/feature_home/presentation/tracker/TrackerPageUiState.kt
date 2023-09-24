@@ -12,7 +12,8 @@ data class TrackerPageUiState(
     val timeRange: AnalysisTimeRange = AnalysisTimeRange.TIMERANGE_7DAYS,
     val chartState: List<ChartState> = emptyList(),
     val sortBy: AnalysisSortBy = AnalysisSortBy.DATE,
-    val selectedFilterChip: MutableList<FilterChip> = mutableStateListOf(FilterChip.VALUES)
+    val selectedFilterChip: MutableList<FilterChip> = mutableStateListOf(FilterChip.VALUES),
+    val isExistSameDateError: Boolean = false
 ){
     fun getTimeRange() = when (timeRange) {
         AnalysisTimeRange.TIMERANGE_7DAYS -> TimeRange.SEVEN_DAYS

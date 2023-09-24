@@ -9,6 +9,7 @@ import com.lifting.app.feature_home.data.local.entity.AnalysisDataEntity
 import com.lifting.app.feature_home.domain.model.AnalysisSortBy
 import com.lifting.app.feature_home.domain.model.AnalysisTimeRange
 import com.lifting.app.feature_home.domain.use_case.AddAnalysisDataUseCase
+import com.lifting.app.feature_home.domain.use_case.CheckExistSameDateUseCase
 import com.lifting.app.feature_home.domain.use_case.GetAllAnalysisDataUseCase
 import com.lifting.app.feature_home.domain.use_case.GetAnalysisDataUseCase
 import com.lifting.app.feature_home.presentation.tracker.components.FilterChip
@@ -28,6 +29,7 @@ class TrackerPageViewModel @Inject constructor(
     private val getAllAnalysisDataUseCase: GetAllAnalysisDataUseCase,
     private val getAnalysisDataUseCase: GetAnalysisDataUseCase,
     private val addAnalysisDataUseCase: AddAnalysisDataUseCase,
+    private val checkExistSameDateUseCase: CheckExistSameDateUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(TrackerPageUiState())
@@ -37,13 +39,16 @@ class TrackerPageViewModel @Inject constructor(
     fun onEvent(event: TrackerPageEvent) {
         when (event) {
             is TrackerPageEvent.OnDialogButtonClicked -> {
-                addAnalysisData(
-                    AnalysisDataEntity(
-                        date = event.localDate,
-                        data = event.data,
-                        desc = event.desc
+               val isExist = checkExist(event.localDate)
+                if (isExist?.date != event.localDate){
+                    addAnalysisData(
+                        AnalysisDataEntity(
+                            date = event.localDate,
+                            data = event.data,
+                            desc = event.desc
+                        )
                     )
-                )
+                } else setExistErrorState(true)
             }
 
             is TrackerPageEvent.OnTimeRangeClicked -> {
@@ -60,6 +65,10 @@ class TrackerPageViewModel @Inject constructor(
             is TrackerPageEvent.OnFilterChipClicked -> {
                 setFilterChipSelection(event.filterChipGroup)
             }
+
+            is TrackerPageEvent.UserViewedTheError -> {
+                setExistErrorState(false)
+            }
         }
     }
 
@@ -72,6 +81,10 @@ class TrackerPageViewModel @Inject constructor(
         viewModelScope.launch {
             addAnalysisDataUseCase.invoke(analysisDataEntity)
         }
+    }
+
+    private fun checkExist(selectedDate: LocalDate): AnalysisDataEntity? {
+        return checkExistSameDateUseCase.invoke(selectedDate)
     }
 
     private fun getChartData(sortBy: SortBy,timeRange: TimeRange) {
@@ -129,6 +142,11 @@ class TrackerPageViewModel @Inject constructor(
         _state.value = _state.value.copy(selectedFilterChip = updatedSelectedChips)
     }
 
+    private fun setExistErrorState(boolean: Boolean) {
+        _state.value = _state.value.copy(
+            isExistSameDateError = boolean
+        )
+    }
     private fun getLocalDateNow() : LocalDate = LocalDate.now()
 
 }

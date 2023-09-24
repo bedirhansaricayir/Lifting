@@ -105,7 +105,7 @@ fun ExpandableTableCard(chartState:ChartState) {
                     .padding(8.dp),
                 style = MaterialTheme.typography.labelSmall,
                 color = white10,
-                text = "Bu gün şunları bunları hissettim şöyleydi böyleydi. Şunu yaparken bu oldu bu olduktan sonrada şöyle oldu.Bu gün şunları bunları hissettim şöyleydi böyleydi. Şunu yaparken bu oldu bu olduktan sonrada şöyle oldu.Bu gün şunları bunları hissettim şöyleydi böyleydi. Şunu yaparken bu oldu bu olduktan sonrada şöyle oldu."
+                text = chartState.description
             )
         }
 

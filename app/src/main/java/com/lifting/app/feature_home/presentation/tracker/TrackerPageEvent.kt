@@ -15,4 +15,6 @@ sealed class TrackerPageEvent {
     data class OnSortByClicked(val sortBy: SortBy,val timeRange: TimeRange): TrackerPageEvent()
 
     data class OnFilterChipClicked(val filterChipGroup: MutableList<FilterChip>): TrackerPageEvent()
+
+    object UserViewedTheError: TrackerPageEvent()
 }

@@ -2,9 +2,9 @@ package com.lifting.app.feature_home.domain.model
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.lifting.app.common.util.toLocaleFormat
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
+
 
 
 data class CalendarModel(
@@ -21,6 +21,6 @@ data class CalendarModel(
         val isToday: Boolean,
     ) {
         @RequiresApi(Build.VERSION_CODES.O)
-        val day: String = date.format(DateTimeFormatter.ofPattern("E", Locale.getDefault()))
+        val day: String = date.toLocaleFormat(pattern = "E")
     }
 }

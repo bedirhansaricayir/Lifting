@@ -99,7 +99,13 @@
     <string name="label_notification_screen_title">Bildirimler</string>
     <string name="label_daily_reminder">Günlük hatırlatıcı</string>
     <string name="calendar_today">Bugün</string>
-
+    <string name="chart_no_data_label">"Bugüne ait bir kaydınız bulunmuyor."</string>
+    <string name="add_to_chart_label">İlerleyişini Güncelle</string>
+    <string name="confirm_label">Onayla</string>
+    <string name="dismiss_label">İptal et</string>
+    <string name="selected_date_label">Seçilen tarih</string>
+    <string name="add_comment_label">Geriye dönüp bakabilmen için düşüncelerini ekle</string>
+    <string name="button_save_label">Kaydet</string>
 
 
 

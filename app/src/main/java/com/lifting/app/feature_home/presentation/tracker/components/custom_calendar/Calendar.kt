@@ -22,12 +22,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
+import com.lifting.app.common.util.toLocaleFormat
 import com.lifting.app.feature_home.domain.model.CalendarModel
 import com.lifting.app.theme.Black40
 import com.lifting.app.theme.grey50
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -87,9 +86,7 @@ fun Header(
             text = if (data.selectedDate.isToday) {
                 stringResource(id = R.string.calendar_today)
             } else {
-                data.selectedDate.date.format(
-                    DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.getDefault())
-                )
+                data.selectedDate.date.toLocaleFormat()
             },
             modifier = Modifier
                 .weight(1f)

@@ -98,6 +98,14 @@
     <string name="label_notification_screen_title">Notifications</string>
     <string name="label_daily_reminder">Daily reminder</string>
     <string name="calendar_today">Today</string>
+    <string name="chart_no_data_label">"You do not have any records for today."</string>
+    <string name="add_to_chart_label">Update Your Progress</string>
+    <string name="confirm_label">Confirm</string>
+    <string name="dismiss_label">Cancel</string>
+    <string name="selected_date_label">Selected date</string>
+    <string name="add_comment_label">Add your thoughts so you can look back</string>
+    <string name="button_save_label">Save</string>
+
 
 
 </resources>
