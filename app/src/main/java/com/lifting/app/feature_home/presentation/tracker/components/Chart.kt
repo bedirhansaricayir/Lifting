@@ -39,7 +39,7 @@ fun Chart(
     isValuesVisible: Boolean,
     isMoveViewToAnimated: Boolean,
     setDrawFilled: Boolean,
-    onValueSelected: (a:String,b:String, c:String) -> Unit,
+    onValueSelected: (chartState: ChartState) -> Unit,
 ) {
 
     val label = "Your Bodyweight Datas"
@@ -91,13 +91,7 @@ fun Chart(
                 LineChart(context).apply {
                     setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                         override fun onValueSelected(e: Entry?, h: Highlight?) {
-                            chartState.map { chartState ->
-                                e?.let {
-                                    onValueSelected(
-                                        x.toString(),y.toString(),"qwe"
-                                    )
-                                }
-                            }
+                            h?.let { onValueSelected(chartState[h.x.toInt()]) }
                         }
 
                         override fun onNothingSelected() {

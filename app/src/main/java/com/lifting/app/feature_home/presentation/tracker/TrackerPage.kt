@@ -2,7 +2,6 @@ package com.lifting.app.feature_home.presentation.tracker
 
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -17,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,6 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -56,6 +57,7 @@ import com.lifting.app.feature_home.presentation.tracker.components.TimeRange
 import com.lifting.app.feature_home.presentation.tracker.components.custom_calendar.Calendar
 import com.lifting.app.feature_home.presentation.tracker.components.custom_fab.FabIcon
 import com.lifting.app.feature_home.presentation.tracker.components.custom_fab.FabItemType
+import com.lifting.app.theme.Black40
 import com.lifting.app.theme.White40
 import com.lifting.app.theme.black20
 import com.lifting.app.theme.grey10
@@ -72,63 +74,35 @@ fun TrackerScreen(
 ) {
     var openSetFilterModalBottomSheet by remember { mutableStateOf(false) }
     var openAddToChartModalBottomSheet by remember { mutableStateOf(false) }
+    var showErrorDialog by remember { mutableStateOf(false) }
     var selectedTimeRange by remember { mutableStateOf(TimeRange.SEVEN_DAYS) }
     var selectedSortBy by remember { mutableStateOf(SortBy.DATE) }
     var isCircleVisible by remember { mutableStateOf(false) }
     var isValuesVisible by remember { mutableStateOf(true) }
     var setDrawFilled by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val pagerState = rememberPagerState()
     var selectedDayValue by remember { mutableStateOf<ChartState?>(null) }
     var isChartPage by remember { mutableStateOf(true) }
+    var pendingEventDataHolder by remember { mutableStateOf<ChartState?>(null) }
 
-    val pagerState = rememberPagerState()
     LaunchedEffect(key1 = pagerState.currentPage) {
-        isChartPage = pagerState.currentPage == 0
+        isChartPage = pagerState.currentPage == CHART
     }
+
     LaunchedEffect(key1 = state.isExistSameDateError){
         if (state.isExistSameDateError) {
-            // TODO - Same data available error will be shown
+            showErrorDialog = true
             onEvent(TrackerPageEvent.UserViewedTheError)
         }
     }
+
     LaunchedEffect(key1 = Unit){
         state.chartState.forEach {
             if (it.date.isEqual(LocalDate.now())){
                 selectedDayValue = it
             }
         }
-    }
-    if (openSetFilterModalBottomSheet) {
-        SetFilterModalBottomSheet(
-            state = state,
-            onDismiss = { openSetFilterModalBottomSheet = false },
-            onSortByClicked = {
-                selectedSortBy = it
-                onEvent(TrackerPageEvent.OnSortByClicked(selectedSortBy, selectedTimeRange))
-            },
-            onFilterChipClicked = { selectedFilterChips ->
-                onEvent(TrackerPageEvent.OnFilterChipClicked(selectedFilterChips))
-                isCircleVisible = false
-                isValuesVisible = false
-                setDrawFilled = false
-                selectedFilterChips.forEach { filterChip ->
-                    when (filterChip) {
-                        FilterChip.CIRCLE -> isCircleVisible = true
-                        FilterChip.VALUES -> isValuesVisible = true
-                        FilterChip.FILLED -> setDrawFilled = true
-                    }
-                }
-            }
-        )
-    }
-    if (openAddToChartModalBottomSheet) {
-        AddToChartModalBottomSheet(
-            onDismiss = { openAddToChartModalBottomSheet = false },
-            onSaveButtonClicked = { selectedDay, selectedValue, userDesc ->
-                if (state.isExistSameDateError) Log.d("zooorttt","zort") else
-                onEvent(TrackerPageEvent.OnDialogButtonClicked(selectedDay,selectedValue,userDesc))
-            }
-        )
     }
 
     Column(
@@ -175,16 +149,12 @@ fun TrackerScreen(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                                    selectedTimeRange = state.getTimeRange()
-                                ) { timeRange ->
-                                    selectedTimeRange = timeRange
-                                    onEvent(
-                                        TrackerPageEvent.OnTimeRangeClicked(
-                                            selectedSortBy,
-                                            timeRange
-                                        )
-                                    )
-                                }
+                                    selectedTimeRange = state.getTimeRange(),
+                                    onTimeRangeSelected = { timeRange ->
+                                        selectedTimeRange = timeRange
+                                        onEvent(TrackerPageEvent.OnTimeRangeClicked(selectedSortBy, timeRange))
+                                    }
+                                )
 
                                 Chart(
                                     modifier = Modifier
@@ -194,14 +164,12 @@ fun TrackerScreen(
                                     isCircleVisible = isCircleVisible,
                                     isValuesVisible = isValuesVisible,
                                     isMoveViewToAnimated = false,
-                                    setDrawFilled = setDrawFilled
-                                ) { selectedChartState, b, c ->
-                                    Log.d("OnChartValueSelected", "$selectedChartState $b $c")
-                                    scope.launch {
-                                        pagerState.animateScrollToPage(2)
+                                    setDrawFilled = setDrawFilled,
+                                    onValueSelected = { selectedChartState ->
+                                        selectedDayValue = selectedChartState
+                                        scope.launch { pagerState.animateScrollToPage(2) }
                                     }
-                                    //selectedDayValue = selectedChartState
-                                }
+                                )
 
                             }
 
@@ -224,7 +192,8 @@ fun TrackerScreen(
 
                                 selectedDayValue?.let { selectedState ->
                                     ExpandableTableCard(
-                                        chartState = selectedState
+                                        chartState = selectedState,
+                                        modifier = Modifier.padding(8.dp)
                                     )
                                 }
                             }
@@ -258,181 +227,264 @@ fun TrackerScreen(
             }
         }
     }
+
+    CustomDialog(
+        dialogState = showErrorDialog,
+        title = R.string.date_already_exists_error_header,
+        body = R.string.date_already_exists_error_body,
+        onDissmiss = { showErrorDialog = !showErrorDialog },
+        onCancelClicked = { pendingEventDataHolder = null },
+        onUpdateClicked = { onEvent(TrackerPageEvent.OnDialogUpdateButtonClicked(pendingEventDataHolder!!)) }
+    )
+
+    SetFilterModalBottomSheet(
+        bottomSheetVisibleState = openSetFilterModalBottomSheet,
+        state = state,
+        onDismiss = { openSetFilterModalBottomSheet = false },
+        onSortByClicked = {
+            selectedSortBy = it
+            onEvent(TrackerPageEvent.OnSortByClicked(selectedSortBy, selectedTimeRange))
+        },
+        onFilterChipClicked = { selectedFilterChips ->
+            onEvent(TrackerPageEvent.OnFilterChipClicked(selectedFilterChips))
+            isCircleVisible = false
+            isValuesVisible = false
+            setDrawFilled = false
+            selectedFilterChips.forEach { filterChip ->
+                when (filterChip) {
+                    FilterChip.CIRCLE -> isCircleVisible = true
+                    FilterChip.VALUES -> isValuesVisible = true
+                    FilterChip.FILLED -> setDrawFilled = true
+                }
+            }
+        }
+    )
+
+    AddToChartModalBottomSheet(
+        bottomSheetVisibleState = openAddToChartModalBottomSheet,
+        onDismiss = { openAddToChartModalBottomSheet = false },
+        onSaveButtonClicked = { chartState ->
+            pendingEventDataHolder = chartState
+            if (!state.isExistSameDateError) onEvent(TrackerPageEvent.OnSaveButtonClicked(chartState))
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetFilterModalBottomSheet(
+    bottomSheetVisibleState: Boolean,
     state: TrackerPageUiState,
     onDismiss: () -> Unit,
     onSortByClicked: (sortBy: SortBy) -> Unit,
     onFilterChipClicked: (filterChip: MutableList<FilterChip>) -> Unit
 ) {
-    val modalBottomSheetState = rememberModalBottomSheetState()
-    ModalBottomSheet(
-        onDismissRequest = { onDismiss() },
-        sheetState = modalBottomSheetState,
-        containerColor = black20,
-        dragHandle = { BottomSheetDefaults.DragHandle() },
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
+    if (bottomSheetVisibleState) {
+        val modalBottomSheetState = rememberModalBottomSheetState()
+        ModalBottomSheet(
+            onDismissRequest = { onDismiss() },
+            sheetState = modalBottomSheetState,
+            containerColor = black20,
+            dragHandle = { BottomSheetDefaults.DragHandle() },
         ) {
-            Text(
-                text = stringResource(id = R.string.filters_label),
-                style = MaterialTheme.typography.titleSmall,
-                color = White40,
+            Column(
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(horizontal = 8.dp, vertical = 16.dp)
-            )
-            Text(
-                modifier = Modifier.padding(8.dp),
-                text = stringResource(id = R.string.sort_by),
-                style = MaterialTheme.typography.labelMedium,
-                color = grey10
-            )
-            SelectableSortBy(selectedSortBy = state.getSortBy()) { sortBy ->
-                onSortByClicked(sortBy)
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                modifier = Modifier.padding(8.dp),
-                text = stringResource(id = R.string.graphic_settings),
-                style = MaterialTheme.typography.labelMedium,
-                color = grey10
-            )
+                    .fillMaxSize()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.filters_label),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = White40,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(horizontal = 8.dp, vertical = 16.dp)
+                )
+                Text(
+                    modifier = Modifier.padding(8.dp),
+                    text = stringResource(id = R.string.sort_by),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = grey10
+                )
+                SelectableSortBy(selectedSortBy = state.getSortBy()) { sortBy ->
+                    onSortByClicked(sortBy)
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    modifier = Modifier.padding(8.dp),
+                    text = stringResource(id = R.string.graphic_settings),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = grey10
+                )
 
-            FiltersChip(state.selectedFilterChip) { selectedChip ->
-                onFilterChipClicked(selectedChip)
+                FiltersChip(state.selectedFilterChip) { selectedChip ->
+                    onFilterChipClicked(selectedChip)
+                }
             }
         }
     }
+
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddToChartModalBottomSheet(
+    bottomSheetVisibleState: Boolean,
     onDismiss: () -> Unit,
-    onSaveButtonClicked: (selectedDay: LocalDate,selectedValue: Float,userDesc: String) -> Unit
+    onSaveButtonClicked: (chartState: ChartState) -> Unit
+
 ) {
-    val modalBottomSheetState = rememberModalBottomSheetState()
-    var selectedValue by remember { mutableStateOf(75) }
-    var showDatePicker by remember { mutableStateOf(false) }
-    var selectedDate by remember { mutableStateOf<LocalDate>(LocalDate.now()) }
-    var userDesc by remember { mutableStateOf("") }
-    ModalBottomSheet(
-        onDismissRequest = { onDismiss() },
-        sheetState = modalBottomSheetState,
-        containerColor = black20,
-        dragHandle = { BottomSheetDefaults.DragHandle() }
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Text(
-                text = stringResource(id = R.string.add_to_chart_label),
-                style = MaterialTheme.typography.titleSmall,
-                color = White40,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(horizontal = 8.dp, vertical = 16.dp)
-            )
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .clickable { showDatePicker = true }
-                .padding(horizontal = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
+    if (bottomSheetVisibleState) {
+        val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+        var selectedValue by remember { mutableStateOf(75) }
+        var showDatePicker by remember { mutableStateOf(false) }
+        var selectedDate by remember { mutableStateOf<LocalDate>(LocalDate.now()) }
+        var userDesc by remember { mutableStateOf("") }
+        ModalBottomSheet(
+            onDismissRequest = { onDismiss() },
+            sheetState = modalBottomSheetState,
+            containerColor = black20,
+            dragHandle = { BottomSheetDefaults.DragHandle() }
+        ) {
+            Column(modifier = Modifier.fillMaxSize()) {
                 Text(
-                    text = "${stringResource(id = R.string.selected_date_label)}: ${selectedDate.toLocaleFormat()}",
-                    style = MaterialTheme.typography.labelMedium
+                    text = stringResource(id = R.string.add_to_chart_label),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = White40,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(horizontal = 8.dp, vertical = 16.dp)
                 )
-                IconButton(onClick = { showDatePicker = true }) {
-                    Icon(imageVector = Icons.Default.DateRange, contentDescription = "Edit date")
-                }
-            }
-            if (showDatePicker) {
-                DatePickerDialog(
-                    dialogState = true,
-                    initialSelectedDate = selectedDate,
-                    onDissmiss = { showDatePicker = false },
-                    onDateSelected = {
-                        selectedDate = it
-                    }
-                )
-            }
-
-            Row(
-                modifier = Modifier
+                Row(modifier = Modifier
                     .fillMaxWidth()
+                    .clickable { showDatePicker = true }
                     .padding(horizontal = 8.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(
-                    onClick = { selectedValue += 1 },
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = black20,
-                        disabledContentColor = MaterialTheme.colorScheme.primary
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = "${stringResource(id = R.string.selected_date_label)}: ${selectedDate.toLocaleFormat()}",
+                        style = MaterialTheme.typography.labelMedium
                     )
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowUp,
-                        contentDescription = "Arttır Butonu"
+                    IconButton(onClick = { showDatePicker = true }) {
+                        Icon(imageVector = Icons.Default.DateRange, contentDescription = "Edit date")
+                    }
+                }
+                if (showDatePicker) {
+                    DatePickerDialog(
+                        dialogState = true,
+                        initialSelectedDate = selectedDate,
+                        onDissmiss = { showDatePicker = false },
+                        onDateSelected = {
+                            selectedDate = it
+                        }
                     )
                 }
-                NumberPicker(
-                    textStyle = TextStyle(color = Color.White),
-                    value = selectedValue,
-                    onValueChange = {
-                        selectedValue = it
-                    }, range = 0..200,
-                    dividersColor = MaterialTheme.colorScheme.primary
-                )
-                IconButton(
-                    onClick = { selectedValue -= 1 },
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = black20,
-                        disabledContentColor = MaterialTheme.colorScheme.primary
-                    )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = "Azalt Butonu"
+                    IconButton(
+                        onClick = { selectedValue += 1 },
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = black20,
+                            disabledContentColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowUp,
+                            contentDescription = "Arttır Butonu"
+                        )
+                    }
+                    NumberPicker(
+                        textStyle = TextStyle(color = Color.White),
+                        value = selectedValue,
+                        onValueChange = {
+                            selectedValue = it
+                        }, range = 0..200,
+                        dividersColor = MaterialTheme.colorScheme.primary
+                    )
+                    IconButton(
+                        onClick = { selectedValue -= 1 },
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = black20,
+                            disabledContentColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowDown,
+                            contentDescription = "Azalt Butonu"
+                        )
+                    }
+                }
+
+                MultiLineTextField(
+                    modifier = Modifier,
+                    value = userDesc,
+                    onValueChanged = { userDesc = it })
+
+                OutlinedButton(
+                    modifier = Modifier
+                        .fillMaxWidth(0.7f)
+                        .align(Alignment.CenterHorizontally)
+                        .padding(16.dp),
+                    onClick = { onSaveButtonClicked(ChartState(selectedDate,selectedValue.toFloat(),userDesc)) },
+                    shape = RoundedCornerShape(50.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.background,
+                    ),
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.button_save_label),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 40.dp)
                     )
                 }
+
+
             }
-
-            MultiLineTextField(
-                modifier = Modifier,
-                value = userDesc,
-                onValueChanged = { userDesc = it })
-
-            OutlinedButton(
-                modifier = Modifier
-                    .fillMaxWidth(0.7f)
-                    .align(Alignment.CenterHorizontally)
-                    .padding(16.dp),
-                onClick = { onSaveButtonClicked(selectedDate,selectedValue.toFloat(),userDesc) },
-                shape = RoundedCornerShape(50.dp),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.background,
-                ),
-            ) {
-                Text(
-                    text = stringResource(id = R.string.button_save_label),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 40.dp)
-                )
-            }
-
-
         }
     }
+
+}
+
+@Composable
+fun CustomDialog(
+    dialogState: Boolean,
+    title:Int,
+    body: Int,
+    onDissmiss: () -> Unit,
+    onCancelClicked: () -> Unit,
+    onUpdateClicked: () -> Unit
+) {
+    if (dialogState) {
+        AlertDialog(
+            onDismissRequest = { onDissmiss.invoke() },
+            title = { Text(modifier = Modifier,text = stringResource(id = title),color = grey10, style = MaterialTheme.typography.titleSmall) },
+            text = { Text(modifier = Modifier,text = stringResource(id = body),color = grey10, style = MaterialTheme.typography.labelSmall) },
+            dismissButton = { TextButton(onClick = {
+                onCancelClicked.invoke()
+                onDissmiss.invoke()
+            }) {
+                Text(text = stringResource(id = R.string.date_already_exist_error_cancel_label))
+            } },
+            confirmButton = { TextButton(
+                onClick = {
+                    onUpdateClicked.invoke()
+                    onDissmiss.invoke()
+                }) {
+                Text(text = stringResource(id = R.string.date_already_exist_error_confirm_label))
+            } },
+            containerColor = Black40,
+        )
+    }
+
 }
 
 const val CHART = 0

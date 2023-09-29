@@ -21,12 +21,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.lifting.app.R
 import com.lifting.app.feature_home.presentation.components.YoutubePlayer
-import com.lifting.app.theme.grey30
+import com.lifting.app.theme.Black40
 
 @Composable
 fun CustomDialog(
@@ -49,7 +51,7 @@ fun CustomDialog(
                     .fillMaxHeight(0.65f),
                 shape = MaterialTheme.shapes.large,
                 colors = CardDefaults.cardColors(
-                    containerColor = grey30
+                    containerColor = Black40
                 )
             ) {
                 Column(
@@ -65,7 +67,7 @@ fun CustomDialog(
                         },
                         modifier = Modifier.align(Alignment.End)
                     ) {
-                        Text("Kapat")
+                        Text(stringResource(id = R.string.close_label))
                     }
                 }
             }

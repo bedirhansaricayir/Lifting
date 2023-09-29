@@ -61,10 +61,10 @@ import com.lifting.app.common.constants.Constants.Companion.ORTA
 import com.lifting.app.common.constants.Constants.Companion.ORTA_TEXT
 import com.lifting.app.common.constants.Constants.Companion.SEDANTER
 import com.lifting.app.common.constants.Constants.Companion.SEDANTER_TEXT
+import com.lifting.app.theme.Black40
 import com.lifting.app.theme.White40
-import com.lifting.app.theme.grey30
+import com.lifting.app.theme.grey10
 import com.lifting.app.theme.grey50
-import com.lifting.app.theme.white30
 import kotlinx.coroutines.launch
 
 
@@ -283,7 +283,7 @@ fun CustomCalculatorDialog(
                 shape = MaterialTheme.shapes.large,
                 elevation = CardDefaults.cardElevation(8.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = grey30
+                    containerColor = Black40
                 )
             ) {
                 Text(
@@ -291,19 +291,20 @@ fun CustomCalculatorDialog(
                         .align(Alignment.CenterHorizontally)
                         .padding(vertical = 12.dp, horizontal = 8.dp),
                     text = stringResource(id = R.string.KalorinizHesaplandi),
-                    style = MaterialTheme.typography.titleSmall
+                    style = MaterialTheme.typography.titleSmall,
+                    color = grey10
                 )
                 Text(modifier = Modifier
                     .align(Alignment.Start)
-                    .padding(vertical = 8.dp, horizontal = 16.dp),text = "Bazal Metabolizma Hızın: $BMR", style = MaterialTheme.typography.labelMedium,color = White40
+                    .padding(vertical = 8.dp, horizontal = 16.dp),text = "Bazal Metabolizma Hızın: $BMR", style = MaterialTheme.typography.labelMedium,color = grey10
                 )
                 Text(modifier = Modifier
                     .align(Alignment.Start)
-                    .padding(vertical = 8.dp, horizontal = 16.dp),text = "Günlük Kalori İhtiyacın: $totalCaloriesPerDay", style = MaterialTheme.typography.labelMedium,color = White40
+                    .padding(vertical = 8.dp, horizontal = 16.dp),text = "Günlük Kalori İhtiyacın: $totalCaloriesPerDay", style = MaterialTheme.typography.labelMedium,color = grey10
                 )
                 Text(modifier = Modifier
                     .align(Alignment.Start)
-                    .padding(16.dp),text = stringResource(id = R.string.customDialogText), style = MaterialTheme.typography.labelMedium, color = white30
+                    .padding(16.dp),text = stringResource(id = R.string.customDialogText), style = MaterialTheme.typography.labelMedium, color = grey10
                 )
 
 
@@ -322,7 +323,7 @@ fun CustomCalculatorDialog(
                     ),
                 ) {
                     Text(
-                        text = stringResource(id = R.string.Kapat),
+                        text = stringResource(id = R.string.close_label),
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(vertical = 8.dp, horizontal = 40.dp)
                     )

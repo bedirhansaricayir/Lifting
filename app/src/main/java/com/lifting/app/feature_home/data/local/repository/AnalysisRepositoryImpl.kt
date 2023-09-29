@@ -1,27 +1,30 @@
 package com.lifting.app.feature_home.data.local.repository
 
 import com.lifting.app.feature_home.data.local.AnalysisDao
-import com.lifting.app.feature_home.data.local.entity.AnalysisDataEntity
+import com.lifting.app.feature_home.domain.repository.AnalysisRepository
+import com.lifting.app.feature_home.domain.model.ChartState
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import javax.inject.Inject
 
 class AnalysisRepositoryImpl @Inject constructor(
     private val dao: AnalysisDao
 ) : AnalysisRepository {
-    override suspend fun insertAnalysisData(analysisDataEntity: AnalysisDataEntity) =
-        dao.insertAnalysisData(analysisDataEntity)
+    override suspend fun insertAnalysisData(chartState: ChartState) =
+        dao.insertAnalysisData(chartState.toAnalysisDataEntity())
 
-    override fun getAllAnalysisData(): Flow<List<AnalysisDataEntity>> =
-        dao.getAllAnalysisData()
-
+    override fun getAllAnalysisData(): Flow<List<ChartState>> =
+        dao.getAllAnalysisData().map { list -> list.map { it.toChartState() } }
 
     override fun getAnalysisDataWhereTimeRange(
         startDate: LocalDate,
         endDate: LocalDate
-    ): Flow<List<AnalysisDataEntity>> =
+    ): Flow<List<ChartState>> =
         dao.getAnalysisDataWhereTimeRange(startDate, endDate)
+            .map { list -> list.map { it.toChartState() } }
 
-    override fun checkExistLocalDate(selectedDate: LocalDate): AnalysisDataEntity? = dao.checkExistLocalDate(selectedDate)
+    override fun checkExistLocalDate(selectedDate: LocalDate): ChartState? =
+        dao.checkExistLocalDate(selectedDate)?.toChartState()
 
 }

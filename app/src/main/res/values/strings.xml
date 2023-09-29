@@ -18,7 +18,7 @@
     <string name="Cinsiyet">Choose Your Gender</string>
     <string name="AktiviteSeviyesi">Choose Your Activity Level</string>
     <string name="Hesapla">Calculate</string>
-    <string name="Kapat">Close</string>
+    <string name="close_label">Close</string>
     <string name="KalorinizHesaplandi">Your Calories Calculated</string>
     <string name="customDialogText">Your daily calorie needs help you maintain your current weight and stay in fit. If you want to gain or lose weight, this calorie value can vary by +/- 500 calories.</string>
     <string name="PersonalizedProgramTitle">Your Personal Training Plan</string>
@@ -103,8 +103,14 @@
     <string name="confirm_label">Confirm</string>
     <string name="dismiss_label">Cancel</string>
     <string name="selected_date_label">Selected date</string>
-    <string name="add_comment_label">Add your thoughts so you can look back</string>
+    <string name="add_comment_label">Add your thoughts about today</string>
     <string name="button_save_label">Save</string>
+    <string name="date_already_exists_error_header">Record already exists</string>
+    <string name="date_already_exists_error_body">There is already a record for the same date, do you want to update your record?</string>
+    <string name="date_already_exist_error_cancel_label">Cancel</string>
+    <string name="date_already_exist_error_confirm_label">Update</string>
+
+
 
 
 

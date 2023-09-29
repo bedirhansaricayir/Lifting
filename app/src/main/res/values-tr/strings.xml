@@ -19,7 +19,7 @@
     <string name="Cinsiyet">Cinsiyetini Seç</string>
     <string name="AktiviteSeviyesi">Aktivite Seviyeni Seç</string>
     <string name="Hesapla">Hesapla</string>
-    <string name="Kapat">Kapat</string>
+    <string name="close_label">Kapat</string>
     <string name="KalorinizHesaplandi">Kaloriniz Hesaplandı</string>
     <string name="customDialogText">Günlük kalori ihtiyacınız mevcut kilonuzu korumaya ve formda kalmanıza yardımcı olur. Kilo almak veya vermek istiyorsanız bu kalori değeri +/- 500 kalori kadar değişebilir.</string>
     <string name="PersonalizedProgramTitle">Kişisel Antrenman Planınız</string>
@@ -104,8 +104,13 @@
     <string name="confirm_label">Onayla</string>
     <string name="dismiss_label">İptal et</string>
     <string name="selected_date_label">Seçilen tarih</string>
-    <string name="add_comment_label">Geriye dönüp bakabilmen için düşüncelerini ekle</string>
+    <string name="add_comment_label">Bugün hakkındaki düşüncelerinizi ekleyin </string>
     <string name="button_save_label">Kaydet</string>
+    <string name="date_already_exists_error_header">Bir kayıt zaten mevcut</string>
+    <string name="date_already_exists_error_body">Aynı tarihte bir kayıt zaten mevcut, kaydını güncellemek istiyormusun?</string>
+    <string name="date_already_exist_error_cancel_label">İptal</string>
+    <string name="date_already_exist_error_confirm_label">Güncelle</string>
+
 
 
 

@@ -5,9 +5,9 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lifting.app.feature_home.data.local.entity.AnalysisDataEntity
 import com.lifting.app.feature_home.domain.model.AnalysisSortBy
 import com.lifting.app.feature_home.domain.model.AnalysisTimeRange
+import com.lifting.app.feature_home.domain.model.ChartState
 import com.lifting.app.feature_home.domain.use_case.AddAnalysisDataUseCase
 import com.lifting.app.feature_home.domain.use_case.CheckExistSameDateUseCase
 import com.lifting.app.feature_home.domain.use_case.GetAllAnalysisDataUseCase
@@ -38,23 +38,19 @@ class TrackerPageViewModel @Inject constructor(
 
     fun onEvent(event: TrackerPageEvent) {
         when (event) {
-            is TrackerPageEvent.OnDialogButtonClicked -> {
-               val isExist = checkExist(event.localDate)
-                if (isExist?.date != event.localDate){
-                    addAnalysisData(
-                        AnalysisDataEntity(
-                            date = event.localDate,
-                            data = event.data,
-                            desc = event.desc
-                        )
-                    )
-                } else setExistErrorState(true)
+            is TrackerPageEvent.OnSaveButtonClicked -> {
+               val isExist = checkExist(event.chartState.date)
+                if (isExist?.date != event.chartState.date) addToChartData(event.chartState)
+                else setExistErrorState(true)
+            }
+
+            is TrackerPageEvent.OnDialogUpdateButtonClicked -> {
+                addToChartData(event.chartState)
             }
 
             is TrackerPageEvent.OnTimeRangeClicked -> {
                 setChipSelection(timeRange = event.timeRange)
                 getChartData(event.sortBy,event.timeRange)
-
             }
 
             is TrackerPageEvent.OnSortByClicked -> {
@@ -77,13 +73,13 @@ class TrackerPageViewModel @Inject constructor(
     }
 
 
-    private fun addAnalysisData(analysisDataEntity: AnalysisDataEntity) {
+    private fun addToChartData(chartState: ChartState) {
         viewModelScope.launch {
-            addAnalysisDataUseCase.invoke(analysisDataEntity)
+            addAnalysisDataUseCase.invoke(chartState)
         }
     }
 
-    private fun checkExist(selectedDate: LocalDate): AnalysisDataEntity? {
+    private fun checkExist(selectedDate: LocalDate): ChartState? {
         return checkExistSameDateUseCase.invoke(selectedDate)
     }
 

@@ -40,7 +40,7 @@ import com.lifting.app.theme.white10
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpandableTableCard(chartState:ChartState) {
+fun ExpandableTableCard(chartState: ChartState, modifier: Modifier = Modifier) {
 
     val textScrollState = rememberScrollState()
     var expandedState by remember { mutableStateOf(false) }
@@ -48,7 +48,7 @@ fun ExpandableTableCard(chartState:ChartState) {
         targetValue = if (expandedState) 180f else 0f, label = ""
     )
     OutlinedCard(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .animateContentSize(
                 animationSpec = tween(

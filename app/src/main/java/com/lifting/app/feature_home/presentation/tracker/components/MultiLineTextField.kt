@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -20,6 +18,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
+import com.lifting.app.theme.grey10
 
 @Composable
 fun MultiLineTextField(
@@ -44,7 +43,7 @@ fun MultiLineTextField(
                     if (value.isEmpty()) {
                         Text(
                             text = stringResource(id = hintText),
-                            color = LocalContentColor.current.copy(alpha = ContentAlpha.medium)
+                            color = grey10
                         )
                     }
                 }
