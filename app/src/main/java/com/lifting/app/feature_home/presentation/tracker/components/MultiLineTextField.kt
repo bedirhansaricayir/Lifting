@@ -3,9 +3,14 @@ package com.lifting.app.feature_home.presentation.tracker.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -16,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
 import com.lifting.app.theme.grey10
@@ -29,7 +35,7 @@ fun MultiLineTextField(
     textStyle: TextStyle = MaterialTheme.typography.labelSmall,
     maxLines: Int = Int.MAX_VALUE
 ) {
-    Box(modifier = modifier.padding(8.dp)) {
+    Box(modifier = modifier) {
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -62,6 +68,58 @@ fun MultiLineTextField(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         )
     }
+}
+
+@Composable
+fun UserDataInput(
+    value: String,
+    onValueChanged: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    hintText: Int = R.string.add_data_label,
+    increaseClicked: () -> Unit,
+    decreaseClicked: () -> Unit
+) {
+    OutlinedTextField(
+        modifier = modifier.fillMaxWidth(),
+        value = value,
+        label = { Text(text = stringResource(id = hintText),color = grey10)},
+        onValueChange = onValueChanged,
+        shape = RoundedCornerShape(8.dp),
+        maxLines = 1,
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        leadingIcon = {
+            IconButton(
+                onClick = decreaseClicked,
+                colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowDown,
+                    contentDescription = "Increase Button"
+                )
+            }
+        },
+        trailingIcon = {
+            IconButton(
+                onClick = increaseClicked,
+                colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowUp,
+                    contentDescription = "Decrease Button4"
+                )
+            }
+        },
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = Color.Transparent,
+            disabledContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent,
+            focusedTextColor = Color.White,
+            disabledTextColor = Color.White,
+            unfocusedTextColor = Color.White,
+            unfocusedIndicatorColor = Color.White,
+        ),
+    )
 }
 
 

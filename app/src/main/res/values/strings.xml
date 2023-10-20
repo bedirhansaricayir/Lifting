@@ -12,7 +12,7 @@
     <string name="AdvancedProgram">Advanced</string>
     <string name="Güncelle">Update</string>
     <string name="PlanSeç">Choose Your Training Plan </string>
-    <string name="Analiz">Progress Chart</string>
+    <string name="chart_page_label">Progress Chart</string>
     <string name="Gecmis">History</string>
     <string name="Macro">Calculate Calorie Needs</string>
     <string name="Cinsiyet">Choose Your Gender</string>
@@ -109,8 +109,42 @@
     <string name="date_already_exists_error_body">There is already a record for the same date, do you want to update your record?</string>
     <string name="date_already_exist_error_cancel_label">Cancel</string>
     <string name="date_already_exist_error_confirm_label">Update</string>
-
-
+    <string name="add_data_label">Enter progress</string>
+    <string name="calendar_page_label">Past Records</string>
+    <string name="coming_soon_label">Coming soon</string>
+    <string name="bmr_calculator_title_label">BMR\nCALCULATOR</string>
+    <string name="rm_calculator_title_label">1 RM\nCALCULATOR</string>
+    <string name="bmr_calculator_info_description">Basal metabolism; The metabolism that provides the minimum energy required for the continuation of living events in the body, without making any muscle movement during complete rest, is called basal metabolism.</string>
+    <string name="rm_calculator_info_description">One-repetition maximum (one-rep max or 1RM) in weight training is the maximum amount of weight that a person can possibly lift for one repetition. It may also be considered as the maximum amount of force that can be generated in one maximal contraction</string>
+    <string name="bmr_calculator_info_title">Basal Metabolic Rate</string>
+    <string name="rm_calculator_info_title">One Repetition Maximum</string>
+    <string name="bmi_calculator_title_label">BMI\nCALCULATOR</string>
+    <string name="bmi_calculator_info_title">Body Mass Index</string>
+    <string name="bmi_calculator_info_description">The body mass index (BMI) is a measure that uses your height and weight to work out if your weight is healthy.</string>
+    <string name="bmi_calculator_page_title_label">BMI Calculator</string>
+    <string name="weight_label">Weight</string>
+    <string name="height_label">Height</string>
+    <string name="underweight_label">Underweight</string>
+    <string name="normal_label">Normal</string>
+    <string name="overweight_label">Overweight</string>
+    <string name="none_label">None</string>
+    <string name="bmi_information_label">Information</string>
+    <string name="bmi_error_label">This values does not look good, check again the height and weight value</string>
+    <string name="gender_male_label">Male</string>
+    <string name="gender_female_label">Female</string>
+    <string name="activity_level_sedentary">Sedentary</string>
+    <string name="activity_level_sedentary_desc">I sit at a desk all day and no any activity</string>
+    <string name="activity_level_low">Low</string>
+    <string name="activity_level_low_desc">I do some days and short-periods activity</string>
+    <string name="activity_level_medium">Medium</string>
+    <string name="activity_level_medium_desc">I exercise at least one hour every day</string>
+    <string name="activity_level_high">High</string>
+    <string name="activity_level_high_desc">I exercise for at least 2 hours 4–5 days a week</string>
+    <string name="bmr_weight_label">Weight</string>
+    <string name="bmr_height_label">Height</string>
+    <string name="bmr_age_label">Age</string>
+    <string name="your_bmr_label">Your Basal Metabolic Rate</string>
+    <string name="your_daily_calories">Your Needed Daily Calorie</string>
 
 
 

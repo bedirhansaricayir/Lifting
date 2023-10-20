@@ -13,7 +13,7 @@
     <string name="AdvancedProgram">İleri Seviye</string>
     <string name="Güncelle">Güncelle</string>
     <string name="PlanSeç">Antrenman Planını Seç</string>
-    <string name="Analiz">İlerleme Çizelgen</string>
+    <string name="chart_page_label">İlerleme Çizelgen</string>
     <string name="Gecmis">Geçmiş</string>
     <string name="Macro">Kalori İhtiyacını Hesapla</string>
     <string name="Cinsiyet">Cinsiyetini Seç</string>
@@ -110,7 +110,42 @@
     <string name="date_already_exists_error_body">Aynı tarihte bir kayıt zaten mevcut, kaydını güncellemek istiyormusun?</string>
     <string name="date_already_exist_error_cancel_label">İptal</string>
     <string name="date_already_exist_error_confirm_label">Güncelle</string>
-
+    <string name="add_data_label">İlerleyişini gir</string>
+    <string name="calendar_page_label">Geçmiş Kayıtlar</string>
+    <string name="coming_soon_label">Yakında açılacak</string>
+    <string name="bmr_calculator_title_label">BMR\nHESAPLAYICI</string>
+    <string name="rm_calculator_title_label">1 RM\nHESAPLAYICI</string>
+    <string name="bmr_calculator_info_description">Bazal metabolizma; Canlının tam dinlenme sırasında kas hareketi yapmadan, vücuttaki canlılık olaylarının sürmesi için gereken minimum enerjiyi sağlayan metabolizmaya bazal metabolizma denir.</string>
+    <string name="rm_calculator_info_description">Ağırlık eğitiminde maksimum bir tekrar, bir kişinin bir tekrar için kaldırabileceği maksimum ağırlık miktarıdır. Bir maksimal kasılmada üretilebilen maksimum kuvvet miktarı olarak da düşünülebilir.</string>
+    <string name="bmr_calculator_info_title">Bazal Metabolizma Oranı</string>
+    <string name="rm_calculator_info_title">Maksimum Tek Tekrar</string>
+    <string name="bmi_calculator_title_label">BMI\nHESAPLAYICı</string>
+    <string name="bmi_calculator_info_title">Vücut Kitle İndeksi</string>
+    <string name="bmi_calculator_info_description">Vücut kitle indeksi (BMI), kilonuzun sağlıklı olup olmadığını hesaplamak için boyunuzu ve kilonuzu kullanan bir ölçüdür.</string>
+    <string name="bmi_calculator_page_title_label">BMI Hesaplayıcı</string>
+    <string name="weight_label">Ağırlık</string>
+    <string name="height_label">Yükseklik</string>
+    <string name="underweight_label">Düşük Kilolu</string>
+    <string name="normal_label">Normal</string>
+    <string name="overweight_label">Yüksek Kilolu</string>
+    <string name="none_label">Geçersiz</string>
+    <string name="bmi_information_label">Bilgilendirme</string>
+    <string name="bmi_error_label">Bu değerler pek iyi görünmüyor, boy ve kilo değerini tekrar kontrol edin</string>
+    <string name="gender_male_label">Erkek</string>
+    <string name="gender_female_label">Kadın</string>
+    <string name="activity_level_sedentary">Sedanter</string>
+    <string name="activity_level_sedentary_desc">Tüm gün masa başında oturuyorum</string>
+    <string name="activity_level_low">Düşük</string>
+    <string name="activity_level_low_desc">Ara sıra ve kısa süreli egzersiz yapıyorum</string>
+    <string name="activity_level_medium">Orta</string>
+    <string name="activity_level_medium_desc">Her gün en az bir saat egzersiz yapıyorum</string>
+    <string name="activity_level_high">Yüksek</string>
+    <string name="activity_level_high_desc">Haftada 4–5 gün en az 2 saat egzersiz yapıyorum</string>
+    <string name="bmr_weight_label">Kilo</string>
+    <string name="bmr_height_label">Boy</string>
+    <string name="bmr_age_label">Yaş</string>
+    <string name="your_bmr_label">Bazal Metabolizma Hızın</string>
+    <string name="your_daily_calories">Günlük Kalori İhtiyacın</string>
 
 
 

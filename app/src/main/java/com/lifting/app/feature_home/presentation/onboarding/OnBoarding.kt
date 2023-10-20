@@ -57,7 +57,9 @@ fun OnBoarding(
                 OnBoardingItem(items = items[it])
             }
             BottomSection(
-                modifier = Modifier.align(Alignment.BottomCenter).navigationBarsPadding(),
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .navigationBarsPadding(),
                 pagerState = pagerState
             ) {
                 saveOnBoardingState(true)

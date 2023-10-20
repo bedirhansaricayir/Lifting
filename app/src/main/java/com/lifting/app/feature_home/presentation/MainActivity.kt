@@ -29,6 +29,7 @@ class MainActivity : ComponentActivity() {
                 val state = splashViewModel.startDestination.collectAsState().value
                 WindowCompat.setDecorFitsSystemWindows(window, false)
                 Utils.init(this)
+                actionBar?.hide()
                 if (!state.isNullOrEmpty()) {
                     RootNavGraph(navController = rememberNavController(), startDestination = state, isPremiumUser = { isPremiumUser = it})
                 }

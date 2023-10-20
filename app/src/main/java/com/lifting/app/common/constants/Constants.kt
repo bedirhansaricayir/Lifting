@@ -292,6 +292,8 @@ class Constants {
         const val DETAIL_SCREEN = "detail_screen"
         const val PURCHASE_SCREEN = "purchase_screen"
         const val NOTIFICATION_SETTINGS_SCREEN = "notification_settings_screen"
+        const val TOOLS_DETAILS_SCREEN = "tools_details_screen/"
+        const val TOOLS_SCREEN_ARGS_KEY = "whichTool"
 
 
         //Collection References
@@ -321,6 +323,9 @@ class Constants {
         const val DATA_COLUMN = "data_column"
         const val DESC_COLUMN = "desc_column"
         const val ANALYSIS_DATABASE = "analysis_database"
+
+        const val CHART = 0
+        const val CALENDAR = 1
 
     }
 }

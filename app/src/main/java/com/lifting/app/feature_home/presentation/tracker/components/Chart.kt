@@ -91,7 +91,7 @@ fun Chart(
                 LineChart(context).apply {
                     setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                         override fun onValueSelected(e: Entry?, h: Highlight?) {
-                            h?.let { onValueSelected(chartState[h.x.toInt()]) }
+                            //h?.let { onValueSelected(chartState[h.x.toInt()]) }
                         }
 
                         override fun onNothingSelected() {

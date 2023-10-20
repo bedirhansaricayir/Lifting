@@ -16,7 +16,7 @@ object Versions {
     val lifecycleRuntimeKtxVersion = "2.6.1"
     val activityComposeVersion = "1.7.2"
     val platformComposeBomVersion = "2022.10.00"
-    val material3Version = "1.1.0"
+    val material3Version = "1.1.2"
     val foundationVersion = "1.4.3"
 
     //Test

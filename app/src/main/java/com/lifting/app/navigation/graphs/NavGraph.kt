@@ -5,15 +5,21 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
 import com.lifting.app.R
 import com.lifting.app.common.constants.Constants.Companion.DETAIL_SCREEN
 import com.lifting.app.common.constants.Constants.Companion.NOTIFICATION_SETTINGS_SCREEN
 import com.lifting.app.common.constants.Constants.Companion.PURCHASE_SCREEN
+import com.lifting.app.common.constants.Constants.Companion.TOOLS_DETAILS_SCREEN
+import com.lifting.app.common.constants.Constants.Companion.TOOLS_SCREEN_ARGS_KEY
+import com.lifting.app.feature_home.presentation.calculator.CalculatorCategory
 import com.lifting.app.navigation.Screen
 import com.lifting.app.feature_home.presentation.calculator.CalculatorScreen
 import com.lifting.app.feature_home.presentation.home.HomePageUiState
@@ -27,6 +33,16 @@ import com.lifting.app.feature_home.presentation.profile.ProfileScreenViewModel
 import com.lifting.app.feature_home.presentation.purchase.PurchaseScreen
 import com.lifting.app.feature_home.presentation.purchase.PurchaseScreenState
 import com.lifting.app.feature_home.presentation.purchase.PurchaseScreenViewModel
+import com.lifting.app.feature_home.presentation.tools_detail.ToolsDetailScreen
+import com.lifting.app.feature_home.presentation.tools_detail.bmi.BMIScreen
+import com.lifting.app.feature_home.presentation.tools_detail.bmi.BMIScreenState
+import com.lifting.app.feature_home.presentation.tools_detail.bmi.BMIViewModel
+import com.lifting.app.feature_home.presentation.tools_detail.bmr.BMRScreen
+import com.lifting.app.feature_home.presentation.tools_detail.bmr.BMRScreenState
+import com.lifting.app.feature_home.presentation.tools_detail.bmr.BMRViewModel
+import com.lifting.app.feature_home.presentation.tools_detail.one_rep.OneRepScreen
+import com.lifting.app.feature_home.presentation.tools_detail.one_rep.OneRepScreenState
+import com.lifting.app.feature_home.presentation.tools_detail.one_rep.OneRepViewModel
 import com.lifting.app.feature_home.presentation.tracker.TrackerPageUiState
 import com.lifting.app.feature_home.presentation.tracker.TrackerPageViewModel
 import com.lifting.app.feature_home.presentation.tracker.TrackerScreen
@@ -66,7 +82,9 @@ fun NavGraph(navController: NavHostController,isPremiumUser: (Boolean) -> Unit) 
             )
         }
         composable(route = Screen.HealthScreen.route) {
-            CalculatorScreen()
+            CalculatorScreen(
+                onClick = { navController.navigate(DetailScreen.ToolsDetailScreen.passArg(it.toString())) }
+            )
         }
         authNavGraph(navController = navController)
         detailsNavGraph(navController = navController, onUserLogout = { isPremiumUser.invoke(false) })
@@ -115,12 +133,51 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                 onBackNavigationIconClicked = { navController.popBackStack() }
             )
         }
+        composable(route = "tools_details_screen/{whichTool}",
+            arguments = listOf(navArgument(TOOLS_SCREEN_ARGS_KEY){
+            type = NavType.EnumType(CalculatorCategory::class.java)
+        })) {
+            val args = it.arguments?.get(TOOLS_SCREEN_ARGS_KEY)
+            when((args as CalculatorCategory)) {
+                CalculatorCategory.BMI -> {
+                    val viewModel = viewModel<BMIViewModel>()
+                    val state: BMIScreenState = viewModel.state.collectAsState().value
+                    BMIScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent
+                    )
+                }
+                CalculatorCategory.BMR -> {
+                    val viewModel = viewModel<BMRViewModel>()
+                    val state: BMRScreenState = viewModel.state.collectAsState().value
+                    BMRScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent
+                    )
+                }
+                CalculatorCategory.RM -> {
+                    val viewModel = viewModel<OneRepViewModel>()
+                    val state: OneRepScreenState = viewModel.state.collectAsState().value
+                    OneRepScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent)
+                }
+
+                CalculatorCategory.ZURT -> {}
+            }
+            //ToolsDetailScreen(args = args as CalculatorCategory)
+        }
     }
 }
 
 sealed class DetailScreen(val route: String) {
     object PurchaseScreen : DetailScreen(route = PURCHASE_SCREEN)
     object ProfileScreen : DetailScreen(route = DETAIL_SCREEN)
-
     object NotificationSettingsScreen : DetailScreen(route = NOTIFICATION_SETTINGS_SCREEN)
+    object ToolsDetailScreen : DetailScreen(route = TOOLS_DETAILS_SCREEN+TOOLS_SCREEN_ARGS_KEY) {
+        fun passArg(category: String): String {
+            return this.route.replace(oldValue = TOOLS_SCREEN_ARGS_KEY, newValue = category)
+        }
+    }
+
 }

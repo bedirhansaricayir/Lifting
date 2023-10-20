@@ -89,6 +89,7 @@ fun Header(
                 data.selectedDate.date.toLocaleFormat()
             },
             modifier = Modifier
+                .padding(start = 8.dp)
                 .weight(1f)
                 .align(Alignment.CenterVertically)
         )
@@ -118,7 +119,7 @@ fun Content(
     isValueAvailable: List<LocalDate>,
     onDateClickListener: (CalendarModel.Date) -> Unit,
 ) {
-    LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 48.dp)) {
+    LazyVerticalGrid(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp), horizontalArrangement = Arrangement.Center,columns = GridCells.Adaptive(minSize = 48.dp)) {
         items(data.visibleDates.size) { index ->
             ContentItem(
                 date = data.visibleDates[index],

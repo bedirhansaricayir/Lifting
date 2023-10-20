@@ -36,12 +36,13 @@ val MultiFabItemList = listOf(
         label = R.string.fab_filter_label,
         fabItemType = FabItemType.FILTER
     ),
-    MultiFabItem(
+    //TODO -> Feature eklenecek
+    /*MultiFabItem(
         id = 2,
         iconRes = R.drawable.pulse,
         label = R.string.fab_filter_label,
         fabItemType = FabItemType.FILTER
-    ),
+    )*/
     MultiFabItem(
         id = 3,
         iconRes = R.drawable.add_chart,
