@@ -78,4 +78,10 @@ object Versions {
 
     //Room
     val roomVersion = "2.5.2"
+
+    //Calendar
+    val calendarVersion = "2.4.0"
+
+    //Desugaring
+    val desugaringVersion = "2.0.3"
 }

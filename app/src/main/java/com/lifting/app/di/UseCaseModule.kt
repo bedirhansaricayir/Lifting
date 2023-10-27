@@ -9,11 +9,13 @@ import com.lifting.app.feature_auth.domain.use_case.SendEmailVerificationUseCase
 import com.lifting.app.feature_auth.domain.use_case.SendPasswordResetUseCase
 import com.lifting.app.feature_auth.domain.use_case.SignInUseCase
 import com.lifting.app.feature_auth.domain.use_case.SignUpUseCase
+import com.lifting.app.feature_calculators.data.repository.CalculatorsRepositoryImpl
+import com.lifting.app.feature_calculators.domain.use_case.GetCalculatorsDataUseCase
 import com.lifting.app.feature_home.data.repository.FirebaseRepositoryImpl
-import com.lifting.app.feature_home.data.repository.ProfileSettingsRepositoryImpl
-import com.lifting.app.feature_home.data.repository.PurchaseScreenRepositoryImpl
-import com.lifting.app.feature_home.domain.use_case.GetProductCardDataUseCase
-import com.lifting.app.feature_home.domain.use_case.GetProfileSettingsUseCase
+import com.lifting.app.feature_profile.data.repository.ProfileSettingsRepositoryImpl
+import com.lifting.app.feature_purchase.data.repository.PurchaseScreenRepositoryImpl
+import com.lifting.app.feature_purchase.domain.use_case.GetProductCardDataUseCase
+import com.lifting.app.feature_profile.domain.use_case.GetProfileSettingsUseCase
 import com.lifting.app.feature_home.domain.use_case.GetUserInfoUseCase
 import dagger.Module
 import dagger.Provides
@@ -68,4 +70,8 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideGetProductCardDataUseCase(purchaseScreenRepositoryImpl: PurchaseScreenRepositoryImpl) = GetProductCardDataUseCase(purchaseScreenRepositoryImpl)
+
+    @Provides
+    @Singleton
+    fun provideGetCalculatorsDataUseCase(calculatorsRepositoryImpl: CalculatorsRepositoryImpl) = GetCalculatorsDataUseCase(calculatorsRepositoryImpl)
 }

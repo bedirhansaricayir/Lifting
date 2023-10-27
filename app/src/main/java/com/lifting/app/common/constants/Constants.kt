@@ -2,19 +2,10 @@ package com.lifting.app.common.constants
 
 class Constants {
     companion object{
-        //Default Error
-        const val DEFAULT_ERROR = "Oops! something went wrong"
-        //Sağlık Ekranı
-        const val ERKEK = "Erkek"
-        const val KADIN = "KADIN"
-        const val SEDANTER = "Sedanter"
-        const val HAFIF = "Hafif aktif"
-        const val ORTA = "Orta aktif"
-        const val COK = "Çok aktif"
-        const val SEDANTER_TEXT = "Tüm gün masa başında oturuyorum"
-        const val HAFIF_TEXT = "Ara sıra ve kısa süreli egzersiz yapıyorum"
-        const val ORTA_TEXT = "Her gün en az bir saat egzersiz yapıyorum"
-        const val COK_TEXT = "Haftada 4-5 gün en az 2 saat egzersiz yapıyorum"
+        const val WEBSITE = "https://sites.google.com/view/liftingapp/ana-sayfa"
+        const val WEBSITE_PRIVACY = "https://sites.google.com/view/liftingapp/privacy"
+        const val WEBSITE_TERMS = "https://sites.google.com/view/liftingapp/terms"
+
 
         //Aktivite Seviyesi
         const val HIC = "Daha önce antrenman yapmadım"
@@ -279,7 +270,7 @@ class Constants {
         //MainScreen routes
         const val HOME_SCREEN = "home_screen"
         const val TRACKER_SCREEN = "tracker_screen"
-        const val HEALTH_SCREEN = "health_screen"
+        const val CALCULATOR_SCREEN = "calculator_screen"
 
         //AuthScreen routes
         const val SIGN_IN = "login_screen"

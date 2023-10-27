@@ -1,7 +1,7 @@
 package com.lifting.app.di
 
-import com.lifting.app.feature_home.domain.repository.AnalysisRepository
-import com.lifting.app.feature_home.data.local.repository.AnalysisRepositoryImpl
+import com.lifting.app.feature_tracker.domain.repository.AnalysisRepository
+import com.lifting.app.feature_tracker.data.repository.AnalysisRepositoryImpl
 import com.lifting.app.feature_home.domain.repository.Repository
 import com.lifting.app.feature_home.data.repository.RepositoryImpl
 import dagger.Binds

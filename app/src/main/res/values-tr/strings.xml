@@ -60,7 +60,7 @@
     <string name="label_personalized_plan">Kişiselleştirilmiş Plan </string>
     <string name="label_navbar_workouts">Programlar</string>
     <string name="label_navbar_analysis">Analiz</string>
-    <string name="label_navbar_health">Sağlık</string>
+    <string name="label_navbar_calculators">Hesaplayıcılar</string>
     <string name="label_analysis_dialog_title">Vücut ağırlığını güncelle</string>
     <string name="account_information">Hesap Bilgileri</string>
     <string name="notification_settings">Bildirim Ayarları</string>
@@ -146,6 +146,13 @@
     <string name="bmr_age_label">Yaş</string>
     <string name="your_bmr_label">Bazal Metabolizma Hızın</string>
     <string name="your_daily_calories">Günlük Kalori İhtiyacın</string>
+    <string name="rep_label">Tekrar</string>
+    <string name="percent_label">Yüzde</string>
+    <string name="rm_calculator_label">RM Hesaplayıcı</string>
+    <string name="bmr_calculator_label">BMR Hesaplayıcı</string>
+    <string name="bmi_calculator_label">BMI Hesaplayıcı</string>
+    <string name="nothing_found_label">Hiçbir şey bulunamadı</string>
+    <string name="auth_screen_privacy_and_terms_label">by continuing forward, you agree to lifting\'s privacy policy and terms&amp;conditions</string>
 
 
 

@@ -3,8 +3,8 @@ package com.lifting.app.di
 import android.content.Context
 import androidx.room.Room
 import com.lifting.app.common.constants.Constants.Companion.ANALYSIS_DATABASE
-import com.lifting.app.feature_home.data.local.AnalysisDao
-import com.lifting.app.feature_home.data.local.AnalysisDatabase
+import com.lifting.app.feature_tracker.data.local.AnalysisDao
+import com.lifting.app.feature_tracker.data.local.entity.AnalysisDatabase
 import com.lifting.app.feature_home.data.local.datastore.DataStoreRepository
 import dagger.Module
 import dagger.Provides

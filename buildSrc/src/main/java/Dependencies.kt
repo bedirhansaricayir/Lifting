@@ -73,7 +73,14 @@ object Dependencies {
     //Chart
     val chart by lazy { "com.github.PhilJay:MPAndroidChart:${Versions.chartVersion}" }
 
+    //Room
     val room by lazy { "androidx.room:room-ktx:${Versions.roomVersion}" }
     val roomRuntime by lazy { "androidx.room:room-runtime:${Versions.roomVersion}" }
     val roomCompiler by lazy { "androidx.room:room-compiler:${Versions.roomVersion}" }
+    
+    //Calendar
+    val calendar by lazy { "com.kizitonwose.calendar:compose:${Versions.calendarVersion}" }
+
+    //Desugaring
+    val desugaring by lazy { "com.android.tools:desugar_jdk_libs:${Versions.desugaringVersion}" }
 }

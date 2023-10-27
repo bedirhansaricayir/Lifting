@@ -59,7 +59,7 @@
     <string name="label_personalized_plan">Personalized Plan</string>
     <string name="label_navbar_workouts">Workouts</string>
     <string name="label_navbar_analysis">Analysis</string>
-    <string name="label_navbar_health">Health</string>
+    <string name="label_navbar_calculators">Calculators</string>
     <string name="label_analysis_dialog_title">Update bodyweight</string>
     <string name="account_information">Account Information</string>
     <string name="notification_settings">Notification Settings</string>
@@ -145,7 +145,13 @@
     <string name="bmr_age_label">Age</string>
     <string name="your_bmr_label">Your Basal Metabolic Rate</string>
     <string name="your_daily_calories">Your Needed Daily Calorie</string>
-
+    <string name="rep_label">Repetitions</string>
+    <string name="percent_label">Percent</string>
+    <string name="rm_calculator_label">RM Calculator</string>
+    <string name="bmr_calculator_label">BMR Calculator</string>
+    <string name="bmi_calculator_label">BMI Calculator</string>
+    <string name="nothing_found_label">Nothing found</string>
+    <string name="auth_screen_privacy_and_terms_label">by continuing forward, you agree to lifting\'s privacy policy and terms&amp;conditions</string>
 
 
 </resources>

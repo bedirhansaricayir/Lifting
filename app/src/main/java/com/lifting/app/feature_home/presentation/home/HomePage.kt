@@ -56,7 +56,7 @@ import com.lifting.app.feature_home.presentation.home.list.AdvancedProgramList
 import com.lifting.app.feature_home.presentation.home.list.BeginnerProgramList
 import com.lifting.app.feature_home.presentation.home.list.IntermediateProgramList
 import com.lifting.app.feature_home.presentation.home.list.card.PersonalizedProgramCard
-import com.lifting.app.feature_home.presentation.tools_detail.bmr.SelectableGroup
+import com.lifting.app.feature_calculators.presentation.tools_detail.bmr.SelectableGroup
 import com.lifting.app.theme.White40
 import com.lifting.app.theme.black20
 import com.lifting.app.theme.grey50

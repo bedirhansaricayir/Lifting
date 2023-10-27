@@ -53,7 +53,7 @@ fun BottomNavigationBar(navController: NavHostController, modifier: Modifier = M
     val screens = listOf(
         Screen.HomeScreen,
         Screen.TrackerScreen,
-        Screen.HealthScreen
+        Screen.CalculatorScreen
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()

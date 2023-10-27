@@ -30,6 +30,8 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -48,6 +50,8 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring(Dependencies.desugaring)
+
     implementation (Dependencies.coreKtx)
     implementation (platform(Dependencies.platformKotlin))
     implementation (Dependencies.lifecycleRuntimeKtx)
@@ -105,4 +109,6 @@ dependencies {
     implementation(Dependencies.room)
     ksp(Dependencies.roomCompiler)
     implementation(Dependencies.roomRuntime)
+
+    implementation(Dependencies.calendar)
 }

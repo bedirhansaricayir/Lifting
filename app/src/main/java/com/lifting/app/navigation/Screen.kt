@@ -3,7 +3,7 @@ package com.lifting.app.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.lifting.app.R
-import com.lifting.app.common.constants.Constants.Companion.HEALTH_SCREEN
+import com.lifting.app.common.constants.Constants.Companion.CALCULATOR_SCREEN
 import com.lifting.app.common.constants.Constants.Companion.HOME_SCREEN
 import com.lifting.app.common.constants.Constants.Companion.TRACKER_SCREEN
 
@@ -25,9 +25,9 @@ sealed class Screen(
         icon = R.drawable.analysis
     )
 
-    object HealthScreen : Screen(
-        route = HEALTH_SCREEN,
-        title = R.string.label_navbar_health,
+    object CalculatorScreen : Screen(
+        route = CALCULATOR_SCREEN,
+        title = R.string.label_navbar_calculators,
         icon = R.drawable.pulse
     )
 

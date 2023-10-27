@@ -42,7 +42,7 @@ fun OnBoarding(
 ) {
 
     val items = OnBoardingPage.getData()
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState {items.size}
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -51,7 +51,6 @@ fun OnBoarding(
     ) {
         Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
             HorizontalPager(
-                pageCount = items.size,
                 state = pagerState
             ) {
                 OnBoardingItem(items = items[it])

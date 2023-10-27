@@ -19,33 +19,36 @@ import com.lifting.app.common.constants.Constants.Companion.NOTIFICATION_SETTING
 import com.lifting.app.common.constants.Constants.Companion.PURCHASE_SCREEN
 import com.lifting.app.common.constants.Constants.Companion.TOOLS_DETAILS_SCREEN
 import com.lifting.app.common.constants.Constants.Companion.TOOLS_SCREEN_ARGS_KEY
-import com.lifting.app.feature_home.presentation.calculator.CalculatorCategory
+import com.lifting.app.common.util.Utility
+import com.lifting.app.feature_calculators.domain.model.CalculatorCategory
 import com.lifting.app.navigation.Screen
-import com.lifting.app.feature_home.presentation.calculator.CalculatorScreen
+import com.lifting.app.feature_calculators.presentation.CalculatorScreen
+import com.lifting.app.feature_calculators.presentation.CalculatorScreenState
+import com.lifting.app.feature_calculators.presentation.CalculatorScreenViewModel
 import com.lifting.app.feature_home.presentation.home.HomePageUiState
 import com.lifting.app.feature_home.presentation.home.HomeScreen
 import com.lifting.app.feature_home.presentation.home.HomeViewModel
 import com.lifting.app.feature_home.presentation.home.UserDataState
 import com.lifting.app.feature_home.presentation.notification.NotificationSettingsScreen
-import com.lifting.app.feature_home.presentation.profile.ProfileScreen
-import com.lifting.app.feature_home.presentation.profile.ProfileScreenState
-import com.lifting.app.feature_home.presentation.profile.ProfileScreenViewModel
-import com.lifting.app.feature_home.presentation.purchase.PurchaseScreen
-import com.lifting.app.feature_home.presentation.purchase.PurchaseScreenState
-import com.lifting.app.feature_home.presentation.purchase.PurchaseScreenViewModel
-import com.lifting.app.feature_home.presentation.tools_detail.ToolsDetailScreen
-import com.lifting.app.feature_home.presentation.tools_detail.bmi.BMIScreen
-import com.lifting.app.feature_home.presentation.tools_detail.bmi.BMIScreenState
-import com.lifting.app.feature_home.presentation.tools_detail.bmi.BMIViewModel
-import com.lifting.app.feature_home.presentation.tools_detail.bmr.BMRScreen
-import com.lifting.app.feature_home.presentation.tools_detail.bmr.BMRScreenState
-import com.lifting.app.feature_home.presentation.tools_detail.bmr.BMRViewModel
-import com.lifting.app.feature_home.presentation.tools_detail.one_rep.OneRepScreen
-import com.lifting.app.feature_home.presentation.tools_detail.one_rep.OneRepScreenState
-import com.lifting.app.feature_home.presentation.tools_detail.one_rep.OneRepViewModel
-import com.lifting.app.feature_home.presentation.tracker.TrackerPageUiState
-import com.lifting.app.feature_home.presentation.tracker.TrackerPageViewModel
-import com.lifting.app.feature_home.presentation.tracker.TrackerScreen
+import com.lifting.app.feature_profile.presentation.ProfileScreen
+import com.lifting.app.feature_profile.presentation.ProfileScreenState
+import com.lifting.app.feature_profile.presentation.ProfileScreenViewModel
+import com.lifting.app.feature_purchase.presentation.PurchaseScreen
+import com.lifting.app.feature_purchase.presentation.PurchaseScreenState
+import com.lifting.app.feature_purchase.presentation.PurchaseScreenViewModel
+import com.lifting.app.feature_calculators.presentation.tools_detail.bmi.BMIScreen
+import com.lifting.app.feature_calculators.presentation.tools_detail.bmi.BMIScreenState
+import com.lifting.app.feature_calculators.presentation.tools_detail.bmi.BMIViewModel
+import com.lifting.app.feature_calculators.presentation.tools_detail.bmr.BMRScreen
+import com.lifting.app.feature_calculators.presentation.tools_detail.bmr.BMRScreenState
+import com.lifting.app.feature_calculators.presentation.tools_detail.bmr.BMRViewModel
+import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.OneRepScreen
+import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.OneRepScreenState
+import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.OneRepViewModel
+import com.lifting.app.feature_tracker.presentation.TrackerPageUiState
+import com.lifting.app.feature_tracker.presentation.TrackerPageViewModel
+import com.lifting.app.feature_tracker.presentation.TrackerScreen
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -81,9 +84,14 @@ fun NavGraph(navController: NavHostController,isPremiumUser: (Boolean) -> Unit) 
                 onEvent = trackerViewModel::onEvent
             )
         }
-        composable(route = Screen.HealthScreen.route) {
+        composable(route = Screen.CalculatorScreen.route) {
+            val calculatorViewModel: CalculatorScreenViewModel = hiltViewModel()
+            val state: CalculatorScreenState = calculatorViewModel.state.collectAsState().value
             CalculatorScreen(
-                onClick = { navController.navigate(DetailScreen.ToolsDetailScreen.passArg(it.toString())) }
+                state = state,
+                onClick = {
+                    navController.navigate(DetailScreen.ToolsDetailScreen.passArg(it.toString()))
+                }
             )
         }
         authNavGraph(navController = navController)
@@ -135,16 +143,20 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
         }
         composable(route = "tools_details_screen/{whichTool}",
             arguments = listOf(navArgument(TOOLS_SCREEN_ARGS_KEY){
-            type = NavType.EnumType(CalculatorCategory::class.java)
-        })) {
+            type = NavType.EnumType(CalculatorCategory::class.java) }
+            )
+        ) {
             val args = it.arguments?.get(TOOLS_SCREEN_ARGS_KEY)
+            val popBackStack: () -> Unit = { navController.popBackStack() }
+
             when((args as CalculatorCategory)) {
                 CalculatorCategory.BMI -> {
                     val viewModel = viewModel<BMIViewModel>()
                     val state: BMIScreenState = viewModel.state.collectAsState().value
                     BMIScreen(
                         state = state,
-                        onEvent = viewModel::onEvent
+                        onEvent = viewModel::onEvent,
+                        onBackNavigationIconClicked = popBackStack
                     )
                 }
                 CalculatorCategory.BMR -> {
@@ -152,7 +164,8 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                     val state: BMRScreenState = viewModel.state.collectAsState().value
                     BMRScreen(
                         state = state,
-                        onEvent = viewModel::onEvent
+                        onEvent = viewModel::onEvent,
+                        onBackNavigationIconClicked = popBackStack
                     )
                 }
                 CalculatorCategory.RM -> {
@@ -160,12 +173,12 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                     val state: OneRepScreenState = viewModel.state.collectAsState().value
                     OneRepScreen(
                         state = state,
-                        onEvent = viewModel::onEvent)
+                        onEvent = viewModel::onEvent,
+                        onBackNavigationIconClicked = popBackStack
+                    )
                 }
 
-                CalculatorCategory.ZURT -> {}
             }
-            //ToolsDetailScreen(args = args as CalculatorCategory)
         }
     }
 }
