@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -44,6 +45,7 @@ import com.lifting.app.feature_auth.presentation.components.ToggleAuthentication
 import com.lifting.app.feature_auth.presentation.forgot_password.ForgotPasswordModalBottomSheetContent
 import com.lifting.app.feature_auth.presentation.forgot_password.ForgotPasswordState
 import com.lifting.app.feature_auth.presentation.google_auth.GoogleSignInState
+import com.lifting.app.theme.black20
 import com.lifting.app.theme.grey50
 
 @Composable
@@ -142,7 +144,6 @@ fun SignInScreenContent(
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState()
     var openBottomSheet by remember { mutableStateOf(false) }
-
     LaunchedEffect(key1 = forgotPasswordState.isSend) {
         if (forgotPasswordState.isSend) {
             openBottomSheet = !openBottomSheet
@@ -157,8 +158,8 @@ fun SignInScreenContent(
                 clearStateWhenResetPasswordSend()
             },
             sheetState = modalBottomSheetState,
-            containerColor = grey50,
-            scrimColor = grey50.copy(alpha = 0.7f)
+            containerColor = black20,
+            dragHandle = { BottomSheetDefaults.DragHandle() }
         ) {
             ForgotPasswordModalBottomSheetContent(
                 modifier = Modifier,

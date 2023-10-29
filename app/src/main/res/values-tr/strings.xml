@@ -153,8 +153,12 @@
     <string name="bmi_calculator_label">BMI Hesaplayıcı</string>
     <string name="nothing_found_label">Hiçbir şey bulunamadı</string>
     <string name="auth_screen_privacy_and_terms_label">by continuing forward, you agree to lifting\'s privacy policy and terms&amp;conditions</string>
-
-
+    <string name="membership_date">Üyelik Tarihi</string>
+    <string name="delete_account">Hesabımı sil</string>
+    <string name="delete_account_dialog_title">Hesabını silmek üzeresin</string>
+    <string name="delete_account_dialog_description">Devam etmen halinde hesap ve profil bilgilerin geri alınmamak üzere silinecektir.</string>
+    <string name="delete_button_label">Sil</string>
+    <string name="delete_account_error_label">Bir hata meydana geldi, lütfen tekrar deneyin</string>
 
 
 

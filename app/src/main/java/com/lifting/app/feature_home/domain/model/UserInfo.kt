@@ -6,5 +6,6 @@ data class UserInfo(
     val email: String? = null,
     val photoUrl: String? = null,
     @field:JvmField
-    val isPremium: Boolean? = false
+    val isPremium: Boolean? = false,
+    val createdAt: String? = null
 )

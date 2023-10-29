@@ -3,9 +3,13 @@ package com.lifting.app.navigation.graphs
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -14,12 +18,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.lifting.app.R
+import com.lifting.app.common.constants.Constants.Companion.ACCOUNT_INFORMATION_SCREEN
 import com.lifting.app.common.constants.Constants.Companion.DETAIL_SCREEN
 import com.lifting.app.common.constants.Constants.Companion.NOTIFICATION_SETTINGS_SCREEN
 import com.lifting.app.common.constants.Constants.Companion.PURCHASE_SCREEN
 import com.lifting.app.common.constants.Constants.Companion.TOOLS_DETAILS_SCREEN
 import com.lifting.app.common.constants.Constants.Companion.TOOLS_SCREEN_ARGS_KEY
-import com.lifting.app.common.util.Utility
 import com.lifting.app.feature_calculators.domain.model.CalculatorCategory
 import com.lifting.app.navigation.Screen
 import com.lifting.app.feature_calculators.presentation.CalculatorScreen
@@ -45,10 +49,10 @@ import com.lifting.app.feature_calculators.presentation.tools_detail.bmr.BMRView
 import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.OneRepScreen
 import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.OneRepScreenState
 import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.OneRepViewModel
+import com.lifting.app.feature_profile.presentation.AccountInformationScreen
 import com.lifting.app.feature_tracker.presentation.TrackerPageUiState
 import com.lifting.app.feature_tracker.presentation.TrackerPageViewModel
 import com.lifting.app.feature_tracker.presentation.TrackerScreen
-import dagger.hilt.android.qualifiers.ApplicationContext
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -104,15 +108,18 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
         route = Graph.DETAILS,
         startDestination = DetailScreen.ProfileScreen.route
     ) {
-        composable(route = DetailScreen.ProfileScreen.route) {
-            val profileScreenViewModel : ProfileScreenViewModel = hiltViewModel()
-            val state: ProfileScreenState = profileScreenViewModel.state.collectAsState().value
+        composable(route = DetailScreen.ProfileScreen.route) { entry ->
+            val sharedViewModel = entry.sharedViewModel<ProfileScreenViewModel>(navController)
+            val state: ProfileScreenState = sharedViewModel.state.collectAsState().value
             ProfileScreen(
                 state = state,
-                profileScreenEvent = profileScreenViewModel::onEvent,
+                profileScreenEvent = sharedViewModel::onEvent,
                 onBackNavigationIconClicked = { navController.popBackStack() },
                 onForwardNavigationIconClicked = { route ->
                     when(route){
+                        R.string.account_information -> {
+                            navController.navigate(DetailScreen.AccountInformationScreen.route)
+                        }
                         R.string.logout -> {
                             navController.navigate(AuthScreen.SignInScreen.route) {
                                 popUpTo(Graph.HOME) {
@@ -128,6 +135,28 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                 }
             )
         }
+
+        composable(route = DetailScreen.AccountInformationScreen.route) { entry ->
+            val sharedViewModel = entry.sharedViewModel<ProfileScreenViewModel>(navController)
+            val state: ProfileScreenState = sharedViewModel.state.collectAsState().value
+
+            LaunchedEffect(key1 = state.profileDataState.isAccountDeleted) {
+                if (state.profileDataState.isAccountDeleted) {
+                    navController.navigate(AuthScreen.SignInScreen.route) {
+                        popUpTo(Graph.HOME) {
+                            inclusive = true
+                        }
+                        onUserLogout.invoke()
+                    }
+                }
+            }
+            AccountInformationScreen(
+                state = state,
+                profileScreenEvent = sharedViewModel::onEvent,
+                onBackNavigationIconClicked = { navController.popBackStack() },
+            )
+        }
+
         composable(route = DetailScreen.PurchaseScreen.route) {
             val purchaseScreenViewModel : PurchaseScreenViewModel = hiltViewModel()
             val state: PurchaseScreenState = purchaseScreenViewModel.state.collectAsState().value
@@ -141,6 +170,7 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                 onBackNavigationIconClicked = { navController.popBackStack() }
             )
         }
+
         composable(route = "tools_details_screen/{whichTool}",
             arguments = listOf(navArgument(TOOLS_SCREEN_ARGS_KEY){
             type = NavType.EnumType(CalculatorCategory::class.java) }
@@ -192,5 +222,17 @@ sealed class DetailScreen(val route: String) {
             return this.route.replace(oldValue = TOOLS_SCREEN_ARGS_KEY, newValue = category)
         }
     }
+    object AccountInformationScreen : DetailScreen(route = ACCOUNT_INFORMATION_SCREEN)
 
+}
+
+@Composable
+inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
+    navController: NavHostController,
+): T {
+    val navGraphRoute = destination.parent?.route ?: return hiltViewModel()
+    val parentEntry = remember(this) {
+        navController.getBackStackEntry(navGraphRoute)
+    }
+    return hiltViewModel(parentEntry)
 }

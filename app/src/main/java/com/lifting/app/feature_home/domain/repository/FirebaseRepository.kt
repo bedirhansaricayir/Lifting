@@ -15,4 +15,6 @@ interface FirebaseRepository {
     suspend fun addImageToFirebaseStorage(imageUri: Uri): Uri
 
     suspend fun addImageUrlToFirestore(downloadUrl: Uri): Boolean
+
+    suspend fun revokeAccess() : Boolean
 }

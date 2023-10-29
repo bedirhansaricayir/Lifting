@@ -1,5 +1,6 @@
 package com.lifting.app.feature_auth.presentation.components
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.semantics
@@ -39,9 +41,11 @@ fun Requirement(
             R.string.password_requirement_needed, message
         )
     }
-    val tint = if (satisfied) {
-        MaterialTheme.colorScheme.primary
-    } else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+    val tint = animateColorAsState(
+        targetValue =
+        if (satisfied) MaterialTheme.colorScheme.primary
+        else Color.White.copy(0.6f), label = ""
+    )
     Row(
         modifier = Modifier
             .padding(6.dp)
@@ -54,14 +58,14 @@ fun Requirement(
             modifier = Modifier.size(12.dp),
             imageVector = Icons.Default.Check,
             contentDescription = null,
-            tint = tint
+            tint = tint.value
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             modifier = Modifier.clearAndSetSemantics { },
             text = message,
             fontSize = 12.sp,
-            color = tint
+            color = tint.value
         )
     }
 }

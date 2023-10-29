@@ -15,7 +15,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lifting.app.R
+import com.lifting.app.common.components.CommonAlertDialog
 import com.lifting.app.common.constants.Constants.Companion.CALENDAR
 import com.lifting.app.common.constants.Constants.Companion.CHART
 import com.lifting.app.common.util.toLocalDate
@@ -262,13 +262,14 @@ fun TrackerPageContent(
     }
 
 
-    CustomDialog(
+    CommonAlertDialog(
         dialogState = state.isExistSameDateError,
         title = R.string.date_already_exists_error_header,
         body = R.string.date_already_exists_error_body,
+        confirmButtonTitle = R.string.date_already_exist_error_confirm_label,
         onDissmiss = userViewedTheError,
         onCancelClicked = { pendingEventDataHolder = null },
-        onUpdateClicked = { onUpdateClicked(pendingEventDataHolder!!) }
+        onConfirmClicked = { onUpdateClicked(pendingEventDataHolder!!) }
     )
 
     SetFilterModalBottomSheet(
@@ -480,53 +481,3 @@ fun AddToChartModalBottomSheet(
 
 }
 
-@Composable
-fun CustomDialog(
-    dialogState: Boolean,
-    title: Int,
-    body: Int,
-    onDissmiss: () -> Unit,
-    onCancelClicked: () -> Unit,
-    onUpdateClicked: () -> Unit
-) {
-    if (dialogState) {
-        AlertDialog(
-            onDismissRequest = { onDissmiss.invoke() },
-            title = {
-                Text(
-                    modifier = Modifier,
-                    text = stringResource(id = title),
-                    color = grey10,
-                    style = MaterialTheme.typography.titleSmall
-                )
-            },
-            text = {
-                Text(
-                    modifier = Modifier,
-                    text = stringResource(id = body),
-                    color = grey10,
-                    style = MaterialTheme.typography.labelSmall
-                )
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    onCancelClicked.invoke()
-                    onDissmiss.invoke()
-                }) {
-                    Text(text = stringResource(id = R.string.date_already_exist_error_cancel_label))
-                }
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        onUpdateClicked.invoke()
-                        onDissmiss.invoke()
-                    }) {
-                    Text(text = stringResource(id = R.string.date_already_exist_error_confirm_label))
-                }
-            },
-            containerColor = Black40,
-        )
-    }
-
-}

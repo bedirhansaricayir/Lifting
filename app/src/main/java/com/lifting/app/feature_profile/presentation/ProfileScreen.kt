@@ -211,13 +211,13 @@ fun ProfileUserSection(modifier: Modifier = Modifier, username: String?, email: 
         fontWeight = FontWeight.Bold,
         color = White40
     )
-    Spacer(modifier = Modifier.height(8.dp))
+    /*Spacer(modifier = Modifier.height(8.dp))
     Text(
         modifier = Modifier,
         text = email ?: "",
         style = MaterialTheme.typography.labelMedium,
         color = white10
-    )
+    )*/
 
 }
 

@@ -285,6 +285,7 @@ class Constants {
         const val NOTIFICATION_SETTINGS_SCREEN = "notification_settings_screen"
         const val TOOLS_DETAILS_SCREEN = "tools_details_screen/"
         const val TOOLS_SCREEN_ARGS_KEY = "whichTool"
+        const val ACCOUNT_INFORMATION_SCREEN = "account_information_screen"
 
 
         //Collection References

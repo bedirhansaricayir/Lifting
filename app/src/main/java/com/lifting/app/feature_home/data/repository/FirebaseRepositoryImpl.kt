@@ -56,4 +56,18 @@ class FirebaseRepositoryImpl @Inject constructor(
         false
     }
 
+    override suspend fun revokeAccess(): Boolean = try {
+        currentUser?.apply {
+            firestore.collection(USERS).document(uid).delete().await()
+            delete().await()
+            /*signInClient.revokeAccess().await()
+            oneTapClient.signOut().await()
+            firebaseAuth.signOut()*/
+        }
+        true
+    } catch (e: Exception) {
+        false
+    }
+
+
 }

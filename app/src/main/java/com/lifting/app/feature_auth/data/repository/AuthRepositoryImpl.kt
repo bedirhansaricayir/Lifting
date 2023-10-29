@@ -1,18 +1,23 @@
 package com.lifting.app.feature_auth.data.repository
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
+import com.lifting.app.common.constants.Constants.Companion.CREATED_AT
 import com.lifting.app.common.constants.Constants.Companion.DEFAULT_AVATAR_STORAGE
 import com.lifting.app.common.constants.Constants.Companion.DISPLAY_NAME
 import com.lifting.app.common.constants.Constants.Companion.EMAIL
 import com.lifting.app.common.constants.Constants.Companion.IS_PREMIUM
 import com.lifting.app.common.constants.Constants.Companion.PHOTO_URL
 import com.lifting.app.common.constants.Constants.Companion.USERS
+import com.lifting.app.common.util.toLocaleFormat
 import com.lifting.app.feature_auth.domain.repository.AuthRepository
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -64,21 +69,29 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun signOut() = firebaseAuth.signOut()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun addUserToFirestore() {
         firebaseAuth.currentUser?.apply {
             val user = toUser()
             firestore.collection(USERS).document(uid).set(user).await()
         }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun FirebaseUser.toUser() = mapOf(
         DISPLAY_NAME to displayName,
         EMAIL to email,
         IS_PREMIUM to false,
         PHOTO_URL to userPhoto(),
+        CREATED_AT to localDate()
     )
 
     private fun FirebaseUser.userPhoto(): String {
         return photoUrl?.toString() ?: DEFAULT_AVATAR_STORAGE
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun FirebaseUser.localDate(): String {
+        return LocalDate.now().toLocaleFormat()
     }
 
 }

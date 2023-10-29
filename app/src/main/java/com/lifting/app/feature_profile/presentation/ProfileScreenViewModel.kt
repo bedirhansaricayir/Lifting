@@ -11,6 +11,7 @@ import com.lifting.app.feature_profile.domain.use_case.AddImageToStorageUseCase
 import com.lifting.app.feature_profile.domain.use_case.AddImageUrlToFirestoreUseCase
 import com.lifting.app.feature_profile.domain.use_case.GetProfileSettingsUseCase
 import com.lifting.app.feature_home.domain.use_case.GetUserInfoUseCase
+import com.lifting.app.feature_profile.domain.use_case.DeleteAccountUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +28,8 @@ class ProfileScreenViewModel @Inject constructor(
     private val addImageUrlToFirestoreUseCase: AddImageUrlToFirestoreUseCase,
     private val getProfileSettingsUseCase: GetProfileSettingsUseCase,
     private val googleAuthUiClient: GoogleAuthUiClient,
-    private val dataStoreRepository: DataStoreRepository
+    private val dataStoreRepository: DataStoreRepository,
+    private val deleteAccountUseCase: DeleteAccountUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ProfileScreenState())
@@ -45,6 +47,13 @@ class ProfileScreenViewModel @Inject constructor(
             is ProfileScreenEvent.OnLogoutClicked -> {
                 signOut()
             }
+            is ProfileScreenEvent.OnDeleteAccountClicked -> {
+                deleteAccount()
+            }
+            is ProfileScreenEvent.OnUserViewedTheError -> {
+                onUserViewedTheError(false)
+            }
+
         }
     }
 
@@ -56,7 +65,7 @@ class ProfileScreenViewModel @Inject constructor(
     private fun getUserInfo() {
         viewModelScope.launch {
             getUserInfoUseCase.invoke().collect { response ->
-                when(response) {
+                when (response) {
                     is Resource.Loading -> {
                         _state.value = _state.value.copy(
                             profileDataState = ProfileDataState(profileDataLoading = true)
@@ -68,7 +77,8 @@ class ProfileScreenViewModel @Inject constructor(
                                 email = response.data?.email,
                                 username = response.data?.displayName,
                                 profilePictureUrl = response.data?.photoUrl,
-                                isPremium = response.data?.isPremium
+                                isPremium = response.data?.isPremium,
+                                createdAt = response.data?.createdAt
                             )
                         )
                     }
@@ -84,10 +94,11 @@ class ProfileScreenViewModel @Inject constructor(
             }
         }
     }
+
     private fun addImageToStorage(imageUri: Uri) {
         viewModelScope.launch {
             addImageToStorageUseCase.invoke(imageUri).collect { response ->
-                when(response) {
+                when (response) {
                     is Resource.Loading -> {
                         _state.value = _state.value.copy(
                             addImageToStorageLoading = true
@@ -113,7 +124,7 @@ class ProfileScreenViewModel @Inject constructor(
     private fun addImageToFirestore(downloadUrl: Uri) {
         viewModelScope.launch {
             addImageUrlToFirestoreUseCase.invoke(downloadUrl).collect { response ->
-                when(response) {
+                when (response) {
                     is Resource.Loading -> {
                         _state.value = _state.value.copy(
                             addImageToFirestoreLoading = true
@@ -139,7 +150,7 @@ class ProfileScreenViewModel @Inject constructor(
 
     private fun getProfileSettings() {
         viewModelScope.launch {
-           val settingsDeferred =  async { getProfileSettingsUseCase.invoke() }
+            val settingsDeferred = async { getProfileSettingsUseCase.invoke() }
             val settings = settingsDeferred.await().successOr(emptyList())
 
             _state.value = _state.value.copy(
@@ -148,7 +159,7 @@ class ProfileScreenViewModel @Inject constructor(
         }
     }
 
-    private fun updateProfilePicture(uri: Uri){
+    private fun updateProfilePicture(uri: Uri) {
         _state.value = _state.value.copy(
             profileDataState = ProfileDataState(profilePictureUrl = uri.toString())
         )
@@ -161,13 +172,64 @@ class ProfileScreenViewModel @Inject constructor(
             clearUiState()
         }
     }
+
     private suspend fun clearSignInState() {
         dataStoreRepository.clearDataStore()
     }
 
-    private  fun clearUiState() {
+    private fun clearUiState() {
         _state.update {
             ProfileScreenState(profileDataState = ProfileDataState(isPremium = false))
         }
+    }
+
+    private fun deleteAccount() {
+        setAccountDeleteLoading(true)
+        viewModelScope.launch {
+            deleteAccountUseCase.invoke().collect { response ->
+                when (response) {
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            profileDataState = ProfileDataState(
+                                accountDeleteLoading = true
+                            )
+                        )
+                    }
+                    is Resource.Success -> {
+                        signOut()
+                        _state.value = _state.value.copy(
+                            profileDataState = ProfileDataState(
+                                accountDeleteLoading = true,
+                                isPremium = false,
+                                isAccountDeleted = true
+                            )
+                        )
+                    }
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            profileDataState = ProfileDataState(
+                                accountDeleteLoading = false,
+                                accountDeleteError = true
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setAccountDeleteLoading(state:Boolean) {
+        _state.value = _state.value.copy(
+            profileDataState = ProfileDataState(
+                accountDeleteLoading = state
+            )
+        )
+    }
+    private fun onUserViewedTheError(state: Boolean) {
+        _state.value = _state.value.copy(
+            profileDataState = ProfileDataState(
+                accountDeleteError = state
+            )
+        )
     }
 }

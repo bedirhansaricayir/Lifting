@@ -9,4 +9,9 @@ sealed class ProfileScreenEvent {
     data class OnProfilePictureAddedToStorage(val downloadUrl: Uri) : ProfileScreenEvent()
 
     object OnLogoutClicked : ProfileScreenEvent()
+
+    object OnDeleteAccountClicked : ProfileScreenEvent()
+
+    object OnUserViewedTheError : ProfileScreenEvent()
+
 }

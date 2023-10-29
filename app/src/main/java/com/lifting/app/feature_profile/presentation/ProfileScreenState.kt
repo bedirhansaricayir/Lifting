@@ -22,6 +22,9 @@ data class ProfileDataState(
     val profilePictureUrl: String? = null,
     val isPremium: Boolean? = false,
     val profileDataLoading: Boolean = false,
-    val profileDataError: String? =  null
-
+    val profileDataError: String? =  null,
+    val createdAt: String? = null,
+    val isAccountDeleted: Boolean = false,
+    val accountDeleteLoading: Boolean = false,
+    val accountDeleteError: Boolean = false
 )

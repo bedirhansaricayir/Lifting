@@ -152,6 +152,11 @@
     <string name="bmi_calculator_label">BMI Calculator</string>
     <string name="nothing_found_label">Nothing found</string>
     <string name="auth_screen_privacy_and_terms_label">by continuing forward, you agree to lifting\'s privacy policy and terms&amp;conditions</string>
-
+    <string name="membership_date">Membership Date</string>
+    <string name="delete_account">Delete my account</string>
+    <string name="delete_account_dialog_title">You are about to delete your account</string>
+    <string name="delete_account_dialog_description">if you proceed, your account and profile information  will be deleted irrevocably.</string>
+    <string name="delete_button_label">Delete</string>
+    <string name="delete_account_error_label">An error occurred, please try again</string>
 
 </resources>
