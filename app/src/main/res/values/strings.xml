@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FitnessApp</string>
+    <string name="app_name">Lifting</string>
     <string name="FirstOnBoardingPageTitle">Choose the best workouts</string>
     <string name="FirstOnBoardingPageDescription">More than 15 workouts for all levels will help you to keep fit.</string>
     <string name="SecondOnBoardingPageTitle">Create your own program or choose existed</string>

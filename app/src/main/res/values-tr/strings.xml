@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FitnessApp</string>
+    <string name="app_name">Lifting</string>
     <string name="FirstOnBoardingPageTitle">En iyi programları seç</string>
     <string name="FirstOnBoardingPageDescription">Her seviye için oluşturulmuş toplamda 15\'ten fazla egzersiz programı formda kalmanıza yardımcı olacaktır.</string>
     <string name="SecondOnBoardingPageTitle">Kendi programını oluştur veya mevcut olanı seç</string>
