@@ -13,4 +13,18 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Custom
+/app/release/
+/.idea/
 /app/google-services.json
+
+# Built application files
+*.apk
+*.ap_
+*.aab
+
+# Keystore files
+/app/lifting.jks
+/keystore.properties
+
