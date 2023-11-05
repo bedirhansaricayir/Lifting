@@ -35,12 +35,6 @@ class HomeViewModel @Inject constructor(
 
     fun onEvent(event: HomePageEvent) {
         when (event) {
-            is HomePageEvent.OnWorkoutProgramPlayButtonClicked -> {
-                _state.value = _state.value.copy(
-                    selectedProgram = event.uygulanis,
-                    selectedProgramName = event.isim
-                )
-            }
             is HomePageEvent.OnPersonalizedProgramButtonClicked -> {
                 val personalizedProgram = getProgramForGoal(event.days,event.goal)
                 _state.value = _state.value.copy(

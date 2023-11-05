@@ -21,4 +21,5 @@ object NavigationConstants {
     const val TOOLS_SCREEN_ARGS_KEY = "whichTool"
     const val ACCOUNT_INFORMATION_SCREEN = "account_information_screen"
     const val PLAYER_SCREEN = "player_screen"
+    const val PROGRAM_SCREEN = "program_screen"
 }

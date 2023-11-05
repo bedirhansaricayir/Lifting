@@ -23,6 +23,7 @@ import com.lifting.app.common.constants.NavigationConstants.ACCOUNT_INFORMATION_
 import com.lifting.app.common.constants.NavigationConstants.DETAIL_SCREEN
 import com.lifting.app.common.constants.NavigationConstants.NOTIFICATION_SETTINGS_SCREEN
 import com.lifting.app.common.constants.NavigationConstants.PLAYER_SCREEN
+import com.lifting.app.common.constants.NavigationConstants.PROGRAM_SCREEN
 import com.lifting.app.common.constants.NavigationConstants.PURCHASE_SCREEN
 import com.lifting.app.common.constants.NavigationConstants.TOOLS_DETAILS_SCREEN
 import com.lifting.app.common.constants.NavigationConstants.TOOLS_SCREEN_ARGS_KEY
@@ -51,6 +52,8 @@ import com.lifting.app.feature_calculators.presentation.tools_detail.bmr.BMRView
 import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.OneRepScreen
 import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.OneRepScreenState
 import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.OneRepViewModel
+import com.lifting.app.feature_detail.domain.model.SelectedProgram
+import com.lifting.app.feature_detail.presentation.ProgramScreen
 import com.lifting.app.feature_player.presentation.PlayerScreen
 import com.lifting.app.feature_player.presentation.PlayerScreenState
 import com.lifting.app.feature_player.presentation.PlayerViewModel
@@ -83,6 +86,10 @@ fun NavGraph(navController: NavHostController,isPremiumUser: (Boolean) -> Unit) 
                 },
                 onPersonalizedProgramCardClicked = {
                     navController.navigate(DetailScreen.PurchaseScreen.route)
+                },
+                onProgramClicked = { selectedProgram ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("program",selectedProgram)
+                    navController.navigate(DetailScreen.ProgramScreen.route)
                 }
             )
         }
@@ -144,6 +151,15 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                     }
                 }
             )
+        }
+
+        composable(route = DetailScreen.ProgramScreen.route) { entry ->
+            val programData = navController.previousBackStackEntry?.savedStateHandle?.get<SelectedProgram>("program")
+            programData?.let { program ->
+                ProgramScreen(
+                    program = program
+                )
+            }
         }
 
         composable(route = DetailScreen.AccountInformationScreen.route) { entry ->
@@ -243,6 +259,7 @@ sealed class DetailScreen(val route: String) {
     }
     object AccountInformationScreen : DetailScreen(route = ACCOUNT_INFORMATION_SCREEN)
     object PlayerScreen : DetailScreen(route = PLAYER_SCREEN)
+    object ProgramScreen: DetailScreen(route = PROGRAM_SCREEN)
 
 }
 
