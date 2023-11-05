@@ -5,9 +5,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.lifting.app.common.constants.Constants.Companion.IMAGES
-import com.lifting.app.common.constants.Constants.Companion.PHOTO_URL
-import com.lifting.app.common.constants.Constants.Companion.USERS
+import com.lifting.app.common.constants.UserFieldContants.IMAGES
+import com.lifting.app.common.constants.UserFieldContants.PHOTO_URL
+import com.lifting.app.common.constants.UserFieldContants.USERS
 import com.lifting.app.common.util.Resource
 import com.lifting.app.feature_home.domain.model.UserInfo
 import com.lifting.app.feature_home.domain.repository.FirebaseRepository

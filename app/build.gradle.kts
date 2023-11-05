@@ -122,6 +122,7 @@ dependencies {
     implementation(Dependencies.crashlytics)
     implementation(Dependencies.firestore)
     implementation(Dependencies.storage)
+    implementation(Dependencies.config)
 
     implementation(Dependencies.googleServicesAuth)
 
@@ -133,4 +134,10 @@ dependencies {
     implementation(Dependencies.roomRuntime)
 
     implementation(Dependencies.calendar)
+
+    implementation(Dependencies.media3)
+    implementation(Dependencies.media3_exoplayer)
+
+    implementation(Dependencies.inappUpdate)
+    implementation(Dependencies.inappUpdateKtx)
 }

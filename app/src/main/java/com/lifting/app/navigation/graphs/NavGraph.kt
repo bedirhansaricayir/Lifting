@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -18,12 +19,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.lifting.app.R
-import com.lifting.app.common.constants.Constants.Companion.ACCOUNT_INFORMATION_SCREEN
-import com.lifting.app.common.constants.Constants.Companion.DETAIL_SCREEN
-import com.lifting.app.common.constants.Constants.Companion.NOTIFICATION_SETTINGS_SCREEN
-import com.lifting.app.common.constants.Constants.Companion.PURCHASE_SCREEN
-import com.lifting.app.common.constants.Constants.Companion.TOOLS_DETAILS_SCREEN
-import com.lifting.app.common.constants.Constants.Companion.TOOLS_SCREEN_ARGS_KEY
+import com.lifting.app.common.constants.NavigationConstants.ACCOUNT_INFORMATION_SCREEN
+import com.lifting.app.common.constants.NavigationConstants.DETAIL_SCREEN
+import com.lifting.app.common.constants.NavigationConstants.NOTIFICATION_SETTINGS_SCREEN
+import com.lifting.app.common.constants.NavigationConstants.PLAYER_SCREEN
+import com.lifting.app.common.constants.NavigationConstants.PURCHASE_SCREEN
+import com.lifting.app.common.constants.NavigationConstants.TOOLS_DETAILS_SCREEN
+import com.lifting.app.common.constants.NavigationConstants.TOOLS_SCREEN_ARGS_KEY
 import com.lifting.app.feature_calculators.domain.model.CalculatorCategory
 import com.lifting.app.navigation.Screen
 import com.lifting.app.feature_calculators.presentation.CalculatorScreen
@@ -49,12 +51,16 @@ import com.lifting.app.feature_calculators.presentation.tools_detail.bmr.BMRView
 import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.OneRepScreen
 import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.OneRepScreenState
 import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.OneRepViewModel
+import com.lifting.app.feature_player.presentation.PlayerScreen
+import com.lifting.app.feature_player.presentation.PlayerScreenState
+import com.lifting.app.feature_player.presentation.PlayerViewModel
 import com.lifting.app.feature_profile.presentation.AccountInformationScreen
 import com.lifting.app.feature_tracker.presentation.TrackerPageUiState
 import com.lifting.app.feature_tracker.presentation.TrackerPageViewModel
 import com.lifting.app.feature_tracker.presentation.TrackerScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
+@UnstableApi
 @Composable
 fun NavGraph(navController: NavHostController,isPremiumUser: (Boolean) -> Unit) {
     NavHost(
@@ -103,6 +109,7 @@ fun NavGraph(navController: NavHostController,isPremiumUser: (Boolean) -> Unit) 
     }
 }
 
+@UnstableApi
 fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogout: () -> Unit) {
     navigation(
         route = Graph.DETAILS,
@@ -131,6 +138,9 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                         R.string.notification_settings -> {
                             navController.navigate(DetailScreen.NotificationSettingsScreen.route)
                         }
+                        R.string.send_feedback -> {
+                            navController.navigate(DetailScreen.PlayerScreen.route)
+                        }
                     }
                 }
             )
@@ -154,6 +164,15 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                 state = state,
                 profileScreenEvent = sharedViewModel::onEvent,
                 onBackNavigationIconClicked = { navController.popBackStack() },
+            )
+        }
+
+        composable(route = DetailScreen.PlayerScreen.route) {
+            val viewModel: PlayerViewModel = hiltViewModel()
+            val state: PlayerScreenState = viewModel.state.collectAsState().value
+            PlayerScreen(
+                state = state,
+                onBackNavigationIconClicked = { navController.popBackStack() }
             )
         }
 
@@ -223,6 +242,7 @@ sealed class DetailScreen(val route: String) {
         }
     }
     object AccountInformationScreen : DetailScreen(route = ACCOUNT_INFORMATION_SCREEN)
+    object PlayerScreen : DetailScreen(route = PLAYER_SCREEN)
 
 }
 

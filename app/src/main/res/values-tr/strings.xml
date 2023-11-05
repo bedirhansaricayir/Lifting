@@ -159,20 +159,6 @@
     <string name="delete_account_dialog_description">Devam etmen halinde hesap ve profil bilgilerin geri alınmamak üzere silinecektir.</string>
     <string name="delete_button_label">Sil</string>
     <string name="delete_account_error_label">Bir hata meydana geldi, lütfen tekrar deneyin</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <string name="update_successful_label">Güncelleme başarılı, 5 saniye içinde yeniden başlatılıyor</string>
 
 </resources>

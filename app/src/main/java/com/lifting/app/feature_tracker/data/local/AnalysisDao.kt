@@ -4,8 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.lifting.app.common.constants.Constants.Companion.ANALYSIS_DATA_TABLE
-import com.lifting.app.common.constants.Constants.Companion.DATE_COLUMN
+import com.lifting.app.common.constants.DbConstants.ANALYSIS_DATA_TABLE
+import com.lifting.app.common.constants.DbConstants.DATE_COLUMN
 import com.lifting.app.feature_tracker.data.local.entity.AnalysisDataEntity
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate

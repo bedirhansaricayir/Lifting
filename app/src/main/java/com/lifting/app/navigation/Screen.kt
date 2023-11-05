@@ -3,9 +3,9 @@ package com.lifting.app.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.lifting.app.R
-import com.lifting.app.common.constants.Constants.Companion.CALCULATOR_SCREEN
-import com.lifting.app.common.constants.Constants.Companion.HOME_SCREEN
-import com.lifting.app.common.constants.Constants.Companion.TRACKER_SCREEN
+import com.lifting.app.common.constants.NavigationConstants.CALCULATOR_SCREEN
+import com.lifting.app.common.constants.NavigationConstants.HOME_SCREEN
+import com.lifting.app.common.constants.NavigationConstants.TRACKER_SCREEN
 
 sealed class Screen(
     val route: String,

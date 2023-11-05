@@ -19,19 +19,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.lifting.app.navigation.graphs.AuthScreen
 import com.lifting.app.navigation.graphs.NavGraph
 import com.lifting.app.theme.black20
 import com.lifting.app.theme.grey10
 
 
 @RequiresApi(Build.VERSION_CODES.O)
+@UnstableApi
 @Composable
 fun MainScreen(navController: NavHostController = rememberNavController(),isPremiumUser: (Boolean) -> Unit) {
     Scaffold(bottomBar = { BottomNavigationBar(navController = navController) }) {

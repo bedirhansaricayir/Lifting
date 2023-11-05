@@ -6,7 +6,6 @@ class Constants {
         const val WEBSITE_PRIVACY = "https://sites.google.com/view/liftingapp/privacy"
         const val WEBSITE_TERMS = "https://sites.google.com/view/liftingapp/terms"
 
-
         //Aktivite Seviyesi
         const val HIC = "Daha önce antrenman yapmadım"
         const val IKI_UC_GUN = "Haftada 2-3 Gün yapıyorum"
@@ -257,50 +256,10 @@ class Constants {
 
 
 
-        //DataStore
-        const val ONBOARDING = "on_boarding_pref"
-        const val ONBOARDING_COMPLETED = "on_boarding_completed"
-        const val SUCCESSFULLY_SIGN = "successfully_sign_in"
-
-
         //ApiClient
         const val BASE = "https://gist.github.com/"
         const val END_POINT = "bedirhansaricayir/51bed929bca74d888f3dd5e20a11f80e/raw/32616c6deb1717437e817eeffb5027154a1457ee/program_data.json"
 
-        //MainScreen routes
-        const val HOME_SCREEN = "home_screen"
-        const val TRACKER_SCREEN = "tracker_screen"
-        const val CALCULATOR_SCREEN = "calculator_screen"
-
-        //AuthScreen routes
-        const val SIGN_IN = "login_screen"
-        const val SIGN_UP = "register_screen"
-        const val ONBOARDING_SCREEN = "onboarding_screen"
-        const val VERIFICATION_SCREEN = "verification_screen"
-
-
-        //DetailScreen routes
-        const val DETAIL_SCREEN = "detail_screen"
-        const val PURCHASE_SCREEN = "purchase_screen"
-        const val NOTIFICATION_SETTINGS_SCREEN = "notification_settings_screen"
-        const val TOOLS_DETAILS_SCREEN = "tools_details_screen/"
-        const val TOOLS_SCREEN_ARGS_KEY = "whichTool"
-        const val ACCOUNT_INFORMATION_SCREEN = "account_information_screen"
-
-
-        //Collection References
-        const val USERS = "users"
-
-        //User fields
-        const val DISPLAY_NAME = "displayName"
-        const val EMAIL = "email"
-        const val PHOTO_URL = "photoUrl"
-        const val IS_PREMIUM = "isPremium"
-        const val CREATED_AT = "createdAt"
-        const val DEFAULT_AVATAR_STORAGE = "https://firebasestorage.googleapis.com/v0/b/fitnessapp-d21de.appspot.com/o/images%2Fdefault_avatar.jpg?alt=media&token=83269274-d9ba-497f-844d-b0ae8e9c7366"
-
-        //Storage
-        const val IMAGES = "images"
 
         //Profile Settings
         const val ACCOUNT_INFO = 2131755266
@@ -308,13 +267,6 @@ class Constants {
         const val FEEDBACK = 2131755282
         const val LOGOUT = 2131755237
 
-
-        //Room Constants
-        const val ANALYSIS_DATA_TABLE = "analysis_data_table"
-        const val DATE_COLUMN = "date_column"
-        const val DATA_COLUMN = "data_column"
-        const val DESC_COLUMN = "desc_column"
-        const val ANALYSIS_DATABASE = "analysis_database"
 
         const val CHART = 0
         const val CALENDAR = 1

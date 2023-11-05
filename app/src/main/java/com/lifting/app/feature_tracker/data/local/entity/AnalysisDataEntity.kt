@@ -3,10 +3,10 @@ package com.lifting.app.feature_tracker.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.lifting.app.common.constants.Constants.Companion.ANALYSIS_DATA_TABLE
-import com.lifting.app.common.constants.Constants.Companion.DATA_COLUMN
-import com.lifting.app.common.constants.Constants.Companion.DATE_COLUMN
-import com.lifting.app.common.constants.Constants.Companion.DESC_COLUMN
+import com.lifting.app.common.constants.DbConstants.ANALYSIS_DATA_TABLE
+import com.lifting.app.common.constants.DbConstants.DATA_COLUMN
+import com.lifting.app.common.constants.DbConstants.DATE_COLUMN
+import com.lifting.app.common.constants.DbConstants.DESC_COLUMN
 import com.lifting.app.feature_tracker.domain.model.ChartState
 import java.time.LocalDate
 

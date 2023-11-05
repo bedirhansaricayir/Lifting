@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.lifting.app.R
 import com.lifting.app.common.components.CommonProgressIndicatior
 import com.lifting.app.common.constants.Constants.Companion.BES_GUN
-import com.lifting.app.common.constants.Constants.Companion.DEFAULT_AVATAR_STORAGE
+import com.lifting.app.common.constants.UserFieldContants.DEFAULT_AVATAR_STORAGE
 import com.lifting.app.common.constants.Constants.Companion.FORM_KORU
 import com.lifting.app.common.constants.Constants.Companion.HIC
 import com.lifting.app.common.constants.Constants.Companion.IKI_UC_GUN

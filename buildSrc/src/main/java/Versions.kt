@@ -84,4 +84,9 @@ object Versions {
 
     //Desugaring
     val desugaringVersion = "2.0.3"
+
+    //Media3
+    val media3Version = "1.1.1"
+
+    val updateVersion = "2.0.1"
 }

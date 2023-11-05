@@ -60,6 +60,7 @@ object Dependencies {
     val crashlytics by lazy { "com.google.firebase:firebase-crashlytics-ktx" }
     val firestore by lazy { "com.google.firebase:firebase-firestore-ktx" }
     val storage by lazy { "com.google.firebase:firebase-storage-ktx" }
+    val config by lazy { "com.google.firebase:firebase-config-ktx" }
 
     //GoogleAuth
     val googleServicesAuth by lazy { "com.google.android.gms:play-services-auth:${Versions.googleServicesAuthVersion}" }
@@ -83,4 +84,11 @@ object Dependencies {
 
     //Desugaring
     val desugaring by lazy { "com.android.tools:desugar_jdk_libs:${Versions.desugaringVersion}" }
+
+    //Media3
+    val media3 by lazy { "androidx.media3:media3-ui:${Versions.media3Version}" }
+    val media3_exoplayer by lazy { "androidx.media3:media3-exoplayer:${Versions.media3Version}" }
+
+    val inappUpdate by lazy { "com.google.android.play:app-update:${Versions.updateVersion}" }
+    val inappUpdateKtx by lazy { "com.google.android.play:app-update:${Versions.updateVersion}" }
 }

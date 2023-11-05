@@ -7,9 +7,9 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.lifting.app.common.constants.Constants.Companion.ONBOARDING
-import com.lifting.app.common.constants.Constants.Companion.ONBOARDING_COMPLETED
-import com.lifting.app.common.constants.Constants.Companion.SUCCESSFULLY_SIGN
+import com.lifting.app.common.constants.DbConstants.ONBOARDING
+import com.lifting.app.common.constants.DbConstants.ONBOARDING_COMPLETED
+import com.lifting.app.common.constants.DbConstants.SUCCESSFULLY_SIGN
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map

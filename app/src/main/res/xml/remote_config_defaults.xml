@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>set_app_update_type</key>
+        <value>flexible</value>
+    </entry>
+</defaultsMap>

@@ -13,10 +13,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.lifting.app.common.constants.Constants.Companion.ONBOARDING_SCREEN
-import com.lifting.app.common.constants.Constants.Companion.SIGN_IN
-import com.lifting.app.common.constants.Constants.Companion.SIGN_UP
-import com.lifting.app.common.constants.Constants.Companion.VERIFICATION_SCREEN
+import com.lifting.app.common.constants.NavigationConstants.ONBOARDING_SCREEN
+import com.lifting.app.common.constants.NavigationConstants.SIGN_IN
+import com.lifting.app.common.constants.NavigationConstants.SIGN_UP
+import com.lifting.app.common.constants.NavigationConstants.VERIFICATION_SCREEN
 import com.lifting.app.feature_auth.presentation.AuthenticationEvent
 import com.lifting.app.feature_auth.presentation.AuthenticationViewModel
 import com.lifting.app.feature_auth.presentation.SignInScreen

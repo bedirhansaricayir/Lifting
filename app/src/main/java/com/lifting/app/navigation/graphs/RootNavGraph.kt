@@ -4,12 +4,14 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.lifting.app.navigation.MainScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
+@UnstableApi
 @Composable
 fun RootNavGraph(navController: NavHostController, startDestination: String, isPremiumUser: (Boolean) -> Unit) {
 

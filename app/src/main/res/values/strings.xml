@@ -158,5 +158,6 @@
     <string name="delete_account_dialog_description">if you proceed, your account and profile information  will be deleted irrevocably.</string>
     <string name="delete_button_label">Delete</string>
     <string name="delete_account_error_label">An error occurred, please try again</string>
+    <string name="update_successful_label">Update successful, restarting in 5 seconds</string>
 
 </resources>
