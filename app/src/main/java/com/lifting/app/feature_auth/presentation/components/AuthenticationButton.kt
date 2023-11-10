@@ -19,9 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.lifting.app.R
 import com.lifting.app.common.components.CommonProgressIndicatior
 import com.lifting.app.feature_auth.domain.model.AuthenticationMode
-import com.lifting.app.theme.Black40
-import com.lifting.app.theme.Purple40
-import com.lifting.app.theme.White40
 
 @Composable
 fun AuthenticationButton(
@@ -52,7 +49,7 @@ fun AuthenticationButton(
         if (isLoading) {
             CommonProgressIndicatior(
                 modifier = Modifier.size(20.dp),
-                color = Black40
+                color = Color.Black
             )
         } else {
             Text(
@@ -78,7 +75,7 @@ fun AuthenticationButton(
 @Preview(showBackground = true)
 @Composable
 fun AuthenticationButtonPreview() {
-    AuthenticationButton(authenticationMode = AuthenticationMode.SIGN_IN, backgroundColor = Purple40, contentColor = White40, isLoading = false, enabledAuthentication = true, modifier = Modifier.fillMaxWidth()) {
+    AuthenticationButton(authenticationMode = AuthenticationMode.SIGN_IN, backgroundColor = Color.Black, contentColor = MaterialTheme.colorScheme.onSurface, isLoading = false, enabledAuthentication = true, modifier = Modifier.fillMaxWidth()) {
 
     }
 }

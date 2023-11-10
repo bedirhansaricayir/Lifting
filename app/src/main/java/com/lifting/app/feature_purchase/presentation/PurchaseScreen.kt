@@ -39,7 +39,6 @@ import com.lifting.app.feature_purchase.domain.model.ProductCardData
 import com.lifting.app.feature_purchase.domain.model.ProvidedFeaturesData
 import com.lifting.app.feature_purchase.presentation.components.PurchaseButton
 import com.lifting.app.feature_purchase.presentation.components.SelectableProductCard
-import com.lifting.app.theme.grey10
 
 @Composable
 fun PurchaseScreen(
@@ -144,7 +143,7 @@ fun HeaderSection() {
     Text(
         text = stringResource(id = R.string.label_upgrade_to_premium_description),
         style = MaterialTheme.typography.labelMedium,
-        color = grey10,
+        color = Color.LightGray,
         modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
         textAlign = TextAlign.Center
     )
@@ -158,7 +157,7 @@ fun ProvidedFeaturesSection(
     leadingIconSize: Dp = 18.dp,
     featureTitle: List<ProvidedFeaturesData>,
     featureTitleStyle: TextStyle = MaterialTheme.typography.labelSmall,
-    featureTitleColor: Color = grey10
+    featureTitleColor: Color = Color.LightGray
 ) {
 
     featureTitle.forEach {

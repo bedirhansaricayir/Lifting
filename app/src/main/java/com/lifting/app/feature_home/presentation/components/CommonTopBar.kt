@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
-import com.lifting.app.theme.White40
 
 @Composable
 fun CommonTopBar(
@@ -37,7 +36,7 @@ fun CommonTopBar(
             Icon(
                 painter = painterResource(id = backButtonIcon),
                 contentDescription = "Back Button",
-                tint = Color.White
+                tint = MaterialTheme.colorScheme.onBackground
             )
         }
         Text(
@@ -45,7 +44,7 @@ fun CommonTopBar(
             text = stringResource(id = title),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
-            color = White40
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }

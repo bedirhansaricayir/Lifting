@@ -50,9 +50,6 @@ import com.lifting.app.common.constants.Constants.Companion.WEBSITE_PRIVACY
 import com.lifting.app.common.util.Utility
 import com.lifting.app.feature_home.presentation.components.CommonTopBar
 import com.lifting.app.feature_profile.domain.model.ProfileSettingsData
-import com.lifting.app.theme.Black40
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.white10
 
 @Composable
 fun ProfileScreen(
@@ -178,7 +175,7 @@ fun ProfilePhotoSection(
         if (imageState) {
             Box(
                 modifier = Modifier
-                    .border(2.dp, Black40, CircleShape)
+                    .border(2.dp, Color.Black, CircleShape)
                     .padding(2.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.primary)
@@ -209,7 +206,7 @@ fun ProfileUserSection(modifier: Modifier = Modifier, username: String?, email: 
         text = username ?: "",
         style = MaterialTheme.typography.titleSmall,
         fontWeight = FontWeight.Bold,
-        color = White40
+        color = MaterialTheme.colorScheme.onSurface
     )
     /*Spacer(modifier = Modifier.height(8.dp))
     Text(

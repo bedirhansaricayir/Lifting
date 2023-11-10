@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -41,8 +42,6 @@ import com.lifting.app.feature_auth.presentation.components.AuthenticationTitle
 import com.lifting.app.feature_auth.presentation.components.Requirement
 import com.lifting.app.feature_auth.presentation.components.TextEntryModule
 import com.lifting.app.feature_auth.presentation.components.ToggleAuthenticationMode
-import com.lifting.app.theme.grey10
-import com.lifting.app.theme.grey50
 
 @Composable
 fun SignUpScreen(
@@ -109,7 +108,7 @@ fun SignUpScreenContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(grey50)
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
             .systemBarsPadding(),
         verticalArrangement = Arrangement.Center,
@@ -150,7 +149,7 @@ fun SignUpScreenContent(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next,
             trailingIcon = R.drawable.icon_check_circle,
-            trailingIconColor = if (!authenticationState.emailError && authenticationState.email?.isNotEmpty() == true) MaterialTheme.colorScheme.primary else grey10,
+            trailingIconColor = if (!authenticationState.emailError && authenticationState.email?.isNotEmpty() == true) MaterialTheme.colorScheme.primary else Color.LightGray,
             onTrailingIconClick = null
         )
         Spacer(modifier = Modifier.height(8.dp))

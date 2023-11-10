@@ -32,7 +32,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
 import com.lifting.app.navigation.OnBoardingPage
-import com.lifting.app.theme.White40
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -94,7 +93,7 @@ fun OnBoardingItem(items: OnBoardingPage, modifier: Modifier = Modifier) {
                 text = stringResource(id = items.description),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.labelSmall,
-                color = White40,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)

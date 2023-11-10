@@ -19,8 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.lifting.app.R
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.grey30
+
 
 @Composable
 fun CustomCreatedProgramDialog(
@@ -34,14 +33,14 @@ fun CustomCreatedProgramDialog(
             onDismissRequest = { onDissmiss.invoke() },
             properties = DialogProperties(dismissOnClickOutside = true, dismissOnBackPress = true)
         ) {
-            CustomProgramDialogContent(stringResource(id = R.string.KişiselProgram),program)
+            CustomProgramDialogContent(stringResource(id = R.string.KişiselProgram), program)
         }
     }
 }
 
 @Composable
 fun CustomProgramDialogContent(
-    title:String,
+    title: String,
     program: String
 ) {
     val verticalScroll = rememberScrollState()
@@ -52,7 +51,7 @@ fun CustomProgramDialogContent(
         shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = grey30
+            containerColor = MaterialTheme.colorScheme.surface
         ),
     ) {
         Text(
@@ -63,8 +62,12 @@ fun CustomProgramDialogContent(
             style = MaterialTheme.typography.titleSmall
         )
         Box(modifier = Modifier) {
-            Text(modifier = Modifier
-                .padding(vertical = 8.dp, horizontal = 16.dp),text = program, style = MaterialTheme.typography.labelMedium,color = White40
+            Text(
+                modifier = Modifier
+                    .padding(vertical = 8.dp, horizontal = 16.dp),
+                text = program,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }

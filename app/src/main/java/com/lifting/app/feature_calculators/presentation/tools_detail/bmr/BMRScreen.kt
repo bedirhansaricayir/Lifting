@@ -23,8 +23,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -44,7 +42,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -58,10 +55,6 @@ import androidx.compose.ui.window.DialogProperties
 import com.chargemap.compose.numberpicker.NumberPicker
 import com.lifting.app.R
 import com.lifting.app.feature_home.presentation.components.CommonTopBar
-import com.lifting.app.theme.Black40
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.grey10
-import com.lifting.app.theme.grey50
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -117,7 +110,7 @@ fun BMRScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .background(color = grey50), horizontalAlignment = Alignment.CenterHorizontally
+            .background(color = MaterialTheme.colorScheme.background), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CommonTopBar(
             title = R.string.bmr_calculator_label,
@@ -314,7 +307,7 @@ fun CustomCalculatorDialog(
                 shape = MaterialTheme.shapes.large,
                 elevation = CardDefaults.cardElevation(8.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Black40
+                    containerColor = MaterialTheme.colorScheme.surface
                 )
             ) {
                 Text(
@@ -323,7 +316,7 @@ fun CustomCalculatorDialog(
                         .padding(vertical = 12.dp, horizontal = 8.dp),
                     text = stringResource(id = R.string.KalorinizHesaplandi),
                     style = MaterialTheme.typography.titleSmall,
-                    color = grey10
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     modifier = Modifier
@@ -331,7 +324,7 @@ fun CustomCalculatorDialog(
                         .padding(vertical = 8.dp, horizontal = 16.dp),
                     text = stringResource(id = R.string.your_bmr_label)+": $bmr",
                     style = MaterialTheme.typography.labelMedium,
-                    color = grey10
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     modifier = Modifier
@@ -339,7 +332,7 @@ fun CustomCalculatorDialog(
                         .padding(vertical = 8.dp, horizontal = 16.dp),
                     text = stringResource(id = R.string.your_daily_calories)+": ${(totalCaloriesPerDay * 10.0).roundToInt() / 10.0}",
                     style = MaterialTheme.typography.labelMedium,
-                    color = grey10
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     modifier = Modifier
@@ -347,7 +340,7 @@ fun CustomCalculatorDialog(
                         .padding(16.dp),
                     text = stringResource(id = R.string.customDialogText),
                     style = MaterialTheme.typography.labelMedium,
-                    color = grey10
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
 
@@ -414,16 +407,16 @@ fun SelectableItem(
     modifier: Modifier = Modifier,
     selected: Boolean,
     title: String,
-    titleColor: Color = if (selected) MaterialTheme.colorScheme.primary else White40,
+    titleColor: Color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
     titleSize: TextStyle = MaterialTheme.typography.titleSmall,
     titleWeight: FontWeight = FontWeight.Normal,
     subtitle: String? = null,
-    subtitleColor: Color = if (selected) MaterialTheme.colorScheme.primary else White40,
+    subtitleColor: Color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
     borderWith: Dp = 1.dp,
-    borderColor: Color = if (selected) MaterialTheme.colorScheme.primary else White40,
+    borderColor: Color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
     borderShape: Shape = RoundedCornerShape(size = 10.dp),
     @DrawableRes icon: Int = R.drawable.filled_check_circle_24,
-    iconColor: Color = if (selected) MaterialTheme.colorScheme.primary else White40,
+    iconColor: Color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
     onClick: () -> Unit
 ) {
     val scaleA = remember { Animatable(initialValue = 1f) }

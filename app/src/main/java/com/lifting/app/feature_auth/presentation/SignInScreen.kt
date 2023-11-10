@@ -45,8 +45,6 @@ import com.lifting.app.feature_auth.presentation.components.ToggleAuthentication
 import com.lifting.app.feature_auth.presentation.forgot_password.ForgotPasswordModalBottomSheetContent
 import com.lifting.app.feature_auth.presentation.forgot_password.ForgotPasswordState
 import com.lifting.app.feature_auth.presentation.google_auth.GoogleSignInState
-import com.lifting.app.theme.black20
-import com.lifting.app.theme.grey50
 
 @Composable
 fun SignInScreen(
@@ -158,7 +156,7 @@ fun SignInScreenContent(
                 clearStateWhenResetPasswordSend()
             },
             sheetState = modalBottomSheetState,
-            containerColor = black20,
+            containerColor = BottomSheetDefaults.ContainerColor,
             dragHandle = { BottomSheetDefaults.DragHandle() }
         ) {
             ForgotPasswordModalBottomSheetContent(
@@ -173,7 +171,7 @@ fun SignInScreenContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(grey50)
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
             .systemBarsPadding(),
         verticalArrangement = Arrangement.Center,

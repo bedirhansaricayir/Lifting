@@ -38,8 +38,6 @@ import com.lifting.app.R
 import com.lifting.app.common.components.CommonAlertDialog
 import com.lifting.app.common.components.CommonProgressIndicatior
 import com.lifting.app.feature_home.presentation.components.CommonTopBar
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.white10
 
 @Composable
 fun AccountInformationScreen(
@@ -128,14 +126,14 @@ fun InformationScreenInfo(
             text = stringResource(id = info),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
-            color = White40
+            color = MaterialTheme.colorScheme.onSurface
         )
         text?.let {
             Text(
                 modifier = Modifier,
                 text = it,
                 style = MaterialTheme.typography.labelMedium,
-                color = white10
+                color = Color.LightGray
             )
         }
 

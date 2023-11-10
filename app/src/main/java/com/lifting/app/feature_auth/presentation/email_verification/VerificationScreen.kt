@@ -25,7 +25,6 @@ import com.lifting.app.feature_auth.presentation.AuthenticationEvent
 import com.lifting.app.feature_auth.presentation.AuthenticationState
 import com.lifting.app.feature_auth.presentation.components.AuthenticationButton
 import com.lifting.app.feature_auth.presentation.components.AuthenticationTitle
-import com.lifting.app.theme.grey50
 
 @Composable
 fun VerificationScreen(
@@ -58,7 +57,7 @@ fun VerificationScreenContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(grey50)
+            .background(MaterialTheme.colorScheme.background)
             .systemBarsPadding()
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,

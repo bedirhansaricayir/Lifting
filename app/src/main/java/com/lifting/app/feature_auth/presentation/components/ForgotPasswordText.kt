@@ -10,14 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import com.lifting.app.theme.White40
 
 @Composable
 fun ForgotPasswordText(
     modifier: Modifier = Modifier,
     text: String,
     textStyle: TextStyle = MaterialTheme.typography.labelSmall,
-    textColor: Color = White40,
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
     onForgotPasswordClick: () -> Unit
 ) {
     Text(

@@ -18,7 +18,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import androidx.core.content.res.ResourcesCompat
 import com.lifting.app.R
-import com.lifting.app.theme.White40
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.max
@@ -44,7 +43,7 @@ fun AnimatedText(
     useAnimation: Boolean = false,
     animationDelay: Long = 0L,
     style: TextStyle = MaterialTheme.typography.titleSmall,
-    textColor: Color = White40,
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
     val isPreviewMode = LocalInspectionMode.current
     val context = LocalContext.current

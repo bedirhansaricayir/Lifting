@@ -146,7 +146,6 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                             navController.navigate(DetailScreen.NotificationSettingsScreen.route)
                         }
                         R.string.send_feedback -> {
-                            navController.navigate(DetailScreen.PlayerScreen.route)
                         }
                     }
                 }
@@ -157,7 +156,10 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
             val programData = navController.previousBackStackEntry?.savedStateHandle?.get<SelectedProgram>("program")
             programData?.let { program ->
                 ProgramScreen(
-                    program = program
+                    program = program,
+                    onItemClick = { videoUrl ->
+                        navController.navigate(DetailScreen.PlayerScreen.route)
+                    }
                 )
             }
         }

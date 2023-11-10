@@ -61,9 +61,6 @@ import com.lifting.app.feature_calculators.presentation.tools_detail.bmr.Selecta
 import com.lifting.app.feature_detail.domain.model.SelectedProgram
 import com.lifting.app.feature_home.data.remote.model.AntrenmanProgramlari
 import com.lifting.app.feature_home.presentation.components.HomeScreenPreview
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.black20
-import com.lifting.app.theme.grey50
 import kotlinx.coroutines.launch
 
 
@@ -102,12 +99,12 @@ fun HomeScreen(
         ModalBottomSheet(
             onDismissRequest = { personalizedOpenBottomSheet = false },
             sheetState = personalizedBottomSheetShate,
-            containerColor = black20
+            containerColor = MaterialTheme.colorScheme.surface
         ) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Text(
                     text = stringResource(id = R.string.PersonalizedProgramTitle),
-                    color = White40,
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.titleSmall,
                     modifier = Modifier.padding(8.dp)
                 )
@@ -115,7 +112,7 @@ fun HomeScreen(
             Text(
                 modifier = Modifier.padding(8.dp),
                 text = stringResource(id = R.string.HowManyDays),
-                color = White40,
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.labelMedium
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -130,7 +127,7 @@ fun HomeScreen(
             Text(
                 modifier = Modifier.padding(8.dp),
                 text = stringResource(id = R.string.WhatIsYourGoal),
-                color = White40,
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.labelMedium
             )
             SelectableGroup(
@@ -198,7 +195,7 @@ fun HomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .background(grey50)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         item {
             AnimatedContentSwitcher(

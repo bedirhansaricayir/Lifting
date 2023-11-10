@@ -9,10 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.grey10
 
 @Composable
 fun DividerText(
@@ -28,20 +27,20 @@ fun DividerText(
             modifier = modifier
                 .fillMaxWidth()
                 .weight(1f),
-            color = grey10,
+            color = Color.LightGray,
             thickness = 1.dp
         )
         Text(
             modifier = Modifier.padding(8.dp),
             text = text,
             style = textStyle,
-            color = White40
+            color = MaterialTheme.colorScheme.onSurface
         )
         Divider(
             modifier = modifier
                 .fillMaxWidth()
                 .weight(1f),
-            color = grey10,
+            color = Color.LightGray,
             thickness = 1.dp
         )
     }

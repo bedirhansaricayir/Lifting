@@ -1,12 +1,10 @@
 package com.lifting.app.feature_tracker.presentation.components.custom_fab
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
-import com.lifting.app.theme.black20
 
 @Immutable
 interface FabOption {
@@ -24,7 +22,7 @@ private class FabOptionImpl(
 
 @Composable
 fun FabOption(
-    backgroundTint: Color = MaterialTheme.colorScheme.primary,
-    iconTint: Color = black20,
+    backgroundTint: Color = MaterialTheme.colorScheme.primaryContainer,
+    iconTint: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     showLabel: Boolean = false
 ): FabOption = FabOptionImpl(iconTint, backgroundTint, showLabel)

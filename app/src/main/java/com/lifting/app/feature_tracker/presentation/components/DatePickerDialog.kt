@@ -59,13 +59,15 @@ fun DatePickerDialog(
                     Text(text = stringResource(id = R.string.dismiss_label))
                 }
             },
-            colors = DatePickerDefaults.colors(containerColor = Color.White)
+            colors = DatePickerDefaults.colors(
+                //containerColor = Color.White
+            )
         ) {
             DatePicker(
                 state = datePickerState,
                 dateValidator = dateValidator,
                 colors = DatePickerDefaults.colors(
-                    selectedDayContentColor = Color.Black
+                    selectedDayContentColor = Color.Black,
                 )
             )
         }

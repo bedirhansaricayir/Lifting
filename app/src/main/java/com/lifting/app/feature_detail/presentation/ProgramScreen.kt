@@ -1,8 +1,8 @@
 package com.lifting.app.feature_detail.presentation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,9 +15,15 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,36 +36,62 @@ import androidx.compose.ui.unit.dp
 import com.lifting.app.R
 import com.lifting.app.feature_detail.domain.model.SelectedProgram
 import com.lifting.app.feature_home.data.remote.model.Hareketler
+import kotlinx.coroutines.launch
 
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProgramScreen(
-    program: SelectedProgram
+    program: SelectedProgram,
+    onItemClick: (String) -> Unit
 ) {
-    LazyColumn(
+    val pagerState = rememberPagerState { program.programDay }
+    val scope = rememberCoroutineScope()
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .statusBarsPadding()
     ) {
-        item {
-            Text(text = program.programName)
+        Text(text = program.programName)
+        TabRow(modifier = Modifier, selectedTabIndex = pagerState.currentPage) {
+            program.program.forEachIndexed { index, uygulanis ->
+                Tab(selected = index == pagerState.currentPage,
+                    onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
+                    text = {
+                        Text(
+                            text = uygulanis.gun!!,
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    })
+
+            }
+
         }
-        items(program.program) { uygulanis ->
-            Text(text = uygulanis.gun!!)
-            uygulanis.hareketler.forEach {
-                ProgramItem(model = it)
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) { index ->
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                items(program.program) { uygulanis ->
+                    ProgramItem(model = uygulanis.hareketler[index], onItemClick = onItemClick)
+                }
             }
         }
-
     }
+
 
 }
 
 @Composable
 fun ProgramItem(
     modifier: Modifier = Modifier,
-    model: Hareketler
+    model: Hareketler,
+    onItemClick: (String) -> Unit
 ) {
     /* val request = ImageRequest.Builder(LocalContext.current)
          .data(model.preview)
@@ -69,7 +101,7 @@ fun ProgramItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable {
-
+                onItemClick(model.hareketForm!!)
             }
             .padding(16.dp)
 
@@ -106,6 +138,6 @@ fun ProgramItem(
                 modifier = Modifier.padding(0.dp, 0.dp, 12.dp, 0.dp),
                 color = Color.White.copy(0.5f),
             )
-            }
         }
+    }
 }

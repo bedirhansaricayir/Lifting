@@ -38,10 +38,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lifting.app.R
 import com.lifting.app.feature_home.presentation.components.CommonTopBar
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.black20
-import com.lifting.app.theme.grey10
-import com.lifting.app.theme.grey50
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -78,7 +74,7 @@ fun BMIScreen(
                 }
             )
         },
-        sheetBackgroundColor = black20,
+        sheetBackgroundColor = MaterialTheme.colorScheme.surface,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         content = {
             BMIScreenContent(
@@ -136,7 +132,7 @@ fun BMIScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .background(grey50),
+            .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         CommonTopBar(
@@ -210,7 +206,7 @@ fun BMIScreenContent(
                 }
             }
             else {
-                Divider(color = grey10)
+                Divider(color = Color.LightGray)
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(
                     modifier = Modifier.fillMaxSize(),
@@ -288,7 +284,7 @@ fun InputUnitValue(
         Text(
             text = inputUnit,
             fontSize = 12.sp,
-            color = grey10
+            color = Color.LightGray
         )
     }
 }
@@ -348,7 +344,7 @@ fun ColumnScope.SymbolButton(
         modifier = Modifier
             .padding(20.dp)
             .clip(RoundedCornerShape(15.dp))
-            .background(grey50)
+            .background(MaterialTheme.colorScheme.background)
             .clickable { onClick() }
             .padding(15.dp)
             .weight(1f)
@@ -367,7 +363,7 @@ fun ColumnScope.SymbolButtonWithIcon(
         modifier = Modifier
             .padding(20.dp)
             .clip(RoundedCornerShape(15.dp))
-            .background(grey50)
+            .background(MaterialTheme.colorScheme.background)
             .clickable { onClick() }
             .padding(15.dp)
             .weight(1f)
@@ -487,7 +483,7 @@ fun BottomSheetContent(
         text = stringResource(id = if (sheetTitleStage == SheetTitleStage.WEIGHT) R.string.weight_label else R.string.height_label),
         style =MaterialTheme.typography.titleSmall,
         textAlign = TextAlign.Center,
-        color = White40
+        color = MaterialTheme.colorScheme.onSurface
     )
     sheetItemsList.forEach { item ->
         Box(
@@ -499,7 +495,7 @@ fun BottomSheetContent(
             Text(
                 text = item,
                 modifier = Modifier.padding(15.dp),
-                color = White40
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }

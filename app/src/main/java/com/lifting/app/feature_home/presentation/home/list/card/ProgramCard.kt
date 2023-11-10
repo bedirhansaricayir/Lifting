@@ -50,7 +50,6 @@ import com.lifting.app.R
 import com.lifting.app.feature_home.data.remote.model.DusukZorluk
 import com.lifting.app.feature_home.data.remote.model.OrtaZorluk
 import com.lifting.app.feature_home.data.remote.model.YuksekZorluk
-import com.lifting.app.theme.Black40
 
 @Composable
 fun BeginnerProgramCard(
@@ -304,7 +303,7 @@ fun PersonalizedProgramCard(
                         Box(modifier = Modifier.wrapContentSize().background(color = MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
                             Text(
                                 text = stringResource(id = R.string.label_personalized_plan),
-                                color = Black40,
+                                color = Color.Black,
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.labelSmall,
                                 modifier = Modifier.padding(8.dp)

@@ -11,7 +11,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.lifting.app.theme.Black40
 
 
 const val CORNERS_SIZE = 48
@@ -22,7 +21,7 @@ fun RoundedCornersSurface(
     modifier: Modifier = Modifier,
     topPadding: Dp = 0.dp,
     elevation: Dp = 0.dp,
-    color: Color = Black40,
+    color: Color = Color.Black,
     content: @Composable BoxScope.() -> Unit,
 ){
     Box(

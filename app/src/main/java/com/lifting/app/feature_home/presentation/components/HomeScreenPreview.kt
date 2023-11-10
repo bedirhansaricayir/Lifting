@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lifting.app.common.util.shimmerLoadingAnimation
-import com.lifting.app.theme.grey50
 
 @Composable
 fun HomeScreenPreview() {
@@ -37,7 +37,7 @@ fun HomeScreenPreview() {
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .background(grey50)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         SignedInUserSectionPreview(isLoadingCompleted, isLightModeActive)
         PlanSectionPreview(isLoadingCompleted, isLightModeActive)

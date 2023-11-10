@@ -43,9 +43,6 @@ import androidx.compose.ui.res.stringResource
 import com.lifting.app.R
 import com.lifting.app.feature_calculators.domain.model.CalculatorCategory
 import com.lifting.app.feature_calculators.domain.model.GridItemData
-import com.lifting.app.theme.Black40
-import com.lifting.app.theme.grey10
-import com.lifting.app.theme.grey50
 import kotlinx.coroutines.launch
 
 @Composable
@@ -58,7 +55,7 @@ fun CalculatorScreen(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .background(color = grey50), columns = GridCells.Fixed(2)
+            .background(color = MaterialTheme.colorScheme.background), columns = GridCells.Fixed(2)
     ) {
         items(state.data.size) { index ->
             GridItem(state.data[index], onClick = onClick)
@@ -87,7 +84,7 @@ fun GridItem(
                 onClick(data.category)
             },
         elevation = CardDefaults.cardElevation(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Black40),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape = RoundedCornerShape(8.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -137,9 +134,9 @@ fun GridItem(
                         }
                     },
                     colors = TooltipDefaults.richTooltipColors(
-                        containerColor = Black40,
-                        titleContentColor = grey10,
-                        contentColor = grey10
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
                 {

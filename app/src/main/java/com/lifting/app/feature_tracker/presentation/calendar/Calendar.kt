@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,10 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.lifting.app.R
-import com.lifting.app.theme.grey50
 
 @Composable
 fun Calendar(
@@ -53,7 +51,7 @@ fun Calendar(
         modifier = Modifier
             .shadow(10.dp, RoundedCornerShape(0.dp, 0.dp, 20.dp, 20.dp), clip = true)
             .clip(RoundedCornerShape(5.dp, 5.dp, 20.dp, 20.dp))
-            .background(grey50)
+            .background(MaterialTheme.colorScheme.background)
             .padding(PaddingValues(start = 5.dp, end = 5.dp, top = 5.dp)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

@@ -145,7 +145,7 @@
     <string name="bmr_age_label">Age</string>
     <string name="your_bmr_label">Your Basal Metabolic Rate</string>
     <string name="your_daily_calories">Your Needed Daily Calorie</string>
-    <string name="rep_label">Repetitions</string>
+    <string name="rep_label">Rep</string>
     <string name="percent_label">Percent</string>
     <string name="rm_calculator_label">RM Calculator</string>
     <string name="bmr_calculator_label">BMR Calculator</string>

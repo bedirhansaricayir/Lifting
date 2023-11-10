@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,8 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.grey50
 import kotlinx.coroutines.delay
 
 @Composable
@@ -26,7 +25,7 @@ fun GoogleButton(
     icon: Int,
     shape: Dp = 4.dp,
     borderColor: Color = Color.LightGray,
-    backgroundColor: Color = grey50,
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
     progressIndicatorColor: Color = Color.White,
     isClickable: Boolean,
     onClicked: () -> Unit
@@ -70,7 +69,7 @@ fun GoogleButton(
                 tint = Color.Unspecified
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = text, color =  White40)
+            Text(text = text, color =  MaterialTheme.colorScheme.onSurface)
             if (clicked) {
                 Spacer(modifier = Modifier.width(16.dp))
                 CircularProgressIndicator(

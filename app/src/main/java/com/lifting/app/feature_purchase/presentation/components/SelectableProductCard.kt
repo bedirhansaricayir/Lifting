@@ -24,8 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
-import com.lifting.app.theme.Black40
-import com.lifting.app.theme.grey10
+
 
 @Composable
 fun SelectableProductCard(
@@ -35,11 +34,11 @@ fun SelectableProductCard(
     titleStyle: TextStyle = MaterialTheme.typography.labelMedium,
     subtitle: Int,
     subtitleStyle: TextStyle = MaterialTheme.typography.labelSmall,
-    color: Color = if (selected) MaterialTheme.colorScheme.primary else grey10,
+    color: Color = if (selected) MaterialTheme.colorScheme.primary else Color.LightGray,
     borderWidth: Dp = 1.dp,
     borderShape: Shape = RoundedCornerShape(10.dp),
     badgeBackgroundColor: Color = MaterialTheme.colorScheme.primary,
-    bagdeContentColor: Color = Black40,
+    bagdeContentColor: Color = Color.Black,
     onClick: () -> Unit
 ) {
     val recommendedProgram = R.string.label_8_week_purchase

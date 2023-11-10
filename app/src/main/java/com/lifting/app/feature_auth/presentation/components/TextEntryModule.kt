@@ -1,6 +1,5 @@
 package com.lifting.app.feature_auth.presentation.components
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,9 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lifting.app.R
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.grey10
-import com.lifting.app.theme.grey30
+import com.lifting.app.common.util.noRippleClickable
+
 
 @Composable
 fun TextEntryModule(
@@ -42,7 +40,7 @@ fun TextEntryModule(
     keyboardType: KeyboardType = KeyboardType.Ascii,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     borderColor: Color = Color.Black,
-    textColor: Color = White40,
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
     textStyle: TextStyle = MaterialTheme.typography.titleSmall,
     cursorColor: Color,
     onValueChanged: (String) -> Unit,
@@ -73,9 +71,9 @@ fun TextEntryModule(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 cursorColor = cursorColor,
-                focusedContainerColor = grey30,
-                unfocusedContainerColor = grey30,
-                disabledContainerColor = grey30,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                 focusedTextColor = textColor,
                 unfocusedTextColor = textColor,
             ),
@@ -99,7 +97,7 @@ fun TextEntryModule(
                         painter = painterResource(trailingIcon),
                         contentDescription = null,
                         tint = trailingIconColor,
-                        modifier = Modifier.clickable {
+                        modifier = Modifier.noRippleClickable {
                             if (onTrailingIconClick != null) onTrailingIconClick()
                         }
                     )
@@ -118,7 +116,7 @@ fun TextEntryModule(
                 Text(
                     text = hint,
                     style = textStyle,
-                    color = grey10
+                    color = Color.LightGray
                 )
             },
             textStyle = textStyle,

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -25,8 +26,6 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.Utils
 import com.lifting.app.feature_tracker.domain.model.ChartState
-import com.lifting.app.theme.Black40
-import com.lifting.app.theme.White40
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -43,6 +42,7 @@ fun Chart(
 ) {
 
     val label = "Your Bodyweight Datas"
+    var colorText = MaterialTheme.colorScheme.onBackground
     val primaryColor = MaterialTheme.colorScheme.primary
 
     if (chartState.isNotEmpty()) {
@@ -78,7 +78,7 @@ fun Chart(
             fillAlpha = 70
             setDrawCircles(isCircleVisible)
             setCircleColor(primaryColor.toArgb())
-            circleHoleColor = Black40.toArgb()
+            circleHoleColor = Color.Black.toArgb()
             setDrawValues(isValuesVisible)
             valueTextSize = 5f
             valueTextColor = primaryColor.toArgb()
@@ -117,14 +117,14 @@ fun Chart(
                         setDrawLabels(true)
                         isEnabled = false
                         textSize = 5f
-                        textColor = White40.toArgb()
+                        textColor = colorText.toArgb()
                         valueFormatter = xAxisformatter
 
                     }
                     axisLeft.apply {
                         //axisMinimum = 0f  Y eksenini 0'dan başlatır.
                         textSize = 8f
-                        textColor = White40.toArgb()
+                        textColor = colorText.toArgb()
                         setDrawAxisLine(false)
                         valueFormatter = leftAxisFormatter
 

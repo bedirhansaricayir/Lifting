@@ -10,10 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
-import com.lifting.app.theme.Black40
 
 
 enum class TimeRange(val minusDay: Long) {
@@ -89,7 +89,7 @@ private fun TimeRangeChip(
     ) {
         Text(
             text = time,
-            color = if (isSelected) Black40 else MaterialTheme.colorScheme.onBackground,
+            color = if (isSelected) Color.Black else MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(8.dp),
             style = MaterialTheme.typography.titleSmall
         )

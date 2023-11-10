@@ -12,7 +12,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.lifting.app.R
 import com.lifting.app.feature_auth.domain.model.AuthenticationMode
-import com.lifting.app.theme.White40
 
 @Composable
 fun ToggleAuthenticationMode(
@@ -36,7 +35,7 @@ fun ToggleAuthenticationMode(
                 }
             ),
             style = MaterialTheme.typography.labelSmall,
-            color = White40
+            color = MaterialTheme.colorScheme.onSurface
         )
         TextButton(onClick = { toggleAuthentication() }) {
             Text(
@@ -48,7 +47,7 @@ fun ToggleAuthenticationMode(
                     }
                 ),
                 style = MaterialTheme.typography.labelSmall,
-                color = White40,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold
 
             )

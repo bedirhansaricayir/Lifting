@@ -27,8 +27,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.lifting.app.navigation.graphs.NavGraph
-import com.lifting.app.theme.black20
-import com.lifting.app.theme.grey10
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -65,7 +63,7 @@ fun BottomNavigationBar(navController: NavHostController, modifier: Modifier = M
     }
 
     if (bottomBarDestination) {
-        NavigationBar(containerColor = black20) {
+        NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
             screens.forEach {
                 AddItem(
                     screen = it,
@@ -88,11 +86,11 @@ fun RowScope.AddItem(
     val current = navBackStackEntry?.destination
     NavigationBarItem(
         colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = MaterialTheme.colorScheme.primary,
-            unselectedIconColor = grey10,
-            selectedTextColor = MaterialTheme.colorScheme.primary,
-            unselectedTextColor = grey10,
-            indicatorColor = black20
+            selectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            selectedTextColor = MaterialTheme.colorScheme.onSurface,
+            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            indicatorColor = MaterialTheme.colorScheme.secondaryContainer
         ),
         label = {
             Text(

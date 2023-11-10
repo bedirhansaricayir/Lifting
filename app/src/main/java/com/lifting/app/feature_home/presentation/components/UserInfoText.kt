@@ -5,8 +5,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.grey10
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 
@@ -16,8 +14,8 @@ fun UserInfoText(
     text: String,
     textStyle: TextStyle = MaterialTheme.typography.titleSmall,
     subTitleStyle: TextStyle = MaterialTheme.typography.labelSmall,
-    textColor: Color = White40,
-    subTitleColor: Color = grey10,
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
+    subTitleColor: Color = Color.LightGray,
     isSubTitle: Boolean = false,
 ){
     Text(

@@ -13,16 +13,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.grey10
+
 
 @Composable
 fun ForgotPasswordScreenText(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     subTitleStyle: TextStyle = MaterialTheme.typography.labelMedium,
-    textColor: Color = White40,
-    subTitleTextColor: Color = grey10,
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
+    subTitleTextColor: Color = Color.LightGray,
     isSubTitle: Boolean = false
 
 ) {

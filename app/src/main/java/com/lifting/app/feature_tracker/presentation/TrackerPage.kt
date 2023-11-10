@@ -61,11 +61,6 @@ import com.lifting.app.feature_tracker.presentation.components.TimeRange
 import com.lifting.app.feature_tracker.presentation.components.UserDataInput
 import com.lifting.app.feature_tracker.presentation.components.custom_fab.FabIcon
 import com.lifting.app.feature_tracker.presentation.components.custom_fab.FabItemType
-import com.lifting.app.theme.Black40
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.black20
-import com.lifting.app.theme.grey10
-import com.lifting.app.theme.grey50
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -151,7 +146,7 @@ fun TrackerPageContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = grey50)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(it.calculateBottomPadding())
         ) {
             HorizontalPager(state = pagerState) { page ->
@@ -210,7 +205,7 @@ fun TrackerPageContent(
                                 text = state.currMonthViewed,
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.W600,
-                                color = grey10,
+                                color = Color.LightGray,
                             )
 
                             Calendar(
@@ -320,7 +315,7 @@ fun SetFilterModalBottomSheet(
         ModalBottomSheet(
             onDismissRequest = { onDismiss() },
             sheetState = modalBottomSheetState,
-            containerColor = black20,
+            containerColor = MaterialTheme.colorScheme.surface,
             dragHandle = { BottomSheetDefaults.DragHandle() },
         ) {
             Column(
@@ -330,7 +325,7 @@ fun SetFilterModalBottomSheet(
                 Text(
                     text = stringResource(id = R.string.filters_label),
                     style = MaterialTheme.typography.titleSmall,
-                    color = White40,
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(horizontal = 8.dp, vertical = 16.dp)
@@ -339,7 +334,7 @@ fun SetFilterModalBottomSheet(
                     modifier = Modifier.padding(8.dp),
                     text = stringResource(id = R.string.sort_by),
                     style = MaterialTheme.typography.labelMedium,
-                    color = grey10
+                    color = Color.LightGray
                 )
                 SelectableSortBy(selectedSortBy = state.getSortBy()) { sortBy ->
                     onSortByClicked(sortBy)
@@ -349,7 +344,7 @@ fun SetFilterModalBottomSheet(
                     modifier = Modifier.padding(8.dp),
                     text = stringResource(id = R.string.graphic_settings),
                     style = MaterialTheme.typography.labelMedium,
-                    color = grey10
+                    color = Color.LightGray
                 )
 
                 FiltersChip(state.selectedFilterChip) { selectedChip ->
@@ -379,7 +374,7 @@ fun AddToChartModalBottomSheet(
         ModalBottomSheet(
             onDismissRequest = { onDismiss() },
             sheetState = modalBottomSheetState,
-            containerColor = black20,
+            containerColor = MaterialTheme.colorScheme.surface,
             dragHandle = { BottomSheetDefaults.DragHandle() }
         ) {
             Column(
@@ -392,7 +387,7 @@ fun AddToChartModalBottomSheet(
                 Text(
                     text = stringResource(id = R.string.add_to_chart_label),
                     style = MaterialTheme.typography.titleSmall,
-                    color = White40,
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(vertical = 16.dp)
@@ -406,7 +401,8 @@ fun AddToChartModalBottomSheet(
                 ) {
                     Text(
                         text = "${stringResource(id = R.string.selected_date_label)}: ${selectedDate.toLocaleFormat()}",
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     IconButton(onClick = { showDatePicker = true }) {
                         Icon(

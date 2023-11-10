@@ -29,10 +29,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.lifting.app.feature_home.data.remote.model.Uygulanis
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.grey30
 
 
+
+/*
 @Composable
 fun BottomSheetContent(
     model: ArrayList<Uygulanis>,
@@ -130,4 +130,4 @@ fun BottomSheetContent(
             }
         }
     }
-}
+}*/

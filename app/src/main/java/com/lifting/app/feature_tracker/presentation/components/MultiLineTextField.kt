@@ -24,7 +24,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
-import com.lifting.app.theme.grey10
 
 @Composable
 fun MultiLineTextField(
@@ -49,7 +48,7 @@ fun MultiLineTextField(
                     if (value.isEmpty()) {
                         Text(
                             text = stringResource(id = hintText),
-                            color = grey10
+                            color = Color.LightGray
                         )
                     }
                 }
@@ -82,7 +81,7 @@ fun UserDataInput(
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),
         value = value,
-        label = { Text(text = stringResource(id = hintText),color = grey10)},
+        label = { Text(text = stringResource(id = hintText),color = Color.LightGray)},
         onValueChange = onValueChanged,
         shape = RoundedCornerShape(8.dp),
         maxLines = 1,

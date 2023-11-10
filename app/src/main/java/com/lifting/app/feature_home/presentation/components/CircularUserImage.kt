@@ -24,9 +24,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.lifting.app.R
-import com.lifting.app.theme.Black40
 import com.lifting.app.theme.PremiumPrimaryColor
-import com.lifting.app.theme.grey50
 
 @Composable
 fun UserImage(
@@ -57,7 +55,7 @@ fun UserImage(
             Box(
                 modifier = Modifier
                     .offset(x = 5.dp, y = (-15).dp)
-                    .border(2.dp, Black40, CircleShape)
+                    .border(2.dp, Color.Black, CircleShape)
                     .padding(2.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.primary)
@@ -67,7 +65,7 @@ fun UserImage(
                 Icon(
                     painter = painterResource(id = R.drawable.crown),
                     contentDescription = "",
-                    tint = Black40,
+                    tint = Color.Black,
                     modifier = Modifier
                         .size(20.dp)
                         .padding(3.dp)

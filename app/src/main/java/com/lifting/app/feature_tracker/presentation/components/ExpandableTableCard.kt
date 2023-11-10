@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -43,8 +42,6 @@ import androidx.compose.ui.unit.dp
 import com.lifting.app.R
 import com.lifting.app.common.util.toLocaleFormat
 import com.lifting.app.feature_tracker.domain.model.ChartState
-import com.lifting.app.theme.grey10
-import com.lifting.app.theme.white10
 import java.time.LocalDate
 
 @Composable
@@ -67,7 +64,7 @@ fun ExpandableList(
             Box(modifier = Modifier
                 .fillMaxSize()
                 .weight(1f), contentAlignment = Alignment.Center) {
-                Text(text = stringResource(id = R.string.nothing_found_label), style = MaterialTheme.typography.labelMedium,color = grey10)
+                Text(text = stringResource(id = R.string.nothing_found_label), style = MaterialTheme.typography.labelMedium,color = Color.LightGray)
             }
         }
 
@@ -140,7 +137,7 @@ fun ExpandableTableCard(chartState: ChartState, modifier: Modifier = Modifier) {
                     .verticalScroll(textScrollState)
                     .padding(8.dp),
                 style = MaterialTheme.typography.labelSmall,
-                color = white10,
+                color = MaterialTheme.colorScheme.onSurface,
                 text = chartState.description
             )
         }

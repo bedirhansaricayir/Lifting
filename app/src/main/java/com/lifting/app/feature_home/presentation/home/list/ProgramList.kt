@@ -22,7 +22,6 @@ import com.lifting.app.feature_home.data.remote.model.YuksekZorluk
 import com.lifting.app.feature_home.presentation.home.list.card.AdvancedProgramCard
 import com.lifting.app.feature_home.presentation.home.list.card.BeginnerProgramCard
 import com.lifting.app.feature_home.presentation.home.list.card.IntermediateProgramCard
-import com.lifting.app.theme.White40
 
 @Composable
 fun BeginnerProgramList(
@@ -36,7 +35,7 @@ fun BeginnerProgramList(
         text = stringResource(id = programLevel),
         textAlign = TextAlign.Start,
         style = MaterialTheme.typography.titleMedium,
-        color = White40,
+        color = MaterialTheme.colorScheme.onSurface,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
@@ -73,7 +72,7 @@ fun IntermediateProgramList(
         text = stringResource(id = programLevel),
         textAlign = TextAlign.Start,
         style = MaterialTheme.typography.titleMedium,
-        color = White40,
+        color = MaterialTheme.colorScheme.onSurface,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
@@ -110,7 +109,7 @@ fun AdvancedProgramList(
         text = stringResource(id = programLevel),
         textAlign = TextAlign.Start,
         style = MaterialTheme.typography.titleMedium,
-        color = White40,
+        color = MaterialTheme.colorScheme.onSurface,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)

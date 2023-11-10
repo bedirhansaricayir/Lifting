@@ -1,13 +1,8 @@
 package com.lifting.app.feature_calculators.presentation.tools_detail.one_rep
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +30,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,9 +37,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.lifting.app.R
 import com.lifting.app.feature_home.presentation.components.CommonTopBar
-import com.lifting.app.theme.White40
-import com.lifting.app.theme.grey10
-import com.lifting.app.theme.grey50
 import okhttp3.internal.format
 
 @Composable
@@ -73,7 +64,7 @@ fun OneRepScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .background(grey50),
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CommonTopBar(
@@ -106,13 +97,10 @@ fun OneRepScreenContent(
         }
 
         TableSection(
-            isVisible = state.weight !=0f,
+            isVisible = state.weight != 0f,
             modifier = Modifier,
             itemList = state.oneRepMax
         )
-
-
-
     }
 }
 
@@ -127,9 +115,11 @@ fun TableSection(
         enter = fadeIn(),
         exit = fadeOut()
     ) {
-        LazyColumn(modifier = modifier
-            .fillMaxWidth()
-            .padding(8.dp)) {
+        LazyColumn(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
             item {
                 Row {
                     TableCell(text = "RM", weight = 1f)
@@ -146,8 +136,12 @@ fun TableSection(
                         percent = currentPercentage
                     )
                     currentPercentage -= 5
-                    if (value.size > index +1){
-                        Divider(modifier = Modifier.padding(horizontal = 8.dp),thickness = 1.dp, color = White40)
+                    if (value.size > index + 1) {
+                        Divider(
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                     }
                 }
             }
@@ -155,6 +149,7 @@ fun TableSection(
     }
 
 }
+
 @Composable
 fun RowScope.TableCell(
     text: String,
@@ -163,7 +158,7 @@ fun RowScope.TableCell(
     Text(
         text = text,
         Modifier
-            .border(1.dp, White40)
+            .border(1.dp, MaterialTheme.colorScheme.onSurface)
             .weight(weight)
             .padding(8.dp)
     )
@@ -207,15 +202,16 @@ fun WeightInputField(
     text: Float,
     onValueChanged: (Float) -> Unit,
 ) {
-    var value by remember(text) { mutableStateOf(text.toString()) }
     TextField(
         modifier = modifier,
-        value = value,
-        onValueChange = { raw ->
-            val parsed = raw.toFloatOrNull()
+        value = if (text.toInt() == 0) "" else text.toString(),
+        onValueChange = {
+            val filtered = it.filter { symbol -> symbol.isDigit() }
+            val parsed = it.toFloatOrNull()
             if (parsed != null && parsed <= 500) {
                 onValueChanged(parsed)
             }
+
         },
         maxLines = 1,
         singleLine = true,
@@ -223,6 +219,13 @@ fun WeightInputField(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next
         ),
+        placeholder = {
+            Text(
+                text = stringResource(id = R.string.weight_label),
+                style = MaterialTheme.typography.titleSmall,
+                color = Color.LightGray
+            )
+        },
         colors = TextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,
             disabledContainerColor = Color.Transparent,
@@ -231,14 +234,8 @@ fun WeightInputField(
             disabledTextColor = Color.White,
             unfocusedTextColor = Color.White,
             unfocusedIndicatorColor = Color.White,
-        ),
-        trailingIcon = {
-            Text(
-                text = stringResource(id = R.string.weight_label),
-                style = MaterialTheme.typography.titleSmall,
-                color = grey10
+
             )
-        }
     )
 }
 
@@ -279,7 +276,7 @@ fun RepInputField(
             Text(
                 text = stringResource(id = R.string.rep_label),
                 style = MaterialTheme.typography.titleSmall,
-                color = grey10
+                color = Color.LightGray
             )
         }
 

@@ -10,8 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.lifting.app.R
-import com.lifting.app.theme.Black40
-import com.lifting.app.theme.grey10
 
 @Composable
 fun CommonAlertDialog(
@@ -31,7 +29,7 @@ fun CommonAlertDialog(
                 Text(
                     modifier = Modifier,
                     text = stringResource(id = title),
-                    color = grey10,
+                    color = Color.LightGray,
                     style = MaterialTheme.typography.titleSmall
                 )
             },
@@ -39,7 +37,7 @@ fun CommonAlertDialog(
                 Text(
                     modifier = Modifier,
                     text = stringResource(id = body),
-                    color = grey10,
+                    color = Color.LightGray,
                     style = MaterialTheme.typography.labelSmall
                 )
             },
@@ -64,7 +62,7 @@ fun CommonAlertDialog(
                     Text(text = stringResource(id = confirmButtonTitle))
                 }
             },
-            containerColor = Black40,
+            containerColor = MaterialTheme.colorScheme.surface,
         )
     }
 
