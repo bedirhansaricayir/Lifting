@@ -95,7 +95,7 @@ fun BeginnerProgramCard(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            CustomRatingBar(rating = model.gunSayisi!!.toFloat())
+                            CustomRatingBar(rating = model.derecelendirme!!.toFloat())
                             OutlinedIconButton(border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
                                 onClick = { onPlayButtonClick(model) }) {
                                 Icon(
@@ -156,7 +156,7 @@ fun IntermediateProgramCard(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        CustomRatingBar(rating = model.gunSayisi!!.toFloat())
+                        CustomRatingBar(rating = model.derecelendirme!!.toFloat())
                         OutlinedIconButton(border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
                             onClick = { onPlayButtonClick(model) }) {
                             Icon(
@@ -218,7 +218,7 @@ fun AdvancedProgramCard(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        CustomRatingBar(rating = model.gunSayisi!!.toFloat())
+                        CustomRatingBar(rating = model.derecelendirme!!.toFloat())
                         OutlinedIconButton(border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
                             onClick = { onPlayButtonClick(model) }) {
                             Icon(

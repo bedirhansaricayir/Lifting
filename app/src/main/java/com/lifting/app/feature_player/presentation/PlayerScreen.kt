@@ -65,6 +65,7 @@ import kotlinx.coroutines.launch
 @UnstableApi
 @Composable
 fun PlayerScreen(
+    videoUrl: String,
     state: PlayerScreenState,
     onBackNavigationIconClicked: () -> Unit,
 ) {
@@ -86,7 +87,7 @@ fun PlayerScreen(
                         .statusBarsPadding()
                 ) {
                     VideoPlayer(
-                        videoUrl = state.videoUrl,
+                        videoUrl = videoUrl,
                         playbackSpeed = playbackSpeed,
                         onChangedCurrentPosition = { position,duration ->
                             currentPosition = position

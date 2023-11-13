@@ -48,6 +48,7 @@ import com.lifting.app.common.constants.Constants.Companion.FEEDBACK
 import com.lifting.app.common.constants.Constants.Companion.NOTIFICATION
 import com.lifting.app.common.constants.Constants.Companion.WEBSITE_PRIVACY
 import com.lifting.app.common.util.Utility
+import com.lifting.app.common.util.shimmerLoadingAnimation
 import com.lifting.app.feature_home.presentation.components.CommonTopBar
 import com.lifting.app.feature_profile.domain.model.ProfileSettingsData
 
@@ -160,7 +161,8 @@ fun ProfilePhotoSection(
         AsyncImage(
             modifier = Modifier
                 .size(100.dp)
-                .clip(CircleShape),
+                .clip(CircleShape)
+                .shimmerLoadingAnimation(isLoadingCompleted = imageState),
             model = photo ?: "",
             contentDescription = "User Image",
             contentScale = ContentScale.Crop,
@@ -169,9 +171,9 @@ fun ProfilePhotoSection(
             },
             onSuccess = { imageState = true },
         )
-        if (!imageState) {
+        /*if (!imageState) {
             CommonProgressIndicatior(strokeWidth = 2.dp)
-        }
+        }*/
         if (imageState) {
             Box(
                 modifier = Modifier

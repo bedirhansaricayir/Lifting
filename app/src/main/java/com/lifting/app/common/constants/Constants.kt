@@ -258,7 +258,7 @@ class Constants {
 
         //ApiClient
         const val BASE = "https://gist.github.com/"
-        const val END_POINT = "bedirhansaricayir/51bed929bca74d888f3dd5e20a11f80e/raw/32616c6deb1717437e817eeffb5027154a1457ee/program_data.json"
+        const val END_POINT = "bedirhansaricayir/9cba57df5d904b01f805c5464b113e1e/raw/063e2a16e1c377b47934cdbebf6c27af54954eec/program_data.json"
 
 
         //Profile Settings

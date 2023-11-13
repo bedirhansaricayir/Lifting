@@ -18,6 +18,7 @@ data class Antrenmanlar(
 data class DusukZorluk(
     @SerializedName("program_adi") var programAdi: String? = null,
     @SerializedName("gun_sayisi") var gunSayisi: Int? = null,
+    @SerializedName("derecelendirme") var derecelendirme: Int? = null,
     @SerializedName("uygulanis") var uygulanis: ArrayList<Uygulanis> = arrayListOf()
 ): Parcelable
 
@@ -25,6 +26,7 @@ data class DusukZorluk(
 data class OrtaZorluk(
     @SerializedName("program_adi") var programAdi: String? = null,
     @SerializedName("gun_sayisi") var gunSayisi: Int? = null,
+    @SerializedName("derecelendirme") var derecelendirme: Int? = null,
     @SerializedName("uygulanis") var uygulanis: ArrayList<Uygulanis> = arrayListOf()
 ) : Parcelable
 
@@ -32,6 +34,7 @@ data class OrtaZorluk(
 data class YuksekZorluk(
     @SerializedName("program_adi") var programAdi: String? = null,
     @SerializedName("gun_sayisi") var gunSayisi: Int? = null,
+    @SerializedName("derecelendirme") var derecelendirme: Int? = null,
     @SerializedName("uygulanis") var uygulanis: ArrayList<Uygulanis> = arrayListOf()
 ) : Parcelable
 
@@ -46,7 +49,10 @@ data class Hareketler(
 
     @SerializedName("hareket_adi") var hareketAdi: String? = null,
     @SerializedName("set_sayisi") var setSayisi: Int? = null,
-    @SerializedName("tekrar_sayisi") var tekrarSayisi: Int? = null,
-    @SerializedName("hareket_form") var hareketForm: String? = null
+    @SerializedName("tekrar_sayisi") var tekrarSayisi: String? = null,
+    @SerializedName("hareket_form") var hareketForm: String? = null,
+    @SerializedName("agirlik_yuzdesi") var agirlikYuzdesi: String? = null,
+    @SerializedName("thumbnail") var thumbnail: String? = null,
+    @SerializedName("video") var video: String? = null
 
 ):Parcelable

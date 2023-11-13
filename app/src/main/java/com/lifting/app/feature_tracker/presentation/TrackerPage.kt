@@ -370,7 +370,7 @@ fun AddToChartModalBottomSheet(
         var showDatePicker by remember { mutableStateOf(false) }
         var selectedDate by remember { mutableStateOf<LocalDate>(LocalDate.now()) }
         var userDesc by remember { mutableStateOf("") }
-        var userData by remember { mutableStateOf("") }
+        var userData by remember { mutableStateOf<String?>(null) }
         ModalBottomSheet(
             onDismissRequest = { onDismiss() },
             sheetState = modalBottomSheetState,
@@ -423,7 +423,7 @@ fun AddToChartModalBottomSheet(
                 }
 
                 UserDataInput(
-                    value = userData,
+                    value = userData ?: "",
                     onValueChanged = { newData ->
                         if (newData.startsWith("0")) userData = ""
                         if (newData.isEmpty()) userData = newData
@@ -433,11 +433,11 @@ fun AddToChartModalBottomSheet(
                             newData
                     },
                     decreaseClicked = {
-                        val userDataFloat = userData.toFloatOrNull()
+                        val userDataFloat = userData?.toFloatOrNull()
                         if (userDataFloat != null) userData = (userDataFloat - 1).toString()
                     },
                     increaseClicked = {
-                        val userDataFloat = userData.toFloatOrNull()
+                        val userDataFloat = userData?.toFloatOrNull()
                         if (userDataFloat != null) userData = (userDataFloat + 1).toString()
                     }
                 )
@@ -454,8 +454,11 @@ fun AddToChartModalBottomSheet(
                         .align(Alignment.CenterHorizontally)
                         .padding(16.dp),
                     onClick = {
-                        onSaveButtonClicked(ChartState(selectedDate, userData.toFloat(), userDesc))
-                        onDismiss()
+                        if (userData != null) {
+                            onSaveButtonClicked(ChartState(selectedDate, userData!!.toFloat(), userDesc))
+                            onDismiss()
+                        }
+
                     },
                     shape = RoundedCornerShape(50.dp),
                     colors = ButtonDefaults.outlinedButtonColors(

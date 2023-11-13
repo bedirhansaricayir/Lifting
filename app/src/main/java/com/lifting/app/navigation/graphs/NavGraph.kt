@@ -36,7 +36,7 @@ import com.lifting.app.feature_home.presentation.home.HomePageUiState
 import com.lifting.app.feature_home.presentation.home.HomeScreen
 import com.lifting.app.feature_home.presentation.home.HomeViewModel
 import com.lifting.app.feature_home.presentation.home.UserDataState
-import com.lifting.app.feature_home.presentation.notification.NotificationSettingsScreen
+import com.lifting.app.feature_notification.presentation.NotificationSettingsScreen
 import com.lifting.app.feature_profile.presentation.ProfileScreen
 import com.lifting.app.feature_profile.presentation.ProfileScreenState
 import com.lifting.app.feature_profile.presentation.ProfileScreenViewModel
@@ -54,6 +54,8 @@ import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.One
 import com.lifting.app.feature_calculators.presentation.tools_detail.one_rep.OneRepViewModel
 import com.lifting.app.feature_detail.domain.model.SelectedProgram
 import com.lifting.app.feature_detail.presentation.ProgramScreen
+import com.lifting.app.feature_notification.presentation.NotificationSettingsState
+import com.lifting.app.feature_notification.presentation.NotificationSettingsViewModel
 import com.lifting.app.feature_player.presentation.PlayerScreen
 import com.lifting.app.feature_player.presentation.PlayerScreenState
 import com.lifting.app.feature_player.presentation.PlayerViewModel
@@ -158,8 +160,10 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                 ProgramScreen(
                     program = program,
                     onItemClick = { videoUrl ->
+                        navController.currentBackStackEntry?.savedStateHandle?.set("videoUrl",videoUrl)
                         navController.navigate(DetailScreen.PlayerScreen.route)
-                    }
+                    },
+                    onBackNavigationIconClicked = { navController.popBackStack() }
                 )
             }
         }
@@ -186,12 +190,17 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
         }
 
         composable(route = DetailScreen.PlayerScreen.route) {
+            val videoUrl = navController.previousBackStackEntry?.savedStateHandle?.get<String>("videoUrl")
             val viewModel: PlayerViewModel = hiltViewModel()
             val state: PlayerScreenState = viewModel.state.collectAsState().value
-            PlayerScreen(
-                state = state,
-                onBackNavigationIconClicked = { navController.popBackStack() }
-            )
+            videoUrl?.let {
+                PlayerScreen(
+                    videoUrl = videoUrl,
+                    state = state,
+                    onBackNavigationIconClicked = { navController.popBackStack() }
+                )
+            }
+
         }
 
         composable(route = DetailScreen.PurchaseScreen.route) {
@@ -203,7 +212,11 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
             )
         }
         composable(route = DetailScreen.NotificationSettingsScreen.route) {
+            val notificationViewModel: NotificationSettingsViewModel = hiltViewModel()
+            val state: NotificationSettingsState = notificationViewModel.state.collectAsState().value
             NotificationSettingsScreen(
+                state = state,
+                onEvent = notificationViewModel::onEvent,
                 onBackNavigationIconClicked = { navController.popBackStack() }
             )
         }

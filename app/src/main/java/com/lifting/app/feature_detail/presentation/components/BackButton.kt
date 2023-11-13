@@ -1,4 +1,4 @@
-package com.lifting.app.feature_player.presentation.components
+package com.lifting.app.feature_detail.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.lifting.app.common.util.noRippleClickable
 
 @Composable
-fun PlayerBackButton(
+fun BackButton(
     modifier: Modifier = Modifier,
     onBackNavigationIconClicked: () -> Unit
 ) {
@@ -22,7 +22,7 @@ fun PlayerBackButton(
         modifier = modifier
             .padding(8.dp)
             .background(
-                color = Color.Black.copy(0.3f),
+                color = Color.LightGray.copy(0.3f),
                 shape = CircleShape
             )
             .padding(8.dp)

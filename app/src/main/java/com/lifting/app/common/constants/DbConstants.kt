@@ -12,4 +12,6 @@ object DbConstants {
     const val ONBOARDING = "on_boarding_pref"
     const val ONBOARDING_COMPLETED = "on_boarding_completed"
     const val SUCCESSFULLY_SIGN = "successfully_sign_in"
+    const val NOTIFICATION_PERMISSION = "notification_permission"
+    const val NOTIFICATION_PREF = "notification_pref"
 }

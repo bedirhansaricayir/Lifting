@@ -37,6 +37,7 @@ import coil.compose.AsyncImage
 import com.lifting.app.R
 import com.lifting.app.common.components.CommonAlertDialog
 import com.lifting.app.common.components.CommonProgressIndicatior
+import com.lifting.app.common.util.shimmerLoadingAnimation
 import com.lifting.app.feature_home.presentation.components.CommonTopBar
 
 @Composable
@@ -103,16 +104,26 @@ fun AccountInformationScreen(
 fun InformationScreenUserImage(
     image: String?
 ) {
-    image?.let {
+    var isLoaded by remember {
+        mutableStateOf(false)
+    }
         AsyncImage(
-            model = it, contentDescription = "User Image", contentScale = ContentScale.Crop,
+            model = image ?:"", contentDescription = "User Image", contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(200.dp)
                 .clip(
                     RoundedCornerShape(16.dp)
                 )
+                .shimmerLoadingAnimation(isLoadingCompleted = isLoaded)
+            ,
+            onLoading = {
+                isLoaded = false
+            },
+            onSuccess = {
+                isLoaded = true
+            }
         )
-    }
+
 }
 
 @Composable
@@ -120,7 +131,9 @@ fun InformationScreenInfo(
     @StringRes info: Int,
     text: String?
 ) {
-    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween) {
         Text(
             modifier = Modifier,
             text = stringResource(id = info),
