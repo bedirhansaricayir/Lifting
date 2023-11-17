@@ -1,4 +1,4 @@
-package com.lifting.app.feature_notification.domain
+package com.lifting.app.feature_notification.domain.repository
 
 import com.lifting.app.feature_notification.domain.model.AlarmTime
 interface AlarmScheduler {

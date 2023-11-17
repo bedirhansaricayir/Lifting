@@ -5,6 +5,8 @@ class Constants {
         const val WEBSITE = "https://sites.google.com/view/liftingapp/ana-sayfa"
         const val WEBSITE_PRIVACY = "https://sites.google.com/view/liftingapp/privacy"
         const val WEBSITE_TERMS = "https://sites.google.com/view/liftingapp/terms"
+        const val EMAIL_APPLICATION = "liftingapplication@gmail.com"
+        const val APP_NAME = "Lifting Android"
 
         //Aktivite Seviyesi
         const val HIC = "Daha önce antrenman yapmadım"
@@ -264,8 +266,6 @@ class Constants {
         //Profile Settings
         const val ACCOUNT_INFO = 2131755266
         const val NOTIFICATION = 2131755275
-        const val FEEDBACK = 2131755282
-        const val LOGOUT = 2131755237
 
 
         const val CHART = 0

@@ -1,5 +1,8 @@
 package com.lifting.app.common.util
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -28,6 +31,8 @@ import androidx.compose.foundation.background
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import com.lifting.app.common.constants.Constants
+import com.lifting.app.common.constants.Constants.Companion.APP_NAME
 
 fun Modifier.noRippleClickable(enabled: Boolean = true, onClick: () -> Unit): Modifier = composed {
     clickable(
@@ -54,7 +59,7 @@ fun Long.toTimeFormat(): String {
 }
 
 fun LocalDate.toLong(): Long {
-   return this.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
+    return this.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
 }
 
 fun Long.toLocalDate(): LocalDate {
@@ -67,9 +72,9 @@ fun LocalDate.toLocaleFormat(pattern: String = "dd MMMM yyyy"): String {
 }
 
 fun String.toLocalDate(pattern: String = "dd MMMM yyyy"): LocalDate? {
-    val formatter = DateTimeFormatter.ofPattern(pattern,Locale.getDefault())
+    val formatter = DateTimeFormatter.ofPattern(pattern, Locale.getDefault())
     return try {
-        LocalDate.parse(this,formatter)
+        LocalDate.parse(this, formatter)
     } catch (e: Exception) {
         null
     }
@@ -91,6 +96,7 @@ fun DusukZorluk.toSelectedProgram(): SelectedProgram {
         program = this.uygulanis
     )
 }
+
 fun OrtaZorluk.toSelectedProgram(): SelectedProgram {
     return SelectedProgram(
         programName = this.programAdi ?: "",
@@ -98,15 +104,22 @@ fun OrtaZorluk.toSelectedProgram(): SelectedProgram {
         program = this.uygulanis
     )
 }
+
 fun YuksekZorluk.toSelectedProgram(): SelectedProgram {
     return SelectedProgram(
         programName = this.programAdi ?: "",
         programDay = this.gunSayisi ?: 0,
         program = this.uygulanis
-        )
+    )
 }
 
-
+fun Context.sendMail() {
+    val intent = Intent(Intent.ACTION_SENDTO).apply {
+        data = Uri.parse("mailto:${Constants.EMAIL_APPLICATION}")
+        putExtra(Intent.EXTRA_SUBJECT, APP_NAME)
+    }
+    startActivity(Intent.createChooser(intent, "Lifting Feedback"))
+}
 
 fun Modifier.shimmerLoadingAnimation(
     isLoadingCompleted: Boolean = false,
@@ -117,8 +130,7 @@ fun Modifier.shimmerLoadingAnimation(
 ): Modifier {
     if (isLoadingCompleted) {
         return this
-    }
-    else {
+    } else {
         return composed {
 
             val shimmerColors = ShimmerAnimationData(isLightMode = isLightModeActive).getColours()

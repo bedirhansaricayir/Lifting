@@ -1,4 +1,4 @@
-package com.lifting.app.feature_notification.presentation
+package com.lifting.app.feature_notification.domain.receiver
 
 import android.annotation.SuppressLint
 import android.app.NotificationManager

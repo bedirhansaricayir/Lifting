@@ -147,8 +147,6 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                         R.string.notification_settings -> {
                             navController.navigate(DetailScreen.NotificationSettingsScreen.route)
                         }
-                        R.string.send_feedback -> {
-                        }
                     }
                 }
             )

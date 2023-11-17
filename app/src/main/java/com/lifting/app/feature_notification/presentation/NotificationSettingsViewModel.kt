@@ -3,7 +3,7 @@ package com.lifting.app.feature_notification.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lifting.app.feature_home.data.local.datastore.DataStoreRepository
-import com.lifting.app.feature_notification.domain.AlarmScheduler
+import com.lifting.app.feature_notification.domain.repository.AlarmScheduler
 import com.lifting.app.feature_notification.domain.model.AlarmTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

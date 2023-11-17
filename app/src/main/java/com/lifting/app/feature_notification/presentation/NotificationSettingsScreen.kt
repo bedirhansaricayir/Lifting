@@ -111,7 +111,10 @@ fun NotificationSettingsScreenContent(
             onEvent(NotificationSettingsEvent.OnNotificationSwitchStateChanged)
         },
         onConfirm = { alarmTime ->
-            if (state.notificationPermissionIsGranted) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                onEvent(NotificationSettingsEvent.OnAlarmScheduled(alarmTime))
+                showTimePicker = false
+            }else if(state.notificationPermissionIsGranted) {
                 onEvent(NotificationSettingsEvent.OnAlarmScheduled(alarmTime))
                 showTimePicker = false
             } else {

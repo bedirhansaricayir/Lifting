@@ -1,4 +1,4 @@
-package com.lifting.app.feature_notification.data
+package com.lifting.app.feature_notification.data.repository
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -6,9 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import com.lifting.app.feature_notification.domain.AlarmScheduler
+import com.lifting.app.feature_notification.domain.repository.AlarmScheduler
 import com.lifting.app.feature_notification.domain.model.AlarmTime
-import com.lifting.app.feature_notification.presentation.AlarmReceiver
+import com.lifting.app.feature_notification.domain.receiver.AlarmReceiver
 import java.util.Calendar
 import javax.inject.Inject
 

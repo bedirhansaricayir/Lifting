@@ -1,8 +1,8 @@
 package com.lifting.app.di
 
 import android.content.Context
-import com.lifting.app.feature_notification.data.AlarmSchedulerImpl
-import com.lifting.app.feature_notification.domain.AlarmScheduler
+import com.lifting.app.feature_notification.data.repository.AlarmSchedulerImpl
+import com.lifting.app.feature_notification.domain.repository.AlarmScheduler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

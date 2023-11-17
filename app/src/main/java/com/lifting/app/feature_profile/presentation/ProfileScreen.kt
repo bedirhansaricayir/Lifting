@@ -42,12 +42,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.lifting.app.R
-import com.lifting.app.common.components.CommonProgressIndicatior
 import com.lifting.app.common.constants.Constants.Companion.ACCOUNT_INFO
-import com.lifting.app.common.constants.Constants.Companion.FEEDBACK
 import com.lifting.app.common.constants.Constants.Companion.NOTIFICATION
 import com.lifting.app.common.constants.Constants.Companion.WEBSITE_PRIVACY
 import com.lifting.app.common.util.Utility
+import com.lifting.app.common.util.sendMail
 import com.lifting.app.common.util.shimmerLoadingAnimation
 import com.lifting.app.feature_home.presentation.components.CommonTopBar
 import com.lifting.app.feature_profile.domain.model.ProfileSettingsData
@@ -86,7 +85,9 @@ fun ProfileScreen(
                 R.string.privacy_policy -> {
                     Utility.startBrowserIntent(context, WEBSITE_PRIVACY)
                 }
-                FEEDBACK -> {}
+                R.string.send_feedback -> {
+                    context.sendMail()
+                }
 
                 R.string.logout -> {
                     profileScreenEvent(ProfileScreenEvent.OnLogoutClicked)
