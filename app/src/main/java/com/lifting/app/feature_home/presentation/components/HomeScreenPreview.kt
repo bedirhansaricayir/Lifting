@@ -177,3 +177,4 @@ fun ComponentRectangle(
 fun HomeScreenPreviewPreview() {
     HomeScreenPreview()
 }
+

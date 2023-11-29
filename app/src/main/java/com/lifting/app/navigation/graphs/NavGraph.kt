@@ -2,10 +2,18 @@ package com.lifting.app.navigation.graphs
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -124,7 +132,44 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
         route = Graph.DETAILS,
         startDestination = DetailScreen.ProfileScreen.route
     ) {
-        composable(route = DetailScreen.ProfileScreen.route) { entry ->
+        composable(
+            route = DetailScreen.ProfileScreen.route,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Down
+                )
+            },
+            exitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                )
+            },
+            popEnterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        300,
+                    )
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Up
+                )
+            },
+
+        ) { entry ->
             val sharedViewModel = entry.sharedViewModel<ProfileScreenViewModel>(navController)
             val state: ProfileScreenState = sharedViewModel.state.collectAsState().value
             ProfileScreen(
@@ -166,7 +211,49 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
             }
         }
 
-        composable(route = DetailScreen.AccountInformationScreen.route) { entry ->
+        composable(
+            route = DetailScreen.AccountInformationScreen.route,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            exitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            },
+            popEnterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    animationSpec = tween(300),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    animationSpec = tween(300),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) { entry ->
             val sharedViewModel = entry.sharedViewModel<ProfileScreenViewModel>(navController)
             val state: ProfileScreenState = sharedViewModel.state.collectAsState().value
 
@@ -209,7 +296,49 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController,onUserLogou
                 onNavigationClick = { navController.popBackStack() }
             )
         }
-        composable(route = DetailScreen.NotificationSettingsScreen.route) {
+        composable(
+            route = DetailScreen.NotificationSettingsScreen.route,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            exitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    animationSpec = tween(300, easing = EaseOut),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            },
+            popEnterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    animationSpec = tween(300),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        300, easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    animationSpec = tween(300),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) {
             val notificationViewModel: NotificationSettingsViewModel = hiltViewModel()
             val state: NotificationSettingsState = notificationViewModel.state.collectAsState().value
             NotificationSettingsScreen(

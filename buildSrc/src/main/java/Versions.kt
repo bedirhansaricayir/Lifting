@@ -41,7 +41,7 @@ object Versions {
     val okhttpInterceptorVersion = "5.0.0-alpha.2"
 
     //Navigation
-    val composeNavigationVersion = "2.6.0"
+    val composeNavigationVersion = "2.7.4"
 
     //Splash API
     val splashScreenVersion = "1.0.1"
