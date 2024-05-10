@@ -13,6 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+buildSrc/build
 
 # Custom
 /app/release/

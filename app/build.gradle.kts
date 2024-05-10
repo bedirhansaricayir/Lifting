@@ -16,17 +16,17 @@ val keystoreProperties = Properties()
 keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
-    namespace = ConfigData.applicationId
-    compileSdk = ConfigData.compileSdk
+    namespace = AppConfig.APPLICATION_ID
+    compileSdk = AppConfig.COMPILE_SDK
 
     defaultConfig {
-        applicationId = ConfigData.applicationId
-        minSdk = ConfigData.mindSdk
-        targetSdk = ConfigData.targetSdk
-        versionCode = ConfigData.versionCode
-        versionName = ConfigData.versionName
+        applicationId = AppConfig.APPLICATION_ID
+        minSdk = AppConfig.MIN_SDK
+        targetSdk = AppConfig.TARGET_SDK
+        versionCode = AppConfig.versionCode
+        versionName = AppConfig.versionName
 
-        testInstrumentationRunner = ConfigData.testInstrumentationRunner
+        testInstrumentationRunner = AppConfig.testInstrumentationRunner
     }
 
     signingConfigs {
