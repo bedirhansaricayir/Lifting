@@ -6,7 +6,9 @@ import com.lifting.app.feature_home.domain.repository.Repository
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
-    private val apiClient: ApiClient
+   // private val apiClient: ApiClient
 ): Repository {
-    override suspend fun getProgramData(): AntrenmanProgramlari = apiClient.getProgramData()
+    override suspend fun getProgramData(): AntrenmanProgramlari {
+        return AntrenmanProgramlari()
+    }
 }

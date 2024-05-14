@@ -7,7 +7,7 @@ object Versions {
 
 
     //ComposeOptions
-    const val kotlinCompilerExtensionVersion = "1.5.0"
+    const val kotlinCompilerExtensionVersion = "1.5.8"
 
 
     //Core

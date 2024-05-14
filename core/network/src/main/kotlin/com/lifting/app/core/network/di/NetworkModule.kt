@@ -1,6 +1,6 @@
-package com.lifting.app.di
+package com.lifting.app.core.network.di
 
-import com.lifting.app.feature_home.data.remote.ApiClient
+import com.lifting.app.core.network.api.LiftingApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,27 +11,26 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-/*
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+internal object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideApiClient(okHttpClient: OkHttpClient): ApiClient {
+    fun provideApiClient(okHttpClient: OkHttpClient): LiftingApi {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(ApiClient.BASE_URL)
+            .baseUrl(LiftingApi.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(ApiClient::class.java)
+            .create(LiftingApi::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient{
-        val interceptor= HttpLoggingInterceptor()
+    fun provideOkHttpClient(): OkHttpClient {
+        val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         return OkHttpClient.Builder().addInterceptor(interceptor).build()
     }
-}*/
+}

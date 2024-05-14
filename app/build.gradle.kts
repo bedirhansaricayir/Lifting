@@ -1,5 +1,6 @@
 import java.util.Properties
 import java.io.FileInputStream
+@Suppress("DSL_SCOPE_VIOLATION")
 
 plugins {
     id("com.android.application")
@@ -70,9 +71,26 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.kotlinCompilerExtensionVersion
     }
+
+    val freeCompilerArgList = listOf(
+        "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+        "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+        "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+        "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+        "-opt-in=kotlin.Experimental",
+        "-opt-in=kotlin.RequiresOptIn",
+    )
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions {
+            freeCompilerArgs += freeCompilerArgList
+        }
+    }
+
 }
 
 dependencies {
+    api(project(":core:network"))
     coreLibraryDesugaring(Dependencies.desugaring)
 
     implementation(Dependencies.coreKtx)

@@ -92,14 +92,14 @@ object Dependencies {
     val inappUpdate by lazy { "com.google.android.play:app-update:${Versions.updateVersion}" }
     val inappUpdateKtx by lazy { "com.google.android.play:app-update:${Versions.updateVersion}" }
 }
-/*object Kotlin {
+object Kotlin {
     private val coreKtx by lazy { "androidx.core:core-ktx:${Versions.coreKtxVersion}" }
     private val platformKotlin by lazy { "org.jetbrains.kotlin:kotlin-bom:${Versions.platformKotlinBomVersion}" }
     private val coroutinesCore by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutinesCoreVersion}" }
     private val coroutinesAndroid by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutinesAndroidVersion}" }
     private val lifecycleRuntimeKtx by lazy { "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleRuntimeKtxVersion}" }
     val list =
-        listOf(coreKtx, platformKotlin, coroutinesCore, coroutinesCore, lifecycleRuntimeKtx)
+        listOf(coreKtx, platformKotlin, coroutinesCore, coroutinesCore, lifecycleRuntimeKtx, coroutinesAndroid)
 }
 
 object Compose {
@@ -166,6 +166,7 @@ object Network {
     val gsonConvertor by lazy { "com.squareup.retrofit2:converter-gson:${Versions.converterGsonVersion}" }
     val okHttp by lazy { "com.squareup.okhttp3:okhttp:${Versions.okhttpVersion}" }
     val okHttpInterceptor by lazy { "com.squareup.okhttp3:logging-interceptor:${Versions.okhttpInterceptorVersion}" }
+    val list = listOf(retrofit, gsonConvertor, okHttp, okHttpInterceptor)
 }
 object Google {
     val googleServicesAuth by lazy { "com.google.android.gms:play-services-auth:${Versions.googleServicesAuthVersion}" }
@@ -183,4 +184,4 @@ object Player {
 object AppUpdate {
     val inappUpdate by lazy { "com.google.android.play:app-update:${Versions.updateVersion}" }
     val inappUpdateKtx by lazy { "com.google.android.play:app-update:${Versions.updateVersion}" }
-}*/
+}

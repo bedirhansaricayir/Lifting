@@ -5,5 +5,11 @@ object BuildPlugins {
     val hiltPlugin by lazy { "com.google.dagger:hilt-android-gradle-plugin:${Versions.hiltAndroidPluginVersion}" }
     val googleServices by lazy { "com.google.gms:google-services:${Versions.googleServicesPluginVersion}" }
     val crashlytics by lazy { "com.google.firebase:firebase-crashlytics-gradle:${Versions.crashlyticsPluginVersion}" }
+    const val ANDROID_APPLICATION_PLUGIN = "com.android.application"
+    const val ANDROID_LIBRARY_PLUGIN = "com.android.library"
+    const val KOTLIN_ANDROID_PLUGIN = "kotlin-android"
+    const val KOTLIN_KAPT = "kotlin-kapt"
+    const val DAGGER_HILT = "com.google.dagger.hilt.android"
+    const val KSP_PLUGIN = "com.google.devtools.ksp"
 
 }
