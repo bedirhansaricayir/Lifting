@@ -1,5 +1,6 @@
 import java.util.Properties
 import java.io.FileInputStream
+
 @Suppress("DSL_SCOPE_VIOLATION")
 
 plugins {
@@ -91,72 +92,11 @@ android {
 
 dependencies {
     api(project(":core:network"))
-    coreLibraryDesugaring(Dependencies.desugaring)
 
-    implementation(Dependencies.coreKtx)
-    implementation(platform(Dependencies.platformKotlin))
-    implementation(Dependencies.lifecycleRuntimeKtx)
-    implementation(Dependencies.compose)
-    implementation(platform(Dependencies.platformCompose))
-    implementation(Dependencies.composeUi)
-    implementation(Dependencies.composeUiGraphics)
-    implementation(Dependencies.composeUiPreview)
-    implementation(Dependencies.material3)
-    implementation(Dependencies.foundation)
+    Kotlin.list.forEach(::api)
+    Compose.list.forEach(::api)
+    Di.list.forEach(::api)
 
-    testImplementation(Dependencies.junit)
-    androidTestImplementation(Dependencies.junitTest)
-    androidTestImplementation(Dependencies.espressoCore)
-    androidTestImplementation(platform(Dependencies.composeTest))
-    androidTestImplementation(Dependencies.composeTestJunit4)
-    debugImplementation(Dependencies.composeTestTooling)
-    debugImplementation(Dependencies.composeTestManifest)
-
-    implementation(Dependencies.composeViewModel)
-    implementation(Dependencies.ktxViewModel)
-
-    implementation(Dependencies.coroutinesCore)
-    implementation(Dependencies.coroutinesAndroid)
-
-    implementation(Dependencies.retrofit)
-    implementation(Dependencies.gsonConvertor)
-    implementation(Dependencies.okHttp)
-    implementation(Dependencies.okHttpInterceptor)
-
-    implementation(Dependencies.navigation)
-
-    implementation(Dependencies.splash)
-
-    implementation(Dependencies.hiltAndroid)
-    ksp(Dependencies.hiltAndroidCompiler)
-    implementation(Dependencies.hiltNavigationCompose)
-    ksp(Dependencies.hiltCompiler)
-
-    implementation(Dependencies.datastore)
-
-    implementation(Dependencies.numberPicker)
-
-    implementation(platform(Dependencies.platformFirebase))
-    implementation(Dependencies.firebaseAuth)
-    implementation(Dependencies.crashlytics)
-    implementation(Dependencies.firestore)
-    implementation(Dependencies.storage)
-    implementation(Dependencies.config)
-
-    implementation(Dependencies.googleServicesAuth)
-
-    implementation(Dependencies.coil)
-    implementation(Dependencies.youtubePlayer)
-    implementation(Dependencies.chart)
-    implementation(Dependencies.room)
-    ksp(Dependencies.roomCompiler)
-    implementation(Dependencies.roomRuntime)
-
-    implementation(Dependencies.calendar)
-
-    implementation(Dependencies.media3)
-    implementation(Dependencies.media3_exoplayer)
-
-    implementation(Dependencies.inappUpdate)
-    implementation(Dependencies.inappUpdateKtx)
+    coreLibraryDesugaring(ThirdParty.desugaring)
+    api(Androidx.splash)
 }
