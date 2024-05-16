@@ -1,7 +1,7 @@
 object Versions {
 
     //Root Build Plugins
-    const val gradleVersion = "8.1.0"
+    const val gradleVersion = "8.4.0"
     const val kotlinGradlePluginVersion = "1.9.0"
     const val hiltAndroidPluginVersion = "2.48"
 
@@ -11,13 +11,13 @@ object Versions {
 
 
     //Core
-    const val coreKtxVersion = "1.10.1"
+    const val coreKtxVersion = "1.13.1"
     const val platformKotlinBomVersion = "1.8.0"
-    const val lifecycleRuntimeKtxVersion = "2.6.1"
-    const val activityComposeVersion = "1.7.2"
-    const val platformComposeBomVersion = "2022.10.00"
-    const val material3Version = "1.1.2"
-    const val foundationVersion = "1.4.3"
+    const val lifecycleRuntimeKtxVersion = "2.7.0"
+    const val activityComposeVersion = "1.9.0"
+    const val platformComposeBomVersion = "2024.05.00"
+    const val material3Version = "1.2.1"
+    const val foundationVersion = "1.7.0-alpha07"
 
     //Test
     const val junitVersion = "4.13.2"
@@ -27,12 +27,12 @@ object Versions {
 
 
     //Viewmodel
-    const val lifecycleViewmodelComposeVersion = "2.6.1"
-    const val lifecycleViewmodelKtxVersion = "2.6.1"
+    const val lifecycleViewmodelComposeVersion = "2.8.0"
+    const val lifecycleViewmodelKtxVersion = "2.8.0"
 
     //Coroutines
-    const val coroutinesCoreVersion = "1.6.4"
-    const val coroutinesAndroidVersion = "1.6.4"
+    const val coroutinesCoreVersion = "1.7.1"
+    const val coroutinesAndroidVersion = "1.7.1"
 
     //Retrofit - OkHttp3
     const val retrofitVersion = "2.9.0"
@@ -41,7 +41,7 @@ object Versions {
     const val okhttpInterceptorVersion = "5.0.0-alpha.2"
 
     //Navigation
-    const val composeNavigationVersion = "2.7.4"
+    const val composeNavigationVersion = "2.8.0-alpha08"
 
     //Splash API
     const val splashScreenVersion = "1.0.1"
@@ -49,8 +49,8 @@ object Versions {
     //Dagger - Hilt
     const val hiltAndroidVersion = "2.48"
     const val hiltAndroidCompilerVersion = "2.48"
-    const val hiltNavigationComposeVersion = "1.1.0-alpha01"
-    const val hiltCompilerVersion = "1.0.0"
+    const val hiltNavigationComposeVersion = "1.2.0"
+    const val hiltCompilerVersion = "1.2.0"
 
     //Datastore
     const val datastoreVersion = "1.0.0"
@@ -77,7 +77,7 @@ object Versions {
     const val chartVersion = "3.1.0"
 
     //Room
-    const val roomVersion = "2.5.2"
+    const val roomVersion = "2.6.1"
 
     //Calendar
     const val calendarVersion = "2.4.0"

@@ -87,7 +87,6 @@ android {
             freeCompilerArgs += freeCompilerArgList
         }
     }
-
 }
 
 dependencies {
@@ -95,7 +94,13 @@ dependencies {
 
     Kotlin.list.forEach(::api)
     Compose.list.forEach(::api)
-    Di.list.forEach(::api)
+
+    with(Di) {
+        implementation(hiltAndroid)
+        implementation(hiltNavigationCompose)
+        ksp(hiltCompiler)
+        ksp(hiltAndroidCompiler)
+    }
 
     coreLibraryDesugaring(ThirdParty.desugaring)
     api(Androidx.splash)
