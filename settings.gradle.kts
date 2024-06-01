@@ -18,3 +18,4 @@ rootProject.name = "Lifting"
 include (":app")
 include(":core:network")
 include(":core:common")
+include(":datastore")

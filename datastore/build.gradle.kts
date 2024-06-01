@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.lifting.app.core.common"
+    namespace = "com.lifting.app.datastore"
     compileSdk = AppConfig.COMPILE_SDK
 
     defaultConfig {
@@ -35,6 +35,8 @@ android {
 }
 
 dependencies {
+    api(Androidx.datastore)
+
     with(Di){
         api(hiltAndroid)
         ksp(hiltAndroidCompiler)
