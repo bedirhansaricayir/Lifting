@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.lifting.app.datastore"
+    namespace = "com.lifting.app.core.datastore"
     compileSdk = AppConfig.COMPILE_SDK
 
     defaultConfig {

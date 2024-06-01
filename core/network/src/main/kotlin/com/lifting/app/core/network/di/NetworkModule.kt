@@ -3,9 +3,9 @@ package com.lifting.app.core.network.di
 import com.lifting.app.core.common.dispatchers.Dispatcher
 import com.lifting.app.core.common.dispatchers.LiftingDispatchers.IO
 import com.lifting.app.core.common.dispatchers.di.ApplicationScope
+import com.lifting.app.core.datastore.SessionManager
 import com.lifting.app.core.network.api.LiftingApi
 import com.lifting.app.core.network.interceptor.AuthInterceptor
-import com.lifting.app.datastore.SessionManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.lifting.app.datastore
+package com.lifting.app.core.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

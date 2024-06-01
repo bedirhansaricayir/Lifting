@@ -3,7 +3,7 @@ package com.lifting.app.core.network.interceptor
 import com.lifting.app.core.common.dispatchers.Dispatcher
 import com.lifting.app.core.common.dispatchers.LiftingDispatchers.IO
 import com.lifting.app.core.common.dispatchers.di.ApplicationScope
-import com.lifting.app.datastore.SessionManager
+import com.lifting.app.core.datastore.SessionManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

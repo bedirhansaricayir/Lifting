@@ -41,7 +41,7 @@ android {
 
 dependencies {
    api(project(":core:common"))
-   api(project(":datastore"))
+   api(project(":core:datastore"))
 
 
     Kotlin.list.forEach(::api)

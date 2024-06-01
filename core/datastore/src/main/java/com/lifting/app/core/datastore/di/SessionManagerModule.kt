@@ -1,8 +1,8 @@
-package com.lifting.app.datastore.di
+package com.lifting.app.core.datastore.di
 
 import android.content.Context
-import com.lifting.app.datastore.SessionManager
-import com.lifting.app.datastore.SessionManagerImpl
+import com.lifting.app.core.datastore.SessionManager
+import com.lifting.app.core.datastore.SessionManagerImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
