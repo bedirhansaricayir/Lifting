@@ -18,6 +18,8 @@ object Versions {
     const val platformComposeBomVersion = "2024.05.00"
     const val material3Version = "1.2.1"
     const val foundationVersion = "1.7.0-alpha07"
+    const val materialVersion = "1.7.0-beta04"
+    const val serializationVersion = "1.6.0"
 
     //Test
     const val junitVersion = "4.13.2"
@@ -42,8 +44,10 @@ object Versions {
 
     //Navigation
     const val composeNavigationVersion = "2.8.0-alpha08"
+    const val materialNavigationVersion = "1.7.0-beta01"
 
-    //Splash API
+
+        //Splash API
     const val splashScreenVersion = "1.0.1"
 
     //Dagger - Hilt

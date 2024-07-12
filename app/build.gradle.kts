@@ -4,13 +4,10 @@ import java.io.FileInputStream
 @Suppress("DSL_SCOPE_VIOLATION")
 
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("kotlin-parcelize")
+    id(BuildPlugins.ANDROID_APPLICATION_PLUGIN)
+    id(BuildPlugins.KOTLIN_ANDROID_PLUGIN)
+    id(BuildPlugins.DAGGER_HILT)
+    id(BuildPlugins.KSP_PLUGIN)
 }
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -55,8 +52,6 @@ android {
     }
 
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -91,6 +86,7 @@ android {
 
 dependencies {
     api(project(":core:network"))
+    api(project(":core:navigation"))
 
     Kotlin.list.forEach(::api)
     Compose.list.forEach(::api)
@@ -102,6 +98,5 @@ dependencies {
         ksp(hiltAndroidCompiler)
     }
 
-    coreLibraryDesugaring(ThirdParty.desugaring)
     api(Androidx.splash)
 }

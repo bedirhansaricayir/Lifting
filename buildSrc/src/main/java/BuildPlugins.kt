@@ -11,5 +11,10 @@ object BuildPlugins {
     const val KOTLIN_KAPT = "kotlin-kapt"
     const val DAGGER_HILT = "com.google.dagger.hilt.android"
     const val KSP_PLUGIN = "com.google.devtools.ksp"
+    const val SERIALIZATION = "kotlinx-serialization"
+    const val KOTLIN_JVM_PLUGIN = "org.jetbrains.kotlin.jvm"
+    const val KOTLIN_ANDROID_JB_PLUGIN = "org.jetbrains.kotlin.android"
+    const val SERIALIZATION_PLUGIN = "plugin.serialization"
+
 
 }

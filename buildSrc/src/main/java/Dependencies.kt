@@ -5,6 +5,7 @@ object Kotlin {
     private val coroutinesAndroid by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutinesAndroidVersion}" }
     private val lifecycleRuntimeKtx by lazy { "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleRuntimeKtxVersion}" }
     val ktxViewModel by lazy { "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleViewmodelKtxVersion}" }
+    val kotlinSerializationJson by lazy { "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serializationVersion}" }
 
     val list =
         listOf(coreKtx, platformKotlin, coroutinesCore, coroutinesCore, lifecycleRuntimeKtx, coroutinesAndroid, ktxViewModel)
@@ -20,6 +21,8 @@ object Compose {
     private val foundation by lazy { "androidx.compose.foundation:foundation:${Versions.foundationVersion}" }
     private val navigation by lazy { "androidx.navigation:navigation-compose:${Versions.composeNavigationVersion}" }
     val composeViewModel by lazy { "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.lifecycleViewmodelComposeVersion}" }
+    val material by lazy { "androidx.compose.material:material:${Versions.materialVersion}" }
+    val materialNavigation by lazy { "androidx.compose.material:material-navigation:${Versions.materialNavigationVersion}" }
     val list = listOf(
         compose, platformCompose, composeUi, composeUiGraphics, composeUiPreview,
         material3, foundation, navigation, composeViewModel
