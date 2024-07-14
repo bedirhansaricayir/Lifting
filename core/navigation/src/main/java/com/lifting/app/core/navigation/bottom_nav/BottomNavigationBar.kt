@@ -2,7 +2,6 @@ package com.lifting.app.core.navigation.bottom_nav
 
 
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -12,6 +11,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.lifting.app.core.designsystem.LiftingTheme
 
 /**
  * Created by bedirhansaricayir on 13.07.2024
@@ -26,8 +26,8 @@ internal fun BottomNavigationBar(
     val currentDestination = navBackStackEntry?.destination
 
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.background,
-        contentColor = MaterialTheme.colorScheme.onBackground,
+        containerColor = LiftingTheme.colors.background,
+        contentColor = LiftingTheme.colors.onBackground,
     ) {
         BottomNavigationItem.entries.forEachIndexed { index, item ->
             val isSelected = currentDestination?.hierarchy?.any {

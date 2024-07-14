@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+    api(project(":core:designsystem"))
     Compose.list.forEach(::api)
     api(Compose.material)
     api(Compose.materialNavigation)
