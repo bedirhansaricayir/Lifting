@@ -87,6 +87,7 @@ android {
 dependencies {
     api(project(":core:network"))
     api(project(":core:navigation"))
+    api(project(":core:designsystem"))
 
     Kotlin.list.forEach(::api)
     Compose.list.forEach(::api)
