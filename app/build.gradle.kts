@@ -52,6 +52,7 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -88,6 +89,7 @@ dependencies {
     api(project(":core:network"))
     api(project(":core:navigation"))
     api(project(":core:designsystem"))
+    api(project(":core:data"))
 
     Kotlin.list.forEach(::api)
     Compose.list.forEach(::api)
@@ -100,4 +102,5 @@ dependencies {
     }
 
     api(Androidx.splash)
+    coreLibraryDesugaring(ThirdParty.desugaring)
 }

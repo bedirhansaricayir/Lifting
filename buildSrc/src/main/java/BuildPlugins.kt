@@ -15,6 +15,7 @@ object BuildPlugins {
     const val KOTLIN_JVM_PLUGIN = "org.jetbrains.kotlin.jvm"
     const val KOTLIN_ANDROID_JB_PLUGIN = "org.jetbrains.kotlin.android"
     const val SERIALIZATION_PLUGIN = "plugin.serialization"
+    const val KOTLIN_PARCELIZE = "kotlin-parcelize"
 
 
 }
