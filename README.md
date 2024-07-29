@@ -1,4 +1,6 @@
-# Lifting
+# Lifting(Under V2 Development)
+
+> Lifting will be a tracking and logging-based app for workouts. This repository is currently under development and will soon be released as V2. The information below applies to V1
 
 Lifting, helps users have a training program, track their progress with graphic analysis, and use a variety of measurement tools.
 
