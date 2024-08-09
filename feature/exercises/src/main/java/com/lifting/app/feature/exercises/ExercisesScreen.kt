@@ -14,9 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -94,16 +91,14 @@ fun ListScreen(
     ) {
         onEvent(ExercisesUIEvent.OnBackClick)
     }
-
-    CollapsingToolBarScaffold(
-        modifier = modifier.background(LiftingTheme.colors.background),
-        state = scaffoldState,
-        toolbar = {
-            SharedTransitionLayout {
-                AnimatedContent(
-                    targetState = state.searchMode, label = ""
-                )
-                { isSearchMode ->
+    SharedTransitionLayout {
+        AnimatedContent(
+            targetState = state.searchMode, label = ""
+        ) { isSearchMode ->
+            CollapsingToolBarScaffold(
+                modifier = modifier.background(LiftingTheme.colors.background),
+                state = scaffoldState,
+                toolbar = {
                     if (isSearchMode) {
                         AnimatedVisibility(
                             visible = true,
@@ -139,7 +134,7 @@ fun ListScreen(
                                                 state = rememberSharedContentState(key = SHARED_SEARCH_KEY),
                                                 animatedVisibilityScope = this@AnimatedContent
                                             ),
-                                            imageVector = Icons.Default.Search,
+                                            imageVector = LiftingTheme.icons.search,
                                             contentDescription = "Search Button"
                                         )
                                     }
@@ -148,7 +143,7 @@ fun ListScreen(
                                     onClick = { onEvent(ExercisesUIEvent.OnAddClick) },
                                     content = {
                                         Icon(
-                                            imageVector = Icons.Default.Add,
+                                            imageVector = LiftingTheme.icons.add,
                                             contentDescription = "Add Button"
                                         )
                                     }
@@ -156,16 +151,16 @@ fun ListScreen(
                             }
                         )
                     }
+                },
+                body = {
+                    ExerciseList(
+                        exercisesWithHeader = state.groupedExercises.orEmpty(),
+                        onExerciseClick = {}
+                    )
                 }
-            }
-        },
-        body = {
-            ExerciseList(
-                exercisesWithHeader = state.groupedExercises.orEmpty(),
-                onExerciseClick = {}
             )
         }
-    )
+    }
 }
 
 @Composable

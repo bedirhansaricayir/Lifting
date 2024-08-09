@@ -5,28 +5,40 @@ package com.lifting.app.core.designsystem.icons
  */
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import com.lifting.app.core.designsystem.R
 
 @Immutable
 class LiftingIcons {
 
-    val settings: ImageVector
+    val search: ImageVector
         @Composable
-        get() = Icons.Default.Settings
+        get() = Icons.Default.Search
 
-    val check: ImageVector
+    val add: ImageVector
         @Composable
-        get() = Icons.Default.Check
+        get() = Icons.Default.Add
 
-    val done: ImageVector
+    val back: ImageVector
         @Composable
-        get() = Icons.Default.Done
+        get() = Icons.Default.ArrowBack
+
+    val filter: Painter
+        @Composable
+        get() = painterResource(id = R.drawable.filter_icon)
+
+    val clear: ImageVector
+        @Composable
+        get() = Icons.Default.Clear
 }
 
 internal val LocalIcons = staticCompositionLocalOf { LiftingIcons() }

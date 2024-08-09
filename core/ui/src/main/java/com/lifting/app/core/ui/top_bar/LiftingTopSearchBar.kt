@@ -15,10 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Clear
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -65,7 +61,7 @@ fun LiftingTopSearchBar(
     ) {
         IconButton(onClick = onBackClick) {
             Icon(
-                imageVector = Icons.Default.ArrowBack,
+                imageVector = LiftingTheme.icons.back,
                 contentDescription = stringResource(id = R.string.back_button_content_description)
             )
         }
@@ -94,7 +90,7 @@ fun LiftingTopSearchBar(
             leadingIcon = {
                 Icon(
                     modifier = leadingIconModifier,
-                    imageVector = Icons.Outlined.Search,
+                    imageVector = LiftingTheme.icons.search,
                     contentDescription = stringResource(id = R.string.search_bar_leading_icon_search_content_description),
                 )
             },
@@ -118,7 +114,7 @@ fun LiftingTopSearchBar(
                     IconButton(onClick = { onValueChange("") }
                     ) {
                         Icon(
-                            imageVector = Icons.Outlined.Clear,
+                            imageVector = LiftingTheme.icons.clear,
                             contentDescription = stringResource(id = R.string.search_bar_trailing_icon_clear_content_description)
                         )
                     }
