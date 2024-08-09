@@ -5,4 +5,5 @@
     <string name="search_bar_leading_icon_search_content_description">Search Button</string>
     <string name="search_bar_trailing_icon_clear_content_description">Clear Button</string>
     <string name="exercises_image_content_description">Exercise Image</string>
+    <string name="top_bar_title_exercises">Exercises</string>
 </resources>

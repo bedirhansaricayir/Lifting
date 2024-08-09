@@ -11,15 +11,17 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.lifting.app.core.designsystem.LiftingTheme
+import com.lifting.app.core.ui.R
 import me.onebone.toolbar.CollapsingToolbarScope
 import me.onebone.toolbar.CollapsingToolbarState
 
 @Composable
 fun LiftingTopBar(
-    title: String,
+    title: String = stringResource(id = R.string.top_bar_title_exercises),
     toolbarState: CollapsingToolbarState? = null,
     toolbarScope: CollapsingToolbarScope,
     statusBarEnabled: Boolean = true,

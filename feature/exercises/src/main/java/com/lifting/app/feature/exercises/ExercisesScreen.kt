@@ -128,7 +128,6 @@ fun ListScreen(
                         }
                     } else {
                         LiftingTopBar(
-                            title = "Exercises",
                             toolbarState = scaffoldState.toolbarState,
                             toolbarScope = this@CollapsingToolBarScaffold,
                             actions = {
