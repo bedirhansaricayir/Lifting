@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-internal abstract class BaseViewModel<STATE : State, EVENT : Event, EFFECT : Effect> : ViewModel() {
+abstract class BaseViewModel<STATE : State, EVENT : Event, EFFECT : Effect> : ViewModel() {
 
     private val initialState: STATE by lazy { setInitialState() }
 
@@ -28,6 +28,16 @@ internal abstract class BaseViewModel<STATE : State, EVENT : Event, EFFECT : Eff
     val effect = _effect.receiveAsFlow()
 
     fun getCurrentState() = state.value
+
+    protected fun updateState(updateFunction: (STATE) -> STATE) {
+        while (true) {
+            val prevState = _state.value
+            val newState = updateFunction(prevState)
+            if (_state.compareAndSet(prevState, newState)) {
+                return
+            }
+        }
+    }
 
     init {
         subscribeToEvents()
@@ -57,7 +67,6 @@ internal abstract class BaseViewModel<STATE : State, EVENT : Event, EFFECT : Eff
 
 }
 
-
-internal interface State
-internal interface Event
-internal interface Effect
+interface State
+interface Event
+interface Effect

@@ -68,28 +68,12 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.kotlinCompilerExtensionVersion
     }
-
-    val freeCompilerArgList = listOf(
-        "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
-        "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-        "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-        "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-        "-opt-in=kotlin.Experimental",
-        "-opt-in=kotlin.RequiresOptIn",
-    )
-
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-        kotlinOptions {
-            freeCompilerArgs += freeCompilerArgList
-        }
-    }
 }
 
 dependencies {
-    api(project(":core:network"))
+    api(project(":feature:exercises"))
     api(project(":core:navigation"))
     api(project(":core:designsystem"))
-    api(project(":core:data"))
 
     Kotlin.list.forEach(::api)
     Compose.list.forEach(::api)

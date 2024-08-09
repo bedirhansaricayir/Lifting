@@ -72,7 +72,7 @@ object Versions {
     const val crashlyticsPluginVersion = "2.9.7"
 
     //Coil
-    const val coilVersion = "2.4.0"
+    const val coilVersion = "2.7.0"
 
     //Player
     const val youtubePlayerVersion = "0.28"
@@ -93,4 +93,6 @@ object Versions {
     const val media3Version = "1.1.1"
 
     const val updateVersion = "2.0.1"
+
+    const val collapsingToolbarVersion = "2.3.5"
 }

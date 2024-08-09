@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_bar_place_holder">Search here…</string>
+    <string name="back_button_content_description">Back Button</string>
+    <string name="search_bar_leading_icon_search_content_description">Search Button</string>
+    <string name="search_bar_trailing_icon_clear_content_description">Clear Button</string>
+    <string name="exercises_image_content_description">Exercise Image</string>
+</resources>

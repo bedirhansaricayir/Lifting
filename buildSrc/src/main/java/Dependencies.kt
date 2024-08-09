@@ -66,6 +66,7 @@ object ThirdParty {
     val coil by lazy { "io.coil-kt:coil-compose:${Versions.coilVersion}" }
     val numberPicker by lazy { "com.chargemap.compose:numberpicker:${Versions.numberpickerVersion}" }
     val desugaring by lazy { "com.android.tools:desugar_jdk_libs:${Versions.desugaringVersion}" }
+    val collapsingToolbar by lazy { "me.onebone:toolbar-compose:${Versions.collapsingToolbarVersion}" }
 }
 
 object Network {

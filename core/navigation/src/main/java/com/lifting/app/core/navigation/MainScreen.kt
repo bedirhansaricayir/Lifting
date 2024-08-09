@@ -1,18 +1,19 @@
 package com.lifting.app.core.navigation
 
+import androidx.compose.material.navigation.BottomSheetNavigator
 import androidx.compose.material.navigation.ModalBottomSheetLayout
-import androidx.compose.material.navigation.rememberBottomSheetNavigator
 import androidx.compose.runtime.Composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavHostController
 
 @Composable
-fun MainScreen() {
-    val bottomSheetNavigator = rememberBottomSheetNavigator()
-    val navController = rememberNavController(bottomSheetNavigator)
-
+fun MainScreen(
+    navController: NavHostController,
+    bottomSheetNavigator: BottomSheetNavigator,
+    appNavigationWithBottomBar: @Composable (NavHostController) -> Unit
+) {
     ModalBottomSheetLayout(
         bottomSheetNavigator = bottomSheetNavigator
     ) {
-        AppNavigationWithBottomBar(navController = navController)
+        appNavigationWithBottomBar(navController)
     }
 }
