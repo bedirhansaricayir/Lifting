@@ -1,8 +1,6 @@
 package com.lifting.app.feature.exercises
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -86,85 +84,78 @@ fun ListScreen(
     ) {
         onEvent(ExercisesUIEvent.OnBackClick)
     }
-    SharedTransitionLayout {
-        CollapsingToolBarScaffold(
-            modifier = modifier.background(LiftingTheme.colors.background),
-            state = scaffoldState,
-            toolbar = {
 
-                AnimatedContent(
-                    targetState = state.searchMode, label = "",
-                ) { isSearchMode ->
-                    if (isSearchMode) {
-
-                        LiftingTopSearchBar(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            value = state.searchQuery,
-                            onBackClick = {
-                                onEvent(ExercisesUIEvent.OnBackClick)
-                            },
-                            onValueChange = {
-                                onEvent(ExercisesUIEvent.OnSearchQueryChanged(it))
-                            },
-                            leadingIconModifier = Modifier.sharedElement(
-                                state = rememberSharedContentState(key = SHARED_SEARCH_KEY),
-                                animatedVisibilityScope = this@AnimatedContent
-                            )
+    CollapsingToolBarScaffold(
+        modifier = modifier.background(LiftingTheme.colors.background),
+        state = scaffoldState,
+        toolbar = {
+            if (state.searchMode) {
+                LiftingTopSearchBar(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = state.searchQuery,
+                    onBackClick = {
+                        onEvent(ExercisesUIEvent.OnBackClick)
+                    },
+                    onValueChange = {
+                        onEvent(ExercisesUIEvent.OnSearchQueryChanged(it))
+                    },
+                    /*leadingIconModifier = Modifier.sharedElement(
+                        state = rememberSharedContentState(key = SHARED_SEARCH_KEY),
+                        animatedVisibilityScope = this@AnimatedContent
+                    )*/
+                )
+            } else {
+                LiftingTopBar(
+                    toolbarState = scaffoldState.toolbarState,
+                    toolbarScope = this@CollapsingToolBarScaffold,
+                    actions = {
+                        IconButton(
+                            onClick = { onEvent(ExercisesUIEvent.OnSearchClick) },
+                            content = {
+                                Icon(
+                                    /*modifier = Modifier.sharedElement(
+                                        state = rememberSharedContentState(key = SHARED_SEARCH_KEY),
+                                        animatedVisibilityScope = this@AnimatedContent
+                                    )*/
+                                    imageVector = LiftingTheme.icons.search,
+                                    contentDescription = "Search Button"
+                                )
+                            }
                         )
 
-                    } else {
-                        LiftingTopBar(
-                            toolbarState = scaffoldState.toolbarState,
-                            toolbarScope = this@CollapsingToolBarScaffold,
-                            actions = {
-                                IconButton(
-                                    onClick = { onEvent(ExercisesUIEvent.OnSearchClick) },
-                                    content = {
-                                        Icon(
-                                            modifier = Modifier.sharedElement(
-                                                state = rememberSharedContentState(key = SHARED_SEARCH_KEY),
-                                                animatedVisibilityScope = this@AnimatedContent
-                                            ),
-                                            imageVector = LiftingTheme.icons.search,
-                                            contentDescription = "Search Button"
-                                        )
-                                    }
+                        IconButton(
+                            onClick = { onEvent(ExercisesUIEvent.OnFilterClick) },
+                            content = {
+                                Icon(
+                                    painter = LiftingTheme.icons.filter,
+                                    contentDescription = "Filter Button"
                                 )
+                            }
+                        )
 
-                                IconButton(
-                                    onClick = { onEvent(ExercisesUIEvent.OnFilterClick) },
-                                    content = {
-                                        Icon(
-                                            painter = LiftingTheme.icons.filter,
-                                            contentDescription = "Filter Button"
-                                        )
-                                    }
-                                )
-
-                                IconButton(
-                                    onClick = { onEvent(ExercisesUIEvent.OnAddClick) },
-                                    content = {
-                                        Icon(
-                                            imageVector = LiftingTheme.icons.add,
-                                            contentDescription = "Add Button"
-                                        )
-                                    }
+                        IconButton(
+                            onClick = { onEvent(ExercisesUIEvent.OnAddClick) },
+                            content = {
+                                Icon(
+                                    imageVector = LiftingTheme.icons.add,
+                                    contentDescription = "Add Button"
                                 )
                             }
                         )
                     }
-                }
-            },
-            body = {
-                ExerciseList(
-                    exercisesWithHeader = state.groupedExercises.orEmpty(),
-                    onExerciseClick = {}
                 )
             }
-        )
 
-    }
+
+        },
+        body = {
+            ExerciseList(
+                exercisesWithHeader = state.groupedExercises.orEmpty(),
+                onExerciseClick = {}
+            )
+        }
+    )
 }
 
 @Composable
@@ -180,7 +171,7 @@ fun ExerciseList(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         exercisesWithHeader.map { entry ->
-            stickyHeader {
+            stickyHeader(key = entry.key) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
