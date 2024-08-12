@@ -55,6 +55,7 @@ class ExercisesViewModel @Inject constructor(
             ExercisesUIEvent.OnSearchClick -> searchClicked()
             is ExercisesUIEvent.OnSearchQueryChanged -> onSearchQueryChanged(event.query)
             ExercisesUIEvent.OnBackClick -> backClicked()
+            ExercisesUIEvent.OnFilterClick -> filterClicked()
         }
     }
 
@@ -80,6 +81,10 @@ class ExercisesViewModel @Inject constructor(
         updateState { currentState ->
             (currentState as ExercisesUIState.Success).copy(searchMode = false, searchQuery = "")
         }
+    }
+
+    private fun filterClicked() = updateState { currentState ->
+        (currentState as ExercisesUIState.Success).copy(filterMode = !currentState.filterMode)
     }
 
     private fun setSavedStateHandle(query: String = "") {

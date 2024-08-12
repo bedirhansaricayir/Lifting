@@ -2,12 +2,7 @@ package com.lifting.app.feature.exercises
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -92,35 +87,32 @@ fun ListScreen(
         onEvent(ExercisesUIEvent.OnBackClick)
     }
     SharedTransitionLayout {
-        AnimatedContent(
-            targetState = state.searchMode, label = ""
-        ) { isSearchMode ->
-            CollapsingToolBarScaffold(
-                modifier = modifier.background(LiftingTheme.colors.background),
-                state = scaffoldState,
-                toolbar = {
+        CollapsingToolBarScaffold(
+            modifier = modifier.background(LiftingTheme.colors.background),
+            state = scaffoldState,
+            toolbar = {
+
+                AnimatedContent(
+                    targetState = state.searchMode, label = "",
+                ) { isSearchMode ->
                     if (isSearchMode) {
-                        AnimatedVisibility(
-                            visible = true,
-                            enter = slideInHorizontally(initialOffsetX = { it }) + fadeIn(),
-                            exit = slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
-                        ) {
-                            LiftingTopSearchBar(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                value = state.searchQuery,
-                                onBackClick = {
-                                    onEvent(ExercisesUIEvent.OnBackClick)
-                                },
-                                onValueChange = {
-                                    onEvent(ExercisesUIEvent.OnSearchQueryChanged(it))
-                                },
-                                leadingIconModifier = Modifier.sharedElement(
-                                    state = rememberSharedContentState(key = SHARED_SEARCH_KEY),
-                                    animatedVisibilityScope = this@AnimatedContent
-                                )
+
+                        LiftingTopSearchBar(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            value = state.searchQuery,
+                            onBackClick = {
+                                onEvent(ExercisesUIEvent.OnBackClick)
+                            },
+                            onValueChange = {
+                                onEvent(ExercisesUIEvent.OnSearchQueryChanged(it))
+                            },
+                            leadingIconModifier = Modifier.sharedElement(
+                                state = rememberSharedContentState(key = SHARED_SEARCH_KEY),
+                                animatedVisibilityScope = this@AnimatedContent
                             )
-                        }
+                        )
+
                     } else {
                         LiftingTopBar(
                             toolbarState = scaffoldState.toolbarState,
@@ -139,6 +131,17 @@ fun ListScreen(
                                         )
                                     }
                                 )
+
+                                IconButton(
+                                    onClick = { onEvent(ExercisesUIEvent.OnFilterClick) },
+                                    content = {
+                                        Icon(
+                                            painter = LiftingTheme.icons.filter,
+                                            contentDescription = "Filter Button"
+                                        )
+                                    }
+                                )
+
                                 IconButton(
                                     onClick = { onEvent(ExercisesUIEvent.OnAddClick) },
                                     content = {
@@ -151,15 +154,16 @@ fun ListScreen(
                             }
                         )
                     }
-                },
-                body = {
-                    ExerciseList(
-                        exercisesWithHeader = state.groupedExercises.orEmpty(),
-                        onExerciseClick = {}
-                    )
                 }
-            )
-        }
+            },
+            body = {
+                ExerciseList(
+                    exercisesWithHeader = state.groupedExercises.orEmpty(),
+                    onExerciseClick = {}
+                )
+            }
+        )
+
     }
 }
 
@@ -206,3 +210,4 @@ fun ExerciseList(
 }
 
 private const val SHARED_SEARCH_KEY = "searchImage"
+private const val SHARED_BOUNDS_KEY = "filterBounds"

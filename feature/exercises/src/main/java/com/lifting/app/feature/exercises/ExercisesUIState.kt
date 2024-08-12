@@ -12,7 +12,8 @@ sealed interface ExercisesUIState : State {
     data class Success(
         val groupedExercises: Map<String, List<ExerciseWithInfo>>?,
         val searchMode: Boolean = false,
-        val searchQuery: String = ""
+        val searchQuery: String = "",
+        val filterMode: Boolean = false
     ) : ExercisesUIState
 
     data class Error(val message: String?) : ExercisesUIState
