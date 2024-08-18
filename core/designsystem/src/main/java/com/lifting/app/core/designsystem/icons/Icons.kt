@@ -8,6 +8,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -39,6 +42,18 @@ class LiftingIcons {
     val clear: ImageVector
         @Composable
         get() = Icons.Default.Clear
+
+    val close: ImageVector
+        @Composable
+        get() = Icons.Default.Close
+
+    val done: ImageVector
+        @Composable
+        get() = Icons.Default.Done
+
+    val forward: ImageVector
+        @Composable
+        get() = Icons.Default.KeyboardArrowRight
 }
 
 internal val LocalIcons = staticCompositionLocalOf { LiftingIcons() }
