@@ -2,6 +2,8 @@ package com.lifting.app.core.data.di
 
 import com.lifting.app.core.data.repository.exercises.ExercisesRepository
 import com.lifting.app.core.data.repository.exercises.ExercisesRepositoryImpl
+import com.lifting.app.core.data.repository.muscles.MusclesRepository
+import com.lifting.app.core.data.repository.muscles.MusclesRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -19,4 +21,10 @@ abstract class RepositoryModule {
     internal abstract fun bindsExercisesRepository(
         exercisesRepository: ExercisesRepositoryImpl
     ): ExercisesRepository
+
+    @Binds
+    internal abstract fun bindsMusclesRepository(
+        musclesRepository: MusclesRepositoryImpl
+    ): MusclesRepository
+
 }

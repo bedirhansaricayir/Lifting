@@ -28,6 +28,8 @@ import com.lifting.app.core.navigation.AppNavigationWithBottomBar
 import com.lifting.app.core.navigation.MainScreen
 import com.lifting.app.core.navigation.screens.LiftingScreen
 import com.lifting.app.core.navigation.screens.NavBarScreen
+import com.lifting.app.feature.create_exercise.navigation.createExerciseBottomSheetScreen
+import com.lifting.app.feature.create_exercise.navigation.navigateToCreateExercise
 import com.lifting.app.feature.exercises.navigation.exercisesScreen
 
 /**
@@ -80,7 +82,6 @@ fun LiftingNavHost(
                 settingsRoot(navController)
 
                 addExercisesBottomSheet(navController)
-                newExercisesBottomSheet(navController)
             }
         }
     }
@@ -120,9 +121,10 @@ private fun NavGraphBuilder.exercisesRoot(navController: NavController) {
         startDestination = LiftingScreen.Exercises
     ) {
         exercisesScreen(
-            onAddClick = { navController.navigate(LiftingScreen.ExercisesBottomSheet.toString()) }
+            onAddClick = navController::navigateToCreateExercise
         )
         exerciseDetail(navController)
+        createExercisesBottomSheet(navController)
     }
 }
 
@@ -254,10 +256,10 @@ private fun NavGraphBuilder.addExercisesBottomSheet(navController: NavController
 }
 
 
-private fun NavGraphBuilder.newExercisesBottomSheet(navController: NavController) {
-    bottomSheet(LiftingScreen.NewExercisesBottomSheet.toString()) {
-        NewExercise(navController = navController, text = "NewExerciseBottomSheet")
-    }
+private fun NavGraphBuilder.createExercisesBottomSheet(navController: NavController) {
+    createExerciseBottomSheetScreen(
+        onNavigateBack = navController::popBackStack
+    )
 }
 
 

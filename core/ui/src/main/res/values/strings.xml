@@ -6,4 +6,8 @@
     <string name="search_bar_trailing_icon_clear_content_description">Clear Button</string>
     <string name="exercises_image_content_description">Exercise Image</string>
     <string name="top_bar_title_exercises">Exercises</string>
+    <string name="close_button_content_description">Close Button</string>
+    <string name="done_button_content_description">Done Button</string>
+    <string name="bottom_sheet_title_new_exercise">New Exercise</string>
+    <string name="label_select">Select</string>
 </resources>

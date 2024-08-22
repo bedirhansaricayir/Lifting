@@ -2,6 +2,7 @@ package com.lifting.app.core.database.di
 
 import com.lifting.app.core.database.LiftingDatabase
 import com.lifting.app.core.database.dao.ExercisesDao
+import com.lifting.app.core.database.dao.MusclesDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,4 +19,9 @@ internal object DaosModule {
     fun providesExercisesDao(
         database: LiftingDatabase
     ): ExercisesDao = database.exercisesDao()
+
+    @Provides
+    fun provideMusclesDao(
+        database: LiftingDatabase
+    ): MusclesDao = database.musclesDao()
 }

@@ -34,6 +34,7 @@
             <option value="$PROJECT_DIR$/core/network" />
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/create-exercise" />
             <option value="$PROJECT_DIR$/feature/exercises" />
           </set>
         </option>
