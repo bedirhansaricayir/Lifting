@@ -31,7 +31,7 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
  */
 
 @Composable
-fun ExercisesScreen(
+internal fun ExercisesScreen(
     modifier: Modifier = Modifier,
     viewModel: ExercisesViewModel = hiltViewModel(),
     onAddClick: () -> Unit
@@ -57,7 +57,7 @@ fun ExercisesScreen(
 }
 
 @Composable
-fun ExercisesScreenContent(
+internal fun ExercisesScreenContent(
     modifier: Modifier = Modifier,
     state: ExercisesUIState,
     onEvent: (ExercisesUIEvent) -> Unit,
@@ -72,7 +72,7 @@ fun ExercisesScreenContent(
 }
 
 @Composable
-fun ListScreen(
+internal fun ListScreen(
     modifier: Modifier = Modifier,
     state: ExercisesUIState.Success,
     onEvent: (ExercisesUIEvent) -> Unit
@@ -159,7 +159,7 @@ fun ListScreen(
 }
 
 @Composable
-fun ExerciseList(
+internal fun ExerciseList(
     modifier: Modifier = Modifier,
     exercisesWithHeader: Map<String, List<ExerciseWithInfo>>,
     onExerciseClick: () -> Unit
