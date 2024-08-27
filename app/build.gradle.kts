@@ -73,6 +73,8 @@ android {
 dependencies {
     api(project(":feature:exercises"))
     api(project(":feature:create-exercise"))
+    api((project(":feature:exercises-category")))
+
     api(project(":core:navigation"))
     api(project(":core:designsystem"))
 

@@ -53,7 +53,7 @@ sealed class LiftingScreen(
 
 
     //<<!-- region BottomSheet -->
-    @Serializable data class ExercisesBottomSheet(val route: String = this.toString()) : LiftingScreen()
     @Serializable data class CreateExercisesBottomSheet(val route: String = this.toString()) : LiftingScreen()
+    @Serializable data class ExercisesCategoryBottomSheet(val route: String = this.toString()) : LiftingScreen()
     //<!-- endregion -->
 }

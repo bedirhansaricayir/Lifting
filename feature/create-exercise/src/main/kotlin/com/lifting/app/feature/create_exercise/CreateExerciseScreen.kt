@@ -12,16 +12,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.ui.components.LiftingTextField
 import com.lifting.app.core.ui.components.SingleSelectableCard
@@ -34,26 +30,14 @@ import com.lifting.app.core.ui.top_bar.LiftingBottomSheetTopBar
 @Composable
 internal fun CreateExerciseScreen(
     modifier: Modifier = Modifier,
-    viewModel: CreateExerciseViewModel = hiltViewModel(),
-    onNavigateBack: () -> Unit
+    state: CreateExerciseUIState,
+    onEvent: (CreateExerciseUIEvent) -> Unit,
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-    val effect = viewModel.effect
-
-    LaunchedEffect(effect) {
-        effect.collect {
-            when (it) {
-                is CreateExerciseUIEffect.NavigateBack -> onNavigateBack()
-            }
-        }
-    }
-
     CreateExerciseScreenContent(
         modifier = modifier,
         state = state,
-        onEvent = viewModel::setEvent
+        onEvent = onEvent
     )
-
 }
 
 @Composable
@@ -124,7 +108,7 @@ internal fun CreateExerciseScreenSuccess(
             SingleSelectableCard(
                 name = "Category",
                 value = state.selectedCategory.readableName,
-                onClick = { }
+                onClick = { onEvent(CreateExerciseUIEvent.OnCategoryClicked(state.selectedCategory.tag)) }
             )
             Spacer(modifier = Modifier.height(8.dp))
 

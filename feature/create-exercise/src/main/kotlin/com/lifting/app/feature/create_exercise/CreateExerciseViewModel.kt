@@ -32,6 +32,7 @@ class CreateExerciseViewModel @Inject constructor(
             is CreateExerciseUIEvent.OnExerciseNameChanged -> updateExerciseName(event.exerciseName)
             is CreateExerciseUIEvent.OnExerciseNotesChanged -> updateExerciseNotes(event.exerciseNotes)
             is CreateExerciseUIEvent.OnSelectedMuscleChanged -> updateSelectedMuscle(event.selectedMuscle)
+            is CreateExerciseUIEvent.OnCategoryClicked -> navigateToCategoriesEffect(event.selectedCategory)
         }
     }
 
@@ -82,6 +83,10 @@ class CreateExerciseViewModel @Inject constructor(
 
     private fun navigateBackEffect() {
         setEffect(CreateExerciseUIEffect.NavigateBack)
+    }
+
+    private fun navigateToCategoriesEffect(selectedCategory: String) {
+        setEffect(CreateExerciseUIEffect.NavigateToCategories(selectedCategory))
     }
 
     private fun updateSelectedCategory(selectedCategory: ExerciseCategory) {

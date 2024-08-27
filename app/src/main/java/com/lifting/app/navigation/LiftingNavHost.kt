@@ -31,6 +31,9 @@ import com.lifting.app.core.navigation.screens.NavBarScreen
 import com.lifting.app.feature.create_exercise.navigation.createExerciseBottomSheetScreen
 import com.lifting.app.feature.create_exercise.navigation.navigateToCreateExercise
 import com.lifting.app.feature.exercises.navigation.exercisesScreen
+import com.lifting.app.feature.exercises_category.navigation.SELECTED_EXERCISE_CATEGORY
+import com.lifting.app.feature.exercises_category.navigation.exercisesCategoryBottomSheetScreen
+import com.lifting.app.feature.exercises_category.navigation.navigateToExercisesCategory
 
 /**
  * Created by bedirhansaricayir on 03.08.2024
@@ -80,8 +83,6 @@ fun LiftingNavHost(
                 workoutRoot(navController)
                 exercisesRoot(navController)
                 settingsRoot(navController)
-
-                addExercisesBottomSheet(navController)
             }
         }
     }
@@ -125,6 +126,7 @@ private fun NavGraphBuilder.exercisesRoot(navController: NavController) {
         )
         exerciseDetail(navController)
         createExercisesBottomSheet(navController)
+        exercisesCategoryBottomSheet(navController)
     }
 }
 
@@ -141,7 +143,7 @@ private fun NavGraphBuilder.dashboard(navController: NavController) {
     composable<LiftingScreen.Dashboard> {
         DashboardScreen(
             showSheet = {
-                navController.navigate(LiftingScreen.ExercisesBottomSheet.toString())
+                //navController.navigate(LiftingScreen.ExercisesBottomSheet.toString())
 
             },
             showFeed = { navController.navigate(NavBarScreen.Dashboard) },
@@ -248,18 +250,22 @@ private fun NavGraphBuilder.measure(navController: NavController) {
         }
     }
 }
-
-private fun NavGraphBuilder.addExercisesBottomSheet(navController: NavController) {
-    bottomSheet(LiftingScreen.ExercisesBottomSheet.toString()) {
-        AddExercise(navController = navController, text = "addExerciseBottomSheet")
-    }
-}
-
-
 private fun NavGraphBuilder.createExercisesBottomSheet(navController: NavController) {
     createExerciseBottomSheetScreen(
-        onNavigateBack = navController::popBackStack
+        navController = navController,
+        onNavigateBack = navController::popBackStack,
+        onNavigateToCategories = { category ->
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                SELECTED_EXERCISE_CATEGORY,
+                value = category
+            )
+            navController.navigateToExercisesCategory()
+        }
     )
+}
+
+private fun NavGraphBuilder.exercisesCategoryBottomSheet(navController: NavController) {
+    exercisesCategoryBottomSheetScreen(navController)
 }
 
 
@@ -267,41 +273,5 @@ private fun NavGraphBuilder.createExercisesBottomSheet(navController: NavControl
 private fun SampleScreen(text: String, onClick: () -> Unit) {
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text, modifier = Modifier.clickable { onClick() })
-    }
-}
-
-@Composable
-fun AddExercise(
-    navController: NavController,
-    text: String
-) {
-    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        val muscleSelectorResult = navController.currentBackStackEntry
-            ?.savedStateHandle
-            ?.getStateFlow<String?>("bubenimkey", null)
-            ?.collectAsState()
-        LaunchedEffect(muscleSelectorResult) {
-            muscleSelectorResult?.let {
-                Log.d("AddExercise", "${it.value}")
-            }
-        }
-        Text(
-            text,
-            modifier = Modifier.clickable { navController.navigate(toString()) })
-    }
-}
-
-@Composable
-fun NewExercise(
-    navController: NavController,
-    text: String
-) {
-
-    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text, modifier = Modifier.clickable {
-            navController.previousBackStackEntry?.savedStateHandle?.set("bubenimkey", "biceps")
-            navController.popBackStack()
-        }
-        )
     }
 }

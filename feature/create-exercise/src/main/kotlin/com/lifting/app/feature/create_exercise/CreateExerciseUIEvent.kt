@@ -13,4 +13,5 @@ sealed interface CreateExerciseUIEvent : Event {
     data class OnExerciseNotesChanged(val exerciseNotes: String) : CreateExerciseUIEvent
     data class OnCategoryChanged(val category: ExerciseCategory) : CreateExerciseUIEvent
     data class OnSelectedMuscleChanged(val selectedMuscle: String) : CreateExerciseUIEvent
+    data class OnCategoryClicked(val selectedCategory: String) : CreateExerciseUIEvent
 }

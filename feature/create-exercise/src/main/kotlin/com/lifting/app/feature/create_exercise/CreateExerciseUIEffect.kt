@@ -7,4 +7,5 @@ import com.lifting.app.core.base.viewmodel.Effect
  */
 sealed interface CreateExerciseUIEffect : Effect {
     data object NavigateBack : CreateExerciseUIEffect
+    data class NavigateToCategories(val selectedCategory: String) : CreateExerciseUIEffect
 }
