@@ -11,13 +11,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.model.ExerciseWithInfo
 import com.lifting.app.core.ui.CollapsingToolBarScaffold
@@ -33,27 +29,14 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 @Composable
 internal fun ExercisesScreen(
     modifier: Modifier = Modifier,
-    viewModel: ExercisesViewModel = hiltViewModel(),
-    onAddClick: () -> Unit
+    state: ExercisesUIState,
+    onEvent: (ExercisesUIEvent) -> Unit
 ) {
-    val exercisesUIState: ExercisesUIState by viewModel.state.collectAsStateWithLifecycle()
-    val exercisesUIEffect = viewModel.effect
-    val results by viewModel.exercises.collectAsStateWithLifecycle(initialValue = null)
-
-    LaunchedEffect(exercisesUIEffect) {
-        exercisesUIEffect.collect { effect ->
-            when (effect) {
-                ExercisesUIEffect.NavigateToAddExercise -> onAddClick()
-            }
-        }
-    }
-
     ExercisesScreenContent(
         modifier = modifier,
-        state = exercisesUIState,
-        onEvent = viewModel::setEvent,
+        state = state,
+        onEvent = onEvent,
     )
-
 }
 
 @Composable
