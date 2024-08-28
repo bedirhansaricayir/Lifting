@@ -31,9 +31,10 @@ import com.lifting.app.core.navigation.screens.NavBarScreen
 import com.lifting.app.feature.create_exercise.navigation.createExerciseBottomSheetScreen
 import com.lifting.app.feature.create_exercise.navigation.navigateToCreateExercise
 import com.lifting.app.feature.exercises.navigation.exercisesScreen
-import com.lifting.app.feature.exercises_category.navigation.SELECTED_EXERCISE_CATEGORY
 import com.lifting.app.feature.exercises_category.navigation.exercisesCategoryBottomSheetScreen
 import com.lifting.app.feature.exercises_category.navigation.navigateToExercisesCategory
+import com.lifting.app.feature.exercises_muscle.navigation.exercisesMuscleBottomSheetScreen
+import com.lifting.app.feature.exercises_muscle.navigation.navigateToExercisesMuscle
 
 /**
  * Created by bedirhansaricayir on 03.08.2024
@@ -127,6 +128,7 @@ private fun NavGraphBuilder.exercisesRoot(navController: NavController) {
         exerciseDetail(navController)
         createExercisesBottomSheet(navController)
         exercisesCategoryBottomSheet(navController)
+        exercisesMuscleBottomSheet(navController)
     }
 }
 
@@ -254,13 +256,9 @@ private fun NavGraphBuilder.createExercisesBottomSheet(navController: NavControl
     createExerciseBottomSheetScreen(
         navController = navController,
         onNavigateBack = navController::popBackStack,
-        onNavigateToCategories = { category ->
-            navController.currentBackStackEntry?.savedStateHandle?.set(
-                SELECTED_EXERCISE_CATEGORY,
-                value = category
-            )
-            navController.navigateToExercisesCategory()
-        }
+        onNavigateToCategories = navController::navigateToExercisesCategory,
+        onNavigateToMuscles = navController::navigateToExercisesMuscle
+
     )
 }
 
@@ -268,6 +266,9 @@ private fun NavGraphBuilder.exercisesCategoryBottomSheet(navController: NavContr
     exercisesCategoryBottomSheetScreen(navController)
 }
 
+private fun NavGraphBuilder.exercisesMuscleBottomSheet(navController: NavController) {
+    exercisesMuscleBottomSheetScreen(navController)
+}
 
 @Composable
 private fun SampleScreen(text: String, onClick: () -> Unit) {

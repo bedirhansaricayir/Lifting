@@ -4,8 +4,10 @@ import androidx.lifecycle.viewModelScope
 import com.lifting.app.core.base.viewmodel.BaseViewModel
 import com.lifting.app.core.data.repository.exercises.ExercisesRepository
 import com.lifting.app.core.data.repository.muscles.MusclesRepository
+import com.lifting.app.core.data.repository.muscles.parseToMuscle
 import com.lifting.app.core.model.ExerciseCategory
 import com.lifting.app.core.model.allExerciseCategories
+import com.lifting.app.core.model.parseToExerciseCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -33,6 +35,7 @@ class CreateExerciseViewModel @Inject constructor(
             is CreateExerciseUIEvent.OnExerciseNotesChanged -> updateExerciseNotes(event.exerciseNotes)
             is CreateExerciseUIEvent.OnSelectedMuscleChanged -> updateSelectedMuscle(event.selectedMuscle)
             is CreateExerciseUIEvent.OnCategoryClicked -> navigateToCategoriesEffect(event.selectedCategory)
+            is CreateExerciseUIEvent.OnMuscleClicked -> navigateToMusclesEffect(event.selectedMuscle)
         }
     }
 
@@ -74,7 +77,7 @@ class CreateExerciseViewModel @Inject constructor(
                     name = this.exerciseName,
                     notes = this.exerciseNotes,
                     category = this.selectedCategory,
-                    primaryMuscleTag = this.selectedMuscle,
+                    primaryMuscleTag = this.selectedMuscle?.tag,
                 )
             }
         }
@@ -89,9 +92,9 @@ class CreateExerciseViewModel @Inject constructor(
         setEffect(CreateExerciseUIEffect.NavigateToCategories(selectedCategory))
     }
 
-    private fun updateSelectedCategory(selectedCategory: ExerciseCategory) {
+    private fun updateSelectedCategory(selectedCategory: String) {
         updateState { currentState ->
-            (currentState as CreateExerciseUIState.Success).copy(selectedCategory = selectedCategory)
+            (currentState as CreateExerciseUIState.Success).copy(selectedCategory = selectedCategory.parseToExerciseCategory())
         }
     }
 
@@ -109,7 +112,11 @@ class CreateExerciseViewModel @Inject constructor(
 
     private fun updateSelectedMuscle(selectedMuscle: String) {
         updateState { currentState ->
-            (currentState as CreateExerciseUIState.Success).copy(selectedMuscle = selectedMuscle)
+            (currentState as CreateExerciseUIState.Success).copy(selectedMuscle = selectedMuscle.parseToMuscle())
         }
+    }
+
+    private fun navigateToMusclesEffect(selectedMuscle: String?) {
+        setEffect(CreateExerciseUIEffect.NavigateToMuscles(selectedMuscle))
     }
 }

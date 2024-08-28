@@ -37,6 +37,7 @@
             <option value="$PROJECT_DIR$/feature/create-exercise" />
             <option value="$PROJECT_DIR$/feature/exercises" />
             <option value="$PROJECT_DIR$/feature/exercises-category" />
+            <option value="$PROJECT_DIR$/feature/exercises-muscle" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

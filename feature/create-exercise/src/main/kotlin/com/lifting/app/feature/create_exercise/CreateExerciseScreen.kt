@@ -114,8 +114,8 @@ internal fun CreateExerciseScreenSuccess(
 
             SingleSelectableCard(
                 name = "Primary Muscle",
-                value = state.selectedMuscle,
-                onClick = { }
+                value = state.selectedMuscle?.name,
+                onClick = { onEvent(CreateExerciseUIEvent.OnMuscleClicked(state.selectedMuscle?.tag)) }
             )
         }
     }

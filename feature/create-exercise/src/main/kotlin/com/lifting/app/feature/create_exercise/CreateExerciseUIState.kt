@@ -15,7 +15,7 @@ sealed interface CreateExerciseUIState : State {
         val categories: List<ExerciseCategory>,
         val selectedCategory: ExerciseCategory,
         val muscles: List<Muscle>,
-        val selectedMuscle: String? = null
+        val selectedMuscle: Muscle? = null
     ) : CreateExerciseUIState
 
     data class Error(val message: String?) : CreateExerciseUIState

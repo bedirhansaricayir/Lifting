@@ -1,6 +1,8 @@
 package com.lifting.app.core.data.repository.muscles
 
+import com.lifting.app.core.data.mapper.Mapper.toDomain
 import com.lifting.app.core.database.model.MuscleEntity
+import com.lifting.app.core.model.Muscle
 
 /**
  * Created by bedirhansaricayir on 21.08.2024
@@ -25,3 +27,6 @@ fun getPrePopulateMuscles(): List<MuscleEntity> = listOf(
     MuscleEntity(tag = "traps", name = "Traps", isDeletable = false, isHidden = false),
     MuscleEntity(tag = "triceps", name = "Triceps", isDeletable = false, isHidden = false),
 )
+
+fun String.parseToMuscle(): Muscle? =
+    getPrePopulateMuscles().find { it.tag == this }?.toDomain()
