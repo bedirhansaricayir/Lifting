@@ -174,7 +174,7 @@ internal fun ExerciseList(
                     modifier = Modifier.animateItem(),
                     exerciseImage = null,
                     exerciseName = exercise.exercise.name ?: "",
-                    exerciseType = exercise.exercise.primaryMuscleTag ?: "",
+                    exerciseType = exercise.muscle?.name ?: "",
                     exerciseLogCount = exercise.logsCount,
                     onClick = onExerciseClick
                 )
