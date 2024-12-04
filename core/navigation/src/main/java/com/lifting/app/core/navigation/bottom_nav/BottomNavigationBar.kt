@@ -1,11 +1,11 @@
 package com.lifting.app.core.navigation.bottom_nav
 
-
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -17,15 +17,16 @@ import com.lifting.app.core.designsystem.LiftingTheme
  * Created by bedirhansaricayir on 13.07.2024
  */
 
-
 @Composable
 internal fun BottomNavigationBar(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
 ) {
     val navBackStackEntry = navController.currentBackStackEntryAsState().value
     val currentDestination = navBackStackEntry?.destination
 
     NavigationBar(
+        modifier = modifier,
         containerColor = LiftingTheme.colors.background,
         contentColor = LiftingTheme.colors.onBackground,
     ) {

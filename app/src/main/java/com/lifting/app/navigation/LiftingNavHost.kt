@@ -1,21 +1,20 @@
 package com.lifting.app.navigation
 
-import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.navigation.bottomSheet
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.navigation.rememberBottomSheetNavigator
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -24,8 +23,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.lifting.app.core.navigation.AppNavigationWithBottomBar
+import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.navigation.MainScreen
+import com.lifting.app.core.navigation.ScaffoldWithBottomBar
 import com.lifting.app.core.navigation.screens.LiftingScreen
 import com.lifting.app.core.navigation.screens.NavBarScreen
 import com.lifting.app.feature.create_exercise.navigation.createExerciseBottomSheetScreen
@@ -43,18 +43,20 @@ import com.lifting.app.feature.exercises_muscle.navigation.navigateToExercisesMu
 internal const val animDuration = 250
 
 @Composable
-fun LiftingNavHost(
-    modifier: Modifier = Modifier
-) {
+fun LiftingNavHost() {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
 
     MainScreen(
+        modifier = Modifier.imePadding(),
         navController = navController,
         bottomSheetNavigator = bottomSheetNavigator
     ) {
-        AppNavigationWithBottomBar(navController) {
+        ScaffoldWithBottomBar(navController) { paddingValues ->
             NavHost(
+                modifier = Modifier
+                    .background(LiftingTheme.colors.background)
+                    .padding(paddingValues),
                 navController = navController,
                 startDestination = NavBarScreen.Dashboard,
                 enterTransition = {

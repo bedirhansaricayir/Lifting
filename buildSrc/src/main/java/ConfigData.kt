@@ -7,9 +7,9 @@ object AppConfig {
     const val versionName = "$versionMajor.$versionMinor.$versionPatch"
 
 
-    const val COMPILE_SDK = 34
+    const val COMPILE_SDK = 35
     const val MIN_SDK = 24
-    const val TARGET_SDK = 34
+    const val TARGET_SDK = 35
     //val versionCode = 13
     //val versionName = "1.0.0"
     const val APPLICATION_ID = "com.lifting.app"
