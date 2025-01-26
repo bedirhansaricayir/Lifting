@@ -15,6 +15,7 @@
 local.properties
 buildSrc/build
 build
+/.kotlin
 
 # Custom
 /app/release/

@@ -1,46 +1,11 @@
 plugins {
-    id(BuildPlugins.ANDROID_LIBRARY_PLUGIN)
-    id(BuildPlugins.KOTLIN_ANDROID_PLUGIN)
-    id(BuildPlugins.DAGGER_HILT)
-    id(BuildPlugins.KSP_PLUGIN)
+    id(Plugins.LIFTING_ANDROID_LIBRARY)
+    id(Plugins.LIFTING_HILT)
 }
 
-android {
-    namespace = "com.lifting.app.core.data"
-    compileSdk = AppConfig.COMPILE_SDK
-
-    defaultConfig {
-        minSdk = AppConfig.MIN_SDK
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
+android { namespace = "com.lifting.app.core.data" }
 
 dependencies {
-    api(project(":core:database"))
-    Kotlin.list.forEach(::api)
-
-    with(Di){
-        api(hiltAndroid)
-        ksp(hiltAndroidCompiler)
-        ksp(hiltCompiler)
-    }
+    coreModel()
+    coreDatabase()
 }
