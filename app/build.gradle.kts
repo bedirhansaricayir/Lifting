@@ -46,6 +46,8 @@ dependencies {
     featureCreateExercise()
     featureExercisesCategory()
     featureExercisesMuscle()
+    featureWorkout()
+    featureWorkoutEdit()
 
     api(Androidx.splash)
 }

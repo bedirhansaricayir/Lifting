@@ -9,9 +9,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.navigation.rememberBottomSheetNavigator
+import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,18 +23,23 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.lifting.app.PanelTopDragHandle
 import com.lifting.app.core.designsystem.LiftingTheme
+import com.lifting.app.core.navigation.LiftingBottomBar
 import com.lifting.app.core.navigation.MainScreen
-import com.lifting.app.core.navigation.ScaffoldWithBottomBar
 import com.lifting.app.core.navigation.screens.LiftingScreen
 import com.lifting.app.core.navigation.screens.NavBarScreen
 import com.lifting.app.feature.create_exercise.navigation.createExerciseBottomSheetScreen
 import com.lifting.app.feature.create_exercise.navigation.navigateToCreateExercise
 import com.lifting.app.feature.exercises.navigation.exercisesScreen
+import com.lifting.app.feature.exercises.navigation.navigateToExercisesBottomSheet
 import com.lifting.app.feature.exercises_category.navigation.exercisesCategoryBottomSheetScreen
 import com.lifting.app.feature.exercises_category.navigation.navigateToExercisesCategory
 import com.lifting.app.feature.exercises_muscle.navigation.exercisesMuscleBottomSheetScreen
 import com.lifting.app.feature.exercises_muscle.navigation.navigateToExercisesMuscle
+import com.lifting.app.feature.workout.navigation.workoutScreen
+import com.lifting.app.feature.workout_edit.navigation.navigateToWorkoutEdit
+import com.lifting.app.feature.workout_edit.navigation.workoutEditScreen
 
 /**
  * Created by bedirhansaricayir on 03.08.2024
@@ -42,21 +47,35 @@ import com.lifting.app.feature.exercises_muscle.navigation.navigateToExercisesMu
 
 internal const val animDuration = 250
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LiftingNavHost() {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
 
     MainScreen(
-        modifier = Modifier.imePadding(),
+        modifier = Modifier,
         navController = navController,
         bottomSheetNavigator = bottomSheetNavigator
     ) {
-        ScaffoldWithBottomBar(navController) { paddingValues ->
+
+
+        MainScreenScaffold(
+            panelHidden = true,
+            swipeableState = rememberSwipeableState(initialValue = 0),
+            bottomBar = {
+                LiftingBottomBar(navController = navController)
+            },
+            panel = { Text(text = "Workout \n Panel \n Görünümü") },
+            panelTopCommon = { PanelTopDragHandle() },
+            panelTopCollapsed = { Text(text = "Panel \n" +
+                    " Top \n" +
+                    " Collapsed")},
+            panelTopExpanded = { Text(text = "Panel \n Top \n Expanded") })
+        {
             NavHost(
                 modifier = Modifier
-                    .background(LiftingTheme.colors.background)
-                    .padding(paddingValues),
+                    .background(LiftingTheme.colors.background),
                 navController = navController,
                 startDestination = NavBarScreen.Dashboard,
                 enterTransition = {
@@ -86,6 +105,9 @@ fun LiftingNavHost() {
                 workoutRoot(navController)
                 exercisesRoot(navController)
                 settingsRoot(navController)
+
+                addExercisesBottomSheet(navController)
+
             }
         }
     }
@@ -107,7 +129,6 @@ private fun NavGraphBuilder.historyRoot(navController: NavController) {
         addHistory(navController)
         addCalendar(navController)
         addSession(navController)
-        addWorkoutEdit(navController, NavBarScreen.History)
     }
 }
 
@@ -115,7 +136,14 @@ private fun NavGraphBuilder.workoutRoot(navController: NavController) {
     navigation<NavBarScreen.Workout>(
         startDestination = LiftingScreen.Workout
     ) {
-        workout(navController)
+        workoutScreen(
+            navController = navController,
+            onNavigateToWorkoutEdit = navController::navigateToWorkoutEdit
+        )
+        workoutEditScreen(
+            navController = navController,
+            navigateToExercises = navController::navigateToExercisesBottomSheet
+        )
         workoutTemplatePreview(navController)
     }
 }
@@ -125,7 +153,10 @@ private fun NavGraphBuilder.exercisesRoot(navController: NavController) {
         startDestination = LiftingScreen.Exercises
     ) {
         exercisesScreen(
-            onAddClick = navController::navigateToCreateExercise
+            navController = navController,
+            onAddClick = navController::navigateToCreateExercise,
+            isBottomSheet = false,
+            navigateToDetail = { }
         )
         exerciseDetail(navController)
         createExercisesBottomSheet(navController)
@@ -197,22 +228,6 @@ private fun NavGraphBuilder.addSession(navController: NavController) {
     }
 }
 
-private fun NavGraphBuilder.addWorkoutEdit(navController: NavController, root: NavBarScreen) {
-    composable<LiftingScreen.WorkoutEdit> {
-        SampleScreen("addWorkout") {
-            navController.navigate(NavBarScreen.Dashboard)
-        }
-    }
-}
-
-private fun NavGraphBuilder.workout(navController: NavController) {
-    composable<LiftingScreen.Workout> {
-        SampleScreen("workout") {
-            navController.navigate(LiftingScreen.WorkoutTemplatePreview)
-        }
-    }
-}
-
 private fun NavGraphBuilder.workoutTemplatePreview(navController: NavController) {
     composable<LiftingScreen.WorkoutTemplatePreview> {
         SampleScreen("workoutTemplatePreview") {
@@ -221,15 +236,6 @@ private fun NavGraphBuilder.workoutTemplatePreview(navController: NavController)
         }
     }
 }
-
-private fun NavGraphBuilder.exercises(navController: NavController) {
-    composable<LiftingScreen.Exercises> {
-        SampleScreen("exercises") {
-            navController.navigate(LiftingScreen.ExerciseDetail)
-        }
-    }
-}
-
 private fun NavGraphBuilder.exerciseDetail(navController: NavController) {
     composable<LiftingScreen.ExerciseDetail> {
         SampleScreen("exerciseDetail") {
@@ -264,6 +270,14 @@ private fun NavGraphBuilder.createExercisesBottomSheet(navController: NavControl
     )
 }
 
+private fun NavGraphBuilder.addExercisesBottomSheet(navController: NavController) {
+    exercisesScreen(
+        navController = navController,
+        onAddClick = navController::navigateToCreateExercise,
+        isBottomSheet = true,
+        navigateToDetail = {}
+    )
+}
 private fun NavGraphBuilder.exercisesCategoryBottomSheet(navController: NavController) {
     exercisesCategoryBottomSheetScreen(navController)
 }

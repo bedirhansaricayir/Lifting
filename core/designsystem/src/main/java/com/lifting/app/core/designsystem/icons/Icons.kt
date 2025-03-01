@@ -11,7 +11,9 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -54,6 +56,18 @@ class LiftingIcons {
     val forward: ImageVector
         @Composable
         get() = Icons.Default.KeyboardArrowRight
+
+    val expand: Painter
+        @Composable
+        get() = painterResource(id = R.drawable.expand_icon)
+
+    val moreVert: ImageVector
+        @Composable
+        get() = Icons.Default.MoreVert
+
+    val outlinedDone: ImageVector
+        @Composable
+        get() = Icons.Outlined.Done
 }
 
 internal val LocalIcons = staticCompositionLocalOf { LiftingIcons() }

@@ -1,5 +1,7 @@
 package com.lifting.app.feature.exercises.navigation
 
+import androidx.compose.material.navigation.bottomSheet
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,15 +18,20 @@ import com.lifting.app.feature.exercises.ExercisesViewModel
  * Created by bedirhansaricayir on 29.07.2024
  */
 
-val EXERCISES_SCREEN = LiftingScreen.Exercises
+const val RESULT_EXERCISES_SCREEN_EXERCISE_ID = "result_exercises_screen_exercise_id"
 
+val EXERCISES_SCREEN = LiftingScreen.Exercises
+val EXERCISES_SCREEN_BOTTOM_SHEET = LiftingScreen.ExercisesBottomSheet().route
 fun NavController.navigateToExercises() = navigate(EXERCISES_SCREEN)
+fun NavController.navigateToExercisesBottomSheet() = navigate(EXERCISES_SCREEN_BOTTOM_SHEET)
 
 fun NavGraphBuilder.exercisesScreen(
-    onAddClick: () -> Unit
+    navController: NavController,
+    isBottomSheet: Boolean,
+    onAddClick: () -> Unit,
+    navigateToDetail: (String) -> Unit
 ) {
-    composable<LiftingScreen.Exercises> {
-
+    val content: @Composable () -> Unit = {
         val viewModel: ExercisesViewModel = hiltViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
         val effect = viewModel.effect
@@ -34,13 +41,28 @@ fun NavGraphBuilder.exercisesScreen(
             effect.collect { effect ->
                 when (effect) {
                     ExercisesUIEffect.NavigateToAddExercise -> onAddClick()
+                    is ExercisesUIEffect.NavigateToDetail -> navigateToDetail(effect.id)
+                    is ExercisesUIEffect.SetExerciseToBackStack -> {
+                        navController.previousBackStackEntry?.savedStateHandle?.set(
+                            RESULT_EXERCISES_SCREEN_EXERCISE_ID,
+                            effect.id
+                        )
+                        navController.popBackStack()
+                    }
                 }
             }
         }
 
         ExercisesScreen(
             state = state,
-            onEvent = viewModel::setEvent
+            onEvent = viewModel::setEvent,
+            isBottomSheet = isBottomSheet
         )
+    }
+
+    if (isBottomSheet) {
+        bottomSheet(EXERCISES_SCREEN_BOTTOM_SHEET) { content() }
+    } else {
+        composable<LiftingScreen.Exercises> { content() }
     }
 }

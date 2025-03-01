@@ -12,4 +12,5 @@ sealed interface ExercisesUIEvent : Event {
     data class OnSearchQueryChanged(val query: String): ExercisesUIEvent
     data object OnBackClick: ExercisesUIEvent
     data object OnFilterClick: ExercisesUIEvent
+    data class OnExerciseClick(val id: String,val isBottomSheet: Boolean): ExercisesUIEvent
 }

@@ -56,6 +56,7 @@ class ExercisesViewModel @Inject constructor(
             is ExercisesUIEvent.OnSearchQueryChanged -> onSearchQueryChanged(event.query)
             ExercisesUIEvent.OnBackClick -> backClicked()
             ExercisesUIEvent.OnFilterClick -> filterClicked()
+            is ExercisesUIEvent.OnExerciseClick -> exerciseClicked(event.id,event.isBottomSheet)
         }
     }
 
@@ -85,6 +86,11 @@ class ExercisesViewModel @Inject constructor(
 
     private fun filterClicked() = updateState { currentState ->
         (currentState as ExercisesUIState.Success).copy(filterMode = !currentState.filterMode)
+    }
+
+    private fun exerciseClicked(id: String, isBottomSheet:Boolean) {
+        if (isBottomSheet) setEffect(ExercisesUIEffect.SetExerciseToBackStack(id))
+        else setEffect(ExercisesUIEffect.NavigateToDetail(id))
     }
 
     private fun setSavedStateHandle(query: String = "") {

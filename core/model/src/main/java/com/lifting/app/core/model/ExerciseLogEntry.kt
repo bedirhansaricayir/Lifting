@@ -1,11 +1,14 @@
 package com.lifting.app.core.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 
 /**
  * Created by bedirhansaricayir on 18.07.2024
  */
 
+@Parcelize
 data class ExerciseLogEntry(
     val entryId: String,
     val logId: String?,
@@ -23,4 +26,4 @@ data class ExerciseLogEntry(
     val personalRecords: List<PersonalRecord>?,
     val createdAt: LocalDateTime?,
     val updatedAt: LocalDateTime?
-)
+): Parcelable

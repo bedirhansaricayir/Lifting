@@ -33,11 +33,11 @@ sealed class LiftingScreen(
     @Serializable data object History : LiftingScreen()
     @Serializable data class Calendar(val selectedDateKey: String) : LiftingScreen()
     @Serializable data class Session(val workoutIdKey: String) : LiftingScreen()
-    @Serializable data class WorkoutEdit(val workoutIdKey: String, val isTemplateKey: Boolean) : LiftingScreen()
     //<!-- endregion -->
 
     //<!-- region Sub-Workout -->
     @Serializable data object Workout : LiftingScreen()
+    @Serializable data class WorkoutEdit(val workoutIdKey: String, val isTemplateKey: Boolean) : LiftingScreen()
     @Serializable data object WorkoutTemplatePreview : LiftingScreen()
     //<!-- endregion -->
 
@@ -56,5 +56,6 @@ sealed class LiftingScreen(
     @Serializable data class CreateExercisesBottomSheet(val route: String = this.toString()) : LiftingScreen()
     @Serializable data class ExercisesCategoryBottomSheet(val route: String = this.toString()) : LiftingScreen()
     @Serializable data class ExercisesMuscleBottomSheet(val route: String = this.toString()) : LiftingScreen()
+    @Serializable data class ExercisesBottomSheet(val route: String = this.toString()) : LiftingScreen()
     //<!-- endregion -->
 }

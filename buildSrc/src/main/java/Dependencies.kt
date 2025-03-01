@@ -8,7 +8,9 @@ fun DependencyHandler.featureExercises() = implementation(project(":feature:exer
 fun DependencyHandler.featureCreateExercise() = implementation(project(":feature:create-exercise"))
 fun DependencyHandler.featureExercisesCategory() = implementation(project(":feature:exercises-category"))
 fun DependencyHandler.featureExercisesMuscle() = implementation(project(":feature:exercises-muscle"))
-internal fun DependencyHandler.featureModules() = listOf(coreBase(),coreNavigation(),coreUI(),coreDesignSystem(),coreData(),coreModel())
+fun DependencyHandler.featureWorkout() = implementation(project(":feature:workout"))
+fun DependencyHandler.featureWorkoutEdit() = implementation(project(":feature:workout-edit"))
+internal fun DependencyHandler.featureModules() = listOf(coreBase(),coreNavigation(),coreUI(),coreDesignSystem(),coreData(),coreModel(),coreCommon())
 private fun DependencyHandler.coreBase() = implementation(project(":core:base"))
 fun DependencyHandler.coreCommon() = implementation(project(":core:common"))
 fun DependencyHandler.coreDatastore() = implementation(project(":core:datastore"))
@@ -53,9 +55,10 @@ object Kotlin {
     private val lifecycleRuntimeKtx by lazy { "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycleRuntimeKtxVersion}" }
     val ktxViewModel by lazy { "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycleViewmodelKtxVersion}" }
     val kotlinSerializationJson by lazy { "org.jetbrains.kotlinx:kotlinx-serialization-json:${serializationVersion}" }
+    val kotlinStdLib by lazy { "org.jetbrains.kotlin:kotlin-stdlib:2.0.0" }
 
     val list =
-        listOf(coreKtx, platformKotlin, coroutinesCore, lifecycleRuntimeKtx, coroutinesAndroid, ktxViewModel)
+        listOf(coreKtx, platformKotlin, coroutinesCore, lifecycleRuntimeKtx, coroutinesAndroid, ktxViewModel, kotlinStdLib)
 }
 
 object Compose {

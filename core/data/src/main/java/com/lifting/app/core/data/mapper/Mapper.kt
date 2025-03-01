@@ -1,7 +1,22 @@
 package com.lifting.app.core.data.mapper
 
+import com.lifting.app.core.database.model.ExerciseEntity
+import com.lifting.app.core.database.model.ExerciseLogEntryEntity
+import com.lifting.app.core.database.model.ExerciseSetGroupNoteEntity
+import com.lifting.app.core.database.model.ExerciseWorkoutJunction
+import com.lifting.app.core.database.model.LogEntriesWithExerciseResource
 import com.lifting.app.core.database.model.MuscleEntity
+import com.lifting.app.core.database.model.WorkoutEntity
+import com.lifting.app.core.database.model.WorkoutTemplateEntity
+import com.lifting.app.core.database.model.toDomain
+import com.lifting.app.core.model.Exercise
+import com.lifting.app.core.model.ExerciseLogEntry
+import com.lifting.app.core.model.ExerciseSetGroupNote
+import com.lifting.app.core.model.ExerciseWorkoutJunc
+import com.lifting.app.core.model.LogEntriesWithExercise
 import com.lifting.app.core.model.Muscle
+import com.lifting.app.core.model.Workout
+import com.lifting.app.core.model.WorkoutTemplate
 
 /**
  * Created by bedirhansaricayir on 21.08.2024
@@ -24,6 +39,108 @@ object Mapper {
             type = type,
             isDeletable = isDeletable,
             isHidden = isHidden
+        )
+    }
+
+    fun WorkoutTemplate.toEntity(): WorkoutTemplateEntity = with(this) {
+        WorkoutTemplateEntity(
+            id = id,
+            isHidden = isHidden,
+            workoutId = workoutId,
+            lastPerformedAt = lastPerformedAt,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+    }
+
+    fun Workout.toEntity(): WorkoutEntity = with(this) {
+        WorkoutEntity(
+            id = id,
+            name = name,
+            note = note,
+            inProgress = inProgress,
+            isHidden = isHidden,
+            startAt = startAt,
+            completedAt = completedAt,
+            personalRecords = personalRecords,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+    }
+
+    fun ExerciseWorkoutJunc.toEntity(): ExerciseWorkoutJunction = with(this) {
+        ExerciseWorkoutJunction(
+            id  = id,
+            supersetId = supersetId,
+            barbellId = barbellId,
+            exerciseId = exerciseId,
+            workoutId = workoutId,
+        )
+    }
+
+    fun ExerciseLogEntry.toEntity(): ExerciseLogEntryEntity = with(this) {
+        ExerciseLogEntryEntity(
+            entryId = entryId,
+            logId = logId,
+            junctionId = junctionId,
+            setNumber = setNumber,
+            setType = setType,
+            weight = weight,
+            reps = reps,
+            rpe = rpe,
+            completed = completed,
+            timeRecorded = timeRecorded,
+            distance = distance,
+            weight_unit = weightUnit,
+            distance_unit  = distanceUnit,
+            personalRecords = personalRecords,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+    }
+
+    fun ExerciseSetGroupNote.toEntity(): ExerciseSetGroupNoteEntity = with(this) {
+        ExerciseSetGroupNoteEntity(
+            id = id,
+            note = note,
+            exerciseWorkoutJunctionId = exerciseWorkoutJunctionId,
+            createdAt = createdAt,
+            updatedAt = updatedAt,
+        )
+    }
+
+    fun Exercise.toEntity(): ExerciseEntity = with(this) {
+        ExerciseEntity(
+            exerciseId = exerciseId,
+            name = name,
+            notes = notes,
+            primaryMuscleTag = primaryMuscleTag,
+            secondaryMuscleTag = secondaryMuscleTag,
+            category = category,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+    }
+
+
+    fun LogEntriesWithExercise.toEntity(): LogEntriesWithExerciseResource = with(this) {
+        LogEntriesWithExerciseResource(
+            junction = junction.toEntity(),
+            exercise = exercise.toEntity(),
+            logEntries = logEntries.map { it.toEntity() },
+            notes = notes?.map { it.toEntity() }
+        )
+    }
+
+    fun List<LogEntriesWithExerciseResource>.toDomain(): List<LogEntriesWithExercise> = with(this) {
+        this.map { it.toDomain() }
+    }
+    fun LogEntriesWithExerciseResource.toDomain(): LogEntriesWithExercise = with(this) {
+        LogEntriesWithExercise(
+            junction = junction.toDomain(),
+            exercise = exercise.toDomain(),
+            logEntries = logEntries.map { it.toDomain() },
+            notes = notes?.map { it.toDomain() }
         )
     }
 }

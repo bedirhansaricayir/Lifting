@@ -8,4 +8,6 @@ import com.lifting.app.core.base.viewmodel.Effect
 
 sealed interface ExercisesUIEffect : Effect {
     data object NavigateToAddExercise : ExercisesUIEffect
+    data class NavigateToDetail(val id: String) : ExercisesUIEffect
+    data class SetExerciseToBackStack(val id: String) : ExercisesUIEffect
 }

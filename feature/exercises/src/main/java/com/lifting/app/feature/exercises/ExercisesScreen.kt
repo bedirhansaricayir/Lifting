@@ -30,12 +30,14 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 internal fun ExercisesScreen(
     modifier: Modifier = Modifier,
     state: ExercisesUIState,
-    onEvent: (ExercisesUIEvent) -> Unit
+    onEvent: (ExercisesUIEvent) -> Unit,
+    isBottomSheet: Boolean,
 ) {
     ExercisesScreenContent(
         modifier = modifier,
         state = state,
         onEvent = onEvent,
+        isBottomSheet = isBottomSheet
     )
 }
 
@@ -44,11 +46,12 @@ internal fun ExercisesScreenContent(
     modifier: Modifier = Modifier,
     state: ExercisesUIState,
     onEvent: (ExercisesUIEvent) -> Unit,
+    isBottomSheet: Boolean,
 ) {
     when (state) {
         ExercisesUIState.Loading -> {}
 
-        is ExercisesUIState.Success -> ListScreen(state = state, onEvent = onEvent)
+        is ExercisesUIState.Success -> ListScreen(state = state, onEvent = onEvent, isBottomSheet = isBottomSheet)
 
         is ExercisesUIState.Error -> {}
     }
@@ -58,7 +61,8 @@ internal fun ExercisesScreenContent(
 internal fun ListScreen(
     modifier: Modifier = Modifier,
     state: ExercisesUIState.Success,
-    onEvent: (ExercisesUIEvent) -> Unit
+    onEvent: (ExercisesUIEvent) -> Unit,
+    isBottomSheet: Boolean,
 ) {
     val scaffoldState = rememberCollapsingToolbarScaffoldState()
 
@@ -135,7 +139,7 @@ internal fun ListScreen(
         body = {
             ExerciseList(
                 exercisesWithHeader = state.groupedExercises.orEmpty(),
-                onExerciseClick = {}
+                onExerciseClick = { onEvent(ExercisesUIEvent.OnExerciseClick(it,isBottomSheet)) }
             )
         }
     )
@@ -145,7 +149,7 @@ internal fun ListScreen(
 internal fun ExerciseList(
     modifier: Modifier = Modifier,
     exercisesWithHeader: Map<String, List<ExerciseWithInfo>>,
-    onExerciseClick: () -> Unit
+    onExerciseClick: (String) -> Unit
 ) {
     LazyColumn(
         modifier = modifier
@@ -176,7 +180,7 @@ internal fun ExerciseList(
                     exerciseName = exercise.exercise.name ?: "",
                     exerciseType = exercise.muscle?.name ?: "",
                     exerciseLogCount = exercise.logsCount,
-                    onClick = onExerciseClick
+                    onClick = { onExerciseClick(exercise.exercise.exerciseId) }
                 )
             }
         }
