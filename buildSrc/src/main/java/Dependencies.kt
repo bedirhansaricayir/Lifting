@@ -10,6 +10,7 @@ fun DependencyHandler.featureExercisesCategory() = implementation(project(":feat
 fun DependencyHandler.featureExercisesMuscle() = implementation(project(":feature:exercises-muscle"))
 fun DependencyHandler.featureWorkout() = implementation(project(":feature:workout"))
 fun DependencyHandler.featureWorkoutEdit() = implementation(project(":feature:workout-edit"))
+fun DependencyHandler.featureWorkoutTemplatePreview() = implementation(project(":feature:workout-template-preview"))
 internal fun DependencyHandler.featureModules() = listOf(coreBase(),coreNavigation(),coreUI(),coreDesignSystem(),coreData(),coreModel(),coreCommon())
 private fun DependencyHandler.coreBase() = implementation(project(":core:base"))
 fun DependencyHandler.coreCommon() = implementation(project(":core:common"))

@@ -40,6 +40,8 @@ import com.lifting.app.feature.exercises_muscle.navigation.navigateToExercisesMu
 import com.lifting.app.feature.workout.navigation.workoutScreen
 import com.lifting.app.feature.workout_edit.navigation.navigateToWorkoutEdit
 import com.lifting.app.feature.workout_edit.navigation.workoutEditScreen
+import com.lifting.app.feature.workout_template_preview.navigation.navigateToWorkoutTemplatePreview
+import com.lifting.app.feature.workout_template_preview.navigation.workoutTemplatePreviewScreen
 
 /**
  * Created by bedirhansaricayir on 03.08.2024
@@ -138,13 +140,17 @@ private fun NavGraphBuilder.workoutRoot(navController: NavController) {
     ) {
         workoutScreen(
             navController = navController,
-            onNavigateToWorkoutEdit = navController::navigateToWorkoutEdit
+            onNavigateToWorkoutEdit = navController::navigateToWorkoutEdit,
+            onNavigateToWorkoutTemplatePreview = navController::navigateToWorkoutTemplatePreview
         )
         workoutEditScreen(
             navController = navController,
             navigateToExercises = navController::navigateToExercisesBottomSheet
         )
-        workoutTemplatePreview(navController)
+        workoutTemplatePreviewScreen(
+            onNavigateToWorkoutEdit = navController::navigateToWorkoutEdit,
+            popBackStack = navController::popBackStack
+        )
     }
 }
 
@@ -228,14 +234,6 @@ private fun NavGraphBuilder.addSession(navController: NavController) {
     }
 }
 
-private fun NavGraphBuilder.workoutTemplatePreview(navController: NavController) {
-    composable<LiftingScreen.WorkoutTemplatePreview> {
-        SampleScreen("workoutTemplatePreview") {
-            navController.popBackStack()
-
-        }
-    }
-}
 private fun NavGraphBuilder.exerciseDetail(navController: NavController) {
     composable<LiftingScreen.ExerciseDetail> {
         SampleScreen("exerciseDetail") {

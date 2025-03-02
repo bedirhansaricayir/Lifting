@@ -29,6 +29,25 @@ class LiftingShapes {
     val xLarge: CornerBasedShape
         @Composable
         get() = RoundedCornerShape(16.dp)
+
+    @Composable
+    fun gridShapes(listSize: Int, index: Int): CornerBasedShape {
+        val isLeft = index % 2 == 0
+        val isRight = isLeft.not()
+        val rowIndex = index / 2
+        val rowCount = (listSize + 1) / 2
+        val isTopRow = rowIndex == 0
+        val isBottomRow = rowIndex == rowCount - 1
+        val isSingleItem = listSize == 1
+
+        return if (isSingleItem) RoundedCornerShape(8.dp)
+        else RoundedCornerShape(
+            topStart = if (isLeft && isTopRow) 8.dp else 0.dp,
+            topEnd = if (isRight && isTopRow) 8.dp else 0.dp,
+            bottomStart = if (isLeft && isBottomRow) 8.dp else 0.dp,
+            bottomEnd = if (isRight && isBottomRow) 8.dp else 0.dp
+        )
+    }
 }
 
 internal val LocalShapes = staticCompositionLocalOf { LiftingShapes() }

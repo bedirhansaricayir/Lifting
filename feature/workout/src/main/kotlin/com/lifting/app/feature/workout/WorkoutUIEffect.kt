@@ -8,4 +8,5 @@ import com.lifting.app.core.base.viewmodel.Effect
 
 sealed interface WorkoutUIEffect : Effect {
     data class NavigateToWorkoutEdit(val workoutId: String) : WorkoutUIEffect
+    data class NavigateToWorkoutTemplatePreview(val templateId: String) : WorkoutUIEffect
 }

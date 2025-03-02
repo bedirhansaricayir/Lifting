@@ -8,4 +8,5 @@ import com.lifting.app.core.base.viewmodel.Event
 
 sealed interface WorkoutUIEvent : Event {
     data object OnCreateTemplateClicked : WorkoutUIEvent
+    data class OnTemplateClicked(val templateId: String) : WorkoutUIEvent
 }

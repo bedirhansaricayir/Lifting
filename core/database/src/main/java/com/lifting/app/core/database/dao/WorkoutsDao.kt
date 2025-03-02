@@ -11,6 +11,7 @@ import com.lifting.app.core.database.model.ExerciseLogEntryEntity
 import com.lifting.app.core.database.model.ExerciseSetGroupNoteEntity
 import com.lifting.app.core.database.model.ExerciseWorkoutJunction
 import com.lifting.app.core.database.model.LogEntriesWithExerciseResource
+import com.lifting.app.core.database.model.LogEntriesWithExtraInfoJunction
 import com.lifting.app.core.database.model.WorkoutEntity
 import com.lifting.app.core.model.LogSetType
 import kotlinx.coroutines.flow.Flow
@@ -34,6 +35,9 @@ interface WorkoutsDao {
 
     @Update
     suspend fun updateWorkout(workoutEntity: WorkoutEntity)
+
+    @Query("DELETE FROM workouts WHERE id = :workoutId")
+    suspend fun deleteWorkoutById(workoutId: String)
 
     @Insert
     suspend fun insertExerciseWorkoutJunction(exerciseWorkoutJunction: ExerciseWorkoutJunction)
@@ -179,5 +183,8 @@ interface WorkoutsDao {
         }
     }
 
+    @Transaction
+    @Query("SELECT * FROM exercise_workout_junctions j JOIN exercises e ON e.exercise_id = j.exercise_id LEFT JOIN muscles m ON m.tag = e.primary_muscle_tag WHERE workout_id = :workoutId")
+    fun getLogEntriesWithExtraInfo(workoutId: String): Flow<List<LogEntriesWithExtraInfoJunction>>
 
 }

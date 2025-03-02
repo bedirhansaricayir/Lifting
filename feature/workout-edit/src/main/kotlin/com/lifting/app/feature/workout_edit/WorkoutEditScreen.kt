@@ -67,7 +67,7 @@ internal fun WorkoutEditScreenSuccess(
         scrollStrategy = ScrollStrategy.EnterAlwaysCollapsed,
         toolbar = {
             LiftingTopBar(
-                title = stringResource(id = R.string.edit_workout),
+                title = stringResource(id = if (state.isTemplate) R.string.edit_template else R.string.edit_workout),
                 toolbarState = scaffoldState.toolbarState,
                 toolbarScope = this@CollapsingToolBarScaffold,
                 navigationIcon = {

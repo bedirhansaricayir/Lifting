@@ -4,6 +4,7 @@ import com.lifting.app.core.model.ExerciseLogEntry
 import com.lifting.app.core.model.ExerciseSetGroupNote
 import com.lifting.app.core.model.ExerciseWorkoutJunc
 import com.lifting.app.core.model.LogEntriesWithExercise
+import com.lifting.app.core.model.LogEntriesWithExtraInfo
 import com.lifting.app.core.model.Workout
 import kotlinx.coroutines.flow.Flow
 import java.util.ArrayList
@@ -34,5 +35,7 @@ interface WorkoutsRepository {
     )
 
     fun getLogEntriesWithExercise(workoutId: String): Flow<List<LogEntriesWithExercise>>
+
+    fun getLogEntriesWithExtraInfo(workoutId: String): Flow<List<LogEntriesWithExtraInfo>>
 
 }

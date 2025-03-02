@@ -21,10 +21,12 @@ val WORKOUT_SCREEN = LiftingScreen.Workout
 fun NavController.navigateToWorkoutScreen() = navigate(WORKOUT_SCREEN)
 
 private const val WORKOUT_ID_KEY = "workout_id"
+private const val TEMPLATE_ID_KEY = "template_id"
 
 fun NavGraphBuilder.workoutScreen(
     navController: NavController,
-    onNavigateToWorkoutEdit: (String) -> Unit
+    onNavigateToWorkoutEdit: (String) -> Unit,
+    onNavigateToWorkoutTemplatePreview: (String) -> Unit
 ) {
     composable<LiftingScreen.Workout> {
 
@@ -41,6 +43,14 @@ fun NavGraphBuilder.workoutScreen(
                             value = effect.workoutId
                         )
                         onNavigateToWorkoutEdit(effect.workoutId)
+                    }
+
+                    is WorkoutUIEffect.NavigateToWorkoutTemplatePreview -> {
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            TEMPLATE_ID_KEY,
+                            value = effect.templateId
+                        )
+                        onNavigateToWorkoutTemplatePreview(effect.templateId)
                     }
                 }
             }

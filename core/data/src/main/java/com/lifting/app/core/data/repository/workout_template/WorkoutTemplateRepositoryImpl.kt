@@ -10,6 +10,8 @@ import com.lifting.app.core.database.model.toDomain
 import com.lifting.app.core.model.TemplateWithWorkout
 import com.lifting.app.core.model.WorkoutTemplate
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import java.time.LocalDateTime
 import java.util.UUID
@@ -24,7 +26,7 @@ class WorkoutTemplateRepositoryImpl @Inject constructor(
     private val workoutsDao: WorkoutsDao,
 ): WorkoutTemplateRepository {
     override fun getTemplate(templateId: String): Flow<WorkoutTemplate> =
-        workoutTemplateDao.getTemplate(templateId = templateId).map { it.toDomain() }
+        workoutTemplateDao.getTemplate(templateId = templateId).filterNotNull().map { it.toDomain() }
 
     override fun getTemplates(): Flow<List<TemplateWithWorkout>> =
         workoutTemplateDao.getTemplatesWithWorkouts().map { it.map(TemplateWithWorkoutResource::toDomain) }
@@ -59,7 +61,14 @@ class WorkoutTemplateRepositoryImpl @Inject constructor(
     override suspend fun updateTemplate(workoutTemplate: WorkoutTemplate) =
         workoutTemplateDao.updateTemplate(workoutTemplate.toEntity())
 
-    override suspend fun deleteTemplate(templateId: String) =
-        workoutTemplateDao.deleteTemplate(templateId)
+    override suspend fun deleteTemplate(templateId: String) {
+        val template = workoutTemplateDao.getTemplate(templateId).firstOrNull()
+        template?.let {
+            workoutTemplateDao.deleteTemplate(it.id)
+            if (it.workoutId != null) {
+                workoutsDao.deleteWorkoutById(it.workoutId!!)
+            }
+        }
+    }
 
 }

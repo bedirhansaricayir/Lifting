@@ -5,6 +5,7 @@ import com.lifting.app.core.database.model.ExerciseLogEntryEntity
 import com.lifting.app.core.database.model.ExerciseSetGroupNoteEntity
 import com.lifting.app.core.database.model.ExerciseWorkoutJunction
 import com.lifting.app.core.database.model.LogEntriesWithExerciseResource
+import com.lifting.app.core.database.model.LogEntriesWithExtraInfoJunction
 import com.lifting.app.core.database.model.MuscleEntity
 import com.lifting.app.core.database.model.WorkoutEntity
 import com.lifting.app.core.database.model.WorkoutTemplateEntity
@@ -14,6 +15,7 @@ import com.lifting.app.core.model.ExerciseLogEntry
 import com.lifting.app.core.model.ExerciseSetGroupNote
 import com.lifting.app.core.model.ExerciseWorkoutJunc
 import com.lifting.app.core.model.LogEntriesWithExercise
+import com.lifting.app.core.model.LogEntriesWithExtraInfo
 import com.lifting.app.core.model.Muscle
 import com.lifting.app.core.model.Workout
 import com.lifting.app.core.model.WorkoutTemplate
@@ -141,6 +143,20 @@ object Mapper {
             exercise = exercise.toDomain(),
             logEntries = logEntries.map { it.toDomain() },
             notes = notes?.map { it.toDomain() }
+        )
+    }
+
+    @JvmName("toDomainLogEntriesWithExtraInfoJunction")
+    fun List<LogEntriesWithExtraInfoJunction>.toDomain(): List<LogEntriesWithExtraInfo> = with(this) {
+        this.map { it.toDomain() }
+    }
+
+    fun LogEntriesWithExtraInfoJunction.toDomain(): LogEntriesWithExtraInfo = with(this) {
+        LogEntriesWithExtraInfo(
+            junction = junction.toDomain(),
+            exercise = exercise.toDomain(),
+            primaryMuscle = primaryMuscle.toDomain(),
+            logEntries = logEntries.map { it.toDomain() }
         )
     }
 }

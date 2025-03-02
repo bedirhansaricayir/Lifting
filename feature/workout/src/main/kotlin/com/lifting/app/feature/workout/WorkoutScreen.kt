@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
-import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -104,6 +104,9 @@ internal fun WorkoutScreenSuccess(
                 },
                 onButtonVisibilityChanged = { isPinned ->
                     isButtonPinned = isPinned
+                },
+                onTemplateClicked = {
+                    onEvent(WorkoutUIEvent.OnTemplateClicked(it))
                 }
             )
         }
@@ -113,6 +116,7 @@ internal fun WorkoutScreenSuccess(
 @Composable
 internal fun WorkoutScreenSuccessBody(
     state: WorkoutUIState.Success,
+    onTemplateClicked: (String) -> Unit,
     onCreateTemplateClicked: () -> Unit,
     onButtonVisibilityChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -163,13 +167,18 @@ internal fun WorkoutScreenSuccessBody(
             }
 
         }
-        items(state.templates) { item ->
+        itemsIndexed(state.templates) { index, item ->
             WorkoutTemplateCard(
-                title = item.workout.name.orEmpty(),
+                cardShape = LiftingTheme.shapes.gridShapes(
+                    listSize = state.templates.size,
+                    index = index
+                ),
+                title = item.workout.name.orEmpty().ifBlank { stringResource(id = com.lifting.app.core.ui.R.string.unnamed_template) },
                 exercisesInfo = stringResource(
                     id = com.lifting.app.core.ui.R.string.exercises_count,
                     item.junctions.size
-                )
+                ),
+                onClick = { onTemplateClicked(item.template.id) }
             )
         }
 
@@ -181,8 +190,12 @@ internal fun WorkoutScreenSuccessBody(
             )
         }
 
-        items(liftingTemplates) { item ->
+        itemsIndexed(liftingTemplates) { index, item ->
             WorkoutTemplateCard(
+                cardShape = LiftingTheme.shapes.gridShapes(
+                    listSize = liftingTemplates.size,
+                    index = index
+                ),
                 title = item.title,
                 description = item.description,
                 exercisesInfo = stringResource(

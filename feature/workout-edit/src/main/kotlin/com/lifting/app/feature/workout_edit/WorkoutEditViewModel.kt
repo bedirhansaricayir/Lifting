@@ -84,14 +84,15 @@ class WorkoutEditViewModel @Inject constructor(
                 updateState { currentState ->
                     (currentState as WorkoutEditUIState.Success).copy(
                         workout = workout,
-                        logEntriesWithExercise = logEntriesWithExercise
+                        logEntriesWithExercise = logEntriesWithExercise,
+                        isTemplate = isTemplate
                     ).also {
                         Log.d("viewModels","${it.workout?.name}")
                     }
                 }
             } catch (exception: Exception) {
                 if (exception is ClassCastException) {
-                    setState(WorkoutEditUIState.Success(workout, logEntriesWithExercise))
+                    setState(WorkoutEditUIState.Success(workout, logEntriesWithExercise, isTemplate))
                 } else {
                     setState(WorkoutEditUIState.Error)
                 }

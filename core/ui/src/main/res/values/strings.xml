@@ -29,4 +29,7 @@
     <string name="rpe">RPE</string>
     <string name="km">KM</string>
     <string name="duration">DURATION</string>
+    <string name="unnamed_template">Unnamed Template</string>
+    <string name="last_performed_at">Last performed at</string>
+    <string name="edit_template">Edit Template</string>
 </resources>

@@ -21,8 +21,8 @@ import com.lifting.app.feature.workout_edit.WorkoutEditViewModel
 
 val WORKOUT_EDIT_SCREEN = LiftingScreen.WorkoutEdit
 const val RESULT_EXERCISES_SCREEN_EXERCISE_ID = "result_exercises_screen_exercise_id"
-fun NavController.navigateToWorkoutEdit(workoutId: String) =
-    navigate(LiftingScreen.WorkoutEdit(workoutIdKey = workoutId, isTemplateKey = false))
+fun NavController.navigateToWorkoutEdit(workoutId: String, isTemplate: Boolean = false) =
+    navigate(LiftingScreen.WorkoutEdit(workoutIdKey = workoutId, isTemplateKey = isTemplate))
 
 fun NavGraphBuilder.workoutEditScreen(
     navController: NavController,

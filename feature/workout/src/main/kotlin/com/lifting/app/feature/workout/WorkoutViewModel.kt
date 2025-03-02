@@ -23,6 +23,7 @@ class WorkoutViewModel @Inject constructor(
     override fun handleEvents(event: WorkoutUIEvent) {
         when (event) {
             WorkoutUIEvent.OnCreateTemplateClicked -> createTemplateAndNavigate()
+            is WorkoutUIEvent.OnTemplateClicked -> navigateToWorkoutTemplatePreview(event.templateId)
             else -> {}
         }
     }
@@ -49,5 +50,9 @@ class WorkoutViewModel @Inject constructor(
 
     private fun navigateToWorkoutEdit(workoutId: String) {
         setEffect(WorkoutUIEffect.NavigateToWorkoutEdit(workoutId))
+    }
+
+    private fun navigateToWorkoutTemplatePreview(templateId: String) {
+        setEffect(WorkoutUIEffect.NavigateToWorkoutTemplatePreview(templateId))
     }
 }

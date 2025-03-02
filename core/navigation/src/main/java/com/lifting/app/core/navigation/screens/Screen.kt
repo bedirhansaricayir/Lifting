@@ -38,7 +38,7 @@ sealed class LiftingScreen(
     //<!-- region Sub-Workout -->
     @Serializable data object Workout : LiftingScreen()
     @Serializable data class WorkoutEdit(val workoutIdKey: String, val isTemplateKey: Boolean) : LiftingScreen()
-    @Serializable data object WorkoutTemplatePreview : LiftingScreen()
+    @Serializable data class WorkoutTemplatePreview(val templateIdKey: String) : LiftingScreen()
     //<!-- endregion -->
 
     //<!-- region Sub-Exercises -->

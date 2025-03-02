@@ -12,7 +12,8 @@ sealed interface WorkoutEditUIState : State {
     data object Loading : WorkoutEditUIState
     data class Success(
         val workout: Workout? = null,
-        val logEntriesWithExercise: List<LogEntriesWithExercise>
+        val logEntriesWithExercise: List<LogEntriesWithExercise>,
+        val isTemplate: Boolean = false,
     ) : WorkoutEditUIState
     data object Error : WorkoutEditUIState
 }

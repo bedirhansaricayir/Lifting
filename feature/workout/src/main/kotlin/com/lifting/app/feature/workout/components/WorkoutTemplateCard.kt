@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextOverflow
 import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.designsystem.LiftingTheme
@@ -24,6 +25,7 @@ import com.lifting.app.core.ui.extensions.lighterColor
 internal fun WorkoutTemplateCard(
     title: String,
     exercisesInfo: String,
+    cardShape: Shape,
     modifier: Modifier = Modifier,
     description: String? = String.EMPTY,
     onClick: () -> Unit = {},
@@ -35,6 +37,7 @@ internal fun WorkoutTemplateCard(
                 0.1f
             )
         ),
+        shape = cardShape,
         onClick = onClick
     ) {
         Column(
