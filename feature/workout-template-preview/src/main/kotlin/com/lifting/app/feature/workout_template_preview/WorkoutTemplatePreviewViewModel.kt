@@ -57,7 +57,7 @@ class WorkoutTemplatePreviewViewModel @Inject constructor(
                             entriesFlow,
                             workoutFlow
                         ) { entries, workout ->
-                            try {
+                            runCatching {
                                 updateState { currentState ->
                                     (currentState as WorkoutTemplatePreviewUIState.Success).copy(
                                         template = workoutTemplate,
@@ -65,8 +65,8 @@ class WorkoutTemplatePreviewViewModel @Inject constructor(
                                         workout = workout
                                     )
                                 }
-                            } catch (exception: Exception) {
-                                if (exception is ClassCastException) {
+                            }.getOrElse { throwable ->
+                                if (throwable is ClassCastException) {
                                     setState(
                                         WorkoutTemplatePreviewUIState.Success(
                                             workoutTemplate,
@@ -78,7 +78,6 @@ class WorkoutTemplatePreviewViewModel @Inject constructor(
                                     setState(WorkoutTemplatePreviewUIState.Error)
                                 }
                             }
-
                         }.launchIn(viewModelScope)
                     }
                 }

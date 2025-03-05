@@ -1,6 +1,5 @@
 package com.lifting.app.feature.workout_edit
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
@@ -80,18 +79,16 @@ class WorkoutEditViewModel @Inject constructor(
             logEntriesWithExerciseFlow,
             workoutFlow,
         ) { logEntriesWithExercise, workout ->
-            try {
+            runCatching {
                 updateState { currentState ->
                     (currentState as WorkoutEditUIState.Success).copy(
                         workout = workout,
                         logEntriesWithExercise = logEntriesWithExercise,
                         isTemplate = isTemplate
-                    ).also {
-                        Log.d("viewModels","${it.workout?.name}")
-                    }
+                    )
                 }
-            } catch (exception: Exception) {
-                if (exception is ClassCastException) {
+            }.getOrElse { throwable ->
+                if (throwable is ClassCastException) {
                     setState(WorkoutEditUIState.Success(workout, logEntriesWithExercise, isTemplate))
                 } else {
                     setState(WorkoutEditUIState.Error)

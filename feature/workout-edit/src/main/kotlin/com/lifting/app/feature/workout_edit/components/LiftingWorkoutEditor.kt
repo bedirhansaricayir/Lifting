@@ -111,11 +111,9 @@ fun LiftingWorkoutEditor(
                     }
                 },
                 onAddSet = {
-                    val setNumber = try {
+                    val setNumber = runCatching {
                         logEntriesWithJunctionItem.logEntries[logEntriesWithJunctionItem.logEntries.size - 1].setNumber!! + 1
-                    } catch (e: Exception) {
-                        1
-                    }
+                    }.getOrElse { 1 }
 
                     onAddEmptySetToExercise(
                         setNumber,
