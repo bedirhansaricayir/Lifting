@@ -49,6 +49,7 @@ dependencies {
     featureWorkout()
     featureWorkoutEdit()
     featureWorkoutTemplatePreview()
+    featureExerciseDetail()
 
 
     api(Androidx.splash)

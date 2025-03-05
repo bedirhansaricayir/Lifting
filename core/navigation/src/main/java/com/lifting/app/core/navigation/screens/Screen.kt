@@ -43,7 +43,7 @@ sealed class LiftingScreen(
 
     //<!-- region Sub-Exercises -->
     @Serializable data object Exercises : LiftingScreen()
-    @Serializable data object ExerciseDetail : LiftingScreen()
+    @Serializable data class ExerciseDetail(val exerciseIdKey: String) : LiftingScreen()
     //<!-- endregion -->
 
     //<!-- region Sub-Workout -->

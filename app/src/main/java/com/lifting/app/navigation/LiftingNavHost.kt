@@ -31,6 +31,8 @@ import com.lifting.app.core.navigation.screens.LiftingScreen
 import com.lifting.app.core.navigation.screens.NavBarScreen
 import com.lifting.app.feature.create_exercise.navigation.createExerciseBottomSheetScreen
 import com.lifting.app.feature.create_exercise.navigation.navigateToCreateExercise
+import com.lifting.app.feature.exercise_detail.navigation.exerciseDetailScreen
+import com.lifting.app.feature.exercise_detail.navigation.navigateToExerciseDetail
 import com.lifting.app.feature.exercises.navigation.exercisesScreen
 import com.lifting.app.feature.exercises.navigation.navigateToExercisesBottomSheet
 import com.lifting.app.feature.exercises_category.navigation.exercisesCategoryBottomSheetScreen
@@ -162,9 +164,9 @@ private fun NavGraphBuilder.exercisesRoot(navController: NavController) {
             navController = navController,
             onAddClick = navController::navigateToCreateExercise,
             isBottomSheet = false,
-            navigateToDetail = { }
+            navigateToDetail = navController::navigateToExerciseDetail
         )
-        exerciseDetail(navController)
+        exerciseDetailScreen()
         createExercisesBottomSheet(navController)
         exercisesCategoryBottomSheet(navController)
         exercisesMuscleBottomSheet(navController)
@@ -230,15 +232,6 @@ private fun NavGraphBuilder.addSession(navController: NavController) {
     composable<LiftingScreen.Session> {
         SampleScreen("addSession") {
             navController.navigate(LiftingScreen.WorkoutEdit("deneme", false))
-        }
-    }
-}
-
-private fun NavGraphBuilder.exerciseDetail(navController: NavController) {
-    composable<LiftingScreen.ExerciseDetail> {
-        SampleScreen("exerciseDetail") {
-            navController.popBackStack()
-
         }
     }
 }

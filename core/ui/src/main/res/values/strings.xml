@@ -32,4 +32,7 @@
     <string name="unnamed_template">Unnamed Template</string>
     <string name="last_performed_at">Last performed at</string>
     <string name="edit_template">Edit Template</string>
+    <string name="statistics">Statistics</string>
+    <string name="history">History</string>
+    <string name="about">About</string>
 </resources>
