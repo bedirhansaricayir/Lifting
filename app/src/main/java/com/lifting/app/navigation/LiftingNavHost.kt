@@ -39,6 +39,7 @@ import com.lifting.app.feature.exercises_category.navigation.exercisesCategoryBo
 import com.lifting.app.feature.exercises_category.navigation.navigateToExercisesCategory
 import com.lifting.app.feature.exercises_muscle.navigation.exercisesMuscleBottomSheetScreen
 import com.lifting.app.feature.exercises_muscle.navigation.navigateToExercisesMuscle
+import com.lifting.app.feature.history.navigation.historyScreen
 import com.lifting.app.feature.workout.navigation.workoutScreen
 import com.lifting.app.feature.workout_edit.navigation.navigateToWorkoutEdit
 import com.lifting.app.feature.workout_edit.navigation.workoutEditScreen
@@ -130,7 +131,7 @@ private fun NavGraphBuilder.historyRoot(navController: NavController) {
     navigation<NavBarScreen.History>(
         startDestination = LiftingScreen.History
     ) {
-        addHistory(navController)
+        historyScreen()
         addCalendar(navController)
         addSession(navController)
     }

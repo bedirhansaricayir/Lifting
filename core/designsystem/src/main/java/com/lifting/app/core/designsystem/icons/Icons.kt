@@ -10,10 +10,10 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Edit
@@ -84,6 +84,10 @@ class LiftingIcons {
     val info: ImageVector
         @Composable
         get() = Icons.Outlined.Info
+
+    val calendar: ImageVector
+        @Composable
+        get() = Icons.Outlined.DateRange
 }
 
 internal val LocalIcons = staticCompositionLocalOf { LiftingIcons() }

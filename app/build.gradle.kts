@@ -42,15 +42,7 @@ dependencies {
     coreDesignSystem()
     coreNavigation()
 
-    featureExercises()
-    featureCreateExercise()
-    featureExercisesCategory()
-    featureExercisesMuscle()
-    featureWorkout()
-    featureWorkoutEdit()
-    featureWorkoutTemplatePreview()
-    featureExerciseDetail()
-
+    featureBundle()
 
     api(Androidx.splash)
 }

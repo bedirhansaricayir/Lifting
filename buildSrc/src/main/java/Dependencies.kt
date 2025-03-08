@@ -12,7 +12,30 @@ fun DependencyHandler.featureWorkout() = implementation(project(":feature:workou
 fun DependencyHandler.featureWorkoutEdit() = implementation(project(":feature:workout-edit"))
 fun DependencyHandler.featureWorkoutTemplatePreview() = implementation(project(":feature:workout-template-preview"))
 fun DependencyHandler.featureExerciseDetail() = implementation(project(":feature:exercise-detail"))
-internal fun DependencyHandler.featureModules() = listOf(coreBase(),coreNavigation(),coreUI(),coreDesignSystem(),coreData(),coreModel(),coreCommon())
+fun DependencyHandler.featureHistory() = implementation(project(":feature:history"))
+
+fun DependencyHandler.featureBundle() = listOf(
+    featureExercises(),
+    featureCreateExercise(),
+    featureExercisesCategory(),
+    featureExercisesMuscle(),
+    featureWorkout(),
+    featureWorkoutEdit(),
+    featureWorkoutTemplatePreview(),
+    featureExerciseDetail(),
+    featureHistory()
+)
+
+internal fun DependencyHandler.featureModules() = listOf(
+    coreBase(),
+    coreNavigation(),
+    coreUI(),
+    coreDesignSystem(),
+    coreData(),
+    coreModel(),
+    coreCommon()
+)
+
 private fun DependencyHandler.coreBase() = implementation(project(":core:base"))
 fun DependencyHandler.coreCommon() = implementation(project(":core:common"))
 fun DependencyHandler.coreDatastore() = implementation(project(":core:datastore"))
@@ -34,6 +57,7 @@ internal fun DependencyHandler.hilt() {
         ksp(hiltAndroidCompiler)
     }
 }
+
 internal fun DependencyHandler.room() {
     with(Room) {
         implementation(room)
@@ -41,6 +65,7 @@ internal fun DependencyHandler.room() {
         ksp(roomCompiler)
     }
 }
+
 object Kotlin {
     private const val coreKtxVersion = "1.15.0"
     private const val platformKotlinBomVersion = "1.8.0"
@@ -60,7 +85,15 @@ object Kotlin {
     val kotlinStdLib by lazy { "org.jetbrains.kotlin:kotlin-stdlib:2.0.0" }
 
     val list =
-        listOf(coreKtx, platformKotlin, coroutinesCore, lifecycleRuntimeKtx, coroutinesAndroid, ktxViewModel, kotlinStdLib)
+        listOf(
+            coreKtx,
+            platformKotlin,
+            coroutinesCore,
+            lifecycleRuntimeKtx,
+            coroutinesAndroid,
+            ktxViewModel,
+            kotlinStdLib
+        )
 }
 
 object Compose {
@@ -102,6 +135,7 @@ private object Di {
     val hiltCompiler by lazy { "androidx.hilt:hilt-compiler:${hiltCompilerVersion}" }
     val list = listOf(hiltAndroid, hiltAndroidCompiler, hiltNavigationCompose, hiltCompiler)
 }
+
 object Test {
     private const val junitVersion = "4.13.2"
     private const val junitTestVersion = "1.1.5"
@@ -116,6 +150,7 @@ object Test {
     val composeTestTooling by lazy { "androidx.compose.ui:ui-tooling" }
     val composeTestManifest by lazy { "androidx.compose.ui:ui-test-manifest" }
 }
+
 object Firebase {
     private const val platformFirebaseBomVersion = "32.1.1"
 
@@ -126,6 +161,7 @@ object Firebase {
     val storage by lazy { "com.google.firebase:firebase-storage-ktx" }
     val config by lazy { "com.google.firebase:firebase-config-ktx" }
 }
+
 internal object Room {
     private const val roomVersion = "2.6.1"
 
@@ -156,6 +192,7 @@ private object Network {
     private val okHttpInterceptor by lazy { "com.squareup.okhttp3:logging-interceptor:${okhttpInterceptorVersion}" }
     val list = listOf(retrofit, gsonConvertor, okHttp, okHttpInterceptor)
 }
+
 object Androidx {
     private const val splashScreenVersion = "1.0.1"
     private const val datastoreVersion = "1.0.0"

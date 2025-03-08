@@ -35,4 +35,12 @@
     <string name="statistics">Statistics</string>
     <string name="history">History</string>
     <string name="about">About</string>
+    <plurals name="number_of_exercises">
+        <item quantity="one">%d exercise</item>
+        <item quantity="other">%d exercises</item>
+    </plurals>
+    <plurals name="number_of_prs">
+        <item quantity="one">%d PR</item>
+        <item quantity="other">%d PRs</item>
+    </plurals>
 </resources>

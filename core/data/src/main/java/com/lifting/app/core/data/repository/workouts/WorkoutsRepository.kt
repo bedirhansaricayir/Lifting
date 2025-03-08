@@ -6,6 +6,7 @@ import com.lifting.app.core.model.ExerciseWorkoutJunc
 import com.lifting.app.core.model.LogEntriesWithExercise
 import com.lifting.app.core.model.LogEntriesWithExtraInfo
 import com.lifting.app.core.model.Workout
+import com.lifting.app.core.model.WorkoutWithExtraInfo
 import kotlinx.coroutines.flow.Flow
 import java.util.ArrayList
 
@@ -14,6 +15,7 @@ import java.util.ArrayList
  */
 interface WorkoutsRepository {
     fun getWorkout(workoutId: String): Flow<Workout>
+    fun getWorkoutsWithExtraInfo(): Flow<List<WorkoutWithExtraInfo>>
     suspend fun updateWorkout(workout: Workout)
     suspend fun addExerciseToWorkout(workoutId: String, exerciseId: String)
     suspend fun addEmptySetToExercise(setNumber: Int, exerciseWorkoutJunc: ExerciseWorkoutJunc): ExerciseLogEntry

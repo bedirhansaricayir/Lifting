@@ -9,6 +9,9 @@ import com.lifting.app.core.database.model.LogEntriesWithExtraInfoJunction
 import com.lifting.app.core.database.model.MuscleEntity
 import com.lifting.app.core.database.model.WorkoutEntity
 import com.lifting.app.core.database.model.WorkoutTemplateEntity
+import com.lifting.app.core.database.model.WorkoutWithExtraInfoResource
+import com.lifting.app.core.database.model.calculateTotalVolume
+import com.lifting.app.core.database.model.getTotalPRs
 import com.lifting.app.core.database.model.toDomain
 import com.lifting.app.core.model.Exercise
 import com.lifting.app.core.model.ExerciseLogEntry
@@ -19,6 +22,7 @@ import com.lifting.app.core.model.LogEntriesWithExtraInfo
 import com.lifting.app.core.model.Muscle
 import com.lifting.app.core.model.Workout
 import com.lifting.app.core.model.WorkoutTemplate
+import com.lifting.app.core.model.WorkoutWithExtraInfo
 
 /**
  * Created by bedirhansaricayir on 21.08.2024
@@ -157,6 +161,19 @@ object Mapper {
             exercise = exercise.toDomain(),
             primaryMuscle = primaryMuscle.toDomain(),
             logEntries = logEntries.map { it.toDomain() }
+        )
+    }
+
+    @JvmName("toDomainWorkoutWithExtraInfoResource")
+    fun List<WorkoutWithExtraInfoResource>.toDomain(): List<WorkoutWithExtraInfo> = this.map { it.toDomain() }
+
+    fun WorkoutWithExtraInfoResource.toDomain(): WorkoutWithExtraInfo {
+        val logEntries = junctions.flatMap { j -> j.logEntries }
+        return WorkoutWithExtraInfo(
+            workout = workout.toDomain(),
+            totalVolume = logEntries.calculateTotalVolume(),
+            totalExercises = junctions.size,
+            totalPRs = logEntries.getTotalPRs(workout.personalRecords?.size)
         )
     }
 }

@@ -13,6 +13,7 @@ import com.lifting.app.core.model.ExerciseWorkoutJunc
 import com.lifting.app.core.model.LogEntriesWithExercise
 import com.lifting.app.core.model.LogEntriesWithExtraInfo
 import com.lifting.app.core.model.Workout
+import com.lifting.app.core.model.WorkoutWithExtraInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
@@ -28,6 +29,9 @@ class WorkoutsRepositoryImpl @Inject constructor(
 ) : WorkoutsRepository {
     override fun getWorkout(workoutId: String): Flow<Workout> =
         workoutsDao.getWorkout(workoutId).filterNotNull().map { it.toDomain() }
+
+    override fun getWorkoutsWithExtraInfo(): Flow<List<WorkoutWithExtraInfo>> =
+        workoutsDao.getWorkoutsWithExtraInfo().map { it.toDomain()}
 
     override suspend fun updateWorkout(workout: Workout) =
         workoutsDao.updateWorkout(workout.toEntity().copy(updatedAt = LocalDateTime.now()))
