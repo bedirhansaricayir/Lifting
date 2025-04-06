@@ -15,6 +15,7 @@
             </builds>
           </compositeBuild>
         </compositeConfiguration>
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
@@ -34,6 +35,7 @@
             <option value="$PROJECT_DIR$/core/network" />
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/calendar" />
             <option value="$PROJECT_DIR$/feature/create-exercise" />
             <option value="$PROJECT_DIR$/feature/exercise-detail" />
             <option value="$PROJECT_DIR$/feature/exercises" />
@@ -45,7 +47,6 @@
             <option value="$PROJECT_DIR$/feature/workout-template-preview" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

@@ -11,12 +11,12 @@ import com.lifting.app.core.navigation.screens.LiftingScreen
 import com.lifting.app.feature.exercise_detail.ExerciseDetailScreen
 import com.lifting.app.feature.exercise_detail.ExerciseDetailViewModel
 
-fun NavController.navigateToExerciseDetail(exerciseId: String) =
-    navigate(LiftingScreen.ExerciseDetail(exerciseIdKey = exerciseId))
-
 /**
  * Created by bedirhansaricayir on 02.03.2025
  */
+
+fun NavController.navigateToExerciseDetail(exerciseId: String) =
+    navigate(LiftingScreen.ExerciseDetail(exerciseIdKey = exerciseId))
 
 fun NavGraphBuilder.exerciseDetailScreen(
 ){

@@ -13,6 +13,7 @@ fun DependencyHandler.featureWorkoutEdit() = implementation(project(":feature:wo
 fun DependencyHandler.featureWorkoutTemplatePreview() = implementation(project(":feature:workout-template-preview"))
 fun DependencyHandler.featureExerciseDetail() = implementation(project(":feature:exercise-detail"))
 fun DependencyHandler.featureHistory() = implementation(project(":feature:history"))
+fun DependencyHandler.featureCalendar() = implementation(project(":feature:calendar"))
 
 fun DependencyHandler.featureBundle() = listOf(
     featureExercises(),
@@ -23,7 +24,8 @@ fun DependencyHandler.featureBundle() = listOf(
     featureWorkoutEdit(),
     featureWorkoutTemplatePreview(),
     featureExerciseDetail(),
-    featureHistory()
+    featureHistory(),
+    featureCalendar()
 )
 
 internal fun DependencyHandler.featureModules() = listOf(

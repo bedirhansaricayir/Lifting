@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.lifting.app.core.base.viewmodel.BaseViewModel
 import com.lifting.app.core.model.ExerciseCategory
 import com.lifting.app.core.model.allExerciseCategories
-import com.lifting.app.feature.exercises_category.navigation.SELECTED_EXERCISE_CATEGORY
+import com.lifting.app.core.navigation.screens.LiftingScreen.Companion.SELECTED_EXERCISE_CATEGORY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

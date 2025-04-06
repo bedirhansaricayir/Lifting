@@ -6,6 +6,8 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import com.lifting.app.core.common.utils.generateUUID
+import com.lifting.app.core.database.model.CountWithDateEntity
 import com.lifting.app.core.database.model.ExerciseLogEntity
 import com.lifting.app.core.database.model.ExerciseLogEntryEntity
 import com.lifting.app.core.database.model.ExerciseSetGroupNoteEntity
@@ -17,7 +19,6 @@ import com.lifting.app.core.database.model.WorkoutWithExtraInfoResource
 import com.lifting.app.core.model.LogSetType
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDateTime
-import java.util.UUID
 
 /**
  * Created by bedirhansaricayir on 08.02.2025
@@ -118,8 +119,8 @@ interface WorkoutsDao {
         var mSetNumber = 0
 
         for (set in warmUpSets) {
-            val entryId = UUID.randomUUID().toString()
-            val logId = UUID.randomUUID().toString()
+            val entryId = generateUUID
+            val logId = generateUUID
 
             val newEntry =
                 set.copy(
@@ -196,5 +197,28 @@ interface WorkoutsDao {
         """
     )
     fun getWorkoutsWithExtraInfo(): Flow<List<WorkoutWithExtraInfoResource>>
+
+    @Query(
+        """
+        SELECT * FROM workouts w
+        WHERE
+        date(start_at / 1000,'unixepoch') >= date(:dateStart / 1000,'unixepoch') AND date(start_at / 1000,'unixepoch') <= date(:dateEnd / 1000,'unixepoch') 
+        AND w.is_hidden = 0 AND w.in_progress = 0 
+        ORDER BY w.completed_at DESC
+        """
+    )
+    fun getWorkoutsWithExtraInfo(dateStart: Long, dateEnd: Long): Flow<List<WorkoutWithExtraInfoResource>>
+
+    @Query("SELECT COUNT(*) as count, start_at as date FROM workouts WHERE is_hidden = 0 AND in_progress = 0 GROUP BY start_at")
+    fun getWorkoutsCount(): Flow<List<CountWithDateEntity>>
+
+    @Query(
+        """
+            SELECT SUM(count) FROM (SELECT COUNT(*) as count FROM workouts WHERE 
+    date(start_at / 1000,'unixepoch') >= date(:dateStart / 1000,'unixepoch') AND
+     date(start_at / 1000,'unixepoch') <= date(:dateEnd / 1000,'unixepoch') 
+    AND is_hidden = 0 AND in_progress = 0 GROUP BY start_at)
+    """)
+    fun getWorkoutsCountOnDateRange(dateStart: Long, dateEnd: Long): Flow<Long>
 
 }

@@ -6,6 +6,7 @@ android { namespace = "com.lifting.app.core.ui" }
 
 dependencies {
     coreDesignSystem()
+    coreModel()
     api(ThirdParty.collapsingToolbar)
     api(ThirdParty.coil)
 }

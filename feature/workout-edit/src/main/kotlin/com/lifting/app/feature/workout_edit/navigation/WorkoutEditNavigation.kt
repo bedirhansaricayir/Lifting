@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import com.lifting.app.core.common.extensions.clearRouteArgument
 import com.lifting.app.core.common.extensions.observeRouteArgument
 import com.lifting.app.core.navigation.screens.LiftingScreen
+import com.lifting.app.core.navigation.screens.LiftingScreen.Companion.RESULT_EXERCISES_SCREEN_EXERCISE_ID
 import com.lifting.app.feature.workout_edit.WorkoutEditScreen
 import com.lifting.app.feature.workout_edit.WorkoutEditUIEffect
 import com.lifting.app.feature.workout_edit.WorkoutEditUIEvent
@@ -19,8 +20,6 @@ import com.lifting.app.feature.workout_edit.WorkoutEditViewModel
  * Created by bedirhansaricayir on 08.02.2025
  */
 
-val WORKOUT_EDIT_SCREEN = LiftingScreen.WorkoutEdit
-const val RESULT_EXERCISES_SCREEN_EXERCISE_ID = "result_exercises_screen_exercise_id"
 fun NavController.navigateToWorkoutEdit(workoutId: String, isTemplate: Boolean = false) =
     navigate(LiftingScreen.WorkoutEdit(workoutIdKey = workoutId, isTemplateKey = isTemplate))
 

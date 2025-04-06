@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.navigation.rememberBottomSheetNavigator
 import androidx.compose.material.rememberSwipeableState
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,12 +22,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.lifting.app.PanelTopDragHandle
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.navigation.LiftingBottomBar
 import com.lifting.app.core.navigation.MainScreen
 import com.lifting.app.core.navigation.screens.LiftingScreen
 import com.lifting.app.core.navigation.screens.NavBarScreen
+import com.lifting.app.feature.calendar.navigation.calendarScreen
+import com.lifting.app.feature.calendar.navigation.navigateToCalendar
 import com.lifting.app.feature.create_exercise.navigation.createExerciseBottomSheetScreen
 import com.lifting.app.feature.create_exercise.navigation.navigateToCreateExercise
 import com.lifting.app.feature.exercise_detail.navigation.exerciseDetailScreen
@@ -72,7 +72,7 @@ fun LiftingNavHost() {
                 LiftingBottomBar(navController = navController)
             },
             panel = { Text(text = "Workout \n Panel \n Görünümü") },
-            panelTopCommon = { PanelTopDragHandle() },
+            panelTopCommon = {  },
             panelTopCollapsed = { Text(text = "Panel \n" +
                     " Top \n" +
                     " Collapsed")},
@@ -131,9 +131,13 @@ private fun NavGraphBuilder.historyRoot(navController: NavController) {
     navigation<NavBarScreen.History>(
         startDestination = LiftingScreen.History
     ) {
-        historyScreen()
-        addCalendar(navController)
-        addSession(navController)
+        historyScreen(
+            navigateToCalendar = navController::navigateToCalendar
+        )
+        calendarScreen(
+            navController = navController,
+            onNavigateBack = navController::popBackStack
+        )
     }
 }
 
@@ -179,63 +183,24 @@ private fun NavGraphBuilder.settingsRoot(navController: NavController) {
         startDestination = LiftingScreen.Settings
     ) {
         settings(navController)
-        measure(navController)
     }
 }
 
 private fun NavGraphBuilder.dashboard(navController: NavController) {
     composable<LiftingScreen.Dashboard> {
-        DashboardScreen(
-            showSheet = {
-                //navController.navigate(LiftingScreen.ExercisesBottomSheet.toString())
-
-            },
-            showFeed = { navController.navigate(NavBarScreen.Dashboard) },
-            showHistory = { navController.navigate(LiftingScreen.History) }
-        )
+        DashboardScreen()
     }
 
 }
 
 @Composable
-private fun DashboardScreen(showSheet: () -> Unit, showFeed: () -> Unit, showHistory: () -> Unit) {
+private fun DashboardScreen() {
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Text("Body")
-        Button(onClick = showSheet) {
-            Text("Show sheet!")
-        }
-        Button(onClick = showFeed) {
-            Text("Navigate to Feed")
-        }
-        Button(onClick = showHistory) {
-            Text("Navigate to Feed")
-        }
+
     }
 }
 
-private fun NavGraphBuilder.addHistory(navController: NavController) {
-    composable<LiftingScreen.History> {
-        SampleScreen("addHistory") {
-            navController.navigate(LiftingScreen.Calendar("deneme"))
-        }
-    }
-}
-
-private fun NavGraphBuilder.addCalendar(navController: NavController) {
-    composable<LiftingScreen.Calendar> {
-        SampleScreen("addCalendar") {
-            navController.navigate(LiftingScreen.Session("deneme"))
-        }
-    }
-}
-
-private fun NavGraphBuilder.addSession(navController: NavController) {
-    composable<LiftingScreen.Session> {
-        SampleScreen("addSession") {
-            navController.navigate(LiftingScreen.WorkoutEdit("deneme", false))
-        }
-    }
-}
 
 private fun NavGraphBuilder.settings(navController: NavController) {
     composable<LiftingScreen.Settings> {
@@ -245,13 +210,6 @@ private fun NavGraphBuilder.settings(navController: NavController) {
     }
 }
 
-private fun NavGraphBuilder.measure(navController: NavController) {
-    composable<LiftingScreen.Measure> {
-        SampleScreen("measure") {
-            navController.popBackStack()
-        }
-    }
-}
 private fun NavGraphBuilder.createExercisesBottomSheet(navController: NavController) {
     createExerciseBottomSheetScreen(
         navController = navController,

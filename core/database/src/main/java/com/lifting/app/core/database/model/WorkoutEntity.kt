@@ -3,7 +3,7 @@ package com.lifting.app.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.lifting.app.core.database.util.toEpochMillis
+import com.lifting.app.core.common.extensions.toEpochMillis
 import com.lifting.app.core.model.PersonalRecord
 import com.lifting.app.core.model.Workout
 import java.time.LocalDateTime

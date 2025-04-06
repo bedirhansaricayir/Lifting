@@ -43,4 +43,10 @@
         <item quantity="one">%d PR</item>
         <item quantity="other">%d PRs</item>
     </plurals>
+    <string name="calendar">Calendar</string>
+
+    <plurals name="number_of_workouts">
+        <item quantity="one">%d workout</item>
+        <item quantity="other">%d workouts</item>
+    </plurals>
 </resources>

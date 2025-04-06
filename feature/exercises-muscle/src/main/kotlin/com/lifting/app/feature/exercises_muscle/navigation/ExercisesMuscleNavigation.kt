@@ -8,6 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import com.lifting.app.core.navigation.screens.LiftingScreen
+import com.lifting.app.core.navigation.screens.LiftingScreen.Companion.SELECTED_EXERCISE_MUSCLE
 import com.lifting.app.feature.exercises_muscle.ExercisesMuscleScreen
 import com.lifting.app.feature.exercises_muscle.ExercisesMuscleUIEffect
 import com.lifting.app.feature.exercises_muscle.ExercisesMuscleUIEvent
@@ -17,16 +18,12 @@ import com.lifting.app.feature.exercises_muscle.ExercisesMuscleViewModel
  * Created by bedirhansaricayir on 28.08.2024
  */
 
-const val SELECTED_EXERCISE_MUSCLE = "SELECTED_EXERCISE_MUSCLE"
-
-val EXERCISES_MUSCLE_SCREEN = LiftingScreen.ExercisesMuscleBottomSheet().route
-
-fun NavController.navigateToExercisesMuscle() = navigate(EXERCISES_MUSCLE_SCREEN)
+fun NavController.navigateToExercisesMuscle() = navigate(LiftingScreen.ExercisesMuscleBottomSheet().route)
 
 fun NavGraphBuilder.exercisesMuscleBottomSheetScreen(
     navController: NavController
 ) {
-    bottomSheet(EXERCISES_MUSCLE_SCREEN) {
+    bottomSheet(LiftingScreen.ExercisesMuscleBottomSheet().route) {
 
         val viewModel: ExercisesMuscleViewModel = hiltViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()

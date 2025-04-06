@@ -6,16 +6,27 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.lifting.app.core.common.extensions.EMPTY
+import com.lifting.app.core.common.extensions.toLocalDate
+import com.lifting.app.core.common.utils.generateUUID
 import com.lifting.app.core.designsystem.LiftingTheme
+import com.lifting.app.core.model.CountWithDate
+import com.lifting.app.core.model.WorkoutWithExtraInfo
 import com.lifting.app.core.ui.CollapsingToolBarScaffold
+import com.lifting.app.core.ui.components.LiftingChip
 import com.lifting.app.core.ui.components.LiftingIconButton
 import com.lifting.app.core.ui.top_bar.LiftingTopBar
+import com.lifting.app.feature.history.components.HistoryHeader
 import com.lifting.app.feature.history.components.HistoryListItem
+import com.lifting.app.feature.history.components.WorkoutsDateRangeType
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
+import java.time.LocalDate
+import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 
 /**
  * Created by bedirhansaricayir on 08.03.2025
@@ -59,6 +70,22 @@ internal fun HistoryScreenSuccess(
     modifier: Modifier = Modifier,
 ) {
     val scaffoldState = rememberCollapsingToolbarScaffoldState()
+    val chipString = when (state.dateRangeType) {
+        is WorkoutsDateRangeType.Year -> state.dateRangeType.year.toString()
+        is WorkoutsDateRangeType.Month -> YearMonth.of(
+            state.dateRangeType.year,
+            state.dateRangeType.month
+        ).format(DateTimeFormatter.ofPattern("MMMM yyyy")).toString()
+
+        is WorkoutsDateRangeType.Day -> LocalDate.of(
+            state.dateRangeType.year,
+            state.dateRangeType.month,
+            state.dateRangeType.day
+        ).format(DateTimeFormatter.ofPattern("MMM d, yyyy")).toString()
+
+        WorkoutsDateRangeType.All -> null
+    }
+
     CollapsingToolBarScaffold(
         modifier = modifier.background(LiftingTheme.colors.background),
         state = scaffoldState,
@@ -68,11 +95,19 @@ internal fun HistoryScreenSuccess(
                 toolbarState = scaffoldState.toolbarState,
                 toolbarScope = this@CollapsingToolBarScaffold,
                 actions = {
+                    chipString?.let {
+                        LiftingChip(
+                            onClick = {},
+                        ) {
+                            Text(it)
+                        }
+                    }
+
                     LiftingIconButton(
                         imageVector = LiftingTheme.icons.calendar,
                         contentDescription = String.EMPTY,
                         tint = LiftingTheme.colors.onBackground,
-                        onClick = {}
+                        onClick = { onEvent(HistoryUIEvent.OnCalendarClicked) }
                     )
                 }
             )
@@ -85,16 +120,45 @@ internal fun HistoryScreenSuccess(
                 verticalArrangement = Arrangement.spacedBy(LiftingTheme.dimensions.large),
                 contentPadding = PaddingValues(LiftingTheme.dimensions.large),
             ) {
-                items(state.data) { workoutInfo ->
-                    HistoryListItem(
-                        title = workoutInfo.workout?.name.orEmpty(),
-                        date = workoutInfo.workout?.startAt ?: workoutInfo.workout?.completedAt
-                        ?: workoutInfo.workout?.createdAt,
-                        totalExercises = workoutInfo.totalExercises ?: 0,
-                        duration = workoutInfo.workout?.duration,
-                        volume = workoutInfo.totalVolume,
-                        prs = workoutInfo.totalPRs ?: 0,
-                        onClick = { /*TODO*/ })
+                items(
+                    state.data,
+                    key = {
+                        when (it) {
+                            is CountWithDate -> it.date.toString()
+                            is WorkoutWithExtraInfo -> it.workout!!.id
+                            is Long -> it.toString()
+                            else -> generateUUID
+                        }
+                    }
+                ) { data ->
+                    when (data) {
+                        is WorkoutWithExtraInfo -> {
+                            HistoryListItem(
+                                title = data.workout?.name.orEmpty(),
+                                date = data.workout?.startAt ?: data.workout?.completedAt
+                                ?: data.workout?.createdAt,
+                                totalExercises = data.totalExercises ?: 0,
+                                duration = data.workout?.duration,
+                                volume = data.totalVolume,
+                                prs = data.totalPRs ?: 0,
+                                onClick = { /*TODO*/ }
+                            )
+                        }
+
+                        is Long -> {
+                            HistoryHeader(
+                                title = null,
+                                totalWorkouts = data.toInt()
+                            )
+                        }
+
+                        is CountWithDate -> {
+                            HistoryHeader(
+                                date = data.date.toLocalDate() ?: LocalDate.now(),
+                                totalWorkout = data.count.toInt()
+                            )
+                        }
+                    }
                 }
             }
         }

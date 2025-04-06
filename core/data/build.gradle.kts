@@ -8,4 +8,5 @@ android { namespace = "com.lifting.app.core.data" }
 dependencies {
     coreModel()
     coreDatabase()
+    coreCommon()
 }

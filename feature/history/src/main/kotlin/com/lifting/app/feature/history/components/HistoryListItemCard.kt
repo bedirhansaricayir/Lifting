@@ -16,8 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.pluralStringResource
 import com.lifting.app.core.common.extensions.EMPTY
+import com.lifting.app.core.common.extensions.isSameYear
 import com.lifting.app.core.common.extensions.toDuration
+import com.lifting.app.core.common.extensions.toEpochMillis
 import com.lifting.app.core.common.extensions.toKg
+import com.lifting.app.core.common.extensions.toLocalDate
+import com.lifting.app.core.common.extensions.toLocalDateTime
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.ui.extensions.lighterColor
 import java.time.LocalDate
@@ -40,8 +44,7 @@ internal fun HistoryListItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val isSameYear = LocalDate.now().year == date?.year
-    val dateFormatter = DateTimeFormatter.ofPattern(if (isSameYear) "EEE, MMM d" else "MMM d, yyyy")
+    val dateFormatter = DateTimeFormatter.ofPattern(if (date.isSameYear()) "EEE, MMM d" else "MMM d, yyyy")
 
     Card(
         modifier = modifier,
@@ -65,7 +68,7 @@ internal fun HistoryListItem(
 
             date?.let {
                 Text(
-                    text = dateFormatter.format(it),
+                    text = dateFormatter.format(it.toEpochMillis().toLocalDate()),
                     style = LiftingTheme.typography.caption,
                     color = LiftingTheme.colors.onBackground.copy(alpha = 0.75f)
                 )

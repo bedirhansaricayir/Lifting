@@ -1,5 +1,6 @@
 package com.lifting.app.core.common.extensions
 
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.StateFlow
 
@@ -24,4 +25,18 @@ fun NavController.clearRouteArgument(
         key = key,
         value = null
     )
+}
+
+
+fun <T> NavBackStackEntry.observeRouteArgument(
+    key: String,
+    initialValue: T
+): StateFlow<T?> {
+    return this.savedStateHandle.getStateFlow(key, initialValue)
+}
+
+fun <T> NavBackStackEntry.clearRouteArgument(
+    key: String
+) {
+    this.savedStateHandle.remove<T>(key)
 }

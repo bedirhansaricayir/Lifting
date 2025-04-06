@@ -1,5 +1,7 @@
 package com.lifting.app.core.data.repository.workouts
 
+import com.lifting.app.core.common.extensions.toEpochMillis
+import com.lifting.app.core.common.utils.generateUUID
 import com.lifting.app.core.data.mapper.Mapper.toDomain
 import com.lifting.app.core.data.mapper.Mapper.toEntity
 import com.lifting.app.core.database.dao.WorkoutsDao
@@ -7,6 +9,7 @@ import com.lifting.app.core.database.model.ExerciseLogEntity
 import com.lifting.app.core.database.model.ExerciseLogEntryEntity
 import com.lifting.app.core.database.model.ExerciseWorkoutJunction
 import com.lifting.app.core.database.model.toDomain
+import com.lifting.app.core.model.CountWithDate
 import com.lifting.app.core.model.ExerciseLogEntry
 import com.lifting.app.core.model.ExerciseSetGroupNote
 import com.lifting.app.core.model.ExerciseWorkoutJunc
@@ -17,21 +20,33 @@ import com.lifting.app.core.model.WorkoutWithExtraInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
+import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.UUID
 import javax.inject.Inject
 
 /**
  * Created by bedirhansaricayir on 08.02.2025
  */
+
 class WorkoutsRepositoryImpl @Inject constructor(
     private val workoutsDao: WorkoutsDao
 ) : WorkoutsRepository {
     override fun getWorkout(workoutId: String): Flow<Workout> =
         workoutsDao.getWorkout(workoutId).filterNotNull().map { it.toDomain() }
 
-    override fun getWorkoutsWithExtraInfo(): Flow<List<WorkoutWithExtraInfo>> =
-        workoutsDao.getWorkoutsWithExtraInfo().map { it.toDomain()}
+    override fun getWorkoutsWithExtraInfo(
+        dateStart: LocalDate?,
+        dateEnd: LocalDate?
+    ): Flow<List<WorkoutWithExtraInfo>> {
+        return if (dateStart != null && dateEnd != null) {
+            workoutsDao.getWorkoutsWithExtraInfo(
+                dateStart = dateStart.toEpochMillis(),
+                dateEnd.toEpochMillis()
+            ).map { it.toDomain() }
+        } else {
+            workoutsDao.getWorkoutsWithExtraInfo().map { it.toDomain() }
+        }
+    }
 
     override suspend fun updateWorkout(workout: Workout) =
         workoutsDao.updateWorkout(workout.toEntity().copy(updatedAt = LocalDateTime.now()))
@@ -39,7 +54,7 @@ class WorkoutsRepositoryImpl @Inject constructor(
     override suspend fun addExerciseToWorkout(workoutId: String, exerciseId: String) =
         workoutsDao.insertExerciseWorkoutJunction(
             ExerciseWorkoutJunction(
-                id = UUID.randomUUID().toString(),
+                id = generateUUID,
                 workoutId = workoutId,
                 exerciseId = exerciseId
             )
@@ -49,7 +64,7 @@ class WorkoutsRepositoryImpl @Inject constructor(
         setNumber: Int,
         exerciseWorkoutJunc: ExerciseWorkoutJunc
     ): ExerciseLogEntry {
-        val logId = UUID.randomUUID().toString()
+        val logId = generateUUID
         workoutsDao.insertExerciseLog(
             ExerciseLogEntity(
                 id = logId,
@@ -60,7 +75,7 @@ class WorkoutsRepositoryImpl @Inject constructor(
         )
 
         val entry = ExerciseLogEntryEntity(
-            entryId = UUID.randomUUID().toString(),
+            entryId = generateUUID,
             logId = logId,
             junctionId = exerciseWorkoutJunc.id,
             setNumber = setNumber,
@@ -107,9 +122,15 @@ class WorkoutsRepositoryImpl @Inject constructor(
     ) = workoutsDao.updateWarmUpSets(junction.toEntity(), sets.map { it.toEntity() })
 
     override fun getLogEntriesWithExercise(workoutId: String): Flow<List<LogEntriesWithExercise>> =
-        workoutsDao.getLogEntriesWithExerciseJunction(workoutId).map { it.toDomain()}
+        workoutsDao.getLogEntriesWithExerciseJunction(workoutId).map { it.toDomain() }
 
     override fun getLogEntriesWithExtraInfo(workoutId: String): Flow<List<LogEntriesWithExtraInfo>> =
         workoutsDao.getLogEntriesWithExtraInfo(workoutId).map { it.toDomain() }
+
+    override fun getWorkoutsCount(): Flow<List<CountWithDate>> =
+        workoutsDao.getWorkoutsCount().map { it.toDomain() }
+
+    override fun getWorkoutsCountOnDateRange(dateStart: LocalDate, dateEnd: LocalDate) =
+        workoutsDao.getWorkoutsCountOnDateRange(dateStart.toEpochMillis(), dateEnd.toEpochMillis())
 
 }

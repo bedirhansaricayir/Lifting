@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.lifting.app.core.navigation.screens.LiftingScreen
+import com.lifting.app.core.navigation.screens.LiftingScreen.Companion.RESULT_EXERCISES_SCREEN_EXERCISE_ID
 import com.lifting.app.feature.exercises.ExercisesScreen
 import com.lifting.app.feature.exercises.ExercisesUIEffect
 import com.lifting.app.feature.exercises.ExercisesViewModel
@@ -18,12 +19,8 @@ import com.lifting.app.feature.exercises.ExercisesViewModel
  * Created by bedirhansaricayir on 29.07.2024
  */
 
-const val RESULT_EXERCISES_SCREEN_EXERCISE_ID = "result_exercises_screen_exercise_id"
-
-val EXERCISES_SCREEN = LiftingScreen.Exercises
-val EXERCISES_SCREEN_BOTTOM_SHEET = LiftingScreen.ExercisesBottomSheet().route
-fun NavController.navigateToExercises() = navigate(EXERCISES_SCREEN)
-fun NavController.navigateToExercisesBottomSheet() = navigate(EXERCISES_SCREEN_BOTTOM_SHEET)
+fun NavController.navigateToExercises() = navigate(LiftingScreen.Exercises)
+fun NavController.navigateToExercisesBottomSheet() = navigate(LiftingScreen.ExercisesBottomSheet().route)
 
 fun NavGraphBuilder.exercisesScreen(
     navController: NavController,
@@ -61,7 +58,7 @@ fun NavGraphBuilder.exercisesScreen(
     }
 
     if (isBottomSheet) {
-        bottomSheet(EXERCISES_SCREEN_BOTTOM_SHEET) { content() }
+        bottomSheet(LiftingScreen.ExercisesBottomSheet().route) { content() }
     } else {
         composable<LiftingScreen.Exercises> { content() }
     }

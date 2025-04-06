@@ -14,9 +14,7 @@ sealed class NavBarScreen(
 }
 
 @Serializable
-sealed class LiftingScreen(
-
-) {
+sealed class LiftingScreen() {
     //<!-- region NavBarRoot -->
     @Serializable data object DashboardTab : LiftingScreen()
     @Serializable data object HistoryTab : LiftingScreen()
@@ -58,4 +56,15 @@ sealed class LiftingScreen(
     @Serializable data class ExercisesMuscleBottomSheet(val route: String = this.toString()) : LiftingScreen()
     @Serializable data class ExercisesBottomSheet(val route: String = this.toString()) : LiftingScreen()
     //<!-- endregion -->
+
+    companion object {
+        const val SELECTED_CALENDAR_YEAR = "selected_calendar_year"
+        const val SELECTED_CALENDAR_MONTH = "selected_calendar_month"
+        const val SELECTED_CALENDAR_DAY = "selected_calendar_day"
+        const val SELECTED_EXERCISE_CATEGORY = "SELECTED_EXERCISE_CATEGORY"
+        const val SELECTED_EXERCISE_MUSCLE = "SELECTED_EXERCISE_MUSCLE"
+        const val RESULT_EXERCISES_SCREEN_EXERCISE_ID = "result_exercises_screen_exercise_id"
+        const val WORKOUT_ID_KEY = "workout_id"
+        const val TEMPLATE_ID_KEY = "template_id"
+    }
 }

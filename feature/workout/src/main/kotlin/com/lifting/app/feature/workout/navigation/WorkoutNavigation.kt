@@ -8,6 +8,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.lifting.app.core.navigation.screens.LiftingScreen
+import com.lifting.app.core.navigation.screens.LiftingScreen.Companion.TEMPLATE_ID_KEY
+import com.lifting.app.core.navigation.screens.LiftingScreen.Companion.WORKOUT_ID_KEY
 import com.lifting.app.feature.workout.WorkoutScreen
 import com.lifting.app.feature.workout.WorkoutUIEffect
 import com.lifting.app.feature.workout.WorkoutViewModel
@@ -16,19 +18,14 @@ import com.lifting.app.feature.workout.WorkoutViewModel
  * Created by bedirhansaricayir on 02.02.2025
  */
 
-val WORKOUT_SCREEN = LiftingScreen.Workout
-
-fun NavController.navigateToWorkoutScreen() = navigate(WORKOUT_SCREEN)
-
-private const val WORKOUT_ID_KEY = "workout_id"
-private const val TEMPLATE_ID_KEY = "template_id"
+fun NavController.navigateToWorkoutScreen() = navigate(LiftingScreen.Workout)
 
 fun NavGraphBuilder.workoutScreen(
     navController: NavController,
     onNavigateToWorkoutEdit: (String) -> Unit,
     onNavigateToWorkoutTemplatePreview: (String) -> Unit
 ) {
-    composable<LiftingScreen.Workout> {
+    composable<LiftingScreen.Workout> { entry ->
 
         val viewModel: WorkoutViewModel = hiltViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()

@@ -8,3 +8,5 @@ val String.Companion.EMPTY: String
     get() = ""
 
 fun String.orEmpty() = this.ifBlank { "" }
+
+fun String.getIntValues(key: String = ",") = this.trim().split(key).map { it.trim().toInt() }

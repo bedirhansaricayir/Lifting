@@ -1,6 +1,8 @@
 package com.lifting.app.core.database.util
 
 import androidx.room.TypeConverter
+import com.lifting.app.core.common.extensions.toEpochMillis
+import com.lifting.app.core.common.extensions.toLocalDateTime
 import com.lifting.app.core.model.ExerciseCategory
 import com.lifting.app.core.model.LogSetType
 import com.lifting.app.core.model.PersonalRecord

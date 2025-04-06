@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.lifting.app.core.base.viewmodel.BaseViewModel
 import com.lifting.app.core.common.extensions.toArrayList
+import com.lifting.app.core.common.utils.generateUUID
 import com.lifting.app.core.data.repository.workouts.WorkoutsRepository
 import com.lifting.app.core.model.ExerciseLogEntry
 import com.lifting.app.core.model.ExerciseSetGroupNote
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
-import java.util.UUID
 import javax.inject.Inject
 import kotlin.ClassCastException
 
@@ -178,7 +178,7 @@ class WorkoutEditViewModel @Inject constructor(
         viewModelScope.launch {
             val now = LocalDateTime.now()
             val groupNote = ExerciseSetGroupNote(
-                id = UUID.randomUUID().toString(),
+                id = generateUUID,
                 exerciseWorkoutJunctionId = logEntriesWithExercise.junction.workoutId,
                 createdAt = now,
                 updatedAt = now,

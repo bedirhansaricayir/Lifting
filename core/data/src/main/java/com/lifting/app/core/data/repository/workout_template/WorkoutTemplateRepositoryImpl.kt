@@ -1,5 +1,6 @@
 package com.lifting.app.core.data.repository.workout_template
 
+import com.lifting.app.core.common.utils.generateUUID
 import com.lifting.app.core.data.mapper.Mapper.toEntity
 import com.lifting.app.core.database.dao.WorkoutTemplateDao
 import com.lifting.app.core.database.dao.WorkoutsDao
@@ -14,7 +15,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import java.time.LocalDateTime
-import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -33,7 +33,7 @@ class WorkoutTemplateRepositoryImpl @Inject constructor(
 
     override suspend fun createTemplate(): String {
         val workoutId = insertWorkout()
-        val templateId = UUID.randomUUID().toString()
+        val templateId = generateUUID
         val templateEntity = WorkoutTemplateEntity(
             id = templateId,
             workoutId = workoutId,
@@ -46,7 +46,7 @@ class WorkoutTemplateRepositoryImpl @Inject constructor(
     }
 
     private suspend fun insertWorkout(): String {
-        val workoutId = UUID.randomUUID().toString()
+        val workoutId = generateUUID
         val workoutEntity = WorkoutEntity(
             id = workoutId,
             isHidden = true,

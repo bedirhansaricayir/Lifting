@@ -1,5 +1,6 @@
 package com.lifting.app.core.data.repository.exercises
 
+import com.lifting.app.core.common.utils.generateUUID
 import com.lifting.app.core.database.dao.ExercisesDao
 import com.lifting.app.core.database.model.ExerciseEntity
 import com.lifting.app.core.database.model.ExerciseWithInfoResource
@@ -13,7 +14,6 @@ import com.lifting.app.core.model.ExerciseWithMuscle
 import com.lifting.app.core.model.LogEntriesWithWorkout
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -45,7 +45,7 @@ internal class ExercisesRepositoryImpl @Inject constructor(
         category: ExerciseCategory?
     ) = exercisesDao.insertExercise(
         ExerciseEntity(
-            exerciseId = UUID.randomUUID().toString(),
+            exerciseId = generateUUID,
             name = name,
             notes = notes,
             primaryMuscleTag = primaryMuscleTag,

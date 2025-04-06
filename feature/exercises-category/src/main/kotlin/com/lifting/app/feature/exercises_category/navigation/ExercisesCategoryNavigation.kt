@@ -8,6 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import com.lifting.app.core.navigation.screens.LiftingScreen
+import com.lifting.app.core.navigation.screens.LiftingScreen.Companion.SELECTED_EXERCISE_CATEGORY
 import com.lifting.app.feature.exercises_category.ExerciseCategoryScreen
 import com.lifting.app.feature.exercises_category.ExercisesCategoryUIEffect
 import com.lifting.app.feature.exercises_category.ExercisesCategoryUIEvent
@@ -16,16 +17,13 @@ import com.lifting.app.feature.exercises_category.ExercisesCategoryViewModel
 /**
  * Created by bedirhansaricayir on 22.08.2024
  */
-const val SELECTED_EXERCISE_CATEGORY = "SELECTED_EXERCISE_CATEGORY"
 
-val EXERCISES_CATEGORY_SCREEN = LiftingScreen.ExercisesCategoryBottomSheet().route
-
-fun NavController.navigateToExercisesCategory() = navigate(EXERCISES_CATEGORY_SCREEN)
+fun NavController.navigateToExercisesCategory() = navigate(LiftingScreen.ExercisesCategoryBottomSheet().route)
 
 fun NavGraphBuilder.exercisesCategoryBottomSheetScreen(
     navController: NavController
 ) {
-    bottomSheet(EXERCISES_CATEGORY_SCREEN) {
+    bottomSheet(LiftingScreen.ExercisesCategoryBottomSheet().route) {
 
         val viewModel: ExercisesCategoryViewModel = hiltViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()

@@ -12,14 +12,12 @@ import com.lifting.app.feature.workout_template_preview.WorkoutTemplatePreviewSc
 import com.lifting.app.feature.workout_template_preview.WorkoutTemplatePreviewUIEffect
 import com.lifting.app.feature.workout_template_preview.WorkoutTemplatePreviewViewModel
 
-val WORKOUT_TEMPLATE_PREVIEW = LiftingScreen.WorkoutTemplatePreview
-
-fun NavController.navigateToWorkoutTemplatePreview(templateId: String) =
-    navigate(LiftingScreen.WorkoutTemplatePreview(templateIdKey = templateId))
-
 /**
  * Created by bedirhansaricayir on 02.03.2025
  */
+
+fun NavController.navigateToWorkoutTemplatePreview(templateId: String) =
+    navigate(LiftingScreen.WorkoutTemplatePreview(templateIdKey = templateId))
 
 fun NavGraphBuilder.workoutTemplatePreviewScreen(
     onNavigateToWorkoutEdit: (String,Boolean) -> Unit,

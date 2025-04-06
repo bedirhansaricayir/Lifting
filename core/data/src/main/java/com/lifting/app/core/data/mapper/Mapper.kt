@@ -1,5 +1,6 @@
 package com.lifting.app.core.data.mapper
 
+import com.lifting.app.core.database.model.CountWithDateEntity
 import com.lifting.app.core.database.model.ExerciseEntity
 import com.lifting.app.core.database.model.ExerciseLogEntryEntity
 import com.lifting.app.core.database.model.ExerciseSetGroupNoteEntity
@@ -13,6 +14,7 @@ import com.lifting.app.core.database.model.WorkoutWithExtraInfoResource
 import com.lifting.app.core.database.model.calculateTotalVolume
 import com.lifting.app.core.database.model.getTotalPRs
 import com.lifting.app.core.database.model.toDomain
+import com.lifting.app.core.model.CountWithDate
 import com.lifting.app.core.model.Exercise
 import com.lifting.app.core.model.ExerciseLogEntry
 import com.lifting.app.core.model.ExerciseSetGroupNote
@@ -176,4 +178,12 @@ object Mapper {
             totalPRs = logEntries.getTotalPRs(workout.personalRecords?.size)
         )
     }
+
+    @JvmName("toDomainCountWithDateEntity")
+    fun List<CountWithDateEntity>.toDomain(): List<CountWithDate> = this.map { it.toDomain() }
+    fun CountWithDateEntity.toDomain(): CountWithDate =
+        CountWithDate(
+            date = date,
+            count = count
+        )
 }
