@@ -8,6 +8,7 @@ import com.lifting.app.core.database.dao.WorkoutsDao
 import com.lifting.app.core.database.model.ExerciseLogEntity
 import com.lifting.app.core.database.model.ExerciseLogEntryEntity
 import com.lifting.app.core.database.model.ExerciseWorkoutJunction
+import com.lifting.app.core.database.model.calculateTotalVolume
 import com.lifting.app.core.database.model.toDomain
 import com.lifting.app.core.model.CountWithDate
 import com.lifting.app.core.model.ExerciseLogEntry
@@ -19,6 +20,7 @@ import com.lifting.app.core.model.Workout
 import com.lifting.app.core.model.WorkoutWithExtraInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -132,5 +134,24 @@ class WorkoutsRepositoryImpl @Inject constructor(
 
     override fun getWorkoutsCountOnDateRange(dateStart: LocalDate, dateEnd: LocalDate) =
         workoutsDao.getWorkoutsCountOnDateRange(dateStart.toEpochMillis(), dateEnd.toEpochMillis())
+
+    override fun getTotalVolumeLiftedByWorkoutId(workoutId: String): Flow<Double> =
+        workoutsDao.getLogEntriesByWorkoutId(workoutId).map { it.calculateTotalVolume() }
+
+    override suspend fun deleteWorkoutWithAllDependencies(workoutId: String) {
+        val workout = getWorkout(workoutId).firstOrNull()
+        workout?.let { workout ->
+            // Get all ExerciseWorkoutJunctions related to workout
+            val junctions = workoutsDao.getExerciseWorkoutJunctionsNonFlow(workout.id)
+            // Delete all ExerciseLogEntries for workout using junction ids
+            workoutsDao.deleteAllLogEntriesForJunctionIds(junctionIds = junctions.map { it.id })
+            // Delete all ExerciseLogs for workout
+            workoutsDao.deleteAllLogsForWorkoutId(workoutId = workout.id)
+            // Delete all junctions related to workout
+            workoutsDao.deleteExerciseWorkoutJunctions(junctions.map { it.id })
+            // Delete workout
+            workoutsDao.deleteWorkout(workout.toEntity())
+        }
+    }
 
 }

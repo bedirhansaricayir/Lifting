@@ -30,7 +30,7 @@ sealed class LiftingScreen() {
     //<!-- region Sub-History -->
     @Serializable data object History : LiftingScreen()
     @Serializable data class Calendar(val selectedDateKey: String) : LiftingScreen()
-    @Serializable data class Session(val workoutIdKey: String) : LiftingScreen()
+    @Serializable data class WorkoutDetail(val workoutIdKey: String) : LiftingScreen()
     //<!-- endregion -->
 
     //<!-- region Sub-Workout -->

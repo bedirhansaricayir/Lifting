@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.pluralStringResource
 import com.lifting.app.core.common.extensions.EMPTY
@@ -49,7 +50,7 @@ internal fun HistoryListItem(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = LiftingTheme.colors.background.lighterColor(0.1f)
+            containerColor = LiftingTheme.colors.background.lighterColor()
         ),
         shape = LiftingTheme.shapes.medium,
         onClick = onClick
@@ -103,19 +104,19 @@ private fun SessionQuickInfo(
     ){
         duration?.let {
             SessionQuickInfoItem(
-                icon = LiftingTheme.icons.info,
+                icon = LiftingTheme.icons.timer,
                 text = duration.toDuration()
             )
         }
         volume?.let {
             SessionQuickInfoItem(
-                icon = LiftingTheme.icons.calendar,
+                icon = LiftingTheme.icons.weight,
                 text = "${volume.toKg()} kg"
             )
         }
         if (prs > 0) {
             SessionQuickInfoItem(
-                icon = LiftingTheme.icons.moreVert,
+                icon = LiftingTheme.icons.trophy,
                 text = pluralStringResource(
                     id = com.lifting.app.core.ui.R.plurals.number_of_prs,
                     count = prs,
@@ -128,7 +129,7 @@ private fun SessionQuickInfo(
 
 @Composable
 private fun SessionQuickInfoItem(
-    icon: ImageVector,
+    icon: Painter,
     text: String,
     modifier: Modifier = Modifier,
 ) {
@@ -139,7 +140,7 @@ private fun SessionQuickInfoItem(
     ){
         Icon(
             modifier = Modifier.size(LiftingTheme.dimensions.large),
-            imageVector = icon,
+            painter = icon,
             contentDescription = String.EMPTY,
             tint = LiftingTheme.colors.onBackground.copy(0.75f)
         )

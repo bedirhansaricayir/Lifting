@@ -35,7 +35,7 @@ class WorkoutTemplatePreviewViewModel @Inject constructor(
         when (event) {
             is WorkoutTemplatePreviewUIEvent.OnEditClicked -> navigateToWorkoutEdit(event.workoutId)
             WorkoutTemplatePreviewUIEvent.OnDeleteClicked -> deleteTemplateThenPopBackStack()
-            WorkoutTemplatePreviewUIEvent.OnBackIconClicked -> setPopBackStackEffect()
+            WorkoutTemplatePreviewUIEvent.OnBackClicked -> setPopBackStackEffect()
         }
     }
 

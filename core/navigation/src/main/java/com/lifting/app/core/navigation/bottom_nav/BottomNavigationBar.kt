@@ -3,6 +3,7 @@ package com.lifting.app.core.navigation.bottom_nav
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -52,7 +53,14 @@ internal fun BottomNavigationBar(
                         launchSingleTop = true
                         restoreState = true
                     }
-                }
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = LiftingTheme.colors.onBackground,
+                    selectedTextColor = LiftingTheme.colors.onBackground,
+                    indicatorColor = LiftingTheme.colors.background,
+                    unselectedIconColor = LiftingTheme.colors.onBackground.copy(alpha = 0.5f),
+                    unselectedTextColor = LiftingTheme.colors.onBackground.copy(alpha = 0.5f),
+                )
             )
         }
     }

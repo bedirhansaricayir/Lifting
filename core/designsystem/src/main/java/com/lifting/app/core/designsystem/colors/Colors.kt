@@ -88,12 +88,12 @@ fun lightLiftingColors(
 )
 
 fun darkLiftingColors(
-    primary: Color = Color(0xFF62003E),
-    onPrimary: Color = Color(0xFF1B0467),
+    primary: Color = Color(0xFF4a5df9),
+    onPrimary: Color = Color(0xFFffffff),
     secondary: Color = Color(0xFF03DA6C),
     onSecondary: Color = Color(0xFFB3C33E),
-    background: Color = Color.White,
-    onBackground: Color = Color.Black,
+    background: Color = Color(0xFF0c1014),
+    onBackground: Color = Color(0xFFf8f9f9),
     error: Color = Color.Red,
     onError: Color = Color.White,
 ): LiftingColors = LiftingColors(
@@ -120,4 +120,4 @@ internal fun LiftingColors.updateColorsFrom(other: LiftingColors) {
     isLight = other.isLight
 }
 
-internal val LocalColors = staticCompositionLocalOf { lightLiftingColors() }
+internal val LocalColors = staticCompositionLocalOf { darkLiftingColors() }

@@ -9,5 +9,5 @@ import com.lifting.app.core.base.viewmodel.Event
 sealed interface WorkoutTemplatePreviewUIEvent : Event {
     data class OnEditClicked(val workoutId: String) : WorkoutTemplatePreviewUIEvent
     data object OnDeleteClicked : WorkoutTemplatePreviewUIEvent
-    data object OnBackIconClicked : WorkoutTemplatePreviewUIEvent
+    data object OnBackClicked : WorkoutTemplatePreviewUIEvent
 }

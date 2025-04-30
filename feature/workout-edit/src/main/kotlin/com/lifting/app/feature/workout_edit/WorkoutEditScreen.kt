@@ -2,7 +2,6 @@ package com.lifting.app.feature.workout_edit
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -11,6 +10,7 @@ import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.ui.CollapsingToolBarScaffold
 import com.lifting.app.core.ui.top_bar.LiftingTopBar
 import com.lifting.app.core.ui.R
+import com.lifting.app.core.ui.components.LiftingIconButton
 import com.lifting.app.feature.workout_edit.components.LiftingWorkoutEditor
 import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
@@ -71,7 +71,12 @@ internal fun WorkoutEditScreenSuccess(
                 toolbarState = scaffoldState.toolbarState,
                 toolbarScope = this@CollapsingToolBarScaffold,
                 navigationIcon = {
-                    Icon(imageVector = LiftingTheme.icons.back, contentDescription = String.EMPTY)
+                    LiftingIconButton(
+                        imageVector = LiftingTheme.icons.back,
+                        contentDescription = String.EMPTY,
+                        tint = LiftingTheme.colors.onBackground,
+                        onClick = { onEvent(WorkoutEditUIEvent.OnBackClicked) }
+                    )
                 }
             )
         },

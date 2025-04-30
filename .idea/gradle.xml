@@ -43,6 +43,7 @@
             <option value="$PROJECT_DIR$/feature/exercises-muscle" />
             <option value="$PROJECT_DIR$/feature/history" />
             <option value="$PROJECT_DIR$/feature/workout" />
+            <option value="$PROJECT_DIR$/feature/workout-detail" />
             <option value="$PROJECT_DIR$/feature/workout-edit" />
             <option value="$PROJECT_DIR$/feature/workout-template-preview" />
           </set>

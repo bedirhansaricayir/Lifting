@@ -26,6 +26,7 @@ fun NavController.navigateToWorkoutEdit(workoutId: String, isTemplate: Boolean =
 fun NavGraphBuilder.workoutEditScreen(
     navController: NavController,
     navigateToExercises: () -> Unit,
+    navigateToBack: () -> Unit
 ) {
     composable<LiftingScreen.WorkoutEdit> {
         val viewModel: WorkoutEditViewModel = hiltViewModel()
@@ -36,6 +37,7 @@ fun NavGraphBuilder.workoutEditScreen(
             effect.collect { effect ->
                 when (effect) {
                     is WorkoutEditUIEffect.NavigateToExerciseSheet -> navigateToExercises()
+                    WorkoutEditUIEffect.PopBackStack -> navigateToBack()
                 }
             }
         }

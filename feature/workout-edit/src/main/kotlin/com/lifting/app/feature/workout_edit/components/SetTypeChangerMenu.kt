@@ -5,13 +5,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.model.LogSetType
+import com.lifting.app.core.ui.extensions.lighterColor
 
 /**
  * Created by bedirhansaricayir on 09.02.2025
@@ -28,16 +31,16 @@ internal fun SetTypeChangerMenu(
     val allTypes = LogSetType.values()
 
     DropdownMenu(
-        modifier = modifier,
+        modifier = modifier.background(LiftingTheme.colors.background.lighterColor(0.1f)),
         expanded = expanded,
         onDismissRequest = onDismissRequest,
     ) {
         allTypes.forEach { type ->
             with(type) {
                 val bgColor = if (selectedType == this) {
-                    Color.White
+                    LiftingTheme.colors.background.lighterColor(0.7f)
                 } else {
-                    Color.Transparent
+                    LiftingTheme.colors.background.lighterColor(0.1f)
                 }
 
 
@@ -51,7 +54,10 @@ internal fun SetTypeChangerMenu(
                     },
                     text = {
                         SetTypeName()
-                    }
+                    },
+                    colors = MenuDefaults.itemColors(
+                        textColor = LiftingTheme.colors.onBackground
+                    )
                 )
             }
         }

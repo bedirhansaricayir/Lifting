@@ -26,4 +26,5 @@ sealed interface WorkoutEditUIEvent : Event {
     data class OnDeleteNoteClicked(val exercisesSetGroupNote: ExerciseSetGroupNote) : WorkoutEditUIEvent
     data class OnNoteChanged(val exercisesSetGroupNote: ExerciseSetGroupNote) : WorkoutEditUIEvent
     data object OnAddExerciseButtonClicked : WorkoutEditUIEvent
+    data object OnBackClicked : WorkoutEditUIEvent
 }

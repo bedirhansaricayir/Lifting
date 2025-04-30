@@ -8,4 +8,5 @@ import com.lifting.app.core.base.viewmodel.Effect
 
 sealed interface WorkoutEditUIEffect : Effect {
     data object NavigateToExerciseSheet : WorkoutEditUIEffect
+    data object PopBackStack : WorkoutEditUIEffect
 }

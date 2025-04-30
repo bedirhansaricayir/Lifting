@@ -221,4 +221,23 @@ interface WorkoutsDao {
     """)
     fun getWorkoutsCountOnDateRange(dateStart: Long, dateEnd: Long): Flow<Long>
 
+    @Transaction
+    @Query("SELECT exercise_log_entries.* FROM exercise_log_entries JOIN exercise_workout_junctions j WHERE j.workout_id = :workoutId AND j.id = junction_id")
+    fun getLogEntriesByWorkoutId(workoutId: String): Flow<List<ExerciseLogEntryEntity>>
+
+    @Query("SELECT * FROM exercise_workout_junctions WHERE workout_id = :workoutId")
+    suspend fun getExerciseWorkoutJunctionsNonFlow(workoutId: String): List<ExerciseWorkoutJunction>
+
+    @Query("DELETE FROM exercise_log_entries WHERE junction_id IN (:junctionIds)")
+    suspend fun deleteAllLogEntriesForJunctionIds(junctionIds: List<String>)
+
+    @Query("DELETE FROM exercise_logs WHERE workout_id = :workoutId")
+    suspend fun deleteAllLogsForWorkoutId(workoutId: String)
+
+    @Query("DELETE FROM exercise_workout_junctions WHERE id IN (:ids)")
+    suspend fun deleteExerciseWorkoutJunctions(ids: List<String>)
+
+    @Delete
+    suspend fun deleteWorkout(workout: WorkoutEntity)
+
 }

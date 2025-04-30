@@ -58,6 +58,7 @@ class WorkoutEditViewModel @Inject constructor(
             is WorkoutEditUIEvent.OnDeleteNoteClicked -> deleteNote(event.exercisesSetGroupNote)
             is WorkoutEditUIEvent.OnNoteChanged -> updateNote(event.exercisesSetGroupNote)
             WorkoutEditUIEvent.OnAddExerciseButtonClicked -> navigateToExerciseSheet()
+            WorkoutEditUIEvent.OnBackClicked -> popBackStack()
         }
     }
 
@@ -202,5 +203,9 @@ class WorkoutEditViewModel @Inject constructor(
 
     private fun navigateToExerciseSheet() {
         setEffect(WorkoutEditUIEffect.NavigateToExerciseSheet)
+    }
+
+    private fun popBackStack() {
+        setEffect(WorkoutEditUIEffect.PopBackStack)
     }
 }

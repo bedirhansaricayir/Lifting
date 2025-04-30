@@ -13,8 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.model.Muscle
 
@@ -46,7 +48,7 @@ internal fun ExercisesMuscleScreenContent(
         ExercisesMuscleUIState.Loading -> {}
         is ExercisesMuscleUIState.Success ->
             ExercisesMuscleListScreen(
-                modifier = Modifier,
+                modifier = modifier,
                 state = state,
                 onEvent = onEvent
             )
@@ -69,7 +71,7 @@ internal fun ExercisesMuscleListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp, vertical = 12.dp),
-                text = "Select Muscle",
+                text = stringResource(com.lifting.app.core.ui.R.string.select_muscle),
                 textAlign = TextAlign.Center,
                 style = LiftingTheme.typography.header2,
                 color = LiftingTheme.colors.onBackground
@@ -112,7 +114,7 @@ internal fun ExercisesMuscleListItem(
         if (isSelected) {
             Icon(
                 imageVector = LiftingTheme.icons.done,
-                contentDescription = "Selected",
+                contentDescription = String.EMPTY,
                 tint = LiftingTheme.colors.primary
             )
         }

@@ -35,12 +35,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.model.Barbell
 import com.lifting.app.core.model.Exercise
@@ -245,13 +247,13 @@ fun LazyListScope.workoutExerciseItemComponent(
             onClick = onAddSet,
             elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = LiftingTheme.colors.background.lighterColor(0.05f),
+                containerColor = LiftingTheme.colors.background.lighterColor(),
                 contentColor = LiftingTheme.colors.onBackground,
             )
         ) {
             Icon(
                 imageVector = LiftingTheme.icons.add,
-                contentDescription = "Add Set Icon",
+                contentDescription = String.EMPTY,
                 modifier = Modifier.padding(end = LiftingTheme.dimensions.small),
                 tint = LiftingTheme.colors.onPrimary
             )
@@ -423,7 +425,14 @@ private fun SetItemLayout(
     ) {
         Box(
             modifier = Modifier
+                .height(32.dp)
+                .padding(horizontal = 8.dp)
                 .weight(0.5f)
+                .clip(LiftingTheme.shapes.large)
+                .background(
+                    color = bgColor.lighterColor(0.10f),
+                    shape = LiftingTheme.shapes.large
+                )
                 .clickable {
                     isSetTypeChangerExpanded = true
                 },

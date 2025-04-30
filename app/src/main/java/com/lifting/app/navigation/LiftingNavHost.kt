@@ -41,6 +41,8 @@ import com.lifting.app.feature.exercises_muscle.navigation.exercisesMuscleBottom
 import com.lifting.app.feature.exercises_muscle.navigation.navigateToExercisesMuscle
 import com.lifting.app.feature.history.navigation.historyScreen
 import com.lifting.app.feature.workout.navigation.workoutScreen
+import com.lifting.app.feature.workout_detail.navigation.navigateToWorkoutDetail
+import com.lifting.app.feature.workout_detail.navigation.workoutDetailScreen
 import com.lifting.app.feature.workout_edit.navigation.navigateToWorkoutEdit
 import com.lifting.app.feature.workout_edit.navigation.workoutEditScreen
 import com.lifting.app.feature.workout_template_preview.navigation.navigateToWorkoutTemplatePreview
@@ -63,8 +65,6 @@ fun LiftingNavHost() {
         navController = navController,
         bottomSheetNavigator = bottomSheetNavigator
     ) {
-
-
         MainScreenScaffold(
             panelHidden = true,
             swipeableState = rememberSwipeableState(initialValue = 0),
@@ -132,11 +132,21 @@ private fun NavGraphBuilder.historyRoot(navController: NavController) {
         startDestination = LiftingScreen.History
     ) {
         historyScreen(
-            navigateToCalendar = navController::navigateToCalendar
+            navigateToCalendar = navController::navigateToCalendar,
+            navigateToWorkoutDetail = navController::navigateToWorkoutDetail
         )
         calendarScreen(
             navController = navController,
             onNavigateBack = navController::popBackStack
+        )
+        workoutDetailScreen(
+            onNavigateBack = navController::popBackStack,
+            onNavigateToWorkoutEdit = navController::navigateToWorkoutEdit
+        )
+        workoutEditScreen(
+            navController = navController,
+            navigateToExercises = navController::navigateToExercisesBottomSheet,
+            navigateToBack = navController::popBackStack
         )
     }
 }
@@ -152,7 +162,8 @@ private fun NavGraphBuilder.workoutRoot(navController: NavController) {
         )
         workoutEditScreen(
             navController = navController,
-            navigateToExercises = navController::navigateToExercisesBottomSheet
+            navigateToExercises = navController::navigateToExercisesBottomSheet,
+            navigateToBack = navController::popBackStack
         )
         workoutTemplatePreviewScreen(
             onNavigateToWorkoutEdit = navController::navigateToWorkoutEdit,

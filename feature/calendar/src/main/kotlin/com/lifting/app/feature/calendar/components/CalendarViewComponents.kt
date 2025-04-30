@@ -174,9 +174,6 @@ fun CalendarDayItem(
     dotVisible: Boolean = false,
     onClick: () -> Unit
 ) {
-    val textColor =
-        if (isSelected) LiftingTheme.colors.primary else LiftingTheme.colors.onBackground
-
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(25))
@@ -208,7 +205,7 @@ fun CalendarDayItem(
                 .padding(start = 8.dp, end = 8.dp, top = 16.dp, bottom = 16.dp)
                 .align(Alignment.Center),
             textAlign = TextAlign.Center,
-            color = textColor,
+            color = LiftingTheme.colors.onBackground,
             style = LiftingTheme.typography.subtitle1
         )
 

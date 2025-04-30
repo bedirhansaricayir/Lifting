@@ -49,4 +49,26 @@
         <item quantity="one">%d workout</item>
         <item quantity="other">%d workouts</item>
     </plurals>
+    <string name="workout">Workout</string>
+    <string name="max_weight">Max Weight</string>
+    <string name="max_volume">Max Volume</string>
+    <string name="max_volume_added">Max Volume Added</string>
+    <string name="max_reps">Max Reps</string>
+    <string name="max_one_rm">Max One RM</string>
+    <string name="max_duration">Max Duration</string>
+    <string name="max_distance">Max Distance</string>
+    <string name="max_weight_added">Max Weight Added</string>
+    <string name="super_set">Super Set</string>
+    <string name="reps_lowercase">reps</string>
+    <string name="duration2">Duration</string>
+    <string name="exercise_name">Exercise Name</string>
+    <string name="exercise_notes">Exercise Notes</string>
+    <string name="name">Name</string>
+    <string name="notes">Notes</string>
+    <string name="select_muscle">Select Muscle</string>
+    <string name="select_category">Select Category</string>
+    <string name="category">Category</string>
+    <string name="primary_muscle">Primary Muscle</string>
+
+
 </resources>

@@ -88,6 +88,31 @@ class LiftingIcons {
     val calendar: ImageVector
         @Composable
         get() = Icons.Outlined.DateRange
+
+    val timer: Painter
+        @Composable
+        get() = painterResource(id = R.drawable.ic_timer)
+
+    val weight: Painter
+        @Composable
+        get() = painterResource(id = R.drawable.ic_weight)
+
+    val trophy: Painter
+        @Composable
+        get() = painterResource(id = R.drawable.ic_trophy)
+
+    val replay: Painter
+        @Composable
+        get() = painterResource(id = R.drawable.ic_replay)
+
+    val grid: Painter
+        @Composable
+        get() = painterResource(id = R.drawable.ic_grid)
+
+    val column: Painter
+        @Composable
+        get() = painterResource(id = R.drawable.ic_column)
+
 }
 
 internal val LocalIcons = staticCompositionLocalOf { LiftingIcons() }

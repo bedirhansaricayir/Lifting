@@ -17,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -59,7 +60,12 @@ fun LiftingTopSearchBar(
             .padding(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = onBackClick) {
+        IconButton(
+            colors = IconButtonDefaults.iconButtonColors(
+                contentColor = LiftingTheme.colors.onBackground
+            ),
+            onClick = onBackClick
+        ) {
             Icon(
                 imageVector = LiftingTheme.icons.back,
                 contentDescription = stringResource(id = R.string.back_button_content_description)
@@ -92,6 +98,7 @@ fun LiftingTopSearchBar(
                     modifier = leadingIconModifier,
                     imageVector = LiftingTheme.icons.search,
                     contentDescription = stringResource(id = R.string.search_bar_leading_icon_search_content_description),
+                    tint = LiftingTheme.colors.onBackground
                 )
             },
             trailingIcon = {
@@ -125,7 +132,9 @@ fun LiftingTopSearchBar(
                 focusedContainerColor = LiftingTheme.colors.background,
                 unfocusedContainerColor = LiftingTheme.colors.background,
                 cursorColor = LiftingTheme.colors.onBackground,
-                focusedIndicatorColor = LiftingTheme.colors.onBackground
+                focusedIndicatorColor = LiftingTheme.colors.onBackground,
+                focusedPlaceholderColor = LiftingTheme.colors.onBackground,
+                unfocusedPlaceholderColor = LiftingTheme.colors.onBackground
             )
         )
     }

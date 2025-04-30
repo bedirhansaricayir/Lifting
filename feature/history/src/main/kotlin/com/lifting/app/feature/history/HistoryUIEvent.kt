@@ -8,4 +8,5 @@ import com.lifting.app.core.base.viewmodel.Event
 
 sealed interface HistoryUIEvent : Event {
     data object OnCalendarClicked : HistoryUIEvent
+    data class OnWorkoutClicked(val workoutId: String) : HistoryUIEvent
 }

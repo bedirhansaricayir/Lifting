@@ -10,9 +10,10 @@ import java.time.ZoneId
  */
 
 fun Long.toDuration(): String {
-    val hours = this / 3_600_000
-    val minutes = (this % 3_600_000) / 60_000
-    val seconds = (this % 60_000) / 1_000
+    val totalSeconds = this
+    val hours = totalSeconds / 3600
+    val minutes = (totalSeconds % 3600) / 60
+    val seconds = totalSeconds % 60
 
     return listOfNotNull(
         hours.takeIf { it > 0 }?.let { "${it}h" },

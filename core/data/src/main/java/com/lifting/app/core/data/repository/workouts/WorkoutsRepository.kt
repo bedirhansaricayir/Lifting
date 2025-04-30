@@ -44,5 +44,8 @@ interface WorkoutsRepository {
 
     fun getWorkoutsCount(): Flow<List<CountWithDate>>
     fun getWorkoutsCountOnDateRange(dateStart: LocalDate, dateEnd: LocalDate): Flow<Long>
+    fun getTotalVolumeLiftedByWorkoutId(workoutId: String): Flow<Double>
+
+    suspend fun deleteWorkoutWithAllDependencies(workoutId: String)
 
 }

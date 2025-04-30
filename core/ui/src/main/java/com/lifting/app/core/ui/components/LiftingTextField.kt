@@ -40,8 +40,8 @@ fun LiftingTextField(
         colors = TextFieldDefaults.colors(
             unfocusedTextColor = LiftingTheme.colors.onBackground,
             focusedTextColor = LiftingTheme.colors.onBackground,
-            unfocusedContainerColor = LiftingTheme.colors.background.lighterColor(0.1f),
-            focusedContainerColor = LiftingTheme.colors.background.lighterColor(0.1f),
+            unfocusedContainerColor = LiftingTheme.colors.background.lighterColor(),
+            focusedContainerColor = LiftingTheme.colors.background.lighterColor(),
             unfocusedIndicatorColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent

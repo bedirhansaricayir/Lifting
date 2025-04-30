@@ -8,8 +8,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 
 /**
  * Created by bedirhansaricayir on 18.08.2024
@@ -18,8 +18,8 @@ import androidx.compose.ui.res.painterResource
 @Composable
 fun LiftingIconButton(
     modifier: Modifier = Modifier,
-    imageVector: ImageVector?,
-    painterRes: Int? = null,
+    imageVector: ImageVector? = null,
+    painterRes: Painter? = null,
     contentDescription: String,
     enabled: Boolean = true,
     tint: Color,
@@ -41,7 +41,7 @@ fun LiftingIconButton(
             )
         } ?: painterRes?.let {
             Icon(
-                painter = painterResource(id = it),
+                painter = it,
                 contentDescription = contentDescription,
                 tint = tint
             )

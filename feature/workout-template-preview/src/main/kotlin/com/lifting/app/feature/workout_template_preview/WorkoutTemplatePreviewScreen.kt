@@ -79,7 +79,7 @@ internal fun WorkoutTemplatePreviewScreenSuccess(
                         imageVector = LiftingTheme.icons.back,
                         contentDescription = String.EMPTY,
                         tint = LiftingTheme.colors.onBackground,
-                        onClick = {}
+                        onClick = { onEvent(WorkoutTemplatePreviewUIEvent.OnBackClicked) }
                     )
                 },
                 actions = {
@@ -107,7 +107,7 @@ internal fun WorkoutTemplatePreviewScreenSuccess(
         body = {
             val lastPerformedStr = state.template.lastPerformedAt?.toReadableFormat()
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize(),
                 contentPadding = PaddingValues(LiftingTheme.dimensions.large)
             ) {
                 lastPerformedStr?.let { lastPerformed ->

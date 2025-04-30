@@ -9,5 +9,6 @@ import java.text.DecimalFormat
 fun Double?.orEmpty() = this ?: 0.0
 fun Double?.toKg() = this?.orEmpty()?.toFormattedKg() ?: ""
 fun Double.toFormattedKg(): String = DecimalFormat("#.##").format(this)
+fun Double.toFormattedKm(): String = DecimalFormat("#.###").format(this)
 
 

@@ -48,6 +48,17 @@ class LiftingShapes {
             bottomEnd = if (isRight && isBottomRow) 8.dp else 0.dp
         )
     }
+
+    @Composable
+    fun listShapes(listSize: Int,index: Int): CornerBasedShape {
+        return if (listSize == 1) RoundedCornerShape(8.dp)
+        else RoundedCornerShape(
+            topStart = if (index == 0) 8.dp else 0.dp,
+            topEnd = if (index == 0) 8.dp else 0.dp,
+            bottomStart = if (index == listSize - 1) 8.dp else 0.dp,
+            bottomEnd = if (index == listSize - 1) 8.dp else 0.dp
+        )
+    }
 }
 
 internal val LocalShapes = staticCompositionLocalOf { LiftingShapes() }

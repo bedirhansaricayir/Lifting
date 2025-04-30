@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.model.Barbell
 import com.lifting.app.core.model.ExerciseLogEntry
@@ -151,13 +152,16 @@ fun LiftingWorkoutEditor(
                     .animateItem(),
                 onClick = {
                     onAddExerciseButtonClicked()
-                }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = LiftingTheme.colors.primary,
+                    contentColor = LiftingTheme.colors.onPrimary
+                )
             ) {
                 Icon(
                     imageVector = LiftingTheme.icons.add,
-                    contentDescription = "Add Exercise Icon",
+                    contentDescription = String.EMPTY,
                     modifier = Modifier.padding(end = 8.dp),
-                    tint = LiftingTheme.colors.onPrimary
                 )
                 Text(
                     text = stringResource(com.lifting.app.core.ui.R.string.add_exercise),

@@ -14,7 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
@@ -81,7 +81,11 @@ internal fun CreateExerciseScreenSuccess(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(text = "Name", style = LiftingTheme.typography.caption, color = Color.Gray)
+            Text(
+                text = stringResource(com.lifting.app.core.ui.R.string.name),
+                style = LiftingTheme.typography.caption,
+                color = LiftingTheme.colors.onBackground
+            )
 
             LiftingTextField(
                 value = state.exerciseName.orEmpty(),
@@ -90,9 +94,13 @@ internal fun CreateExerciseScreenSuccess(
                     capitalization = KeyboardCapitalization.Words,
                     imeAction = ImeAction.Next
                 ),
-                placeholder = "Exercise Name"
+                placeholder = stringResource(com.lifting.app.core.ui.R.string.exercise_name)
             )
-            Text(text = "Notes", style = LiftingTheme.typography.caption, color = Color.Gray)
+            Text(
+                text = stringResource(com.lifting.app.core.ui.R.string.notes),
+                style = LiftingTheme.typography.caption,
+                color = LiftingTheme.colors.onBackground
+            )
 
             LiftingTextField(
                 value = state.exerciseNotes.orEmpty(),
@@ -101,19 +109,19 @@ internal fun CreateExerciseScreenSuccess(
                     capitalization = KeyboardCapitalization.Sentences,
                     imeAction = ImeAction.Done
                 ),
-                placeholder = "Exercise Notes"
+                placeholder = stringResource(com.lifting.app.core.ui.R.string.exercise_notes)
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             SingleSelectableCard(
-                name = "Category",
+                name = stringResource(com.lifting.app.core.ui.R.string.category),
                 value = state.selectedCategory.readableName,
                 onClick = { onEvent(CreateExerciseUIEvent.OnCategoryClicked(state.selectedCategory.tag)) }
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             SingleSelectableCard(
-                name = "Primary Muscle",
+                name = stringResource(com.lifting.app.core.ui.R.string.primary_muscle),
                 value = state.selectedMuscle?.name,
                 onClick = { onEvent(CreateExerciseUIEvent.OnMuscleClicked(state.selectedMuscle?.tag)) }
             )

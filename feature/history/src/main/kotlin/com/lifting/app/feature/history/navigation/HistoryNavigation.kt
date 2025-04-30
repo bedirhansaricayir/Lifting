@@ -21,7 +21,8 @@ import com.lifting.app.feature.history.HistoryViewModel
  */
 
 fun NavGraphBuilder.historyScreen(
-    navigateToCalendar: () -> Unit
+    navigateToCalendar: () -> Unit,
+    navigateToWorkoutDetail: (workoutId: String) -> Unit
 ) {
     composable<LiftingScreen.History> { entry ->
         val viewModel: HistoryViewModel = hiltViewModel()
@@ -32,6 +33,7 @@ fun NavGraphBuilder.historyScreen(
             effect.collect { effect ->
                 when (effect) {
                     HistoryUIEffect.NavigateToCalendar -> navigateToCalendar()
+                    is HistoryUIEffect.NavigateToWorkoutDetail -> navigateToWorkoutDetail(effect.workoutId)
                     else -> Unit
                 }
             }

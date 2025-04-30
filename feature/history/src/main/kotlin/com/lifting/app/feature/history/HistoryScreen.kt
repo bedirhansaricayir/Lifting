@@ -141,7 +141,7 @@ internal fun HistoryScreenSuccess(
                                 duration = data.workout?.duration,
                                 volume = data.totalVolume,
                                 prs = data.totalPRs ?: 0,
-                                onClick = { /*TODO*/ }
+                                onClick = { onEvent(HistoryUIEvent.OnWorkoutClicked(data.workout?.id!!)) }
                             )
                         }
 

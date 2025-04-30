@@ -38,7 +38,12 @@ class HistoryViewModel @Inject constructor(
 
     private val dateStart = dateRangeType.map { rangeType ->
         when (rangeType) {
-            is WorkoutsDateRangeType.Day -> LocalDate.of(rangeType.year, rangeType.month, rangeType.day)
+            is WorkoutsDateRangeType.Day -> LocalDate.of(
+                rangeType.year,
+                rangeType.month,
+                rangeType.day
+            )
+
             is WorkoutsDateRangeType.Month -> LocalDate.of(rangeType.year, rangeType.month, 1)
             is WorkoutsDateRangeType.Year -> LocalDate.of(rangeType.year, 1, 1)
             else -> null
@@ -47,9 +52,18 @@ class HistoryViewModel @Inject constructor(
 
     private val dateEnd = dateRangeType.map { rangeType ->
         when (rangeType) {
-            is WorkoutsDateRangeType.Day -> LocalDate.of(rangeType.year, rangeType.month, rangeType.day)
-            is WorkoutsDateRangeType.Month -> YearMonth.of(rangeType.year, rangeType.month).atEndOfMonth()
-            is WorkoutsDateRangeType.Year -> Year.of(rangeType.year).atMonth(Month.DECEMBER).atEndOfMonth()
+            is WorkoutsDateRangeType.Day -> LocalDate.of(
+                rangeType.year,
+                rangeType.month,
+                rangeType.day
+            )
+
+            is WorkoutsDateRangeType.Month -> YearMonth.of(rangeType.year, rangeType.month)
+                .atEndOfMonth()
+
+            is WorkoutsDateRangeType.Year -> Year.of(rangeType.year).atMonth(Month.DECEMBER)
+                .atEndOfMonth()
+
             else -> null
         }
     }.stateIn(viewModelScope, SharingStarted.Lazily, null)
@@ -58,6 +72,7 @@ class HistoryViewModel @Inject constructor(
     override fun handleEvents(event: HistoryUIEvent) {
         when (event) {
             HistoryUIEvent.OnCalendarClicked -> navigateToCalendar()
+            is HistoryUIEvent.OnWorkoutClicked -> navigateToWorkoutDetail(event.workoutId)
             else -> Unit
         }
     }
@@ -105,8 +120,10 @@ class HistoryViewModel @Inject constructor(
             val start = dateStart.value
             val end = dateEnd.value
 
-            val afterDate = after.workout?.startAt?.toLocalDate()?.with(TemporalAdjusters.firstDayOfMonth())
-            val beforeDate = before?.workout?.startAt?.toLocalDate()?.with(TemporalAdjusters.firstDayOfMonth())
+            val afterDate =
+                after.workout?.startAt?.toLocalDate()?.with(TemporalAdjusters.firstDayOfMonth())
+            val beforeDate =
+                before?.workout?.startAt?.toLocalDate()?.with(TemporalAdjusters.firstDayOfMonth())
 
             if (after.workout?.startAt != null && afterDate != null && beforeDate != afterDate) {
                 val count = if (
@@ -125,12 +142,16 @@ class HistoryViewModel @Inject constructor(
                 }
                 add(CountWithDate(count = count, date = afterDate.toEpochMillis()))
             }
-           add(after)
+            add(after)
         }
     }
 
     private fun navigateToCalendar() {
         setEffect(HistoryUIEffect.NavigateToCalendar)
+    }
+
+    private fun navigateToWorkoutDetail(workoutId: String) {
+        setEffect(HistoryUIEffect.NavigateToWorkoutDetail(workoutId))
     }
 
     fun setSelectedDay(day: String) {

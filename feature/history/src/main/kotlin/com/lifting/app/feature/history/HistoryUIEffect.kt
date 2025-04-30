@@ -8,4 +8,5 @@ import com.lifting.app.core.base.viewmodel.Effect
 
 sealed interface HistoryUIEffect : Effect {
     data object NavigateToCalendar : HistoryUIEffect
+    data class NavigateToWorkoutDetail(val workoutId: String) : HistoryUIEffect
 }
