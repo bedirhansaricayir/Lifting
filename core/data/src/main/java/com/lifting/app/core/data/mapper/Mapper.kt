@@ -161,7 +161,7 @@ object Mapper {
         LogEntriesWithExtraInfo(
             junction = junction.toDomain(),
             exercise = exercise.toDomain(),
-            primaryMuscle = primaryMuscle.toDomain(),
+            primaryMuscle = primaryMuscle?.toDomain(),
             logEntries = logEntries.map { it.toDomain() }
         )
     }

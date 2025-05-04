@@ -7,10 +7,8 @@ import com.lifting.app.core.base.viewmodel.Event
  */
 
 sealed interface ExercisesUIEvent : Event {
-    data object OnSearchClick: ExercisesUIEvent
     data object OnAddClick: ExercisesUIEvent
     data class OnSearchQueryChanged(val query: String): ExercisesUIEvent
-    data object OnBackClick: ExercisesUIEvent
     data object OnFilterClick: ExercisesUIEvent
     data class OnExerciseClick(val id: String,val isBottomSheet: Boolean): ExercisesUIEvent
 }

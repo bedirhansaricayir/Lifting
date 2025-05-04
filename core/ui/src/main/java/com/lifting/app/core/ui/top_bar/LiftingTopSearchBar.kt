@@ -35,6 +35,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.ui.R
+import com.lifting.app.core.ui.components.HorizontalSlidingAnimationContainer
 
 /**
  * Created by bedirhansaricayir on 04.08.2024
@@ -91,6 +92,7 @@ fun LiftingTopSearchBar(
             placeholder = {
                 Text(
                     text = placeholder,
+                    color = LiftingTheme.colors.onBackground.copy(0.75f)
                 )
             },
             leadingIcon = {
@@ -102,30 +104,19 @@ fun LiftingTopSearchBar(
                 )
             },
             trailingIcon = {
-                AnimatedVisibility(
+                HorizontalSlidingAnimationContainer(
                     visible = value.isNotEmpty(),
-                    enter = slideInHorizontally(
-                        animationSpec = tween(durationMillis = DURATION_ENTER)
-                    ) {
-                        with(density) { 40.dp.roundToPx() }
-                    } + expandHorizontally(
-                        animationSpec = tween(durationMillis = DURATION_ENTER),
-                        expandFrom = Alignment.End
-                    ) + fadeIn(
-                        initialAlpha = 0.3f
-                    ),
-                    exit = slideOutHorizontally {
-                        with(density) { 40.dp.roundToPx() }
-                    } + shrinkHorizontally() + fadeOut()
-                ) {
-                    IconButton(onClick = { onValueChange("") }
-                    ) {
-                        Icon(
-                            imageVector = LiftingTheme.icons.clear,
-                            contentDescription = stringResource(id = R.string.search_bar_trailing_icon_clear_content_description)
-                        )
+                    content = {
+                        IconButton(onClick = { onValueChange("") }
+                        ) {
+                            Icon(
+                                imageVector = LiftingTheme.icons.clear,
+                                contentDescription = stringResource(id = R.string.search_bar_trailing_icon_clear_content_description),
+                                tint = LiftingTheme.colors.onBackground
+                            )
+                        }
                     }
-                }
+                )
             },
             shape = CircleShape,
             colors = TextFieldDefaults.colors().copy(
@@ -134,7 +125,9 @@ fun LiftingTopSearchBar(
                 cursorColor = LiftingTheme.colors.onBackground,
                 focusedIndicatorColor = LiftingTheme.colors.onBackground,
                 focusedPlaceholderColor = LiftingTheme.colors.onBackground,
-                unfocusedPlaceholderColor = LiftingTheme.colors.onBackground
+                unfocusedPlaceholderColor = LiftingTheme.colors.onBackground,
+                focusedTextColor = LiftingTheme.colors.onBackground,
+                unfocusedTextColor = LiftingTheme.colors.onBackground
             )
         )
     }

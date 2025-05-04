@@ -34,7 +34,6 @@ class ExercisesViewModel @Inject constructor(
             setState(
                 ExercisesUIState.Success(
                     groupedExercises = groupExercises(exerciseList),
-                    searchMode = (getCurrentState() as? ExercisesUIState.Success)?.searchMode ?: false,
                     searchQuery = (getCurrentState() as? ExercisesUIState.Success)?.searchQuery ?: ""
                 )
             )
@@ -52,9 +51,7 @@ class ExercisesViewModel @Inject constructor(
     override fun handleEvents(event: ExercisesUIEvent) {
         when (event) {
             ExercisesUIEvent.OnAddClick -> setEffect(ExercisesUIEffect.NavigateToAddExercise)
-            ExercisesUIEvent.OnSearchClick -> searchClicked()
             is ExercisesUIEvent.OnSearchQueryChanged -> onSearchQueryChanged(event.query)
-            ExercisesUIEvent.OnBackClick -> backClicked()
             ExercisesUIEvent.OnFilterClick -> filterClicked()
             is ExercisesUIEvent.OnExerciseClick -> exerciseClicked(event.id,event.isBottomSheet)
         }
@@ -70,17 +67,6 @@ class ExercisesViewModel @Inject constructor(
         setSavedStateHandle(query)
         updateState { currentState ->
             (currentState as ExercisesUIState.Success).copy(searchQuery = query)
-        }
-    }
-
-    private fun searchClicked() = updateState { currentState ->
-        (currentState as ExercisesUIState.Success).copy(searchMode = !currentState.searchMode)
-    }
-
-    private fun backClicked() {
-        setSavedStateHandle()
-        updateState { currentState ->
-            (currentState as ExercisesUIState.Success).copy(searchMode = false, searchQuery = "")
         }
     }
 

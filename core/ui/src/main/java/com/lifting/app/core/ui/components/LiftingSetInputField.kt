@@ -50,7 +50,7 @@ fun RowScope.LiftingSetInputField(
             .padding(start = 8.dp, end = 8.dp)
             .weight(layoutWeight)
             .clip(RoundedCornerShape(12.dp))
-            .background(containerColor.lighterColor(0.10f)),
+            .background(containerColor.lighterColor()),
     ) {
         val width = with(LocalDensity.current) { constraints.minWidth.toDp() }
         val height = with(LocalDensity.current) { constraints.minHeight.toDp() }

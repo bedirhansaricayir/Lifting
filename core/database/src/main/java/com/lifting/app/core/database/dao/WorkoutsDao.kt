@@ -119,8 +119,8 @@ interface WorkoutsDao {
         var mSetNumber = 0
 
         for (set in warmUpSets) {
-            val entryId = generateUUID
-            val logId = generateUUID
+            val entryId = generateUUID()
+            val logId = generateUUID()
 
             val newEntry =
                 set.copy(
@@ -192,7 +192,7 @@ interface WorkoutsDao {
     @Query(
         """
         SELECT * FROM workouts w
-        WHERE w.is_hidden = 0 AND w.in_progress = 0 
+        WHERE w.is_hidden = 0 AND w.in_progress = 0 AND w.completed_at IS NOT NULL
         ORDER BY w.completed_at DESC
         """
     )
@@ -239,5 +239,8 @@ interface WorkoutsDao {
 
     @Delete
     suspend fun deleteWorkout(workout: WorkoutEntity)
+
+    @Query("SELECT * FROM exercise_logs WHERE id = :logId")
+    fun getExerciseLogByLogId(logId: String): Flow<ExerciseLogEntity>
 
 }

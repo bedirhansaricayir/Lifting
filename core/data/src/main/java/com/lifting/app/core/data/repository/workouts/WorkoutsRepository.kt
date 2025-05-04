@@ -1,5 +1,6 @@
 package com.lifting.app.core.data.repository.workouts
 
+import com.lifting.app.core.database.model.ExerciseLogEntity
 import com.lifting.app.core.model.CountWithDate
 import com.lifting.app.core.model.ExerciseLogEntry
 import com.lifting.app.core.model.ExerciseSetGroupNote
@@ -18,6 +19,8 @@ import java.util.ArrayList
 interface WorkoutsRepository {
     fun getWorkout(workoutId: String): Flow<Workout>
     fun getWorkoutsWithExtraInfo(dateStart: LocalDate? = null, dateEnd: LocalDate? = null): Flow<List<WorkoutWithExtraInfo>>
+    fun getActiveWorkoutId(): Flow<String>
+    suspend fun setActiveWorkoutId(workoutId: String)
     suspend fun updateWorkout(workout: Workout)
     suspend fun addExerciseToWorkout(workoutId: String, exerciseId: String)
     suspend fun addEmptySetToExercise(setNumber: Int, exerciseWorkoutJunc: ExerciseWorkoutJunc): ExerciseLogEntry
@@ -47,5 +50,12 @@ interface WorkoutsRepository {
     fun getTotalVolumeLiftedByWorkoutId(workoutId: String): Flow<Double>
 
     suspend fun deleteWorkoutWithAllDependencies(workoutId: String)
+
+    fun getExerciseLogByLogId(logId: String): Flow<ExerciseLogEntity>
+    suspend fun startWorkoutFromTemplate(
+        templateId: String,
+        discardActive: Boolean,
+        onWorkoutAlreadyActive: () -> Unit
+    )
 
 }

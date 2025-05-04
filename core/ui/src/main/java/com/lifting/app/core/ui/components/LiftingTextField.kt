@@ -27,8 +27,7 @@ fun LiftingTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     shape: CornerBasedShape = LiftingTheme.shapes.small,
     placeholder: String? = null
-
-    ) {
+) {
     TextField(
         modifier = modifier.fillMaxWidth(),
         value = value,
@@ -47,7 +46,14 @@ fun LiftingTextField(
             disabledIndicatorColor = Color.Transparent
         ),
         shape = shape,
-        placeholder = placeholder?.let { { Text(text = it) } }
+        placeholder = placeholder?.let {
+            {
+                Text(
+                    text = it,
+                    color = LiftingTheme.colors.onBackground.copy(alpha = 0.75f),
+                )
+            }
+        }
     )
 }
 

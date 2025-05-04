@@ -10,4 +10,7 @@ sealed interface WorkoutTemplatePreviewUIEvent : Event {
     data class OnEditClicked(val workoutId: String) : WorkoutTemplatePreviewUIEvent
     data object OnDeleteClicked : WorkoutTemplatePreviewUIEvent
     data object OnBackClicked : WorkoutTemplatePreviewUIEvent
+    data object OnPlayClicked : WorkoutTemplatePreviewUIEvent
+    data object OnDialogDismissClicked : WorkoutTemplatePreviewUIEvent
+    data object OnDialogConfirmClicked : WorkoutTemplatePreviewUIEvent
 }

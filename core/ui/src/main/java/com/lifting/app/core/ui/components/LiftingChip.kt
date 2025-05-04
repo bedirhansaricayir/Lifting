@@ -5,9 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.lifting.app.core.designsystem.LiftingTheme
-import com.lifting.app.core.ui.extensions.lighterColor
 
 /**
  * Created by bedirhansaricayir on 22.03.2025
@@ -28,7 +28,8 @@ fun LiftingChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = LiftingTheme.shapes.medium,
-    backgroundColor: Color = LiftingTheme.colors.background.lighterColor(0.1f),
+    containerColor: Color = LiftingTheme.colors.primary,
+    contentColor: Color = LiftingTheme.colors.onPrimary,
     border: BorderStroke? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     content: @Composable RowScope.() -> Unit
@@ -37,20 +38,17 @@ fun LiftingChip(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        color = backgroundColor,
+        color = containerColor,
+        contentColor = contentColor,
         shape = shape,
         border = border
     ) {
         Row(
             modifier = Modifier
-                .defaultMinSize(
-                    minHeight = 32.dp
-                )
-                .padding(LiftingTheme.dimensions.small)
-                .padding(
-                    end = if (trailingIcon == null) LiftingTheme.dimensions.medium else LiftingTheme.dimensions.default
-                ),
-            horizontalArrangement = Arrangement.Start,
+                .height(32.dp)
+                .wrapContentWidth()
+                .padding(LiftingTheme.dimensions.small),
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             content()

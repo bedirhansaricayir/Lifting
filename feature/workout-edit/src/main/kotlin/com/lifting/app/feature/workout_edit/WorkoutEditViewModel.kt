@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.lifting.app.core.base.viewmodel.BaseViewModel
 import com.lifting.app.core.common.extensions.toArrayList
+import com.lifting.app.core.common.utils.Constants.NONE_WORKOUT_ID
 import com.lifting.app.core.common.utils.generateUUID
 import com.lifting.app.core.data.repository.workouts.WorkoutsRepository
 import com.lifting.app.core.model.ExerciseLogEntry
@@ -63,7 +64,7 @@ class WorkoutEditViewModel @Inject constructor(
     }
 
     init {
-        if (workoutId != "none") {
+        if (workoutId != NONE_WORKOUT_ID) {
             workoutEditUiState(workoutId)
         }
     }
@@ -179,7 +180,7 @@ class WorkoutEditViewModel @Inject constructor(
         viewModelScope.launch {
             val now = LocalDateTime.now()
             val groupNote = ExerciseSetGroupNote(
-                id = generateUUID,
+                id = generateUUID(),
                 exerciseWorkoutJunctionId = logEntriesWithExercise.junction.workoutId,
                 createdAt = now,
                 updatedAt = now,

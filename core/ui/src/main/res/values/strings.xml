@@ -69,6 +69,10 @@
     <string name="select_category">Select Category</string>
     <string name="category">Category</string>
     <string name="primary_muscle">Primary Muscle</string>
+    <string name="cancel">Cancel</string>
+    <string name="discard">Discard</string>
+    <string name="workout_in_progress">Workout in progress</string>
+    <string name="workout_in_progress_description">You are currently performing a workout. Would you like to discard it?</string>
 
 
 </resources>

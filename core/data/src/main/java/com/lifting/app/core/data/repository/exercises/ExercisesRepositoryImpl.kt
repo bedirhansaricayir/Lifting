@@ -45,7 +45,7 @@ internal class ExercisesRepositoryImpl @Inject constructor(
         category: ExerciseCategory?
     ) = exercisesDao.insertExercise(
         ExerciseEntity(
-            exerciseId = generateUUID,
+            exerciseId = generateUUID(),
             name = name,
             notes = notes,
             primaryMuscleTag = primaryMuscleTag,

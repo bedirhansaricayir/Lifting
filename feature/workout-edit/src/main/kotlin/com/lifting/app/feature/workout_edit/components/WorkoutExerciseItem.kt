@@ -430,7 +430,7 @@ private fun SetItemLayout(
                 .weight(0.5f)
                 .clip(LiftingTheme.shapes.large)
                 .background(
-                    color = bgColor.lighterColor(0.10f),
+                    color = bgColor.lighterColor(),
                     shape = LiftingTheme.shapes.large
                 )
                 .clickable {

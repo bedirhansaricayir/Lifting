@@ -7,6 +7,6 @@ package com.lifting.app.core.model
 data class LogEntriesWithExtraInfo(
     val junction: ExerciseWorkoutJunc,
     val exercise: Exercise,
-    val primaryMuscle: Muscle,
+    val primaryMuscle: Muscle?,
     val logEntries: List<ExerciseLogEntry>
 )

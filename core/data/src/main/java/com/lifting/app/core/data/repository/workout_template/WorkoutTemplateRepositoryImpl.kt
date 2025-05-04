@@ -33,26 +33,28 @@ class WorkoutTemplateRepositoryImpl @Inject constructor(
 
     override suspend fun createTemplate(): String {
         val workoutId = insertWorkout()
-        val templateId = generateUUID
+        val templateId = generateUUID()
+        val now = LocalDateTime.now()
         val templateEntity = WorkoutTemplateEntity(
             id = templateId,
             workoutId = workoutId,
             isHidden = false,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now(),
+            createdAt = now,
+            updatedAt = now,
         )
         workoutTemplateDao.insertTemplate(templateEntity)
         return workoutId
     }
 
     private suspend fun insertWorkout(): String {
-        val workoutId = generateUUID
+        val workoutId = generateUUID()
+        val now = LocalDateTime.now()
         val workoutEntity = WorkoutEntity(
             id = workoutId,
-            isHidden = true,
+            isHidden = false,
             inProgress = false,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now(),
+            createdAt = now,
+            updatedAt = now,
         )
         workoutsDao.insertWorkout(workoutEntity)
         return workoutId

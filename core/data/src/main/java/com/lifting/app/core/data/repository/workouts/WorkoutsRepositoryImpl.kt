@@ -1,15 +1,18 @@
 package com.lifting.app.core.data.repository.workouts
 
 import com.lifting.app.core.common.extensions.toEpochMillis
+import com.lifting.app.core.common.utils.Constants.NONE_WORKOUT_ID
 import com.lifting.app.core.common.utils.generateUUID
 import com.lifting.app.core.data.mapper.Mapper.toDomain
 import com.lifting.app.core.data.mapper.Mapper.toEntity
+import com.lifting.app.core.database.dao.WorkoutTemplateDao
 import com.lifting.app.core.database.dao.WorkoutsDao
 import com.lifting.app.core.database.model.ExerciseLogEntity
 import com.lifting.app.core.database.model.ExerciseLogEntryEntity
 import com.lifting.app.core.database.model.ExerciseWorkoutJunction
 import com.lifting.app.core.database.model.calculateTotalVolume
 import com.lifting.app.core.database.model.toDomain
+import com.lifting.app.core.datastore.PreferencesStorage
 import com.lifting.app.core.model.CountWithDate
 import com.lifting.app.core.model.ExerciseLogEntry
 import com.lifting.app.core.model.ExerciseSetGroupNote
@@ -20,18 +23,22 @@ import com.lifting.app.core.model.Workout
 import com.lifting.app.core.model.WorkoutWithExtraInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
+import kotlin.collections.arrayListOf
 
 /**
  * Created by bedirhansaricayir on 08.02.2025
  */
 
 class WorkoutsRepositoryImpl @Inject constructor(
-    private val workoutsDao: WorkoutsDao
+    private val workoutsDao: WorkoutsDao,
+    private val templateDao: WorkoutTemplateDao,
+    private val preferencesStorage: PreferencesStorage,
 ) : WorkoutsRepository {
     override fun getWorkout(workoutId: String): Flow<Workout> =
         workoutsDao.getWorkout(workoutId).filterNotNull().map { it.toDomain() }
@@ -50,13 +57,20 @@ class WorkoutsRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getActiveWorkoutId(): Flow<String> =
+        preferencesStorage.activeWorkoutId
+
+    override suspend fun setActiveWorkoutId(workoutId: String) {
+        preferencesStorage.setActiveWorkoutId(workoutId)
+    }
+
     override suspend fun updateWorkout(workout: Workout) =
         workoutsDao.updateWorkout(workout.toEntity().copy(updatedAt = LocalDateTime.now()))
 
     override suspend fun addExerciseToWorkout(workoutId: String, exerciseId: String) =
         workoutsDao.insertExerciseWorkoutJunction(
             ExerciseWorkoutJunction(
-                id = generateUUID,
+                id = generateUUID(),
                 workoutId = workoutId,
                 exerciseId = exerciseId
             )
@@ -66,23 +80,24 @@ class WorkoutsRepositoryImpl @Inject constructor(
         setNumber: Int,
         exerciseWorkoutJunc: ExerciseWorkoutJunc
     ): ExerciseLogEntry {
-        val logId = generateUUID
+        val logId = generateUUID()
+        val now = LocalDateTime.now()
         workoutsDao.insertExerciseLog(
             ExerciseLogEntity(
                 id = logId,
                 workoutId = exerciseWorkoutJunc.workoutId,
-                createdAt = LocalDateTime.now(),
-                updatedAt = LocalDateTime.now(),
+                createdAt = now,
+                updatedAt = now,
             )
         )
 
         val entry = ExerciseLogEntryEntity(
-            entryId = generateUUID,
+            entryId = generateUUID(),
             logId = logId,
             junctionId = exerciseWorkoutJunc.id,
             setNumber = setNumber,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            createdAt = now,
+            updatedAt = now
         )
 
         workoutsDao.insertExerciseLogEntry(entry)
@@ -152,6 +167,126 @@ class WorkoutsRepositoryImpl @Inject constructor(
             // Delete workout
             workoutsDao.deleteWorkout(workout.toEntity())
         }
+    }
+
+    override fun getExerciseLogByLogId(logId: String): Flow<ExerciseLogEntity> =
+        workoutsDao.getExerciseLogByLogId(logId)
+
+    private suspend fun checkIfWorkoutIsActive(discardActive: Boolean): Boolean {
+        val activeWorkoutId = getActiveWorkoutId().firstOrNull()
+        return when {
+            activeWorkoutId.isNullOrBlank() || activeWorkoutId == NONE_WORKOUT_ID -> false
+            discardActive -> {
+                deleteWorkoutWithAllDependencies(activeWorkoutId)
+                setActiveWorkoutId(NONE_WORKOUT_ID)
+                false
+            }
+            else -> true
+        }
+    }
+
+    override suspend fun startWorkoutFromTemplate(
+        templateId: String,
+        discardActive: Boolean,
+        onWorkoutAlreadyActive: () -> Unit
+    ) {
+        val isActive = checkIfWorkoutIsActive(discardActive)
+
+        if (isActive) {
+            onWorkoutAlreadyActive()
+            return
+        }
+        val template = templateDao.getTemplate(templateId).firstOrNull() ?: return
+
+        if (template.workoutId == null) return
+
+        templateDao.updateTemplate(
+            template.copy(
+                lastPerformedAt = LocalDateTime.now()
+            )
+        )
+
+        startWorkout(template.workoutId!!)
+    }
+
+    private suspend fun startWorkout(workoutId: String) {
+        val actualWorkout = workoutsDao.getWorkout(workoutId).filterNotNull().first()
+
+        val exerciseWorkoutJunctionsToAdd = arrayListOf<ExerciseWorkoutJunction>()
+        val exerciseLogsToAdd = arrayListOf<ExerciseLogEntity>()
+        val exerciseLogEntriesToAdd = arrayListOf<ExerciseLogEntryEntity>()
+
+        val newWorkoutId = generateUUID()
+        val now = LocalDateTime.now()
+        val newWorkout = actualWorkout.copy(
+            id = newWorkoutId,
+            isHidden = false,
+            inProgress = true,
+            startAt = now,
+            createdAt = now,
+            updatedAt = now
+        )
+
+        val fromWithJunctions = workoutsDao.getLogEntriesWithExerciseJunction(workoutId).first()
+
+        for (withJunction in fromWithJunctions) {
+            val newJunctionId = generateUUID()
+            val newJunction = withJunction.junction.copy(
+                id = newJunctionId,
+                workoutId = newWorkoutId
+            )
+
+            exerciseWorkoutJunctionsToAdd.add(newJunction)
+
+            for (entry in withJunction.logEntries) {
+                val newEntryId = generateUUID()
+
+                val newLogId = if (entry.logId != null) {
+                    val newExerciseLogId = generateUUID()
+                    val oldExerciseLog = getExerciseLogByLogId(entry.logId!!).first()
+                    val newExerciseLog = oldExerciseLog.copy(
+                        id = newExerciseLogId,
+                        workoutId = newWorkoutId,
+                        createdAt = now,
+                        updatedAt = now
+                    )
+                    exerciseLogsToAdd.add(newExerciseLog)
+                    newExerciseLogId
+                } else {
+                    null
+                }
+
+                val newEntry = entry.copy(
+                    entryId = newEntryId,
+                    personalRecords = null,
+                    completed = false,
+                    logId = newLogId,
+                    junctionId = newJunctionId,
+                    createdAt = now,
+                    updatedAt = now
+                )
+
+                exerciseLogEntriesToAdd.add(newEntry)
+            }
+
+        }
+
+        workoutsDao.insertWorkout(newWorkout)
+
+        for (junction in exerciseWorkoutJunctionsToAdd) {
+            workoutsDao.insertExerciseWorkoutJunction(junction)
+        }
+
+        for (exerciseLog in exerciseLogsToAdd) {
+            workoutsDao.insertExerciseLog(exerciseLog)
+        }
+
+        for (entry in exerciseLogEntriesToAdd) {
+            workoutsDao.insertExerciseLogEntry(entry)
+        }
+
+        setActiveWorkoutId(newWorkoutId)
+
     }
 
 }

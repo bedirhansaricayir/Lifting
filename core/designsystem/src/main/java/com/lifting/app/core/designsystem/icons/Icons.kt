@@ -18,6 +18,7 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -112,6 +113,10 @@ class LiftingIcons {
     val column: Painter
         @Composable
         get() = painterResource(id = R.drawable.ic_column)
+
+    val play: ImageVector
+        @Composable
+        get() = Icons.Outlined.PlayArrow
 
 }
 

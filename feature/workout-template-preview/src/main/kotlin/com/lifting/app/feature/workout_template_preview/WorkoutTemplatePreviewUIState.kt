@@ -14,7 +14,8 @@ sealed interface WorkoutTemplatePreviewUIState : State {
     data class Success(
         val template: WorkoutTemplate,
         val entries: List<LogEntriesWithExtraInfo> = emptyList(),
-        val workout: Workout? = null
+        val workout: Workout? = null,
+        val showActiveWorkoutDialog: Boolean = false
     ) : WorkoutTemplatePreviewUIState
 
     data object Error : WorkoutTemplatePreviewUIState

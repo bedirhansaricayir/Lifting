@@ -18,6 +18,7 @@ import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.common.extensions.toReadableFormat
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.ui.CollapsingToolBarScaffold
+import com.lifting.app.core.ui.components.LiftingAlertDialog
 import com.lifting.app.core.ui.components.LiftingIconButton
 import com.lifting.app.core.ui.top_bar.LiftingTopBar
 import me.onebone.toolbar.ScrollStrategy
@@ -101,6 +102,15 @@ internal fun WorkoutTemplatePreviewScreenSuccess(
                             onEvent(WorkoutTemplatePreviewUIEvent.OnDeleteClicked)
                         }
                     )
+
+                    LiftingIconButton(
+                        imageVector = LiftingTheme.icons.play,
+                        contentDescription = String.EMPTY,
+                        tint = LiftingTheme.colors.onBackground,
+                        onClick = {
+                            onEvent(WorkoutTemplatePreviewUIEvent.OnPlayClicked)
+                        }
+                    )
                 }
             )
         },
@@ -130,7 +140,7 @@ internal fun WorkoutTemplatePreviewScreenSuccess(
                 items(state.entries) {
                     TemplatePreviewExerciseComponent(
                         name = "${it.logEntries.size} x ${it.exercise.name}",
-                        muscle = it.primaryMuscle.name,
+                        muscle = it.primaryMuscle?.name,
                         onClick = {
                             //TODO: Navigate to exercise detail screen
                         }
@@ -140,12 +150,23 @@ internal fun WorkoutTemplatePreviewScreenSuccess(
         }
     )
 
+    if (state.showActiveWorkoutDialog) {
+        LiftingAlertDialog(
+            title = com.lifting.app.core.ui.R.string.workout_in_progress,
+            text = com.lifting.app.core.ui.R.string.workout_in_progress_description,
+            dismissText = com.lifting.app.core.ui.R.string.cancel,
+            confirmText = com.lifting.app.core.ui.R.string.discard,
+            onDismiss = { onEvent(WorkoutTemplatePreviewUIEvent.OnDialogDismissClicked) },
+            onConfirm = { onEvent(WorkoutTemplatePreviewUIEvent.OnDialogConfirmClicked) }
+        )
+    }
+
 }
 
 @Composable
 private fun TemplatePreviewExerciseComponent(
     name: String,
-    muscle: String,
+    muscle: String?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -167,11 +188,13 @@ private fun TemplatePreviewExerciseComponent(
                 style = LiftingTheme.typography.subtitle1,
                 color = LiftingTheme.colors.onBackground
             )
-            Text(
-                text = muscle,
-                style = LiftingTheme.typography.caption,
-                color = LiftingTheme.colors.onBackground.copy(alpha = 0.5f)
-            )
+            muscle?.let {
+                Text(
+                    text = it,
+                    style = LiftingTheme.typography.caption,
+                    color = LiftingTheme.colors.onBackground.copy(alpha = 0.5f)
+                )
+            }
         }
         LiftingIconButton(
             imageVector = LiftingTheme.icons.info,

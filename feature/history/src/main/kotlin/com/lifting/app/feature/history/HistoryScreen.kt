@@ -4,11 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.common.extensions.toLocalDate
@@ -17,6 +19,7 @@ import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.model.CountWithDate
 import com.lifting.app.core.model.WorkoutWithExtraInfo
 import com.lifting.app.core.ui.CollapsingToolBarScaffold
+import com.lifting.app.core.ui.components.HorizontalSlidingAnimationContainer
 import com.lifting.app.core.ui.components.LiftingChip
 import com.lifting.app.core.ui.components.LiftingIconButton
 import com.lifting.app.core.ui.top_bar.LiftingTopBar
@@ -95,13 +98,28 @@ internal fun HistoryScreenSuccess(
                 toolbarState = scaffoldState.toolbarState,
                 toolbarScope = this@CollapsingToolBarScaffold,
                 actions = {
-                    chipString?.let {
-                        LiftingChip(
-                            onClick = {},
-                        ) {
-                            Text(it)
+                    HorizontalSlidingAnimationContainer(
+                        visible = chipString.isNullOrEmpty().not(),
+                        content = {
+                            LiftingChip(
+                                onClick = {},
+                                trailingIcon = {
+                                    LiftingIconButton(
+                                        modifier = Modifier.size(LiftingTheme.dimensions.large),
+                                        imageVector = LiftingTheme.icons.close,
+                                        contentDescription = String.EMPTY,
+                                        tint = LiftingTheme.colors.onPrimary,
+                                        onClick = { onEvent(HistoryUIEvent.OnChipRemoveClicked) }
+                                    )
+                                }
+                            ) {
+                                Text(
+                                    text = chipString.orEmpty(),
+                                    style = LiftingTheme.typography.caption,
+                                )
+                            }
                         }
-                    }
+                    )
 
                     LiftingIconButton(
                         imageVector = LiftingTheme.icons.calendar,
@@ -127,7 +145,7 @@ internal fun HistoryScreenSuccess(
                             is CountWithDate -> it.date.toString()
                             is WorkoutWithExtraInfo -> it.workout!!.id
                             is Long -> it.toString()
-                            else -> generateUUID
+                            else -> generateUUID()
                         }
                     }
                 ) { data ->

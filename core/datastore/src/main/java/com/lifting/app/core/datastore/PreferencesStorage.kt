@@ -15,48 +15,48 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session_prefs")
-private typealias Token = Flow<String>
+/**
+ * Created by bedirhansaricayir on 01.05.2025
+ */
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "preferences_storage")
 
 @Singleton
-internal class SessionManagerImpl @Inject constructor(
-    @ApplicationContext context: Context,
-) : SessionManager {
+internal class PreferencesStorageImpl @Inject constructor(
+    @ApplicationContext context: Context
+) : PreferencesStorage {
 
     private val dataStore = context.dataStore
 
     companion object {
-        private val tokenKey = stringPreferencesKey("token_key")
+        private val activeWorkoutIdKey = stringPreferencesKey("active_workout_id_key")
     }
 
-    override suspend fun saveToken(token: String) {
-        dataStore.edit { preferences ->
-            preferences[tokenKey] = token
-        }
-    }
-
-    override suspend fun getToken(): Token {
-        return dataStore.data
+    override val activeWorkoutId: Flow<String>
+        get() = dataStore.data
             .catch { exception ->
                 if (exception is IOException)
                     emit(emptyPreferences())
                 else throw exception
             }
             .map { preferences ->
-                preferences[tokenKey] ?: ""
+                preferences[activeWorkoutIdKey] ?: ""
             }
+
+    override suspend fun setActiveWorkoutId(workoutId: String) {
+        dataStore.edit { preferences ->
+            preferences[activeWorkoutIdKey] = workoutId
+        }
     }
 
-    override suspend fun clearToken() {
-        dataStore.edit { preferences ->
-            preferences.remove(tokenKey)
-        }
+    override suspend fun clearPreferences() {
+        dataStore.edit { it.clear() }
     }
 
 }
 
-interface SessionManager {
-    suspend fun saveToken(token: String)
-    suspend fun getToken(): Token
-    suspend fun clearToken()
+interface PreferencesStorage {
+    val activeWorkoutId: Flow<String>
+    suspend fun setActiveWorkoutId(workoutId: String)
+    suspend fun clearPreferences()
 }

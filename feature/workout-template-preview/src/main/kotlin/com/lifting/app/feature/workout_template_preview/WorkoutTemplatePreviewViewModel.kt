@@ -36,6 +36,9 @@ class WorkoutTemplatePreviewViewModel @Inject constructor(
             is WorkoutTemplatePreviewUIEvent.OnEditClicked -> navigateToWorkoutEdit(event.workoutId)
             WorkoutTemplatePreviewUIEvent.OnDeleteClicked -> deleteTemplateThenPopBackStack()
             WorkoutTemplatePreviewUIEvent.OnBackClicked -> setPopBackStackEffect()
+            WorkoutTemplatePreviewUIEvent.OnPlayClicked -> startWorkout(false)
+            WorkoutTemplatePreviewUIEvent.OnDialogConfirmClicked -> setDialogThenStartWorkout()
+            WorkoutTemplatePreviewUIEvent.OnDialogDismissClicked -> setShowActiveWorkoutDialog(false)
         }
     }
 
@@ -100,5 +103,28 @@ class WorkoutTemplatePreviewViewModel @Inject constructor(
 
     private fun setPopBackStackEffect() {
         setEffect(WorkoutTemplatePreviewUIEffect.PopBackStack)
+    }
+
+    private fun startWorkout(discardActive: Boolean) {
+        viewModelScope.launch {
+            workoutsRepository.startWorkoutFromTemplate(
+                templateId = templateId,
+                discardActive = discardActive,
+                onWorkoutAlreadyActive = { setShowActiveWorkoutDialog(true) }
+            )
+        }
+    }
+
+    private fun setDialogThenStartWorkout() {
+        setShowActiveWorkoutDialog(false)
+        startWorkout(true)
+    }
+
+    private fun setShowActiveWorkoutDialog(showDialog: Boolean) {
+        updateState { currentState ->
+            (currentState as WorkoutTemplatePreviewUIState.Success).copy(
+                showActiveWorkoutDialog = showDialog
+            )
+        }
     }
 }

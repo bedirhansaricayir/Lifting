@@ -73,7 +73,7 @@ class HistoryViewModel @Inject constructor(
         when (event) {
             HistoryUIEvent.OnCalendarClicked -> navigateToCalendar()
             is HistoryUIEvent.OnWorkoutClicked -> navigateToWorkoutDetail(event.workoutId)
-            else -> Unit
+            HistoryUIEvent.OnChipRemoveClicked -> clearFilter()
         }
     }
 
@@ -166,5 +166,9 @@ class HistoryViewModel @Inject constructor(
 
     fun setSelectedYear(year: Int) {
         dateRangeType.value = WorkoutsDateRangeType.Year(year)
+    }
+
+    fun clearFilter() {
+        dateRangeType.value = WorkoutsDateRangeType.All
     }
 }
