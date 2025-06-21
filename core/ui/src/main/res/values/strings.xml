@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="search_bar_place_holder">Search here…</string>
+    <string name="search_bar_place_holder">Search exercises</string>
+    <string name="e_g_string">(e.g. %1$s)</string>
     <string name="back_button_content_description">Back Button</string>
     <string name="search_bar_leading_icon_search_content_description">Search Button</string>
     <string name="search_bar_trailing_icon_clear_content_description">Clear Button</string>
@@ -12,7 +13,7 @@
     <string name="bottom_sheet_title_new_exercise">New Exercise</string>
     <string name="label_select">Select</string>
     <string name="expand_icon">Expand Icon</string>
-    <string name="lifting_templates">Lifting Templates</string>
+    <string name="lifting_templates">App Templates</string>
     <string name="my_templates">My Templates</string>
     <string name="create_template">Create Template</string>
     <string name="cancel_workout">Cancel Workout</string>
@@ -23,11 +24,21 @@
     <string name="edit_workout">Edit Workout</string>
     <string name="exercises_count">%1$d Exercises</string>
     <string name="delete_exercise">Delete Exercise</string>
-    <string name="set">SET</string>
-    <string name="kg">KG</string>
+    <string name="set_uppercase">SET</string>
+    <string name="kg">Kg</string>
+    <string name="kg_lowercase">kg</string>
+    <string name="kg_uppercase">KG</string>
+    <string name="lbs">Lbs</string>
+    <string name="lbs_lowercase">lbs</string>
+    <string name="lbs_uppercase">LBS</string>
     <string name="reps">REPS</string>
     <string name="rpe">RPE</string>
-    <string name="km">KM</string>
+    <string name="km">Km</string>
+    <string name="km_lowercase">km</string>
+    <string name="km_uppercase">KM</string>
+    <string name="miles">Miles</string>
+    <string name="miles_lowercase">miles</string>
+    <string name="miles_uppercase">MILES</string>
     <string name="duration">DURATION</string>
     <string name="unnamed_template">Unnamed Template</string>
     <string name="last_performed_at">Last performed at</string>
@@ -73,6 +84,181 @@
     <string name="discard">Discard</string>
     <string name="workout_in_progress">Workout in progress</string>
     <string name="workout_in_progress_description">You are currently performing a workout. Would you like to discard it?</string>
+    <string name="sets">Sets</string>
+    <string name="volume">Volume</string>"
+    <string name="finish">Finish</string>
+    <string name="start_workout">Start Workout</string>
+    <string name="filter_dialog_title">Filter</string>
+    <string name="clear_filter_text">Clear all</string>
+    <string name="apply_filter_text">Apply</string>
+    <string name="close_filter_text">Close</string>
+    <string name="not_enough_data">Not enough data</string>
+    <string name="weight_and_reps_readable_text">"Weight &amp; Reps"</string>
+    <string name="bodyweight_reps_readable_text">"Bodyweight Reps"</string>
+    <string name="weighted_bodyweight_readable_text">"Weighted Bodyweight"</string>
+    <string name="assisted_bodyweight_readable_text">"Assisted Bodyweight"</string>
+    <string name="duration_readable_text">"Duration"</string>
+    <string name="distance_and_duration_readable_text">"Distance &amp; Duration"</string>
+    <string name="weight_and_distance_readable_text">"Weight &amp; Distance"</string>
+    <string name="weight_and_duration_readable_text">"Weight &amp; Duration"</string>
+    <string name="unknown_category_readable_text">"Unknown"</string>
+    <string name="top_bar_title_settings">Settings</string>
+    <string name="settings_screen_preferences_title">Preferences</string>
+    <string name="settings_screen_app_theme_title">Theme</string>
+    <string name="settings_screen_app_theme_light_description">Light</string>
+    <string name="settings_screen_app_theme_dark_description">Dark</string>
+    <string name="settings_screen_app_theme_system_description">System Default</string>
+    <string name="settings_screen_weight_unit_title">Weight Unit</string>
+    <string name="weight_unit_description_metric_kg">Metric (kg)</string>
+    <string name="weight_unit_description_imperial_lbs">Imperial (lbs)</string>
+    <string name="settings_screen_distance_unit_title">Distance Unit</string>
+    <string name="distance_unit_description_metric_m_km">Metric (m/km)</string>
+    <string name="distance_unit_description_imperial_ft_miles">Imperial (ft/miles)</string>
+    <string name="settings_screen_your_data_title">Your Data</string>
+    <string name="settings_screen_backup_data_title">Backup Data</string>
+    <string name="settings_screen_backup_data_description_title">Convert to backup file</string>
+    <string name="settings_screen_restore_data_title">Restore Data</string>
+    <string name="settings_screen_restore_data_description_title">From a previous backup file</string>
+    <string name="settings_screen_feedback_title">Feedback</string>
+    <string name="settings_screen_review_title">Write a Review</string>
+    <string name="settings_screen_review_description">It will help improve your app experience</string>
+    <string name="settings_screen_suggestions_bugs_title">Suggestion &amp; Bug Report</string>
+    <string name="settings_screen_suggestions_bugs_description">We will help you as soon as possible</string>
+    <string name="heaviest_weight">Heaviest Weight</string>
+    <string name="total_volume">Total Volume</string>
+    <string name="rpe_empty">RPE</string>
+    <string name="rpe_6_title">Moderate Effort</string>
+    <string name="rpe_6_description">Could have done 4+ more reps</string>
+    <string name="rpe_7_title">Vigorous Effort</string>
+    <string name="rpe_7_description">Could have definitely done 3 more reps</string>
+    <string name="rpe_7_5_title">Vigorous Effort</string>
+    <string name="rpe_7_5_description">Could have maybe done 3 more reps</string>
+    <string name="rpe_8_title">Very Hard Effort</string>
+    <string name="rpe_8_description">Could have definitely done 2 more reps</string>
+    <string name="rpe_8_5_title">Very Hard Effort</string>
+    <string name="rpe_8_5_description">Could have maybe done 2 more reps</string>
+    <string name="rpe_9_title">Extremely Hard Effort</string>
+    <string name="rpe_9_description">Could have definitely done 1 more rep</string>
+    <string name="rpe_9_5_title">Extremely Hard Effort</string>
+    <string name="rpe_9_5_description">Could have maybe done 1 more rep</string>
+    <string name="rpe_10_title">Max Effort</string>
+    <string name="rpe_10_description">No more reps possible</string>
+    <string name="remaining_weight">Remaining weight: %1$s %2$s</string>
+    <string name="barbell">Barbell</string>
+    <string name="select_barbell">Select Barbell</string>
+    <string name="selected_barbell">Selected</string>
+    <string name="olympic_barbell">Olympic Barbell</string>
+    <string name="women_olympic_barbell">Women Olympic Barbell</string>
+    <string name="training_barbell">Training Barbell</string>
+    <string name="technique_barbell">Technique Barbell</string>
+    <string name="ez_curl_barbell">EZ Curl Barbell</string>
+    <string name="trap_barbell">Trap Bar</string>
+    <string name="safety_squat_barbell">Safety Squat Bar</string>
+    <string name="swiss_barbell">Swiss Bar</string>
+    <string name="create_exercise_button_text">Create</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%dh</item>
+        <item quantity="other">%dh</item>
+    </plurals>
 
+    <plurals name="duration_minutes">
+        <item quantity="one">%dm</item>
+        <item quantity="other">%dm</item>
+    </plurals>
 
+    <plurals name="duration_seconds">
+        <item quantity="one">%ds</item>
+        <item quantity="other">%ds</item>
+    </plurals>
+    <string name="morning_period_workout_name">Morning Workout</string>
+    <string name="afternoon_period_workout_name">Afternoon Workout</string>
+    <string name="evening_period_workout_name">Evening Workout</string>
+    <string name="night_period_workout_name">Night Workout</string>
+    <string name="weight_and_reps_examples_text">Example: Bench Press, Dumbbell Curls</string>
+    <string name="bodyweight_reps_examples_text">Example: Pull Ups, Sit Ups, Burpees</string>
+    <string name="weighted_bodyweight_examples_text">Example: Weighted Pull Ups, Weighted Dips</string>
+    <string name="assisted_bodyweight_examples_text">Example: Assisted Pull Ups, Assisted Dips</string>
+    <string name="duration_examples_text">Example: Planks, Yoga, Stretching</string>
+    <string name="distance_and_duration_examples_text">Example: Running, Cycling, Rowing</string>
+    <string name="weight_and_distance_examples_text">Example: Farmers Walk, Suitcase Carry</string>
+    <string name="weight_and_duration_examples_text">Example: Weighted Planks</string>
+    <string name="unknown_category_examples_text">Unknown Examples</string>
+    <string name="chart_period_weekly">Weekly</string>
+    <string name="chart_period_monthly">Monthly</string>
+    <string name="chart_period_yearly">Yearly</string>
+    <string name="app_language_description_english">English</string>
+    <string name="app_language_description_turkish">Turkish</string>
+    <string name="settings_screen_app_language_title">Language</string>
+    <string name="add_note">Add Note</string>
+    <string name="insert">Insert</string>
+    <string name="warm_up_sets">Warm up sets</string>
+    <string name="work_set_kg">Work set (kg)</string>
+    <string name="work_set_lbs">Work set (lbs)</string>
+    <string name="set">Set</string>
+    <string name="formula">Formula</string>
+    <string name="warm_up">Warm up</string>
+    <string name="superset">Super set</string>
+    <string name="unnamed_exercise">Unnamed exercise</string>
+    <string name="add_to_superset">Add to superset</string>
+    <string name="remove_from_superset">Remove from superset</string>
+    <string name="superset_selected_exercise">Selected</string>
+    <string name="select_time">Select time</string>
+    <string name="all">All</string>
+    <string name="feedback_hint">Please write your suggestion or bug below:</string>
+    <string name="subject_hint">Suggestion or bug report</string>
+    <string name="equipment_barbell">Barbell</string>
+    <string name="equipment_band">Band</string>
+    <string name="equipment_bodyweight">Bodyweight</string>
+    <string name="equipment_cable">Cable</string>
+    <string name="equipment_dumbbell">Dumbbell</string>
+    <string name="equipment_machine">Machine</string>
+    <string name="equipment_kettlebell">Kettlebell</string>
+    <string name="equipment_slam_ball">Slam Ball</string>
+    <string name="equipment_other">Other</string>
+    <string name="adductors">Abductors</string>
+    <string name="abs">Abs</string>
+    <string name="back">Back</string>
+    <string name="biceps">Biceps</string>
+    <string name="calves">Calves</string>
+    <string name="cardio">Cardio</string>
+    <string name="chest">Chest</string>
+    <string name="core">Core</string>
+    <string name="forearms">Forearms</string>
+    <string name="full_body">Full Body</string>
+    <string name="glutes">Glutes</string>
+    <string name="hamstrings">Hamstrings</string>
+    <string name="lats">Lats</string>
+    <string name="lower_back">Lower Back</string>
+    <string name="olympic_weightlifting">Olympic Weightlifting</string>
+    <string name="quadriceps">Quadriceps</string>
+    <string name="shoulders">Shoulders</string>
+    <string name="traps">Traps</string>
+    <string name="triceps">Triceps</string>
+    <string name="upper_back">Upper Back</string>
+    <string name="unknown_muscle">Unknown Muscle</string>
+    <string name="all_equipment_title">All Equipment</string>"
+    <string name="all_category_title">All Category</string>
+    <string name="backup_file_created_successfully">Backup file created successfully</string>
+
+    <string name="back_squat_notes">
+The back squat is the most basic leg and trunk strength builder for weightlifting.
+
+Squeeze the shoulder blades together and place the bar in the trap musculature between the top of the traps and the top of the shoulders—it should not be in contact with any bone.
+
+Place the heels at approximately hip width or slightly wider and turn the toes out 15-30 degrees from the center line.
+
+Pressurize and brace the trunk forcefully with the back in its neutral curvature.
+
+Bend at the knees and hips together to squat as directly down as possible, maintaining even balance over the whole foot.
+
+Keep the knees approximately in line with the feet.
+
+Full depth is the knee joint closed as much as possible while maintaining whole foot balance and a neutral spine. If you don’t yet have the mobility to squat to full depth, squat as deep as you can while maintaining proper back position and balance.
+
+Maintain tension throughout the legs and trunk all the way through the bottom, and accelerate back up while maintaining an upright posture and whole foot balance.
+
+Release a small amount of air as you stand without compromising trunk rigidity if you need to avoid dizziness.
+
+Generally I prefer the back squat to be performed with minimal to no bounce in the bottom to ensure maximal leg strength development through the lowest range of motion.
+</string>
 </resources>

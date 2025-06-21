@@ -30,11 +30,14 @@
             <option value="$PROJECT_DIR$/core/database" />
             <option value="$PROJECT_DIR$/core/datastore" />
             <option value="$PROJECT_DIR$/core/designsystem" />
+            <option value="$PROJECT_DIR$/core/keyboard" />
             <option value="$PROJECT_DIR$/core/model" />
             <option value="$PROJECT_DIR$/core/navigation" />
             <option value="$PROJECT_DIR$/core/network" />
+            <option value="$PROJECT_DIR$/core/service" />
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/barbell-selector" />
             <option value="$PROJECT_DIR$/feature/calendar" />
             <option value="$PROJECT_DIR$/feature/create-exercise" />
             <option value="$PROJECT_DIR$/feature/exercise-detail" />
@@ -42,9 +45,14 @@
             <option value="$PROJECT_DIR$/feature/exercises-category" />
             <option value="$PROJECT_DIR$/feature/exercises-muscle" />
             <option value="$PROJECT_DIR$/feature/history" />
+            <option value="$PROJECT_DIR$/feature/rest-timer" />
+            <option value="$PROJECT_DIR$/feature/settings" />
+            <option value="$PROJECT_DIR$/feature/superset-selector" />
             <option value="$PROJECT_DIR$/feature/workout" />
             <option value="$PROJECT_DIR$/feature/workout-detail" />
             <option value="$PROJECT_DIR$/feature/workout-edit" />
+            <option value="$PROJECT_DIR$/feature/workout-editor" />
+            <option value="$PROJECT_DIR$/feature/workout-panel" />
             <option value="$PROJECT_DIR$/feature/workout-template-preview" />
           </set>
         </option>

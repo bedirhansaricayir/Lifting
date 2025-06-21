@@ -6,26 +6,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.pluralStringResource
 import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.common.extensions.isSameYear
-import com.lifting.app.core.common.extensions.toDuration
 import com.lifting.app.core.common.extensions.toEpochMillis
-import com.lifting.app.core.common.extensions.toKg
 import com.lifting.app.core.common.extensions.toLocalDate
-import com.lifting.app.core.common.extensions.toLocalDateTime
 import com.lifting.app.core.designsystem.LiftingTheme
-import com.lifting.app.core.ui.extensions.lighterColor
-import java.time.LocalDate
+import com.lifting.app.core.ui.common.toWeightUnitPreferencesString
+import com.lifting.app.core.ui.components.LiftingCard
+import com.lifting.app.core.ui.extensions.toLocalizedDuration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -47,12 +42,8 @@ internal fun HistoryListItem(
 ) {
     val dateFormatter = DateTimeFormatter.ofPattern(if (date.isSameYear()) "EEE, MMM d" else "MMM d, yyyy")
 
-    Card(
+    LiftingCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = LiftingTheme.colors.background.lighterColor()
-        ),
-        shape = LiftingTheme.shapes.medium,
         onClick = onClick
     ) {
         Column(
@@ -105,13 +96,13 @@ private fun SessionQuickInfo(
         duration?.let {
             SessionQuickInfoItem(
                 icon = LiftingTheme.icons.timer,
-                text = duration.toDuration()
+                text = duration.toLocalizedDuration()
             )
         }
         volume?.let {
             SessionQuickInfoItem(
                 icon = LiftingTheme.icons.weight,
-                text = "${volume.toKg()} kg"
+                text = volume.toWeightUnitPreferencesString(addUnitSuffix = true, spaceBeforeSuffix = true)
             )
         }
         if (prs > 0) {
@@ -129,7 +120,7 @@ private fun SessionQuickInfo(
 
 @Composable
 private fun SessionQuickInfoItem(
-    icon: Painter,
+    icon: ImageVector,
     text: String,
     modifier: Modifier = Modifier,
 ) {
@@ -140,7 +131,7 @@ private fun SessionQuickInfoItem(
     ){
         Icon(
             modifier = Modifier.size(LiftingTheme.dimensions.large),
-            painter = icon,
+            imageVector = icon,
             contentDescription = String.EMPTY,
             tint = LiftingTheme.colors.onBackground.copy(0.75f)
         )

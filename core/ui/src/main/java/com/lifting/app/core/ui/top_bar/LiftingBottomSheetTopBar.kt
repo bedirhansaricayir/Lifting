@@ -11,7 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.ui.R
-import com.lifting.app.core.ui.components.LiftingIconButton
+import com.lifting.app.core.ui.components.LiftingButton
+import com.lifting.app.core.ui.components.LiftingButtonType
 
 /**
  * Created by bedirhansaricayir on 18.08.2024
@@ -32,10 +33,12 @@ fun LiftingBottomSheetTopBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        LiftingIconButton(
-            imageVector = LiftingTheme.icons.close,
-            contentDescription = stringResource(id = R.string.close_button_content_description),
-            tint = LiftingTheme.colors.onBackground,
+
+        LiftingButton(
+            buttonType = LiftingButtonType.IconButton(
+                icon = LiftingTheme.icons.close,
+                tint = LiftingTheme.colors.onBackground
+            ),
             onClick = onNavigationClick
         )
 
@@ -45,12 +48,13 @@ fun LiftingBottomSheetTopBar(
             color = LiftingTheme.colors.onBackground
         )
 
-        LiftingIconButton(
-            imageVector = LiftingTheme.icons.done,
-            enabled = isEnabledActionButton,
-            contentDescription = stringResource(id = R.string.done_button_content_description),
-            tint = LiftingTheme.colors.primary,
-            onClick = onActionClick
+        LiftingButton(
+            buttonType = LiftingButtonType.IconButton(
+                icon = LiftingTheme.icons.done,
+                tint = LiftingTheme.colors.primary,
+                enabled = isEnabledActionButton
+            ),
+            onClick = onActionClick,
         )
     }
 }

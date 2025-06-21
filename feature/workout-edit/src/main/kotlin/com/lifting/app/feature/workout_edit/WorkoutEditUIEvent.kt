@@ -10,10 +10,10 @@ import com.lifting.app.core.model.LogEntriesWithExercise
  * Created by bedirhansaricayir on 08.02.2025
  */
 
-sealed interface WorkoutEditUIEvent : Event {
+internal sealed interface WorkoutEditUIEvent : Event {
     data class OnWorkoutNameChanged(val workoutName: String) : WorkoutEditUIEvent
     data class OnWorkoutNoteChanged(val workoutNote: String) : WorkoutEditUIEvent
-    data class OnAddExerciseClicked(val exerciseId: String) : WorkoutEditUIEvent
+    data class OnExerciseAdded(val exerciseId: String) : WorkoutEditUIEvent
     data class OnDeleteExerciseClicked(val logEntriesWithExercise: LogEntriesWithExercise) : WorkoutEditUIEvent
     data class OnAddSetClicked(
         val setNumber: Int,
@@ -27,4 +27,10 @@ sealed interface WorkoutEditUIEvent : Event {
     data class OnNoteChanged(val exercisesSetGroupNote: ExerciseSetGroupNote) : WorkoutEditUIEvent
     data object OnAddExerciseButtonClicked : WorkoutEditUIEvent
     data object OnBackClicked : WorkoutEditUIEvent
+    data object OnUpdateBarbellClicked : WorkoutEditUIEvent
+    data class OnBarbellUpdated(val barbellWithJunctionId: String) : WorkoutEditUIEvent
+    data object OnAddToSupersetClicked: WorkoutEditUIEvent
+    data class OnSupersetUpdated(val superSetResult: String) : WorkoutEditUIEvent
+    data class OnRemoveFromSupersetClicked(val logEntriesWithExercise: LogEntriesWithExercise) : WorkoutEditUIEvent
+
 }

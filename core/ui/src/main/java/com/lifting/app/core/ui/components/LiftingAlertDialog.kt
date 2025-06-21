@@ -36,14 +36,14 @@ fun LiftingAlertDialog(
             )
         },
         dismissButton = {
-            LiftingTextButton(
-                text = stringResource(dismissText),
+            LiftingButton(
+                buttonType = LiftingButtonType.TextButton(text = stringResource(dismissText)),
                 onClick = onDismiss
             )
         },
         confirmButton = {
-            LiftingTextButton(
-                text = stringResource(confirmText),
+            LiftingButton(
+                buttonType = LiftingButtonType.TextButton(text = stringResource(confirmText)),
                 onClick = onConfirm
             )
         },

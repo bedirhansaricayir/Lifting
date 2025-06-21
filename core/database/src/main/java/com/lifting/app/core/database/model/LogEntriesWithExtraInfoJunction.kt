@@ -14,7 +14,6 @@ data class LogEntriesWithExtraInfoJunction(
         entityColumn = "exercise_id",
     )
     val exercise: ExerciseEntity,
-    @Embedded val primaryMuscle: MuscleEntity?,
     @Relation(
         parentColumn = "id",
         entityColumn = "junction_id",

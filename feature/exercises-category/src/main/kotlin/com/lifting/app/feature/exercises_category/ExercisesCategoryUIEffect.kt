@@ -7,7 +7,7 @@ import com.lifting.app.core.model.ExerciseCategory
  * Created by bedirhansaricayir on 22.08.2024
  */
 
-sealed interface ExercisesCategoryUIEffect : Effect {
+internal sealed interface ExercisesCategoryUIEffect : Effect {
     data class SetCategoryToBackStack(val selectedCategory: ExerciseCategory) : ExercisesCategoryUIEffect
 
 }

@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
  */
 
 @Composable
-fun HistoryHeader(
+internal fun HistoryHeader(
     date: LocalDate,
     totalWorkout: Int,
     modifier: Modifier = Modifier
@@ -32,7 +32,7 @@ fun HistoryHeader(
 }
 
 @Composable
-fun HistoryHeader(
+internal fun HistoryHeader(
     totalWorkouts: Int,
     modifier: Modifier = Modifier,
     title: String? = null,

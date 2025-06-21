@@ -1,14 +1,13 @@
 package com.lifting.app.feature.exercise_detail.navigation
 
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.lifting.app.core.navigation.screens.LiftingScreen
+import com.lifting.app.core.ui.BaseComposableLayout
 import com.lifting.app.feature.exercise_detail.ExerciseDetailScreen
+import com.lifting.app.feature.exercise_detail.ExerciseDetailUIEffect
 import com.lifting.app.feature.exercise_detail.ExerciseDetailViewModel
 
 /**
@@ -19,23 +18,23 @@ fun NavController.navigateToExerciseDetail(exerciseId: String) =
     navigate(LiftingScreen.ExerciseDetail(exerciseIdKey = exerciseId))
 
 fun NavGraphBuilder.exerciseDetailScreen(
-){
+    popBackStack: () -> Unit
+) {
     composable<LiftingScreen.ExerciseDetail> {
         val viewModel: ExerciseDetailViewModel = hiltViewModel()
-        val state by viewModel.state.collectAsStateWithLifecycle()
-        val effect = viewModel.effect
 
-        LaunchedEffect(key1 = effect) {
-            effect.collect { effect ->
+        BaseComposableLayout(
+            viewModel = viewModel,
+            effectHandler = { context, effect ->
                 when (effect) {
-                    else -> {}
+                    ExerciseDetailUIEffect.PopBackStack -> popBackStack()
                 }
             }
+        ) { state ->
+            ExerciseDetailScreen(
+                state = state,
+                onEvent = viewModel::setEvent
+            )
         }
-
-        ExerciseDetailScreen(
-            state = state,
-            onEvent = viewModel::setEvent
-        )
     }
 }

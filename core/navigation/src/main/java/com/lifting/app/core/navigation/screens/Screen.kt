@@ -1,5 +1,6 @@
 package com.lifting.app.core.navigation.screens
 
+import android.annotation.SuppressLint
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,6 +14,7 @@ sealed class NavBarScreen(
     @Serializable data object Settings : NavBarScreen(LiftingScreen.SettingsTab)
 }
 
+@SuppressLint("UnsafeOptInUsageError")
 @Serializable
 sealed class LiftingScreen() {
     //<!-- region NavBarRoot -->
@@ -29,7 +31,7 @@ sealed class LiftingScreen() {
 
     //<!-- region Sub-History -->
     @Serializable data object History : LiftingScreen()
-    @Serializable data class Calendar(val selectedDateKey: String) : LiftingScreen()
+    @Serializable data object Calendar : LiftingScreen()
     @Serializable data class WorkoutDetail(val workoutIdKey: String) : LiftingScreen()
     //<!-- endregion -->
 
@@ -55,16 +57,19 @@ sealed class LiftingScreen() {
     @Serializable data class ExercisesCategoryBottomSheet(val route: String = this.toString()) : LiftingScreen()
     @Serializable data class ExercisesMuscleBottomSheet(val route: String = this.toString()) : LiftingScreen()
     @Serializable data class ExercisesBottomSheet(val route: String = this.toString()) : LiftingScreen()
+    @Serializable data class BarbellSelectorBottomSheet(val route: String = this.toString()) : LiftingScreen()
+    @Serializable data class SupersetSelectorBottomSheet(val route: String = this.toString()) : LiftingScreen()
+    @Serializable data class RestTimerBottomSheet(val route: String = this.toString()) : LiftingScreen()
     //<!-- endregion -->
 
     companion object {
-        const val SELECTED_CALENDAR_YEAR = "selected_calendar_year"
-        const val SELECTED_CALENDAR_MONTH = "selected_calendar_month"
-        const val SELECTED_CALENDAR_DAY = "selected_calendar_day"
         const val SELECTED_EXERCISE_CATEGORY = "SELECTED_EXERCISE_CATEGORY"
         const val SELECTED_EXERCISE_MUSCLE = "SELECTED_EXERCISE_MUSCLE"
         const val RESULT_EXERCISES_SCREEN_EXERCISE_ID = "result_exercises_screen_exercise_id"
         const val WORKOUT_ID_KEY = "workout_id"
         const val TEMPLATE_ID_KEY = "template_id"
+        const val SELECTED_BARBELL_JUNCTION_RESULT = "selected_barbell_junction_result"
+        const val RESULT_SUPERSET_SELECTOR_SUPERSET_ID_KEY = "result_superset_selector_superset_id"
+
     }
 }

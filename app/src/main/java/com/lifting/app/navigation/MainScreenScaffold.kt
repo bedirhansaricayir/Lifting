@@ -14,7 +14,10 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
@@ -29,8 +32,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -57,14 +62,13 @@ fun MainScreenScaffold(
     bottomBar: @Composable () -> Unit,
     panelHidden: Boolean = false,
     panel: @Composable () -> Unit,
-    panelTopCommon: @Composable () -> Unit,
     panelTopCollapsed: @Composable () -> Unit,
     panelTopExpanded: @Composable () -> Unit,
     mainBody: @Composable () -> Unit,
 ) {
     BoxWithConstraints(Modifier.fillMaxSize()) {
 
-        val parentHeight = constraints.minHeight
+        val parentHeight = this.constraints.minHeight
 
         val coroutine = rememberCoroutineScope()
 
@@ -218,8 +222,6 @@ fun MainScreenScaffold(
                         Modifier
                             .fillMaxWidth()
                     ) {
-
-
                         Box(
                             modifier = Modifier
                                 .onGloballyPositioned { constraints ->
@@ -258,8 +260,8 @@ fun MainScreenScaffold(
 //                            }
                             }
 
-                            // This panelTopCommon is always visible regard less of panel state
-                            panelTopCommon()
+
+                            PanelTopDragHandle()
 
                         }
 
@@ -399,5 +401,25 @@ fun MainScreenScaffold(
 
             }
         }
+    }
+}
+
+@Composable
+private fun PanelTopDragHandle(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = LiftingTheme.dimensions.small)
+    ) {
+        Box(
+            modifier = Modifier
+                .width(32.dp)
+                .height(2.dp)
+                .align(Alignment.Center)
+                .background(LiftingTheme.colors.onBackground)
+                .clip(LiftingTheme.shapes.xLarge)
+        )
     }
 }

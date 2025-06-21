@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 data class Barbell(
     val id: String,
-    val name: String?,
+    val name: String,
     val weightKg: Double?,
     val weightLbs: Double?,
     val isActive: Boolean?,

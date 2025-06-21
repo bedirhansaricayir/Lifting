@@ -7,7 +7,7 @@ import com.lifting.app.core.model.ExerciseCategory
  * Created by bedirhansaricayir on 22.08.2024
  */
 
-sealed interface ExercisesCategoryUIEvent : Event {
+internal sealed interface ExercisesCategoryUIEvent : Event {
     data class OnCategoryClick(val category: ExerciseCategory) : ExercisesCategoryUIEvent
     data class OnSelectedCategoryChanged(val category: String) : ExercisesCategoryUIEvent
 }

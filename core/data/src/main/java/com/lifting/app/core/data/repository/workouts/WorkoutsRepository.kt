@@ -11,7 +11,6 @@ import com.lifting.app.core.model.Workout
 import com.lifting.app.core.model.WorkoutWithExtraInfo
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
-import java.util.ArrayList
 
 /**
  * Created by bedirhansaricayir on 08.02.2025
@@ -19,6 +18,7 @@ import java.util.ArrayList
 interface WorkoutsRepository {
     fun getWorkout(workoutId: String): Flow<Workout>
     fun getWorkoutsWithExtraInfo(dateStart: LocalDate? = null, dateEnd: LocalDate? = null): Flow<List<WorkoutWithExtraInfo>>
+    fun getWorkoutsWithExtraInfoByDate(date: LocalDate): Flow<List<WorkoutWithExtraInfo>>
     fun getActiveWorkoutId(): Flow<String>
     suspend fun setActiveWorkoutId(workoutId: String)
     suspend fun updateWorkout(workout: Workout)
@@ -46,6 +46,7 @@ interface WorkoutsRepository {
     fun getLogEntriesWithExtraInfo(workoutId: String): Flow<List<LogEntriesWithExtraInfo>>
 
     fun getWorkoutsCount(): Flow<List<CountWithDate>>
+    fun getWorkouts(): Flow<List<Workout>>
     fun getWorkoutsCountOnDateRange(dateStart: LocalDate, dateEnd: LocalDate): Flow<Long>
     fun getTotalVolumeLiftedByWorkoutId(workoutId: String): Flow<Double>
 
@@ -58,4 +59,20 @@ interface WorkoutsRepository {
         onWorkoutAlreadyActive: () -> Unit
     )
 
+    suspend fun startWorkoutFromWorkout(
+        workoutId: String,
+        discardActive: Boolean,
+        onWorkoutAlreadyActive: () -> Unit
+    )
+
+    suspend fun finishWorkout(workoutId: String)
+    suspend fun createWorkout(
+        workoutId: String,
+        workoutName: String,
+        discardActive: Boolean,
+        onWorkoutAlreadyActive: () -> Unit
+    ): Boolean
+
+    suspend fun updateExerciseWorkoutJunctionBarbellId(junctionId: String, barbellId: String)
+    suspend fun updateExerciseWorkoutJunctionSupersetId(junctionId: String, supersetId: Int?)
 }

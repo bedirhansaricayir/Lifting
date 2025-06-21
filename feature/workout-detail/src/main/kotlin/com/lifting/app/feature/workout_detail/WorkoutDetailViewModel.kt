@@ -20,29 +20,30 @@ import javax.inject.Inject
  * Created by bedirhansaricayir on 06.04.2025
  */
 @HiltViewModel
-class WorkoutDetailViewModel @Inject constructor(
+internal class WorkoutDetailViewModel @Inject constructor(
     private val workoutsRepository: WorkoutsRepository,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<WorkoutDetailUIState, WorkoutDetailUIEvent, WorkoutDetailUIEffect>() {
     private val workoutId = savedStateHandle.toRoute<LiftingScreen.WorkoutDetail>().workoutIdKey
 
-    override fun setInitialState(): WorkoutDetailUIState = WorkoutDetailUIState.Loading
+    override fun setInitialState(): WorkoutDetailUIState = WorkoutDetailUIState()
 
     override fun handleEvents(event: WorkoutDetailUIEvent) {
         when (event) {
             is WorkoutDetailUIEvent.OnEditClicked -> navigateToWorkoutEdit()
             WorkoutDetailUIEvent.OnDeleteClicked -> deleteWorkoutAndNavigateBack()
             WorkoutDetailUIEvent.OnBackClicked -> navigateBack()
+            WorkoutDetailUIEvent.OnReplayClicked -> startWorkout(false)
+            WorkoutDetailUIEvent.OnDialogConfirmClicked -> setDialogThenStartWorkout()
+            WorkoutDetailUIEvent.OnDialogDismissClicked -> setShowActiveWorkoutDialog(false)
         }
     }
 
     init {
-        initUIState(workoutId)
+        updateUIState()
     }
 
-    private fun initUIState(
-        workoutId: String
-    ) {
+    private fun updateUIState() {
         val logEntriesWithExerciseFlow: Flow<List<LogEntriesWithExercise>> =
             workoutsRepository.getLogEntriesWithExercise(workoutId)
 
@@ -51,34 +52,18 @@ class WorkoutDetailViewModel @Inject constructor(
         val totalVolumeFlow: Flow<Double> =
             workoutsRepository.getTotalVolumeLiftedByWorkoutId(workoutId)
 
-
         combine(
             logEntriesWithExerciseFlow,
             workoutFlow,
             totalVolumeFlow
         ) { logEntriesWithExercise, workout, totalVolume ->
-            runCatching {
-                updateState { currentState ->
-                    (currentState as WorkoutDetailUIState.Success).copy(
-                        workout = workout,
-                        logs = logEntriesWithExercise,
-                        volume = totalVolume,
-                        pr = calculatePRs(workout, logEntriesWithExercise)
-                    )
-                }
-            }.getOrElse { throwable ->
-                if (throwable is ClassCastException) {
-                    setState(
-                        WorkoutDetailUIState.Success(
-                            workout = workout,
-                            logs = logEntriesWithExercise,
-                            volume = totalVolume,
-                            pr = calculatePRs(workout, logEntriesWithExercise)
-                        )
-                    )
-                } else {
-                    setState(WorkoutDetailUIState.Error)
-                }
+            updateState { currentState ->
+                currentState.copy(
+                    workout = workout,
+                    logs = logEntriesWithExercise,
+                    volume = totalVolume,
+                    pr = calculatePRs(workout, logEntriesWithExercise)
+                )
             }
         }.launchIn(viewModelScope)
     }
@@ -103,6 +88,29 @@ class WorkoutDetailViewModel @Inject constructor(
         viewModelScope.launch {
             workoutsRepository.deleteWorkoutWithAllDependencies(workoutId)
             navigateBack()
+        }
+    }
+
+    private fun startWorkout(discardActive: Boolean) {
+        viewModelScope.launch {
+            workoutsRepository.startWorkoutFromWorkout(
+                workoutId = workoutId,
+                discardActive = discardActive,
+                onWorkoutAlreadyActive = { setShowActiveWorkoutDialog(true) }
+            )
+        }
+    }
+
+    private fun setDialogThenStartWorkout() {
+        setShowActiveWorkoutDialog(false)
+        startWorkout(true)
+    }
+
+    private fun setShowActiveWorkoutDialog(showDialog: Boolean) {
+        updateState { currentState ->
+            currentState.copy(
+                showActiveWorkoutDialog = showDialog
+            )
         }
     }
 

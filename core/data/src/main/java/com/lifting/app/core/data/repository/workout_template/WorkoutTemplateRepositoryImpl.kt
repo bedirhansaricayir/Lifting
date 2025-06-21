@@ -1,13 +1,12 @@
 package com.lifting.app.core.data.repository.workout_template
 
 import com.lifting.app.core.common.utils.generateUUID
+import com.lifting.app.core.data.mapper.Mapper.toDomain
 import com.lifting.app.core.data.mapper.Mapper.toEntity
 import com.lifting.app.core.database.dao.WorkoutTemplateDao
 import com.lifting.app.core.database.dao.WorkoutsDao
-import com.lifting.app.core.database.model.TemplateWithWorkoutResource
 import com.lifting.app.core.database.model.WorkoutEntity
 import com.lifting.app.core.database.model.WorkoutTemplateEntity
-import com.lifting.app.core.database.model.toDomain
 import com.lifting.app.core.model.TemplateWithWorkout
 import com.lifting.app.core.model.WorkoutTemplate
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +28,7 @@ class WorkoutTemplateRepositoryImpl @Inject constructor(
         workoutTemplateDao.getTemplate(templateId = templateId).filterNotNull().map { it.toDomain() }
 
     override fun getTemplates(): Flow<List<TemplateWithWorkout>> =
-        workoutTemplateDao.getTemplatesWithWorkouts().map { it.map(TemplateWithWorkoutResource::toDomain) }
+        workoutTemplateDao.getTemplatesWithWorkouts().map { it.toDomain() }
 
     override suspend fun createTemplate(): String {
         val workoutId = insertWorkout()

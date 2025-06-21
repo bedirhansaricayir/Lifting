@@ -1,37 +1,36 @@
 package com.lifting.app.feature.exercises
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.common.extensions.clearFocus
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.model.ExerciseWithInfo
 import com.lifting.app.core.ui.CollapsingToolBarScaffold
-import com.lifting.app.core.ui.components.LiftingIconButton
+import com.lifting.app.core.ui.common.UiText
+import com.lifting.app.core.ui.components.LiftingButton
+import com.lifting.app.core.ui.components.LiftingButtonType
 import com.lifting.app.core.ui.components.LiftingSearchField
-import com.lifting.app.core.ui.exercises.ExerciseItem
-import com.lifting.app.core.ui.extensions.detectGesturesThenHandleFocus
+import com.lifting.app.core.ui.extensions.detectGesturesThenClearFocus
+import com.lifting.app.core.ui.extensions.toLocalizedMuscleName
+import com.lifting.app.core.ui.extensions.toLocalizedString
 import com.lifting.app.core.ui.top_bar.LiftingTopBar
+import com.lifting.app.feature.exercises.components.ExerciseFilterDropdown
+import com.lifting.app.feature.exercises.components.ExerciseItem
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 
 /**
@@ -53,33 +52,13 @@ internal fun ExercisesScreen(
     )
 }
 
+
 @Composable
-internal fun ExercisesScreenContent(
-    modifier: Modifier = Modifier,
+private fun ExercisesScreenContent(
     state: ExercisesUIState,
     onEvent: (ExercisesUIEvent) -> Unit,
     isBottomSheet: Boolean,
-) {
-    when (state) {
-        ExercisesUIState.Loading -> {}
-
-        is ExercisesUIState.Success -> ListScreen(
-            modifier = modifier,
-            state = state,
-            onEvent = onEvent,
-            isBottomSheet = isBottomSheet
-        )
-
-        is ExercisesUIState.Error -> {}
-    }
-}
-
-@Composable
-internal fun ListScreen(
-    modifier: Modifier = Modifier,
-    state: ExercisesUIState.Success,
-    onEvent: (ExercisesUIEvent) -> Unit,
-    isBottomSheet: Boolean,
+    modifier: Modifier = Modifier
 ) {
     val scaffoldState = rememberCollapsingToolbarScaffoldState()
     val keyboard = LocalSoftwareKeyboardController.current
@@ -88,68 +67,92 @@ internal fun ListScreen(
     CollapsingToolBarScaffold(
         modifier = modifier
             .background(LiftingTheme.colors.background)
-            .detectGesturesThenHandleFocus(),
+            .detectGesturesThenClearFocus(),
         state = scaffoldState,
         toolbar = {
             LiftingTopBar(
                 toolbarState = scaffoldState.toolbarState,
                 toolbarScope = this@CollapsingToolBarScaffold,
                 actions = {
-                    LiftingIconButton(
-                        imageVector = LiftingTheme.icons.add,
-                        contentDescription = String.EMPTY,
-                        tint = LiftingTheme.colors.onBackground,
+                    LiftingButton(
+                        buttonType = LiftingButtonType.IconButton(
+                            icon = LiftingTheme.icons.add,
+                            tint = LiftingTheme.colors.onBackground,
+                        ),
                         onClick = {
                             onEvent(ExercisesUIEvent.OnAddClick)
                                 .clearFocus(keyboard, focusManager)
                         }
                     )
-                }
-            )
-        },
-        body = {
-            ExerciseList(
-                exercisesWithHeader = state.groupedExercises.orEmpty(),
-                searchSection = {
-                    Row(
+                },
+                layout = {
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(LiftingTheme.dimensions.large),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(LiftingTheme.dimensions.small)
                     ) {
                         LiftingSearchField(
-                            modifier = Modifier.weight(0.75f),
+                            modifier = Modifier.fillMaxWidth(),
                             value = state.searchQuery,
+                            useAnimatedPlaceholder = state.useAnimatedPlaceholder,
                             onValueChange = {
                                 onEvent(ExercisesUIEvent.OnSearchQueryChanged(it))
                             }
                         )
 
-                        Spacer(Modifier.width(LiftingTheme.dimensions.large))
-
-                        Box(
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .border(
-                                    border = BorderStroke(1.dp, LiftingTheme.colors.onBackground),
-                                    shape = CircleShape
-                                ),
-                            contentAlignment = Alignment.Center
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(LiftingTheme.dimensions.small),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            LiftingIconButton(
-                                painterRes = LiftingTheme.icons.filter,
-                                contentDescription = String.EMPTY,
-                                tint = LiftingTheme.colors.onBackground,
+                            ExerciseFilterDropdown(
+                                modifier = Modifier.weight(1f),
+                                selectedText = state.equipmentFilterTitle.asString(),
+                                isDropdownVisible = state.selectedFilterType == ExercisesFilterType.EQUIPMENT,
+                                selectableItems = state.equipmentFilterItems,
+                                itemDisplayText = { UiText.StringResource(it.toLocalizedString()) },
+                                onItemSelected = {
+                                    onEvent(
+                                        ExercisesUIEvent.OnEquipmentFilterClick(
+                                            it.item
+                                        )
+                                    )
+                                },
                                 onClick = {
-                                    onEvent(ExercisesUIEvent.OnFilterClick)
-                                        .clearFocus(keyboard, focusManager)
-                                }
+                                    onEvent(ExercisesUIEvent.OnEquipmentChipClick).clearFocus(
+                                        keyboard,
+                                        focusManager
+                                    )
+                                },
+                                onDismiss = { onEvent(ExercisesUIEvent.OnDismissEquipmentDropDown) },
+                                onClear = { onEvent(ExercisesUIEvent.OnRemoveFiltersClick(ExercisesFilterType.EQUIPMENT)) }
+                            )
+                            ExerciseFilterDropdown(
+                                modifier = Modifier.weight(1f),
+                                selectedText = state.categoryFilterTitle.asString(),
+                                isDropdownVisible = state.selectedFilterType == ExercisesFilterType.CATEGORY,
+                                selectableItems = state.categoryFilterItems,
+                                itemDisplayText = { UiText.StringResource(it.toLocalizedMuscleName()) },
+                                onItemSelected = { onEvent(ExercisesUIEvent.OnCategoryFilterClick(it.item)) },
+                                onClick = {
+                                    onEvent(ExercisesUIEvent.OnCategoryChipClick).clearFocus(
+                                        keyboard,
+                                        focusManager
+                                    )
+                                },
+                                onDismiss = { onEvent(ExercisesUIEvent.OnDismissCategoryDropDown) },
+                                onClear = { onEvent(ExercisesUIEvent.OnRemoveFiltersClick(ExercisesFilterType.CATEGORY)) }
                             )
                         }
-
                     }
-                },
+
+                }
+            )
+        },
+        body = {
+            ExerciseList(
+                exercisesWithHeader = state.groupedExercises,
                 onExerciseClick = { onEvent(ExercisesUIEvent.OnExerciseClick(it, isBottomSheet)) }
             )
         }
@@ -159,7 +162,6 @@ internal fun ListScreen(
 @Composable
 internal fun ExerciseList(
     modifier: Modifier = Modifier,
-    searchSection: @Composable () -> Unit,
     exercisesWithHeader: Map<String, List<ExerciseWithInfo>>,
     onExerciseClick: (String) -> Unit
 ) {
@@ -169,10 +171,6 @@ internal fun ExerciseList(
             .background(LiftingTheme.colors.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        item {
-            searchSection.invoke()
-        }
-
         exercisesWithHeader.map { entry ->
             stickyHeader(key = entry.key) {
                 Text(
@@ -194,7 +192,9 @@ internal fun ExerciseList(
                     modifier = Modifier.animateItem(),
                     exerciseImage = null,
                     exerciseName = exercise.exercise.name ?: "",
-                    exerciseType = exercise.muscle?.name ?: "",
+                    exerciseType = exercise.exercise.primaryMuscleTag?.let {
+                        stringResource(it.toLocalizedMuscleName())
+                    } ?: "",
                     exerciseLogCount = exercise.logsCount,
                     onClick = { onExerciseClick(exercise.exercise.exerciseId) }
                 )

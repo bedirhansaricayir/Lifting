@@ -6,11 +6,9 @@ import com.lifting.app.core.common.extensions.toLocalDateTime
 import com.lifting.app.core.model.ExerciseCategory
 import com.lifting.app.core.model.LogSetType
 import com.lifting.app.core.model.PersonalRecord
-import com.lifting.app.core.model.parseToExerciseCategory
 import com.lifting.app.core.model.toCommaSpString
 import java.text.ParseException
 import java.time.LocalDateTime
-import java.util.Date
 
 /**
  * Created by bedirhansaricayir on 18.07.2024
@@ -21,7 +19,7 @@ internal object Converters {
     @TypeConverter
     @JvmStatic
     fun toExerciseCategory(value: String): ExerciseCategory {
-        return value.parseToExerciseCategory()
+        return ExerciseCategory.getExerciseCategoryByTag(value)
 
     }
 
@@ -43,26 +41,6 @@ internal object Converters {
     @JvmStatic
     fun fromLogSetType(value: LogSetType?): String {
         return value?.value ?: LogSetType.NORMAL.value
-    }
-
-
-    @TypeConverter
-    fun toDate(value: Long?): Date? {
-        return if (value != null) {
-            try {
-                return Date(value)
-            } catch (e: ParseException) {
-                e.printStackTrace()
-            }
-            null
-        } else {
-            null
-        }
-    }
-
-    @TypeConverter
-    fun fromDate(value: Date?): Long? {
-        return value?.time
     }
 
     @TypeConverter

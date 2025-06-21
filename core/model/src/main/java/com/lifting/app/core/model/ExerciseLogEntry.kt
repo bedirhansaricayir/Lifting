@@ -26,4 +26,8 @@ data class ExerciseLogEntry(
     val personalRecords: List<PersonalRecord>?,
     val createdAt: LocalDateTime?,
     val updatedAt: LocalDateTime?
-): Parcelable
+) : Parcelable
+
+fun List<ExerciseLogEntry>.calculateTotalVolume(): Double {
+    return this.sumOf { entry -> (entry.weight ?: 0.0) * (entry.reps ?: 0) }
+}

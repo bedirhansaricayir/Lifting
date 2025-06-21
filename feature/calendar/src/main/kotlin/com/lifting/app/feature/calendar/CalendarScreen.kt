@@ -1,37 +1,32 @@
 package com.lifting.app.feature.calendar
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.itemContentType
-import androidx.paging.compose.itemKey
-import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.designsystem.LiftingTheme
-import com.lifting.app.core.model.CountWithDate
 import com.lifting.app.core.ui.CollapsingToolBarScaffold
-import com.lifting.app.core.ui.components.LiftingIconButton
+import com.lifting.app.core.ui.components.LiftingAlertDialog
+import com.lifting.app.core.ui.components.LiftingButton
+import com.lifting.app.core.ui.components.LiftingButtonType
 import com.lifting.app.core.ui.top_bar.LiftingTopBar
-import com.lifting.app.feature.calendar.components.CalendarMonthItem
-import com.lifting.app.feature.calendar.components.CalendarYearHeader
-import com.lifting.app.feature.calendar.models.CalendarDay
-import com.lifting.app.feature.calendar.models.CalendarMonth
-import kotlinx.coroutines.delay
+import com.lifting.app.feature.calendar.components.DayItem
+import com.lifting.app.feature.calendar.components.DaysOfWeekTitle
+import com.lifting.app.feature.calendar.components.EmptyCalendarItem
+import com.lifting.app.feature.calendar.components.HistoryListItem
+import com.lifting.app.feature.calendar.components.LiftingCalendar
+import com.lifting.app.feature.calendar.components.rememberCalendarState
+import com.lifting.app.feature.calendar.components.yearMonth
 import kotlinx.coroutines.launch
 import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 import java.time.LocalDate
-import java.time.Year
 
 /**
  * Created by bedirhansaricayir on 09.03.2025
@@ -39,64 +34,31 @@ import java.time.Year
 
 @Composable
 internal fun CalendarScreen(
-    calendar: LazyPagingItems<Any>,
-    workoutsCounts: List<CountWithDate>,
-    onNavigateBack: () -> Unit,
-    setYearToBackStack: (Int) -> Unit,
-    setMonthToBackStack: (CalendarMonth) -> Unit,
-    setDayToBackStack: (CalendarDay) -> Unit,
+    state: CalendarUIState,
+    onEvent: (CalendarUIEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     CalendarScreenContent(
-        calendar = calendar,
-        workoutsCounts = workoutsCounts,
-        onNavigateBack = onNavigateBack,
-        setYearToBackStack = setYearToBackStack,
-        setMonthToBackStack = setMonthToBackStack,
-        setDayToBackStack = setDayToBackStack,
+        state = state,
+        onEvent = onEvent,
         modifier = modifier
     )
 }
 
 @Composable
-internal fun CalendarScreenContent(
-    calendar: LazyPagingItems<Any>,
-    workoutsCounts: List<CountWithDate>,
-    onNavigateBack: () -> Unit,
-    setYearToBackStack: (Int) -> Unit,
-    setMonthToBackStack: (CalendarMonth) -> Unit,
-    setDayToBackStack: (CalendarDay) -> Unit,
+private fun CalendarScreenContent(
+    state: CalendarUIState,
+    onEvent: (CalendarUIEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var didFirstAutoScroll by rememberSaveable { mutableStateOf(false) }
     val scaffoldState = rememberCollapsingToolbarScaffoldState()
-    val scrollState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
-    val today = LocalDate.now()
-
-    suspend fun scrollToToday(smooth: Boolean = true) {
-        for (i in 0 until calendar.itemCount) {
-            val item = calendar.peek(i)
-            if (item is CalendarMonth && item.yearMonth.year == today.year && item.month == today.monthValue) {
-                if (smooth) {
-                    scrollState.animateScrollToItem(i)
-                } else {
-                    scrollState.scrollToItem(i)
-                }
-                break
-            }
-        }
-    }
-
-    LaunchedEffect(calendar.itemCount) {
-        calendar.let { calendar ->
-            if (calendar.itemCount > 0 && !didFirstAutoScroll) {
-                delay(100)
-                scrollToToday()
-                didFirstAutoScroll = true
-            }
-        }
-    }
+    val scope = rememberCoroutineScope()
+    val today by lazy { LocalDate.now() }
+    val calendarState = rememberCalendarState(
+        startMonth = state.calendarConfig.startMonth,
+        endMonth = state.calendarConfig.endMonth,
+        firstVisibleMonth = state.calendarConfig.currentMonth,
+    )
 
     CollapsingToolBarScaffold(
         modifier = modifier.background(LiftingTheme.colors.background),
@@ -108,56 +70,90 @@ internal fun CalendarScreenContent(
                 toolbarState = scaffoldState.toolbarState,
                 toolbarScope = this@CollapsingToolBarScaffold,
                 actions = {
-                    LiftingIconButton(
-                        imageVector = LiftingTheme.icons.calendar,
-                        contentDescription = String.EMPTY,
-                        tint = LiftingTheme.colors.onBackground,
+                    LiftingButton(
+                        buttonType = LiftingButtonType.IconButton(
+                            icon = LiftingTheme.icons.revert,
+                            tint = LiftingTheme.colors.onBackground,
+                        ),
                         onClick = {
-                            coroutineScope.launch {
-                                scrollToToday()
+                            scope.launch {
+                                calendarState.animateScrollToMonth(today.yearMonth)
                             }
+                            onEvent(CalendarUIEvent.OnDayClicked(today))
                         }
                     )
                 },
                 navigationIcon = {
-                    LiftingIconButton(
-                        imageVector = LiftingTheme.icons.back,
-                        contentDescription = String.EMPTY,
-                        tint = LiftingTheme.colors.onBackground,
-                        onClick = onNavigateBack
+                    LiftingButton(
+                        buttonType = LiftingButtonType.IconButton(
+                            icon = LiftingTheme.icons.back,
+                            tint = LiftingTheme.colors.onBackground,
+                        ),
+                        onClick = { onEvent(CalendarUIEvent.OnBackIconClick) },
                     )
                 }
             )
         },
         body = {
             LazyColumn(
-                state = scrollState,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(LiftingTheme.colors.background)
+                    .background(LiftingTheme.colors.background),
+                verticalArrangement = Arrangement.spacedBy(LiftingTheme.dimensions.large),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                items(
-                    count = calendar.itemCount,
-                    key = calendar.itemKey { it },
-                    contentType = calendar.itemContentType { "CalendarPagingItems" }
-                ) { index ->
-                    when (val item = calendar[index]) {
-                        is Int -> CalendarYearHeader(
-                            year = Year.of(item),
-                            onClick = {
-                                setYearToBackStack(item)
-                            }
-                        )
+                item(key = "lifting_calendar") {
+                    LiftingCalendar(
+                        state = calendarState,
+                        dayContent = { day ->
+                            DayItem(
+                                day = day,
+                                selected = state.selectedDay == day.date,
+                                indicatorCount = state.workoutDays.count { it == day.date },
+                                onClick = { onEvent(CalendarUIEvent.OnDayClicked(it)) }
+                            )
+                        },
+                        monthHeader = { month ->
+                            val daysOfWeek = month.weekDays.first().map { it.date.dayOfWeek }
+                            DaysOfWeekTitle(daysOfWeek = daysOfWeek)
+                        }
+                    )
+                }
 
-                        is CalendarMonth -> CalendarMonthItem(
-                            month = item,
-                            countsWithDate = workoutsCounts,
-                            selectedDate = today,
-                            onClickOnDay = { setDayToBackStack(it) },
-                            onClickOnMonth = { setMonthToBackStack(it) }
+                itemsIndexed(
+                    items = state.workouts,
+                    key = { _, workout -> workout.workout!!.id }
+                ) { index, data ->
+                    HistoryListItem(
+                        modifier = Modifier.padding(horizontal = LiftingTheme.dimensions.large),
+                        title = data.workout?.name.orEmpty(),
+                        date = data.workout?.startAt ?: data.workout?.completedAt
+                        ?: data.workout?.createdAt,
+                        totalExercises = data.totalExercises ?: 0,
+                        duration = data.workout?.duration,
+                        volume = data.totalVolume,
+                        prs = data.totalPRs ?: 0,
+                        onClick = { onEvent(CalendarUIEvent.OnWorkoutClicked(data.workout?.id!!)) }
+                    )
+                }
+
+                if (state.selectedDay == LocalDate.now() && state.workouts.isEmpty()) {
+                    item {
+                        EmptyCalendarItem(
+                            onClick = { onEvent(CalendarUIEvent.OnCreateNewWorkoutClicked) }
                         )
                     }
                 }
+            }
+
+            if (state.showActiveWorkoutDialog) {
+                LiftingAlertDialog(
+                    title = com.lifting.app.core.ui.R.string.workout_in_progress,
+                    text = com.lifting.app.core.ui.R.string.workout_in_progress_description,
+                    dismissText = com.lifting.app.core.ui.R.string.cancel,
+                    confirmText = com.lifting.app.core.ui.R.string.discard,
+                    onDismiss = { onEvent(CalendarUIEvent.OnDialogDismissClicked) },
+                    onConfirm = { onEvent(CalendarUIEvent.OnDialogConfirmClicked) }
+                )
             }
         }
     )

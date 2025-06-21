@@ -186,7 +186,7 @@ interface WorkoutsDao {
     }
 
     @Transaction
-    @Query("SELECT * FROM exercise_workout_junctions j JOIN exercises e ON e.exercise_id = j.exercise_id LEFT JOIN muscles m ON m.tag = e.primary_muscle_tag WHERE workout_id = :workoutId")
+    @Query("SELECT * FROM exercise_workout_junctions j JOIN exercises e ON e.exercise_id = j.exercise_id WHERE workout_id = :workoutId")
     fun getLogEntriesWithExtraInfo(workoutId: String): Flow<List<LogEntriesWithExtraInfoJunction>>
 
     @Query(
@@ -209,8 +209,21 @@ interface WorkoutsDao {
     )
     fun getWorkoutsWithExtraInfo(dateStart: Long, dateEnd: Long): Flow<List<WorkoutWithExtraInfoResource>>
 
+    @Query(
+        """
+            SELECT * FROM workouts w
+            WHERE date(completed_at / 1000,'unixepoch') = date(:date / 1000,'unixepoch')
+            AND w.is_hidden = 0 AND w.in_progress = 0
+            ORDER BY w.completed_at DESC
+        """
+    )
+    fun getWorkoutsWithExtraInfoByDate(date: Long): Flow<List<WorkoutWithExtraInfoResource>>
+
     @Query("SELECT COUNT(*) as count, start_at as date FROM workouts WHERE is_hidden = 0 AND in_progress = 0 GROUP BY start_at")
     fun getWorkoutsCount(): Flow<List<CountWithDateEntity>>
+
+    @Query("SELECT * FROM workouts w WHERE w.is_hidden = 0 AND w.in_progress = 0 AND w.completed_at IS NOT NULL ORDER BY w.completed_at DESC")
+    fun getWorkouts(): Flow<List<WorkoutEntity>>
 
     @Query(
         """
@@ -242,5 +255,17 @@ interface WorkoutsDao {
 
     @Query("SELECT * FROM exercise_logs WHERE id = :logId")
     fun getExerciseLogByLogId(logId: String): Flow<ExerciseLogEntity>
+
+    @Query("SELECT completed_at - start_at as duration FROM workouts WHERE is_hidden = 0 AND in_progress = 0 ORDER BY duration DESC LIMIT 1")
+    fun getLongestWorkoutDuration(): Flow<Long?>
+
+    @Query("SELECT e.weight FROM exercise_log_entries e JOIN exercise_logs j ON j.id = e.log_id JOIN workouts w ON w.id = j.workout_id JOIN exercise_workout_junctions ewj ON w.id = ewj.workout_id WHERE ewj.exercise_id = :exerciseId AND w.is_hidden = 0 AND w.in_progress = 0 ORDER BY e.weight DESC LIMIT 1")
+    fun getMaxWeightLiftedInExercise(exerciseId: String): Flow<Double?>
+
+    @Query("UPDATE exercise_workout_junctions SET barbell_id = :barbellId WHERE id = :junctionId")
+    suspend fun updateExerciseWorkoutJunctionBarbellId(junctionId: String, barbellId: String?)
+
+    @Query("UPDATE exercise_workout_junctions SET superset_id = :supersetId WHERE id = :junctionId")
+    suspend fun updateExerciseWorkoutJunctionSupersetId(junctionId: String, supersetId: Int?)
 
 }

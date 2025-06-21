@@ -1,12 +1,10 @@
 package com.lifting.app.feature.exercises_category
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.lifting.app.core.base.viewmodel.BaseViewModel
 import com.lifting.app.core.model.ExerciseCategory
-import com.lifting.app.core.model.allExerciseCategories
-import com.lifting.app.core.navigation.screens.LiftingScreen.Companion.SELECTED_EXERCISE_CATEGORY
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,34 +13,33 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class ExercisesCategoryViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
-): BaseViewModel<ExercisesCategoryUIState,ExercisesCategoryUIEvent,ExercisesCategoryUIEffect>() {
+internal class ExercisesCategoryViewModel @Inject constructor(
+) : BaseViewModel<ExercisesCategoryUIState, ExercisesCategoryUIEvent, ExercisesCategoryUIEffect>() {
 
-    private val selectedCategory = savedStateHandle.get<String>(SELECTED_EXERCISE_CATEGORY)
+    private val selectedCategory = MutableStateFlow<String>(ExerciseCategory.WEIGHT_AND_REPS.tag)
 
-    override fun setInitialState(): ExercisesCategoryUIState = ExercisesCategoryUIState.Loading
+    override fun setInitialState(): ExercisesCategoryUIState = ExercisesCategoryUIState()
 
     override fun handleEvents(event: ExercisesCategoryUIEvent) {
-        when(event) {
+        when (event) {
             is ExercisesCategoryUIEvent.OnCategoryClick -> onCategoryClick(event.category)
             is ExercisesCategoryUIEvent.OnSelectedCategoryChanged -> onSelectedCategoryChanged(event.category)
         }
     }
 
     init {
-        setUIState()
+        updateUIState()
     }
 
-    private fun setUIState() {
+    private fun updateUIState() {
         viewModelScope.launch {
-            val exercisesCategories: List<ExerciseCategory> = allExerciseCategories
-            setState (
-                ExercisesCategoryUIState.Success(
-                    categories = exercisesCategories,
-                    selectedCategory = selectedCategory
-                )
-            )
+            selectedCategory.collect { category ->
+                updateState {
+                    it.copy(
+                        selectedCategory = category
+                    )
+                }
+            }
         }
     }
 
@@ -51,9 +48,6 @@ class ExercisesCategoryViewModel @Inject constructor(
     }
 
     private fun onSelectedCategoryChanged(category: String) {
-        savedStateHandle[SELECTED_EXERCISE_CATEGORY] = category
-        updateState { currentState ->
-            (currentState as ExercisesCategoryUIState.Success).copy(selectedCategory = category)
-        }
+        selectedCategory.value = category
     }
 }

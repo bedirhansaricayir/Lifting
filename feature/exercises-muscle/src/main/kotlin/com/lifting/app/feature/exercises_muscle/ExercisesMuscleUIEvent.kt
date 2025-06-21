@@ -7,7 +7,7 @@ import com.lifting.app.core.model.Muscle
  * Created by bedirhansaricayir on 28.08.2024
  */
 
-sealed interface ExercisesMuscleUIEvent : Event {
+internal sealed interface ExercisesMuscleUIEvent : Event {
     data class OnMuscleClick(val muscle: Muscle) : ExercisesMuscleUIEvent
     data class OnSelectedMuscleChanged(val muscle: String) : ExercisesMuscleUIEvent
 }

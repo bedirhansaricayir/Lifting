@@ -1,13 +1,11 @@
 package com.lifting.app.feature.workout_template_preview.navigation
 
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.lifting.app.core.navigation.screens.LiftingScreen
+import com.lifting.app.core.ui.BaseComposableLayout
 import com.lifting.app.feature.workout_template_preview.WorkoutTemplatePreviewScreen
 import com.lifting.app.feature.workout_template_preview.WorkoutTemplatePreviewUIEffect
 import com.lifting.app.feature.workout_template_preview.WorkoutTemplatePreviewViewModel
@@ -25,21 +23,20 @@ fun NavGraphBuilder.workoutTemplatePreviewScreen(
 ) {
     composable<LiftingScreen.WorkoutTemplatePreview> {
         val viewModel: WorkoutTemplatePreviewViewModel = hiltViewModel()
-        val state by viewModel.state.collectAsStateWithLifecycle()
-        val effect = viewModel.effect
 
-        LaunchedEffect(effect) {
-            effect.collect { effect ->
+        BaseComposableLayout(
+            viewModel = viewModel,
+            effectHandler = { context, effect ->
                 when (effect) {
                     is WorkoutTemplatePreviewUIEffect.NavigateToWorkoutEdit -> onNavigateToWorkoutEdit(effect.workoutId,true)
                     WorkoutTemplatePreviewUIEffect.PopBackStack -> popBackStack()
                 }
             }
+        ) { state ->
+            WorkoutTemplatePreviewScreen(
+                state = state,
+                onEvent = viewModel::setEvent
+            )
         }
-
-        WorkoutTemplatePreviewScreen(
-            state = state,
-            onEvent = viewModel::setEvent
-        )
     }
 }

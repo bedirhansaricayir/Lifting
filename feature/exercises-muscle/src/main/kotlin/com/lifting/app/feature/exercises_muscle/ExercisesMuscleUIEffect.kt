@@ -7,6 +7,6 @@ import com.lifting.app.core.model.Muscle
  * Created by bedirhansaricayir on 28.08.2024
  */
 
-sealed interface ExercisesMuscleUIEffect : Effect {
+internal sealed interface ExercisesMuscleUIEffect : Effect {
     data class SetMuscleToBackStack(val selectedMuscle: Muscle) : ExercisesMuscleUIEffect
 }

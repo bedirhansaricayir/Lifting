@@ -3,7 +3,6 @@ package com.lifting.app.core.data.repository.exercises
 import com.lifting.app.core.model.Exercise
 import com.lifting.app.core.model.ExerciseCategory
 import com.lifting.app.core.model.ExerciseWithInfo
-import com.lifting.app.core.model.ExerciseWithMuscle
 import com.lifting.app.core.model.LogEntriesWithWorkout
 import kotlinx.coroutines.flow.Flow
 
@@ -19,8 +18,6 @@ interface ExercisesRepository {
 
     fun getAllExerciseWithInfo(searchQuery: String?): Flow<List<ExerciseWithInfo>>
 
-    fun getAllExercisesWithMuscle(): Flow<List<ExerciseWithMuscle>>
-
     fun getAllLogEntries(exerciseId: String): Flow<List<LogEntriesWithWorkout>>
 
     fun getVisibleLogEntries(exerciseId: String): Flow<List<LogEntriesWithWorkout>>
@@ -34,4 +31,7 @@ interface ExercisesRepository {
         secondaryMuscleTag: String? = null,
         category: ExerciseCategory? = null,
     )
+
+    suspend fun insertExercises(exercises: List<Exercise>)
+
 }

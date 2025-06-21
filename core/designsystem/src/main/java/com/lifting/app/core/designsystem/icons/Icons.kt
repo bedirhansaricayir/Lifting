@@ -7,28 +7,41 @@ package com.lifting.app.core.designsystem.icons
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import com.lifting.app.core.designsystem.R
 
 @Immutable
 class LiftingIcons {
+
+    @Composable
+    fun getIcon(icon: String): ImageVector {
+        return when (icon) {
+            "palette" -> palette
+            "dumbbell" -> dumbbell
+            "language" -> language
+            "run" -> run
+            else -> search
+        }
+    }
 
     val search: ImageVector
         @Composable
@@ -42,9 +55,9 @@ class LiftingIcons {
         @Composable
         get() = Icons.Default.ArrowBack
 
-    val filter: Painter
+    val filter: ImageVector
         @Composable
-        get() = painterResource(id = R.drawable.filter_icon)
+        get() = ImageVector.vectorResource(id = R.drawable.filter_icon)
 
     val clear: ImageVector
         @Composable
@@ -62,9 +75,9 @@ class LiftingIcons {
         @Composable
         get() = Icons.Default.KeyboardArrowRight
 
-    val expand: Painter
+    val expand: ImageVector
         @Composable
-        get() = painterResource(id = R.drawable.expand_icon)
+        get() = ImageVector.vectorResource(id = R.drawable.expand_icon)
 
     val moreVert: ImageVector
         @Composable
@@ -88,35 +101,99 @@ class LiftingIcons {
 
     val calendar: ImageVector
         @Composable
-        get() = Icons.Outlined.DateRange
+        get() = ImageVector.vectorResource(id = R.drawable.calendar_month)
 
-    val timer: Painter
+    val timer: ImageVector
         @Composable
-        get() = painterResource(id = R.drawable.ic_timer)
+        get() = ImageVector.vectorResource(id = R.drawable.ic_timer)
 
-    val weight: Painter
+    val weight: ImageVector
         @Composable
-        get() = painterResource(id = R.drawable.ic_weight)
+        get() = ImageVector.vectorResource(id = R.drawable.ic_weight)
 
-    val trophy: Painter
+    val trophy: ImageVector
         @Composable
-        get() = painterResource(id = R.drawable.ic_trophy)
+        get() = ImageVector.vectorResource(id = R.drawable.ic_trophy)
 
-    val replay: Painter
+    val replay: ImageVector
         @Composable
-        get() = painterResource(id = R.drawable.ic_replay)
+        get() = ImageVector.vectorResource(id = R.drawable.ic_replay)
 
-    val grid: Painter
+    val grid: ImageVector
         @Composable
-        get() = painterResource(id = R.drawable.ic_grid)
+        get() = ImageVector.vectorResource(id = R.drawable.ic_grid)
 
-    val column: Painter
+    val list: ImageVector
         @Composable
-        get() = painterResource(id = R.drawable.ic_column)
+        get() = ImageVector.vectorResource(id = R.drawable.ic_list)
 
     val play: ImageVector
         @Composable
         get() = Icons.Outlined.PlayArrow
+
+    val chevronDown: ImageVector
+        @Composable
+        get() = Icons.Outlined.KeyboardArrowDown
+
+    val chevronUp: ImageVector
+        @Composable
+        get() = Icons.Outlined.KeyboardArrowUp
+
+    val check: ImageVector
+        @Composable
+        get() = Icons.Default.Check
+
+    val dumbbell: ImageVector
+        @Composable
+        get() = Icons.Outlined.Dumbbell
+
+    val run: ImageVector
+        @Composable
+        get() = Icons.Outlined.Run
+
+    val folder: ImageVector
+        @Composable
+        get() = Icons.Outlined.Folder
+
+    val restore: ImageVector
+        @Composable
+        get() = Icons.Outlined.Restore
+
+    val thumbsUpDown: ImageVector
+        @Composable
+        get() = Icons.Outlined.ThumbsUpDown
+
+    val mail: ImageVector
+        @Composable
+        get() = Icons.Outlined.MailOutline
+
+    val palette: ImageVector
+        @Composable
+        get() = ImageVector.vectorResource(id = R.drawable.ic_palette)
+
+    val plates: ImageVector
+        @Composable
+        get() = Icons.Filled.Plates
+
+    val dialPad: ImageVector
+        @Composable
+        get() = Icons.Outlined.Dialpad
+
+    val backSpace: ImageVector
+        @Composable
+        get() = Icons.Outlined.Backspace
+
+    val revert: ImageVector
+        @Composable
+        get() = ImageVector.vectorResource(id = R.drawable.ic_revert)
+
+    val language: ImageVector
+        @Composable
+        get() = ImageVector.vectorResource(id = R.drawable.ic_language)
+
+    val pause: ImageVector
+        @Composable
+        get() = ImageVector.vectorResource(id = R.drawable.ic_pause)
 
 }
 

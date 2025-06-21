@@ -2,15 +2,13 @@ package com.lifting.app.feature.exercises.navigation
 
 import androidx.compose.material.navigation.bottomSheet
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.lifting.app.core.navigation.screens.LiftingScreen
 import com.lifting.app.core.navigation.screens.LiftingScreen.Companion.RESULT_EXERCISES_SCREEN_EXERCISE_ID
+import com.lifting.app.core.ui.BaseComposableLayout
 import com.lifting.app.feature.exercises.ExercisesScreen
 import com.lifting.app.feature.exercises.ExercisesUIEffect
 import com.lifting.app.feature.exercises.ExercisesViewModel
@@ -30,12 +28,10 @@ fun NavGraphBuilder.exercisesScreen(
 ) {
     val content: @Composable () -> Unit = {
         val viewModel: ExercisesViewModel = hiltViewModel()
-        val state by viewModel.state.collectAsStateWithLifecycle()
-        val effect = viewModel.effect
-        val results by viewModel.exercises.collectAsStateWithLifecycle()
 
-        LaunchedEffect(effect) {
-            effect.collect { effect ->
+        BaseComposableLayout(
+            viewModel = viewModel,
+            effectHandler = { context, effect ->
                 when (effect) {
                     ExercisesUIEffect.NavigateToAddExercise -> onAddClick()
                     is ExercisesUIEffect.NavigateToDetail -> navigateToDetail(effect.id)
@@ -48,14 +44,15 @@ fun NavGraphBuilder.exercisesScreen(
                     }
                 }
             }
+        ) { state ->
+            ExercisesScreen(
+                state = state,
+                onEvent = viewModel::setEvent,
+                isBottomSheet = isBottomSheet
+            )
         }
-
-        ExercisesScreen(
-            state = state,
-            onEvent = viewModel::setEvent,
-            isBottomSheet = isBottomSheet
-        )
     }
+
 
     if (isBottomSheet) {
         bottomSheet(LiftingScreen.ExercisesBottomSheet().route) { content() }

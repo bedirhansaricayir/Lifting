@@ -11,7 +11,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,16 +19,14 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class WorkoutTemplatePreviewViewModel @Inject constructor(
+internal class WorkoutTemplatePreviewViewModel @Inject constructor(
     private val workoutsRepository: WorkoutsRepository,
     private val templateRepository: WorkoutTemplateRepository,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<WorkoutTemplatePreviewUIState, WorkoutTemplatePreviewUIEvent, WorkoutTemplatePreviewUIEffect>() {
-    private val templateId =
-        savedStateHandle.toRoute<LiftingScreen.WorkoutTemplatePreview>().templateIdKey
+    private val templateId = savedStateHandle.toRoute<LiftingScreen.WorkoutTemplatePreview>().templateIdKey
 
-    override fun setInitialState(): WorkoutTemplatePreviewUIState =
-        WorkoutTemplatePreviewUIState.Loading
+    override fun setInitialState(): WorkoutTemplatePreviewUIState = WorkoutTemplatePreviewUIState()
 
     override fun handleEvents(event: WorkoutTemplatePreviewUIEvent) {
         when (event) {
@@ -43,15 +40,12 @@ class WorkoutTemplatePreviewViewModel @Inject constructor(
     }
 
     init {
-        workoutTemplatePreviewUiState(templateId)
+        updateUIState()
     }
 
-    private fun workoutTemplatePreviewUiState(
-        templateId: String
-    ) {
+    private fun updateUIState() {
         viewModelScope.launch {
             templateRepository.getTemplate(templateId)
-                .onStart { setState(WorkoutTemplatePreviewUIState.Loading) }
                 .collectLatest { workoutTemplate ->
                     workoutTemplate.workoutId?.let {
                         val entriesFlow = workoutsRepository.getLogEntriesWithExtraInfo(it)
@@ -60,26 +54,12 @@ class WorkoutTemplatePreviewViewModel @Inject constructor(
                             entriesFlow,
                             workoutFlow
                         ) { entries, workout ->
-                            runCatching {
-                                updateState { currentState ->
-                                    (currentState as WorkoutTemplatePreviewUIState.Success).copy(
-                                        template = workoutTemplate,
-                                        entries = entries,
-                                        workout = workout
-                                    )
-                                }
-                            }.getOrElse { throwable ->
-                                if (throwable is ClassCastException) {
-                                    setState(
-                                        WorkoutTemplatePreviewUIState.Success(
-                                            workoutTemplate,
-                                            entries = entries,
-                                            workout = workout
-                                        )
-                                    )
-                                } else {
-                                    setState(WorkoutTemplatePreviewUIState.Error)
-                                }
+                            updateState { currentState ->
+                                currentState.copy(
+                                    template = workoutTemplate,
+                                    entries = entries,
+                                    workout = workout
+                                )
                             }
                         }.launchIn(viewModelScope)
                     }
@@ -95,6 +75,7 @@ class WorkoutTemplatePreviewViewModel @Inject constructor(
         deleteTemplate()
         setPopBackStackEffect()
     }
+
     private fun deleteTemplate() {
         viewModelScope.launch {
             templateRepository.deleteTemplate(templateId)
@@ -122,7 +103,7 @@ class WorkoutTemplatePreviewViewModel @Inject constructor(
 
     private fun setShowActiveWorkoutDialog(showDialog: Boolean) {
         updateState { currentState ->
-            (currentState as WorkoutTemplatePreviewUIState.Success).copy(
+            currentState.copy(
                 showActiveWorkoutDialog = showDialog
             )
         }

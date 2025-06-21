@@ -3,24 +3,23 @@ package com.lifting.app.feature.create_exercise
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imeNestedScroll
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.unit.dp
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.ui.components.LiftingTextField
 import com.lifting.app.core.ui.components.SingleSelectableCard
+import com.lifting.app.core.ui.extensions.getReadableName
+import com.lifting.app.core.ui.extensions.toLocalizedMuscleName
 import com.lifting.app.core.ui.top_bar.LiftingBottomSheetTopBar
 
 /**
@@ -40,29 +39,11 @@ internal fun CreateExerciseScreen(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun CreateExerciseScreenContent(
+private fun CreateExerciseScreenContent(
     modifier: Modifier = Modifier,
     state: CreateExerciseUIState,
-    onEvent: (CreateExerciseUIEvent) -> Unit
-) {
-    when (state) {
-        is CreateExerciseUIState.Loading -> LoadingScreen()
-
-        is CreateExerciseUIState.Success -> CreateExerciseScreenSuccess(
-            modifier = modifier,
-            state = state,
-            onEvent = onEvent,
-        )
-
-        is CreateExerciseUIState.Error -> ErrorScreen(message = state.message)
-    }
-}
-
-@Composable
-internal fun CreateExerciseScreenSuccess(
-    modifier: Modifier = Modifier,
-    state: CreateExerciseUIState.Success,
     onEvent: (CreateExerciseUIEvent) -> Unit
 ) {
     Column(
@@ -75,11 +56,14 @@ internal fun CreateExerciseScreenSuccess(
             onNavigationClick = { onEvent(CreateExerciseUIEvent.OnNavigationClick) },
             onActionClick = { onEvent(CreateExerciseUIEvent.OnActionClick) }
         )
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(LiftingTheme.dimensions.large)
+                .imePadding()
+                .imeNestedScroll(),
+            verticalArrangement = Arrangement.spacedBy(LiftingTheme.dimensions.small)
         ) {
             Text(
                 text = stringResource(com.lifting.app.core.ui.R.string.name),
@@ -111,52 +95,22 @@ internal fun CreateExerciseScreenSuccess(
                 ),
                 placeholder = stringResource(com.lifting.app.core.ui.R.string.exercise_notes)
             )
-            Spacer(modifier = Modifier.height(8.dp))
 
             SingleSelectableCard(
+                modifier = Modifier.padding(top = LiftingTheme.dimensions.small),
                 name = stringResource(com.lifting.app.core.ui.R.string.category),
-                value = state.selectedCategory.readableName,
+                value = stringResource(state.selectedCategory.getReadableName()),
                 onClick = { onEvent(CreateExerciseUIEvent.OnCategoryClicked(state.selectedCategory.tag)) }
             )
-            Spacer(modifier = Modifier.height(8.dp))
 
             SingleSelectableCard(
+                modifier = Modifier.padding(top = LiftingTheme.dimensions.small),
                 name = stringResource(com.lifting.app.core.ui.R.string.primary_muscle),
-                value = state.selectedMuscle?.name,
+                value = state.selectedMuscle?.let {
+                    stringResource(it.tag.toLocalizedMuscleName())
+                },
                 onClick = { onEvent(CreateExerciseUIEvent.OnMuscleClicked(state.selectedMuscle?.tag)) }
             )
         }
     }
 }
-
-@Composable
-internal fun LoadingScreen(
-    modifier: Modifier = Modifier
-) {
-    Row(
-         modifier = modifier
-             .fillMaxWidth()
-             .background(LiftingTheme.colors.background),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        CircularProgressIndicator()
-        Text(text = "Loading..")
-    }
-}
-
-@Composable
-internal fun ErrorScreen(
-    modifier: Modifier = Modifier,
-    message: String?
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .background(LiftingTheme.colors.background)
-    ) {
-        Text(text = message ?: "Can't to add new exercise")
-    }
-}
-

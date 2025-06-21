@@ -14,7 +14,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 apply("lifting.hilt")
             }
             dependencies {
-                featureModules()
+                coreBundle()
                 kotlin()
             }
         }

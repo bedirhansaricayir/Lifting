@@ -7,6 +7,11 @@ android { namespace = "com.lifting.app.core.ui" }
 dependencies {
     coreDesignSystem()
     coreModel()
+    coreBase()
+    coreCommon()
     api(ThirdParty.collapsingToolbar)
     api(ThirdParty.coil)
+    api(Compose.material)
+    api(Androidx.appcompat)
+
 }

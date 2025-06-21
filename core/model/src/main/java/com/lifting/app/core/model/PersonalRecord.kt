@@ -74,7 +74,7 @@ fun List<PersonalRecord>.toCommaSpString(): String? {
     ) else null
 }
 
-fun ArrayList<PersonalRecord>.addIfNot(pr: PersonalRecord) {
+fun MutableList<PersonalRecord>.addIfNot(pr: PersonalRecord) {
     if (!contains(pr)) {
         add(pr)
     }

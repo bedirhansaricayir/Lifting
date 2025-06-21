@@ -1,5 +1,5 @@
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id(Plugins.LIFTING_ANDROID_APPLICATION)
@@ -24,7 +24,9 @@ android {
     buildTypes {
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = false
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -34,15 +36,18 @@ android {
     }
 }
 
-composeCompiler {
-    enableStrongSkippingMode = true
-}
-
 dependencies {
     coreDesignSystem()
     coreNavigation()
+    coreDatastore()
+    coreCommon()
+    coreModel()
+    coreUI()
+    coreKeyboard()
+    coreService()
 
     featureBundle()
 
     api(Androidx.splash)
+    api(Androidx.appcompat)
 }

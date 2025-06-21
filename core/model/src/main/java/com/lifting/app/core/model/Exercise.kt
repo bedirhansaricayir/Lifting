@@ -10,6 +10,7 @@ data class Exercise(
     val exerciseId: String,
     val name: String?,
     val notes: String?,
+    val equipmentId: String? = null,
     val primaryMuscleTag: String?,
     val secondaryMuscleTag: String?,
     val category: ExerciseCategory?,

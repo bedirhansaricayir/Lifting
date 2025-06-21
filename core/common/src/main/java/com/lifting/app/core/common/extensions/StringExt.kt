@@ -9,4 +9,13 @@ val String.Companion.EMPTY: String
 
 fun String.orEmpty() = this.ifBlank { "" }
 
-fun String.getIntValues(key: String = ",") = this.trim().split(key).map { it.trim().toInt() }
+fun String.getBackStackArgs(separator: String = ",") = this.trim().split(separator).map { it.trim() }
+
+fun String.replaceWithDot() = this.replace(',','.')
+
+fun String.toMillisFromMMSS(): Long {
+    val parts = this.split(":")
+    val minutes = parts[0].toLongOrNull() ?: 0L
+    val seconds = parts[1].toLongOrNull() ?: 0L
+    return (minutes * 60 + seconds) * 1000
+}

@@ -1,24 +1,18 @@
 package com.lifting.app.feature.calendar
 
-import androidx.lifecycle.ViewModel
+import android.content.Context
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.insertSeparators
+import com.lifting.app.core.base.viewmodel.BaseViewModel
+import com.lifting.app.core.common.utils.generateUUID
 import com.lifting.app.core.data.repository.workouts.WorkoutsRepository
-import com.lifting.app.feature.calendar.models.CalendarMonth
-import com.lifting.app.feature.calendar.paging.CalendarPagingDataSource
+import com.lifting.app.core.model.TimePeriod
+import com.lifting.app.core.model.WorkoutWithExtraInfo
+import com.lifting.app.core.ui.extensions.toCreateWorkoutNameByPeriod
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.shareIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.time.DayOfWeek
-import java.time.Year
+import java.time.LocalDate
 import javax.inject.Inject
 
 /**
@@ -26,55 +20,100 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class CalendarViewModel @Inject constructor(
-    workoutsRepository: WorkoutsRepository
-) : ViewModel() {
+internal class CalendarViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val workoutsRepository: WorkoutsRepository
+) : BaseViewModel<CalendarUIState, CalendarUIEvent, CalendarUIEffect>() {
 
-    private var _calendarFlow: Flow<PagingData<Any>> = flow { }
-    var calendarFlow = _calendarFlow
-        .shareIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
-            replay = 1
-        )
+    override fun setInitialState(): CalendarUIState = CalendarUIState()
 
-    val workoutsCounts = workoutsRepository.getWorkoutsCount()
-        .shareIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
-            replay = 1
-        )
-
-
-    init {
-        viewModelScope.launch {
-            calendarFlow = Pager(
-                config = PagingConfig(pageSize = 1, prefetchDistance = 1),
-                initialKey = Year.now().value,
-                pagingSourceFactory = {
-                    CalendarPagingDataSource(
-                        startYear = Year.now().value,
-                        firstDayOfWeek = DayOfWeek.MONDAY
-                    )
-                }
-            ).flow
-                .map(::mapCalendar)
-                .cachedIn(viewModelScope)
-                .shareIn(
-                    scope = viewModelScope,
-                    started = SharingStarted.WhileSubscribed(),
-                    replay = 1
-                )
+    override fun handleEvents(event: CalendarUIEvent) {
+        when (event) {
+            CalendarUIEvent.OnBackIconClick -> setNavigateBackEffect()
+            is CalendarUIEvent.OnDayClicked -> getWorkoutsByDate(event.date)
+            is CalendarUIEvent.OnWorkoutClicked -> navigateToWorkoutDetail(event.workoutId)
+            is CalendarUIEvent.OnCreateNewWorkoutClicked -> createWorkout(discardActive = false)
+            CalendarUIEvent.OnDialogConfirmClicked -> setDialogThenCreateWorkout()
+            CalendarUIEvent.OnDialogDismissClicked -> setShowActiveWorkoutDialog(false)
         }
     }
 
-    private fun mapCalendar(pagingData: PagingData<CalendarMonth>): PagingData<Any> {
-        return pagingData.insertSeparators { before, after ->
-            if (after != null && before?.year != after.year) {
-                after.year
-            } else {
-                null
+    private val workouts = MutableStateFlow<List<WorkoutWithExtraInfo>>(emptyList())
+
+    init {
+        updateUIState()
+    }
+
+    private fun setNavigateBackEffect() = setEffect(CalendarUIEffect.NavigateBack)
+
+    private fun updateUIState() {
+        viewModelScope.launch {
+            workoutsRepository.getWorkoutsWithExtraInfo().collect {
+                workouts.value = it
+
+                val workoutDays = workouts.value.map { workoutWithInfo ->
+                    (workoutWithInfo.workout?.completedAt!!.toLocalDate())
+                }
+
+                updateState { currentState ->
+                    currentState.copy(
+                        workoutDays = workoutDays
+                    )
+                }
+
+                if (workoutDays.contains(LocalDate.now())) {
+                    getWorkoutsByDate(LocalDate.now())
+                }
             }
         }
     }
+
+    private fun getWorkoutsByDate(localDate: LocalDate) {
+        viewModelScope.launch {
+            updateState { currentState ->
+                currentState.copy(
+                    workouts = workouts.value.filter { workoutWithInfo ->
+                        workoutWithInfo.workout?.completedAt?.toLocalDate() == localDate
+                    },
+                    selectedDay = localDate
+                )
+            }
+        }
+    }
+
+    private fun createWorkout(
+        workoutName: String = TimePeriod.now().toCreateWorkoutNameByPeriod(context),
+        discardActive: Boolean
+    ) {
+        viewModelScope.launch {
+            val workoutId = generateUUID()
+            val isCreated = workoutsRepository.createWorkout(
+                workoutId = workoutId,
+                workoutName = workoutName,
+                discardActive = discardActive,
+                onWorkoutAlreadyActive = {
+                    setShowActiveWorkoutDialog(true)
+                }
+            )
+            if (isCreated) {
+                workoutsRepository.setActiveWorkoutId(workoutId)
+            }
+        }
+    }
+
+    private fun setDialogThenCreateWorkout() {
+        setShowActiveWorkoutDialog(false)
+        createWorkout(discardActive = true)
+    }
+
+    private fun setShowActiveWorkoutDialog(showDialog: Boolean) {
+        updateState { currentState ->
+            currentState.copy(
+                showActiveWorkoutDialog = showDialog
+            )
+        }
+    }
+
+    private fun navigateToWorkoutDetail(workoutId: String) =
+        setEffect(CalendarUIEffect.NavigateToWorkoutDetail(workoutId))
 }

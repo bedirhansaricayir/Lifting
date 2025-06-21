@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_bar_place_holder">Egzersiz ara</string>
+    <string name="e_g_string">(ör. %1$s)</string>
+    <string name="back_button_content_description">Geri Butonu</string>
+    <string name="search_bar_leading_icon_search_content_description">Ara Butonu</string>
+    <string name="search_bar_trailing_icon_clear_content_description">Temizle Butonu</string>
+    <string name="exercises_image_content_description">Egzersiz Görseli</string>
+    <string name="top_bar_title_exercises">Egzersizler</string>
+    <string name="top_bar_title_workout">Antrenman</string>
+    <string name="close_button_content_description">Kapat Butonu</string>
+    <string name="done_button_content_description">Tamamlandı Butonu</string>
+    <string name="bottom_sheet_title_new_exercise">Yeni Egzersiz</string>
+    <string name="label_select">Seç</string>
+    <string name="expand_icon">Genişlet İkonu</string>
+    <string name="lifting_templates">Uygulama Şablonları</string>
+    <string name="my_templates">Şablonlarım</string>
+    <string name="create_template">Şablon Oluştur</string>
+    <string name="cancel_workout">Antrenmanı İptal Et</string>
+    <string name="add_exercise">Egzersiz Ekle</string>
+    <string name="workout_name">Antrenman Adı</string>
+    <string name="workout_note">Antrenman Notu</string>
+    <string name="add_set">Set Ekle</string>
+    <string name="edit_workout">Antrenmanı Düzenle</string>
+    <string name="exercises_count">%1$d Egzersiz</string>
+    <string name="delete_exercise">Egzersizi Sil</string>
+    <string name="set_uppercase">SET</string>
+    <string name="kg">Kg</string>
+    <string name="kg_lowercase">kg</string>
+    <string name="kg_uppercase">KG</string>
+    <string name="lbs">Lbs</string>
+    <string name="lbs_lowercase">lbs</string>
+    <string name="lbs_uppercase">LBS</string>
+    <string name="reps">TEKRAR</string>
+    <string name="rpe">RPE</string>
+    <string name="km">Km</string>
+    <string name="km_lowercase">km</string>
+    <string name="km_uppercase">KM</string>
+    <string name="miles">Mil</string>
+    <string name="miles_lowercase">mil</string>
+    <string name="miles_uppercase">MİL</string>
+    <string name="duration">SÜRE</string>
+    <string name="unnamed_template">İsimsiz Şablon</string>
+    <string name="last_performed_at">Son yapılma tarihi</string>
+    <string name="edit_template">Şablonu Düzenle</string>
+    <string name="statistics">İstatistikler</string>
+    <string name="history">Geçmiş</string>
+    <string name="about">Hakkında</string>
+    <plurals name="number_of_exercises">
+        <item quantity="one">%d egzersiz</item>
+        <item quantity="other">%d egzersiz</item>
+    </plurals>
+    <plurals name="number_of_prs">
+        <item quantity="one">%d PR</item>
+        <item quantity="other">%d PR</item>
+    </plurals>
+    <string name="calendar">Takvim</string>
+
+    <plurals name="number_of_workouts">
+        <item quantity="one">%d antrenman</item>
+        <item quantity="other">%d antrenman</item>
+    </plurals>
+    <string name="workout">Antrenman</string>
+    <string name="max_weight">Maksimum Ağırlık</string>
+    <string name="max_volume">Maksimum Hacim</string>
+    <string name="max_volume_added">Eklenen Maksimum Hacim</string>
+    <string name="max_reps">Maksimum Tekrar</string>
+    <string name="max_one_rm">Maksimum 1 Tekrar</string>
+    <string name="max_duration">Maksimum Süre</string>
+    <string name="max_distance">Maksimum Mesafe</string>
+    <string name="max_weight_added">Eklenen Maksimum Ağırlık</string>
+    <string name="super_set">Süper Set</string>
+    <string name="reps_lowercase">tekrar</string>
+    <string name="duration2">Süre</string>
+    <string name="exercise_name">Egzersiz Adı</string>
+    <string name="exercise_notes">Egzersiz Notları</string>
+    <string name="name">Ad</string>
+    <string name="notes">Notlar</string>
+    <string name="select_muscle">Kas Grubu Seç</string>
+    <string name="select_category">Kategori Seç</string>
+    <string name="category">Kategori</string>
+    <string name="primary_muscle">Ana Kas Grubu</string>
+    <string name="cancel">İptal</string>
+    <string name="discard">Vazgeç</string>
+    <string name="workout_in_progress">Antrenman devam ediyor</string>
+    <string name="workout_in_progress_description">Şu anda bir antrenman yapıyorsunuz. Vazgeçmek ister misiniz?</string>
+    <string name="sets">Setler</string>
+    <string name="volume">Hacim</string>
+    <string name="finish">Bitir</string>
+    <string name="start_workout">Antrenmana Başla</string>
+    <string name="filter_dialog_title">Filtre</string>
+    <string name="clear_filter_text">Tümünü Temizle</string>
+    <string name="apply_filter_text">Uygula</string>
+    <string name="close_filter_text">Kapat</string>
+    <string name="not_enough_data">Yeterli veri yok</string>
+    <string name="weight_and_reps_readable_text">"Ağırlık ve Tekrar"</string>
+    <string name="bodyweight_reps_readable_text">"Vücut Ağırlığı Tekrarları"</string>
+    <string name="weighted_bodyweight_readable_text">"Ağırlıklı Vücut Ağırlığı"</string>
+    <string name="assisted_bodyweight_readable_text">"Destekli Vücut Ağırlığı"</string>
+    <string name="duration_readable_text">"Zaman"</string>
+    <string name="distance_and_duration_readable_text">"Mesafe ve Zaman"</string>
+    <string name="weight_and_distance_readable_text">"Ağırlık ve Mesafe"</string>
+    <string name="weight_and_duration_readable_text">"Ağırlık ve Zaman"</string>
+    <string name="unknown_category_readable_text">"Bilinmiyor"</string>
+    <string name="top_bar_title_settings">Ayarlar</string>
+    <string name="settings_screen_preferences_title">Tercihler</string>
+    <string name="settings_screen_app_theme_title">Tema</string>
+    <string name="settings_screen_app_theme_light_description">Aydınlık</string>
+    <string name="settings_screen_app_theme_dark_description">Karanlık</string>
+    <string name="settings_screen_app_theme_system_description">Sistem Varsayılanı</string>
+    <string name="settings_screen_weight_unit_title">Ağırlık Birimi</string>
+    <string name="weight_unit_description_metric_kg">Metrik (kg)</string>
+    <string name="weight_unit_description_imperial_lbs">Emperyal (lbs)</string>
+    <string name="settings_screen_distance_unit_title">Mesafe Birimi</string>
+    <string name="distance_unit_description_metric_m_km">Metrik (m/km)</string>
+    <string name="distance_unit_description_imperial_ft_miles">Emperyal (ft/mil)</string>
+    <string name="settings_screen_your_data_title">Verileriniz</string>
+    <string name="settings_screen_backup_data_title">Verileri Yedekle</string>
+    <string name="settings_screen_backup_data_description_title">Yedekleme dosyasına dönüştür</string>
+    <string name="settings_screen_restore_data_title">Verileri Geri Yükle</string>
+    <string name="settings_screen_restore_data_description_title">Önceki bir yedekleme dosyasından</string>
+    <string name="settings_screen_feedback_title">Geri Bildirim</string>
+    <string name="settings_screen_review_title">Bir İnceleme Yazın</string>
+    <string name="settings_screen_review_description">Uygulama deneyiminizi iyileştirmenize yardımcı olacak</string>
+    <string name="settings_screen_suggestions_bugs_title">Öneri Veya Hata Bildir</string>
+    <string name="settings_screen_suggestions_bugs_description">En kısa sürede size yardımcı olacağız</string>"
+    <string name="heaviest_weight">En Ağır Ağırlık</string>
+    <string name="total_volume">Toplam Hacim</string>
+    <string name="rpe_empty">RPE</string>
+    <string name="rpe_6_title">Orta Düzey Efor</string>
+    <string name="rpe_6_description">4 veya daha fazla tekrar yapabilirdim</string>
+    <string name="rpe_7_title">Yoğun Efor</string>
+    <string name="rpe_7_description">Kesinlikle 3 tekrar daha yapabilirdim</string>
+    <string name="rpe_7_5_title">Yoğun Efor</string>
+    <string name="rpe_7_5_description">Belki 3 tekrar daha yapabilirdim</string>
+    <string name="rpe_8_title">Çok Zorlayıcı Efor</string>
+    <string name="rpe_8_description">Kesinlikle 2 tekrar daha yapabilirdim</string>
+    <string name="rpe_8_5_title">Çok Zorlayıcı Efor</string>
+    <string name="rpe_8_5_description">Belki 2 tekrar daha yapabilirdim</string>
+    <string name="rpe_9_title">Aşırı Zorlayıcı Efor</string>
+    <string name="rpe_9_description">Kesinlikle 1 tekrar daha yapabilirdim</string>
+    <string name="rpe_9_5_title">Aşırı Zorlayıcı Efor</string>
+    <string name="rpe_9_5_description">Belki 1 tekrar daha yapabilirdim</string>
+    <string name="rpe_10_title">Maksimum Efor</string>
+    <string name="rpe_10_description">Daha fazla tekrar yapmam mümkün değildi</string>
+    <string name="remaining_weight">Kalan ağırlık: %1$s %2$s</string>
+    <string name="barbell">Bar</string>
+    <string name="select_barbell">Bar Seç</string>
+    <string name="selected_barbell">Kullanılıyor</string>
+    <string name="olympic_barbell">Olimpik Bar</string>
+    <string name="women_olympic_barbell">Kadın Olimpik Bar</string>
+    <string name="training_barbell">Antrenman Bar</string>
+    <string name="technique_barbell">Teknik Bar</string>
+    <string name="ez_curl_barbell">EZ Curl Bar</string>
+    <string name="trap_barbell">Trap Bar</string>
+    <string name="safety_squat_barbell">Safety Squat Bar</string>
+    <string name="swiss_barbell">Swiss Bar</string>
+    <string name="create_exercise_button_text">Oluştur</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%ds</item>
+        <item quantity="other">%ds</item>
+    </plurals>
+
+    <plurals name="duration_minutes">
+        <item quantity="one">%ddk</item>
+        <item quantity="other">%ddk</item>
+    </plurals>
+
+    <plurals name="duration_seconds">
+        <item quantity="one">%dsn</item>
+        <item quantity="other">%dsn</item>
+    </plurals>
+    <string name="morning_period_workout_name">Sabah Antrenmanı</string>
+    <string name="afternoon_period_workout_name">Öğle Antrenmanı</string>
+    <string name="evening_period_workout_name">Akşam Antrenmanı</string>
+    <string name="night_period_workout_name">Gece Antrenmanı</string>
+    <string name="weight_and_reps_examples_text">Örnek: Bench Press, Dumbbell Curls</string>
+    <string name="bodyweight_reps_examples_text">Örnek: Pull Ups, Sit Ups, Burpees</string>
+    <string name="weighted_bodyweight_examples_text">Örnek: Weighted Pull Ups, Weighted Dips</string>
+    <string name="assisted_bodyweight_examples_text">Örnek: Assisted Pull Ups, Assisted Dips</string>
+    <string name="duration_examples_text">Örnek: Planks, Yoga, Stretching</string>
+    <string name="distance_and_duration_examples_text">Örnek: Running, Cycling, Rowing</string>
+    <string name="weight_and_distance_examples_text">Örnek: Farmers Walk, Suitcase Carry</string>
+    <string name="weight_and_duration_examples_text">Örnek: Weighted Planks</string>
+    <string name="unknown_category_examples_text">Bilinmeyen örnekler</string>
+    <string name="chart_period_weekly">Haftalık</string>
+    <string name="chart_period_monthly">Aylık</string>
+    <string name="chart_period_yearly">Yıllık</string>
+    <string name="app_language_description_english">İngilizce</string>
+    <string name="app_language_description_turkish">Türkçe</string>
+    <string name="settings_screen_app_language_title">Dil</string>
+    <string name="add_note">Not Ekle</string>
+    <string name="insert">Ekle</string>
+    <string name="warm_up_sets">Isınma Setleri</string>
+    <string name="work_set_kg">Çalışma seti (kg)</string>
+    <string name="work_set_lbs">Çalışma Seti (lbs)</string>
+    <string name="set">Set</string>
+    <string name="formula">Formül</string>
+    <string name="warm_up">Isınma</string>
+    <string name="superset">Süper set</string>
+    <string name="unnamed_exercise">İsimsiz Egzersiz</string>
+    <string name="add_to_superset">Süper set ekle</string>
+    <string name="remove_from_superset">Süper setten çıkar</string>
+    <string name="superset_selected_exercise">Seçili</string>
+    <string name="select_time">Zaman seç</string>
+    <string name="all">Tümü</string>
+    <string name="feedback_hint">Lütfen önerinizi veya hatayı aşağıya yazınız:</string>
+    <string name="subject_hint">Öneri veya hata bildirimi</string>
+    <string name="equipment_barbell">Bar</string>
+    <string name="equipment_band">Bant</string>
+    <string name="equipment_bodyweight">Vücut Ağırlığı</string>
+    <string name="equipment_cable">Cable</string>
+    <string name="equipment_dumbbell">Dambıl</string>
+    <string name="equipment_machine">Makine</string>
+    <string name="equipment_kettlebell">Kettlebell</string>
+    <string name="equipment_slam_ball">Slam Ball</string>
+    <string name="equipment_other">Diğer</string>
+    <string name="adductors">İç Bacak</string>
+    <string name="abs">Karın</string>
+    <string name="back">Sırt</string>
+    <string name="biceps">Biseps</string>
+    <string name="calves">Kalf</string>
+    <string name="cardio">Kardiyo</string>
+    <string name="chest">Göğüs</string>
+    <string name="core">Core</string>
+    <string name="forearms">Bilek</string>
+    <string name="full_body">Tüm Vücut</string>
+    <string name="glutes">Kalça</string>
+    <string name="hamstrings">Arka Bacak</string>
+    <string name="lats">Kanat</string>
+    <string name="lower_back">Alt Sırt</string>
+    <string name="olympic_weightlifting">Olimpik Halter</string>
+    <string name="quadriceps">Ön Bacak</string>
+    <string name="shoulders">Omuzlar</string>
+    <string name="traps">Trapez</string>
+    <string name="triceps">Arka Kol</string>
+    <string name="upper_back">Üst Sırt</string>
+    <string name="unknown_muscle">Bilinmeyen Kas</string>
+    <string name="all_equipment_title">Tüm Ekipmanlar</string>"
+    <string name="all_category_title">Tüm Kategoriler</string>
+    <string name="backup_file_created_successfully">Backup dosyası başarıyla oluşturuldu</string>
+    <string name="back_squat_notes">
+Back squat, halterle yapılan kaldırışlar için en temel bacak ve gövde güçlendirme egzersizidir.\n\n
+
+Omuz bıçaklarını sıkıştırın ve halteri trapez kaslarının üstü ile omuzların üstü arasına yerleştirin—kemik üzerine gelmemelidir.\n\n
+
+Topuklarınızı kalça genişliğinde ya da biraz daha geniş bir şekilde yerleştirin ve ayak parmaklarınızı merkez çizgiden 15-30 derece dışa döndürün.\n\n
+
+Sırtınızı nötr pozisyonda tutarak gövdeyi kuvvetlice sıkın ve sabitleyin.\n
+
+Dizleri ve kalçayı birlikte bükerek doğrudan aşağı çömelin; ayak tabanlarınızın tamamı dengede olsun.\n
+
+Dizler ayaklarla yaklaşık aynı hizada olmalıdır.\n
+
+Tam derinlik, diz ekleminin tamamen kapanmasıdır. Eğer bu hareket açıklığına sahip değilseniz, sırt pozisyonunuzu ve dengenizi koruyarak mümkün olduğunca derin çömelin.\n
+
+Alt noktada bacak ve gövde kaslarınızın gerilimini koruyun ve yukarı doğru ivmelenin; dik duruşunuzu ve ayak dengelerinizi koruyun.\n
+
+Baş dönmesini önlemek için yukarı kalkarken gövde sertliğini bozmadan hafifçe nefes verebilirsiniz.\n
+
+Genel olarak, alt noktada zıplama yapılmadan kontrollü şekilde squat yapılmasını öneririm, bu sayede hareketin en alt aralığında maksimum kuvvet gelişimi sağlanır.\n
+</string>
+</resources>

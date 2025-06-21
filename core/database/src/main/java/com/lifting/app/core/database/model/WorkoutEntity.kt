@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.lifting.app.core.common.extensions.toEpochMillis
 import com.lifting.app.core.model.PersonalRecord
-import com.lifting.app.core.model.Workout
 import java.time.LocalDateTime
 
 /**
@@ -44,21 +43,3 @@ data class WorkoutEntity(
     fun getDuration(): Long? =
         startAt?.toEpochMillis()?.let { completedAt?.toEpochMillis()?.minus(it) }
 }
-
-fun WorkoutEntity.toDomain() = with(this) {
-    Workout(
-        id = id,
-        name = name,
-        note = note,
-        inProgress = inProgress,
-        isHidden = isHidden,
-        startAt = startAt,
-        completedAt = completedAt,
-        personalRecords = personalRecords,
-        createdAt = createdAt,
-        updatedAt = updatedAt,
-        duration = getDuration()
-    )
-}
-
-

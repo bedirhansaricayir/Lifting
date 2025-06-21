@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,7 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.ui.R
-import com.lifting.app.core.ui.extensions.lighterColor
 
 /**
  * Created by bedirhansaricayir on 18.08.2024
@@ -31,9 +28,8 @@ fun SingleSelectableCard(
 ) {
     val isSelected = value != null
 
-    Card(
+    LiftingCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = LiftingTheme.colors.background.lighterColor(0.1f)),
         onClick = onClick
     ) {
         Row(

@@ -1,13 +1,5 @@
 package com.lifting.app.core.ui.top_bar
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandHorizontally
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkHorizontally
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,14 +20,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.ui.R
-import com.lifting.app.core.ui.components.HorizontalSlidingAnimationContainer
+import com.lifting.app.core.ui.components.LiftingAnimationContainer
+import com.lifting.app.core.ui.components.LiftingButton
+import com.lifting.app.core.ui.components.LiftingButtonType
 
 /**
  * Created by bedirhansaricayir on 04.08.2024
@@ -52,7 +45,6 @@ fun LiftingTopSearchBar(
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
-    val density = LocalDensity.current
 
     Row(
         modifier = Modifier
@@ -104,17 +96,16 @@ fun LiftingTopSearchBar(
                 )
             },
             trailingIcon = {
-                HorizontalSlidingAnimationContainer(
+                LiftingAnimationContainer(
                     visible = value.isNotEmpty(),
                     content = {
-                        IconButton(onClick = { onValueChange("") }
-                        ) {
-                            Icon(
-                                imageVector = LiftingTheme.icons.clear,
-                                contentDescription = stringResource(id = R.string.search_bar_trailing_icon_clear_content_description),
-                                tint = LiftingTheme.colors.onBackground
-                            )
-                        }
+                        LiftingButton(
+                            buttonType = LiftingButtonType.IconButton(
+                                icon = LiftingTheme.icons.clear,
+                                tint = LiftingTheme.colors.onBackground,
+                            ),
+                            onClick = { onValueChange("") }
+                        )
                     }
                 )
             },

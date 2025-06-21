@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.model.Muscle
+import com.lifting.app.core.ui.extensions.toLocalizedMuscleName
 
 /**
  * Created by bedirhansaricayir on 28.08.2024
@@ -38,27 +39,9 @@ internal fun ExercisesMuscleScreen(
 }
 
 @Composable
-internal fun ExercisesMuscleScreenContent(
+private fun ExercisesMuscleScreenContent(
     modifier: Modifier = Modifier,
     state: ExercisesMuscleUIState,
-    onEvent: (ExercisesMuscleUIEvent) -> Unit
-) {
-    when (state) {
-        is ExercisesMuscleUIState.Error -> {}
-        ExercisesMuscleUIState.Loading -> {}
-        is ExercisesMuscleUIState.Success ->
-            ExercisesMuscleListScreen(
-                modifier = modifier,
-                state = state,
-                onEvent = onEvent
-            )
-    }
-}
-
-@Composable
-internal fun ExercisesMuscleListScreen(
-    modifier: Modifier = Modifier,
-    state: ExercisesMuscleUIState.Success,
     onEvent: (ExercisesMuscleUIEvent) -> Unit
 ) {
     LazyColumn(
@@ -91,7 +74,7 @@ internal fun ExercisesMuscleListScreen(
 }
 
 @Composable
-internal fun ExercisesMuscleListItem(
+private fun ExercisesMuscleListItem(
     modifier: Modifier = Modifier,
     muscle: Muscle,
     isSelected: Boolean = false,
@@ -106,7 +89,7 @@ internal fun ExercisesMuscleListItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = muscle.name,
+            text = stringResource(muscle.tag.toLocalizedMuscleName()),
             color = LiftingTheme.colors.onBackground,
             style = LiftingTheme.typography.subtitle1
         )
@@ -118,6 +101,5 @@ internal fun ExercisesMuscleListItem(
                 tint = LiftingTheme.colors.primary
             )
         }
-
     }
 }

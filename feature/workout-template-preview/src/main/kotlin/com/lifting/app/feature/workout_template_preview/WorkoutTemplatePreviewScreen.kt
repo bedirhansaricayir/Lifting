@@ -14,12 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.common.extensions.toReadableFormat
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.ui.CollapsingToolBarScaffold
 import com.lifting.app.core.ui.components.LiftingAlertDialog
-import com.lifting.app.core.ui.components.LiftingIconButton
+import com.lifting.app.core.ui.components.LiftingButton
+import com.lifting.app.core.ui.components.LiftingButtonType
+import com.lifting.app.core.ui.extensions.toLocalizedMuscleName
 import com.lifting.app.core.ui.top_bar.LiftingTopBar
 import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
@@ -42,26 +43,8 @@ internal fun WorkoutTemplatePreviewScreen(
 }
 
 @Composable
-internal fun WorkoutTemplatePreviewContent(
+private fun WorkoutTemplatePreviewContent(
     state: WorkoutTemplatePreviewUIState,
-    onEvent: (WorkoutTemplatePreviewUIEvent) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    when (state) {
-        WorkoutTemplatePreviewUIState.Error -> {}
-        WorkoutTemplatePreviewUIState.Loading -> {}
-        is WorkoutTemplatePreviewUIState.Success ->
-            WorkoutTemplatePreviewScreenSuccess(
-                state = state,
-                onEvent = onEvent,
-                modifier = modifier
-            )
-    }
-}
-
-@Composable
-internal fun WorkoutTemplatePreviewScreenSuccess(
-    state: WorkoutTemplatePreviewUIState.Success,
     onEvent: (WorkoutTemplatePreviewUIEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -76,46 +59,47 @@ internal fun WorkoutTemplatePreviewScreenSuccess(
                 toolbarState = scaffoldState.toolbarState,
                 toolbarScope = this@CollapsingToolBarScaffold,
                 navigationIcon = {
-                    LiftingIconButton(
-                        imageVector = LiftingTheme.icons.back,
-                        contentDescription = String.EMPTY,
-                        tint = LiftingTheme.colors.onBackground,
+                    LiftingButton(
+                        buttonType = LiftingButtonType.IconButton(
+                            icon = LiftingTheme.icons.back,
+                            tint = LiftingTheme.colors.onBackground
+                        ),
                         onClick = { onEvent(WorkoutTemplatePreviewUIEvent.OnBackClicked) }
                     )
                 },
                 actions = {
-                    LiftingIconButton(
-                        imageVector = LiftingTheme.icons.edit,
-                        contentDescription = String.EMPTY,
-                        tint = LiftingTheme.colors.onBackground,
+                    LiftingButton(
+                        buttonType = LiftingButtonType.IconButton(
+                            icon = LiftingTheme.icons.edit,
+                            tint = LiftingTheme.colors.onBackground
+                        ),
                         onClick = {
                             state.workout?.id?.let {
                                 onEvent(WorkoutTemplatePreviewUIEvent.OnEditClicked(it))
                             }
                         }
                     )
-                    LiftingIconButton(
-                        imageVector = LiftingTheme.icons.delete,
-                        contentDescription = String.EMPTY,
-                        tint = LiftingTheme.colors.onBackground,
-                        onClick = {
-                            onEvent(WorkoutTemplatePreviewUIEvent.OnDeleteClicked)
-                        }
+
+                    LiftingButton(
+                        buttonType = LiftingButtonType.IconButton(
+                            icon = LiftingTheme.icons.delete,
+                            tint = LiftingTheme.colors.onBackground
+                        ),
+                        onClick = { onEvent(WorkoutTemplatePreviewUIEvent.OnDeleteClicked) }
                     )
 
-                    LiftingIconButton(
-                        imageVector = LiftingTheme.icons.play,
-                        contentDescription = String.EMPTY,
-                        tint = LiftingTheme.colors.onBackground,
-                        onClick = {
-                            onEvent(WorkoutTemplatePreviewUIEvent.OnPlayClicked)
-                        }
+                    LiftingButton(
+                        buttonType = LiftingButtonType.IconButton(
+                            icon = LiftingTheme.icons.play,
+                            tint = LiftingTheme.colors.onBackground
+                        ),
+                        onClick = { onEvent(WorkoutTemplatePreviewUIEvent.OnPlayClicked) }
                     )
                 }
             )
         },
         body = {
-            val lastPerformedStr = state.template.lastPerformedAt?.toReadableFormat()
+            val lastPerformedStr = state.template?.lastPerformedAt?.toReadableFormat()
             LazyColumn(
                 modifier = modifier.fillMaxSize(),
                 contentPadding = PaddingValues(LiftingTheme.dimensions.large)
@@ -140,7 +124,9 @@ internal fun WorkoutTemplatePreviewScreenSuccess(
                 items(state.entries) {
                     TemplatePreviewExerciseComponent(
                         name = "${it.logEntries.size} x ${it.exercise.name}",
-                        muscle = it.primaryMuscle?.name,
+                        muscle = it.exercise.primaryMuscleTag?.let {
+                            stringResource(it.toLocalizedMuscleName())
+                        },
                         onClick = {
                             //TODO: Navigate to exercise detail screen
                         }
@@ -196,10 +182,12 @@ private fun TemplatePreviewExerciseComponent(
                 )
             }
         }
-        LiftingIconButton(
-            imageVector = LiftingTheme.icons.info,
-            contentDescription = String.EMPTY,
-            tint = LiftingTheme.colors.onBackground,
+
+        LiftingButton(
+            buttonType = LiftingButtonType.IconButton(
+                icon = LiftingTheme.icons.info,
+                tint = LiftingTheme.colors.onBackground
+            ),
             onClick = onClick
         )
     }

@@ -5,6 +5,5 @@ package com.lifting.app.core.model
  */
 data class ExerciseWithInfo(
     val exercise: Exercise,
-    val muscle: Muscle?,
     val logsCount: Long
 )

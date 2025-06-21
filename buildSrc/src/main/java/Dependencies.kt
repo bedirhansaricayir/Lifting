@@ -15,6 +15,12 @@ fun DependencyHandler.featureExerciseDetail() = implementation(project(":feature
 fun DependencyHandler.featureHistory() = implementation(project(":feature:history"))
 fun DependencyHandler.featureCalendar() = implementation(project(":feature:calendar"))
 fun DependencyHandler.featureWorkoutDetail() = implementation(project(":feature:workout-detail"))
+fun DependencyHandler.featureWorkoutPanel() = implementation(project(":feature:workout-panel"))
+fun DependencyHandler.featureSettings() = implementation(project(":feature:settings"))
+fun DependencyHandler.featureBarbellSelector() = implementation(project(":feature:barbell-selector"))
+fun DependencyHandler.featureWorkoutEditor() = implementation(project(":feature:workout-editor"))
+fun DependencyHandler.featureSupersetSelector() = implementation(project(":feature:superset-selector"))
+fun DependencyHandler.featureRestTimer() = implementation(project(":feature:rest-timer"))
 
 fun DependencyHandler.featureBundle() = listOf(
     featureExercises(),
@@ -27,10 +33,15 @@ fun DependencyHandler.featureBundle() = listOf(
     featureExerciseDetail(),
     featureHistory(),
     featureCalendar(),
-    featureWorkoutDetail()
+    featureWorkoutDetail(),
+    featureWorkoutPanel(),
+    featureSettings(),
+    featureBarbellSelector(),
+    featureSupersetSelector(),
+    featureRestTimer()
 )
 
-internal fun DependencyHandler.featureModules() = listOf(
+internal fun DependencyHandler.coreBundle() = listOf(
     coreBase(),
     coreNavigation(),
     coreUI(),
@@ -40,12 +51,14 @@ internal fun DependencyHandler.featureModules() = listOf(
     coreCommon()
 )
 
-private fun DependencyHandler.coreBase() = implementation(project(":core:base"))
+fun DependencyHandler.coreBase() = implementation(project(":core:base"))
 fun DependencyHandler.coreCommon() = implementation(project(":core:common"))
 fun DependencyHandler.coreDatastore() = implementation(project(":core:datastore"))
 fun DependencyHandler.coreModel() = implementation(project(":core:model"))
 fun DependencyHandler.coreNavigation() = implementation(project(":core:navigation"))
-private fun DependencyHandler.coreUI() = implementation(project(":core:ui"))
+fun DependencyHandler.coreUI() = implementation(project(":core:ui"))
+fun DependencyHandler.coreKeyboard() = implementation(project(":core:keyboard"))
+fun DependencyHandler.coreService() = implementation(project(":core:service"))
 private fun DependencyHandler.coreData() = implementation(project(":core:data"))
 fun DependencyHandler.coreDatabase() = implementation(project(":core:database"))
 fun DependencyHandler.coreDesignSystem() = implementation(project(":core:designsystem"))
@@ -102,10 +115,10 @@ object Kotlin {
 
 object Compose {
     private const val activityComposeVersion = "1.9.0"
-    private const val platformComposeBomVersion = "2024.05.00"
+    private const val platformComposeBomVersion = "2025.05.00"
     private const val lifecycleViewmodelComposeVersion = "2.8.0"
-    private const val material3Version = "1.2.1"
-    private const val foundationVersion = "1.7.0-alpha07"
+    private const val material3Version = "1.3.2"
+    private const val foundationVersion = "1.8.2"
     private const val materialVersion = "1.7.0-beta04"
     private const val composeNavigationVersion = "2.8.0-alpha08"
     private const val materialNavigationVersion = "1.7.0-beta01"
@@ -200,7 +213,11 @@ private object Network {
 object Androidx {
     private const val splashScreenVersion = "1.0.1"
     private const val datastoreVersion = "1.0.0"
+    private const val appCompatVersion = "1.7.1"
+    private const val lifecycleServiceVersion = "2.7.0"
 
     val splash by lazy { "androidx.core:core-splashscreen:${splashScreenVersion}" }
     val datastore by lazy { "androidx.datastore:datastore-preferences:${datastoreVersion}" }
+    val appcompat by lazy { "androidx.appcompat:appcompat:${appCompatVersion}" }
+    val lifecycleService by lazy { "androidx.lifecycle:lifecycle-service:${lifecycleServiceVersion}" }
 }

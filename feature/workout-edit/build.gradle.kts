@@ -4,3 +4,7 @@ plugins {
 }
 
 android { namespace = "com.lifting.app.feature.workout_edit" }
+
+dependencies {
+    featureWorkoutEditor()
+}

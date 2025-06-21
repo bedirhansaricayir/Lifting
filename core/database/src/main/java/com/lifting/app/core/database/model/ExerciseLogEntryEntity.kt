@@ -3,7 +3,6 @@ package com.lifting.app.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.lifting.app.core.model.ExerciseLogEntry
 import com.lifting.app.core.model.LogSetType
 import com.lifting.app.core.model.PersonalRecord
 import java.time.LocalDateTime
@@ -58,37 +57,15 @@ data class ExerciseLogEntryEntity(
     var createdAt: LocalDateTime? = null,
     @ColumnInfo(name = "update_at")
     var updatedAt: LocalDateTime? = null,
-)
+) {
+    companion object {
+        fun List<ExerciseLogEntryEntity>.calculateTotalVolume(): Double {
+            return this.sumOf { entry -> (entry.weight ?: 0.0) * (entry.reps ?: 0) }
+        }
 
-fun ExerciseLogEntryEntity.toDomain() = with(this) {
-    ExerciseLogEntry(
-        entryId = entryId,
-        logId = logId,
-        junctionId = junctionId,
-        setNumber = setNumber,
-        setType = setType,
-        weight = weight,
-        reps = reps,
-        rpe = rpe,
-        completed = completed,
-        timeRecorded = timeRecorded,
-        distance = distance,
-        weightUnit = weight_unit,
-        distanceUnit = distance_unit,
-        personalRecords = personalRecords,
-        createdAt = createdAt,
-        updatedAt = updatedAt
-    )
-}
-
-fun List<ExerciseLogEntryEntity>.calculateTotalVolume(): Double {
-    var volume = 0.0
-    for (entry in this) {
-        volume += ((entry.weight ?: 0.0) * (entry.reps ?: 0).toDouble())
+        fun List<ExerciseLogEntryEntity>.getTotalPRs(workoutPrs: Int? = null): Int {
+            return sumOf { it.personalRecords?.size ?: 0 } + (workoutPrs ?: 0)
+        }
     }
-    return volume
 }
 
-fun List<ExerciseLogEntryEntity>.getTotalPRs(workoutPrs: Int? = null): Int {
-    return sumOf { it.personalRecords?.size ?: 0 } + (workoutPrs ?: 0)
-}

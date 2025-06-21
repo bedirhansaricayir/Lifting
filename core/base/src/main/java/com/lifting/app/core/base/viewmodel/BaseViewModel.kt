@@ -39,6 +39,7 @@ abstract class BaseViewModel<STATE : State, EVENT : Event, EFFECT : Effect> : Vi
         }
     }
 
+
     init {
         subscribeToEvents()
     }

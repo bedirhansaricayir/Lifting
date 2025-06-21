@@ -4,10 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.lifting.app.core.base.viewmodel.BaseViewModel
+import com.lifting.app.core.common.extensions.getBackStackArgs
 import com.lifting.app.core.common.extensions.toArrayList
 import com.lifting.app.core.common.utils.Constants.NONE_WORKOUT_ID
 import com.lifting.app.core.common.utils.generateUUID
+import com.lifting.app.core.data.repository.barbells.BarbellsRepository
 import com.lifting.app.core.data.repository.workouts.WorkoutsRepository
+import com.lifting.app.core.model.Barbell
 import com.lifting.app.core.model.ExerciseLogEntry
 import com.lifting.app.core.model.ExerciseSetGroupNote
 import com.lifting.app.core.model.ExerciseWorkoutJunc
@@ -21,27 +24,27 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
-import kotlin.ClassCastException
 
 /**
  * Created by bedirhansaricayir on 08.02.2025
  */
 
 @HiltViewModel
-class WorkoutEditViewModel @Inject constructor(
+internal class WorkoutEditViewModel @Inject constructor(
+    private val barbellsRepository: BarbellsRepository,
     private val workoutsRepository: WorkoutsRepository,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<WorkoutEditUIState, WorkoutEditUIEvent, WorkoutEditUIEffect>() {
     private val workoutId = savedStateHandle.toRoute<LiftingScreen.WorkoutEdit>().workoutIdKey
     private val isTemplate = savedStateHandle.toRoute<LiftingScreen.WorkoutEdit>().isTemplateKey
 
-    override fun setInitialState(): WorkoutEditUIState = WorkoutEditUIState.Loading
+    override fun setInitialState(): WorkoutEditUIState = WorkoutEditUIState()
 
     override fun handleEvents(event: WorkoutEditUIEvent) {
         when (event) {
             is WorkoutEditUIEvent.OnWorkoutNameChanged -> updateWorkoutName(event.workoutName)
             is WorkoutEditUIEvent.OnWorkoutNoteChanged -> updateWorkoutNote(event.workoutNote)
-            is WorkoutEditUIEvent.OnAddExerciseClicked -> addExercise(event.exerciseId)
+            is WorkoutEditUIEvent.OnExerciseAdded -> addExercise(event.exerciseId)
             is WorkoutEditUIEvent.OnDeleteExerciseClicked -> deleteExercise(event.logEntriesWithExercise)
             is WorkoutEditUIEvent.OnAddSetClicked -> addSet(
                 event.setNumber,
@@ -60,41 +63,41 @@ class WorkoutEditViewModel @Inject constructor(
             is WorkoutEditUIEvent.OnNoteChanged -> updateNote(event.exercisesSetGroupNote)
             WorkoutEditUIEvent.OnAddExerciseButtonClicked -> navigateToExerciseSheet()
             WorkoutEditUIEvent.OnBackClicked -> popBackStack()
+            WorkoutEditUIEvent.OnUpdateBarbellClicked -> navigateToBarbellSelectorSheet()
+            is WorkoutEditUIEvent.OnBarbellUpdated -> updateBarbellByJunctionId(event.barbellWithJunctionId)
+            WorkoutEditUIEvent.OnAddToSupersetClicked -> navigateToSuperSetSelectorSheet()
+            is WorkoutEditUIEvent.OnRemoveFromSupersetClicked -> removeFromSuperset(event.logEntriesWithExercise)
+            is WorkoutEditUIEvent.OnSupersetUpdated -> updateSuperSet(event.superSetResult)
         }
     }
 
     init {
         if (workoutId != NONE_WORKOUT_ID) {
-            workoutEditUiState(workoutId)
+            updateUIState(workoutId)
         }
     }
 
-    private fun workoutEditUiState(
+    private fun updateUIState(
         workoutId: String,
     ) {
+        val barbellsFlow: Flow<List<Barbell>> = barbellsRepository.getBarbells()
         val logEntriesWithExerciseFlow: Flow<List<LogEntriesWithExercise>> =
             workoutsRepository.getLogEntriesWithExercise(workoutId)
 
         val workoutFlow: Flow<Workout> = workoutsRepository.getWorkout(workoutId)
 
         combine(
+            barbellsFlow,
             logEntriesWithExerciseFlow,
             workoutFlow,
-        ) { logEntriesWithExercise, workout ->
-            runCatching {
-                updateState { currentState ->
-                    (currentState as WorkoutEditUIState.Success).copy(
-                        workout = workout,
-                        logEntriesWithExercise = logEntriesWithExercise,
-                        isTemplate = isTemplate
-                    )
-                }
-            }.getOrElse { throwable ->
-                if (throwable is ClassCastException) {
-                    setState(WorkoutEditUIState.Success(workout, logEntriesWithExercise, isTemplate))
-                } else {
-                    setState(WorkoutEditUIState.Error)
-                }
+        ) { barbells, logEntriesWithExercise, workout ->
+            updateState { currentState ->
+                currentState.copy(
+                    workout = workout,
+                    logEntriesWithExercise = logEntriesWithExercise,
+                    barbells = barbells.filter { it.isActive == true },
+                    isTemplate = isTemplate
+                )
             }
         }.launchIn(viewModelScope)
     }
@@ -103,7 +106,7 @@ class WorkoutEditViewModel @Inject constructor(
     private fun updateWorkoutName(workoutName: String) {
         viewModelScope.launch {
             workoutsRepository.updateWorkout(
-                workout = (getCurrentState() as WorkoutEditUIState.Success).workout!!.copy(
+                workout = getCurrentState().workout!!.copy(
                     name = workoutName
                 )
             )
@@ -113,7 +116,7 @@ class WorkoutEditViewModel @Inject constructor(
     private fun updateWorkoutNote(workoutNote: String) {
         viewModelScope.launch {
             workoutsRepository.updateWorkout(
-                workout = (getCurrentState() as WorkoutEditUIState.Success).workout!!.copy(
+                workout = getCurrentState().workout!!.copy(
                     note = workoutNote
                 )
             )
@@ -149,7 +152,7 @@ class WorkoutEditViewModel @Inject constructor(
     private fun deleteLogEntry(logEntry: ExerciseLogEntry) {
         viewModelScope.launch {
             val entriesGroup =
-                (getCurrentState() as WorkoutEditUIState.Success).logEntriesWithExercise.filter { logEntriesWithExercise ->
+                getCurrentState().logEntriesWithExercise.filter { logEntriesWithExercise ->
                     logEntriesWithExercise.logEntries.any { exerciseLogEntry ->
                         exerciseLogEntry.entryId == logEntry.entryId
                     }
@@ -181,7 +184,7 @@ class WorkoutEditViewModel @Inject constructor(
             val now = LocalDateTime.now()
             val groupNote = ExerciseSetGroupNote(
                 id = generateUUID(),
-                exerciseWorkoutJunctionId = logEntriesWithExercise.junction.workoutId,
+                exerciseWorkoutJunctionId = logEntriesWithExercise.junction.id,
                 createdAt = now,
                 updatedAt = now,
                 note = null
@@ -202,11 +205,52 @@ class WorkoutEditViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToExerciseSheet() {
-        setEffect(WorkoutEditUIEffect.NavigateToExerciseSheet)
+    private fun updateBarbellByJunctionId(barbellWithJunctionId: String) {
+        val junctionId = barbellWithJunctionId.getBackStackArgs().first()
+        val barbellId = barbellWithJunctionId.getBackStackArgs().last()
+        viewModelScope.launch {
+            workoutsRepository.updateExerciseWorkoutJunctionBarbellId(junctionId, barbellId)
+        }
     }
 
-    private fun popBackStack() {
-        setEffect(WorkoutEditUIEffect.PopBackStack)
+    private fun updateSuperSet(superSetResult: String) {
+        val toJunctionId = superSetResult.getBackStackArgs()[0]
+        val selectedFromJunctionId = superSetResult.getBackStackArgs()[1]
+        val superSetId = superSetResult.getBackStackArgs()[2].toInt()
+
+        addToSuperSet(toJunctionId, superSetId)
+
+        getCurrentState().let { state ->
+            if (!state.logEntriesWithExercise.any { it.junction.id == selectedFromJunctionId && it.junction.supersetId == superSetId }) {
+                addToSuperSet(selectedFromJunctionId, superSetId)
+            }
+        }
     }
+
+    private fun removeFromSuperset(logEntriesWithExercise: LogEntriesWithExercise) {
+        viewModelScope.launch {
+            workoutsRepository.updateExerciseWorkoutJunctionSupersetId(
+                logEntriesWithExercise.junction.id, null
+            )
+        }
+    }
+
+    private fun addToSuperSet(junctionId: String, superSetId: Int) {
+        viewModelScope.launch {
+            workoutsRepository.updateExerciseWorkoutJunctionSupersetId(
+                junctionId, superSetId
+            )
+        }
+    }
+
+    private fun navigateToExerciseSheet() = setEffect(WorkoutEditUIEffect.NavigateToExerciseSheet)
+
+    private fun popBackStack() = setEffect(WorkoutEditUIEffect.PopBackStack)
+
+    private fun navigateToBarbellSelectorSheet() =
+        setEffect(WorkoutEditUIEffect.NavigateToBarbellSelectorSheet)
+
+    private fun navigateToSuperSetSelectorSheet() =
+        setEffect(WorkoutEditUIEffect.NavigateToSupersetSelectorSheet)
+
 }

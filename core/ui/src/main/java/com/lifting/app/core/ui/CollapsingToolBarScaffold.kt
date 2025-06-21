@@ -16,7 +16,7 @@ import me.onebone.toolbar.ScrollStrategy
 fun CollapsingToolBarScaffold(
     modifier: Modifier = Modifier,
     state: CollapsingToolbarScaffoldState,
-    scrollStrategy: ScrollStrategy = ScrollStrategy.ExitUntilCollapsed,
+    scrollStrategy: ScrollStrategy = ScrollStrategy.EnterAlwaysCollapsed,
     toolbar: @Composable() (CollapsingToolbarScope.() -> Unit),
     body: @Composable() (CollapsingToolbarScaffoldScope.() -> Unit),
 ) {

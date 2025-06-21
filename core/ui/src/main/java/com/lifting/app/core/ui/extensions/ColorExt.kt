@@ -2,6 +2,7 @@ package com.lifting.app.core.ui.extensions
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.graphics.ColorUtils
 import kotlin.random.Random
 
@@ -18,17 +19,6 @@ fun Color.toLegacyInt(): Int {
     )
 }
 
-fun Color.lighterColor(ratio: Float = 0.3f): Color {
-    return Color(ColorUtils.blendARGB(this.toLegacyInt(), android.graphics.Color.BLACK, ratio))
-}
-
-fun Color.darkerColor(ratio: Float = 0.5f): Color {
-    return Color(ColorUtils.blendARGB(this.toLegacyInt(), android.graphics.Color.BLACK, ratio))
-}
-
-fun Color.lighterOrDarkerColor(ratio: Float = 0.5f) =
-    if (isDark()) lighterColor(ratio) else darkerColor(ratio)
-
 fun Color.Companion.randomColorById(id: Int): Color = randomSuperSetColor("superset_$id")
 
 private fun randomSuperSetColor(id: String): Color {
@@ -40,3 +30,26 @@ private fun randomSuperSetColor(id: String): Color {
 }
 
 fun Color.isDark() = luminance() < 0.5f
+
+fun Color.darkerOrLighter(factor: Float = 1f) = if (isDark()) lighter(factor) else darker(factor)
+
+fun Color.darker(factor: Float = 1f) =
+    Color(ColorUtils.blendARGB(this.toArgb(), Color.Black.toArgb(), factor))
+
+fun Color.lighter(factor: Float = 1f) =
+    Color(ColorUtils.blendARGB(this.toArgb(), Color.White.toArgb(), factor))
+
+fun String.toColor(): Color? =
+    try {
+        Color(
+            android.graphics.Color.parseColor(
+                if (this.startsWith("#"))
+                    this
+                else
+                    "#$this"
+            )
+        )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }

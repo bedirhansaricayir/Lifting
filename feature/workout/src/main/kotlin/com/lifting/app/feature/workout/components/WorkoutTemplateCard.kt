@@ -3,11 +3,8 @@ package com.lifting.app.feature.workout.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,7 +13,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextOverflow
 import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.designsystem.LiftingTheme
-import com.lifting.app.core.ui.extensions.lighterColor
+import com.lifting.app.core.ui.components.LiftingCard
 
 /**
  * Created by bedirhansaricayir on 02.02.2025
@@ -26,17 +23,14 @@ import com.lifting.app.core.ui.extensions.lighterColor
 internal fun WorkoutTemplateCard(
     title: String,
     exercisesInfo: String,
-    cardShape: Shape,
     modifier: Modifier = Modifier,
+    shape: Shape = LiftingTheme.shapes.medium,
     description: String? = String.EMPTY,
     onClick: () -> Unit = {},
 ) {
-    Card(
+    LiftingCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = LiftingTheme.colors.background.lighterColor()
-        ),
-        shape = cardShape,
+        shape = shape,
         onClick = onClick
     ) {
         Column(

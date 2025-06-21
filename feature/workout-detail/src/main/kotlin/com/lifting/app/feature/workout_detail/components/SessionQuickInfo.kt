@@ -8,12 +8,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.pluralStringResource
 import com.lifting.app.core.common.extensions.EMPTY
-import com.lifting.app.core.common.extensions.toDuration
-import com.lifting.app.core.common.extensions.toKg
 import com.lifting.app.core.designsystem.LiftingTheme
+import com.lifting.app.core.ui.common.toWeightUnitPreferencesString
+import com.lifting.app.core.ui.extensions.toLocalizedDuration
 
 /**
  * Created by bedirhansaricayir on 06.04.2025
@@ -33,13 +33,13 @@ internal fun SessionQuickInfo(
         duration?.let {
             SessionQuickInfoItem(
                 icon = LiftingTheme.icons.timer,
-                text = it.toDuration()
+                text = it.toLocalizedDuration()
             )
         }
         volume?.let {
             SessionQuickInfoItem(
                 icon = LiftingTheme.icons.weight,
-                text = "${volume.toKg()} kg"
+                text = volume.toWeightUnitPreferencesString(addUnitSuffix = true, spaceBeforeSuffix = true)
             )
         }
         if (prs > 0) {
@@ -57,7 +57,7 @@ internal fun SessionQuickInfo(
 
 @Composable
 private fun SessionQuickInfoItem(
-    icon: Painter,
+    icon: ImageVector,
     text: String,
     modifier: Modifier = Modifier,
 ) {
@@ -68,7 +68,7 @@ private fun SessionQuickInfoItem(
     ){
         Icon(
             modifier = Modifier.size(LiftingTheme.dimensions.large),
-            painter = icon,
+            imageVector = icon,
             contentDescription = String.EMPTY,
             tint = LiftingTheme.colors.onBackground.copy(0.75f)
         )

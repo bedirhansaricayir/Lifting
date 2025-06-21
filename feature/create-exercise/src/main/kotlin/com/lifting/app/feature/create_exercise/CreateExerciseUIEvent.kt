@@ -5,7 +5,7 @@ import com.lifting.app.core.base.viewmodel.Event
 /**
  * Created by bedirhansaricayir on 21.08.2024
  */
-sealed interface CreateExerciseUIEvent : Event {
+internal sealed interface CreateExerciseUIEvent : Event {
     data object OnNavigationClick : CreateExerciseUIEvent
     data object OnActionClick : CreateExerciseUIEvent
     data class OnExerciseNameChanged(val exerciseName: String) : CreateExerciseUIEvent

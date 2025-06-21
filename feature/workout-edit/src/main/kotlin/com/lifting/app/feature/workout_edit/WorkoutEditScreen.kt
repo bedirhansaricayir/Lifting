@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.ui.CollapsingToolBarScaffold
-import com.lifting.app.core.ui.top_bar.LiftingTopBar
 import com.lifting.app.core.ui.R
-import com.lifting.app.core.ui.components.LiftingIconButton
-import com.lifting.app.feature.workout_edit.components.LiftingWorkoutEditor
+import com.lifting.app.core.ui.components.LiftingButton
+import com.lifting.app.core.ui.components.LiftingButtonType
+import com.lifting.app.core.ui.top_bar.LiftingTopBar
+import com.lifting.app.feature.workout_editor.LiftingWorkoutEditor
 import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 
@@ -25,7 +25,7 @@ internal fun WorkoutEditScreen(
     onEvent: (WorkoutEditUIEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    WorkoutEditScreenContent(
+     WorkoutEditScreenContent(
         state = state,
         onEvent = onEvent,
         modifier = modifier,
@@ -33,27 +33,8 @@ internal fun WorkoutEditScreen(
 }
 
 @Composable
-internal fun WorkoutEditScreenContent(
+private fun WorkoutEditScreenContent(
     state: WorkoutEditUIState,
-    onEvent: (WorkoutEditUIEvent) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    when (state) {
-        WorkoutEditUIState.Loading -> {}
-        WorkoutEditUIState.Error -> {}
-        is WorkoutEditUIState.Success ->
-            WorkoutEditScreenSuccess(
-                state = state,
-                onEvent = onEvent,
-                modifier = modifier,
-            )
-
-    }
-}
-
-@Composable
-internal fun WorkoutEditScreenSuccess(
-    state: WorkoutEditUIState.Success,
     onEvent: (WorkoutEditUIEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -71,10 +52,11 @@ internal fun WorkoutEditScreenSuccess(
                 toolbarState = scaffoldState.toolbarState,
                 toolbarScope = this@CollapsingToolBarScaffold,
                 navigationIcon = {
-                    LiftingIconButton(
-                        imageVector = LiftingTheme.icons.back,
-                        contentDescription = String.EMPTY,
-                        tint = LiftingTheme.colors.onBackground,
+                    LiftingButton(
+                        buttonType = LiftingButtonType.IconButton(
+                            icon = LiftingTheme.icons.back,
+                            tint = LiftingTheme.colors.onBackground,
+                        ),
                         onClick = { onEvent(WorkoutEditUIEvent.OnBackClicked) }
                     )
                 }
@@ -86,28 +68,31 @@ internal fun WorkoutEditScreenSuccess(
                 workoutNote = state.workout?.note,
                 ongoingWorkout = false,
                 logEntriesWithJunction = state.logEntriesWithExercise,
-                barbells = emptyList(),
+                barbells = state.barbells,
                 onAddExerciseButtonClicked = {
                     onEvent(WorkoutEditUIEvent.OnAddExerciseButtonClicked)
                 },
-                onChangeWorkoutName = {
-                    onEvent(WorkoutEditUIEvent.OnWorkoutNameChanged(it))
+                onExerciseAdded = { exerciseId ->
+                    onEvent(WorkoutEditUIEvent.OnExerciseAdded(exerciseId))
                 },
-                onChangeWorkoutNote = {
-                    onEvent(WorkoutEditUIEvent.OnWorkoutNoteChanged(it))
+                onChangeWorkoutName = { workoutName ->
+                    onEvent(WorkoutEditUIEvent.OnWorkoutNameChanged(workoutName))
+                },
+                onChangeWorkoutNote = { workoutNote ->
+                    onEvent(WorkoutEditUIEvent.OnWorkoutNoteChanged(workoutNote))
                 },
                 onCancelCurrentWorkout = { },
-                onDeleteExerciseFromWorkout = {
-                    onEvent(WorkoutEditUIEvent.OnDeleteExerciseClicked(it))
+                onDeleteExerciseFromWorkout = { logEntriesWithExercise ->
+                    onEvent(WorkoutEditUIEvent.OnDeleteExerciseClicked(logEntriesWithExercise))
                 },
                 onAddEmptySetToExercise = { setNumber, exerciseWorkoutJunction ->
                     onEvent(WorkoutEditUIEvent.OnAddSetClicked(setNumber, exerciseWorkoutJunction))
                 },
-                onDeleteLogEntry = {
-                    onEvent(WorkoutEditUIEvent.OnLogEntryDeleted(it))
+                onDeleteLogEntry = { exerciseLogEntry ->
+                    onEvent(WorkoutEditUIEvent.OnLogEntryDeleted(exerciseLogEntry))
                 },
-                onUpdateLogEntry = {
-                    onEvent(WorkoutEditUIEvent.OnLogEntryUpdated(it))
+                onUpdateLogEntry = { exerciseLogEntry ->
+                    onEvent(WorkoutEditUIEvent.OnLogEntryUpdated(exerciseLogEntry))
                 },
                 onUpdateWarmUpSets = { logEntriesWithExercise, exerciseLogEntries ->
                     onEvent(
@@ -117,23 +102,29 @@ internal fun WorkoutEditScreenSuccess(
                         )
                     )
                 },
-                onAddEmptyNote = {
-                    onEvent(WorkoutEditUIEvent.OnAddNoteClicked(it))
+                onAddEmptyNote = { logEntriesWithExercise ->
+                    onEvent(WorkoutEditUIEvent.OnAddNoteClicked(logEntriesWithExercise))
                 },
-                onDeleteNote = {
-                    onEvent(WorkoutEditUIEvent.OnDeleteNoteClicked(it))
+                onDeleteNote = { exerciseGroupNote ->
+                    onEvent(WorkoutEditUIEvent.OnDeleteNoteClicked(exerciseGroupNote))
                 },
-                onChangeNote = {
-                    onEvent(WorkoutEditUIEvent.OnNoteChanged(it))
+                onChangeNote = { exerciseGroupNote ->
+                    onEvent(WorkoutEditUIEvent.OnNoteChanged(exerciseGroupNote))
                 },
-                onAddToSuperset = { junctionId, supersetId ->
-
+                onAddToSupersetClicked = {
+                    onEvent(WorkoutEditUIEvent.OnAddToSupersetClicked)
                 },
-                onRemoveFromSuperset = {
-
+                onRemoveFromSuperset = { logEntriesWithExercise ->
+                    onEvent(WorkoutEditUIEvent.OnRemoveFromSupersetClicked(logEntriesWithExercise))
                 },
-                onUpdateBarbell = { junctionId, barbellId ->
-
+                onSupersetUpdated = { supersetResult ->
+                    onEvent(WorkoutEditUIEvent.OnSupersetUpdated(supersetResult))
+                },
+                onUpdateBarbellClicked = {
+                    onEvent(WorkoutEditUIEvent.OnUpdateBarbellClicked)
+                },
+                onBarbellUpdated = { barbellWithJunctionId ->
+                    onEvent(WorkoutEditUIEvent.OnBarbellUpdated(barbellWithJunctionId))
                 }
             )
         }

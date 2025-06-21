@@ -3,7 +3,6 @@ package com.lifting.app.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.lifting.app.core.model.ExerciseWorkoutJunc
 
 /**
  * Created by bedirhansaricayir on 15.07.2024
@@ -26,13 +25,3 @@ data class ExerciseWorkoutJunction(
     @ColumnInfo(name = "workout_id")
     var workoutId: String? = null,
 )
-
-fun ExerciseWorkoutJunction.toDomain() = with(this) {
-    ExerciseWorkoutJunc(
-        id = id,
-        supersetId = supersetId,
-        barbellId = barbellId,
-        exerciseId = exerciseId,
-        workoutId = workoutId
-    )
-}

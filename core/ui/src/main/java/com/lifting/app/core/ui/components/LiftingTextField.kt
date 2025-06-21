@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.lifting.app.core.designsystem.LiftingTheme
-import com.lifting.app.core.ui.extensions.lighterColor
 
 /**
  * Created by bedirhansaricayir on 18.08.2024
@@ -23,9 +22,10 @@ fun LiftingTextField(
     value: String,
     onValueChange: (String) -> Unit,
     singleLine: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
     keyboardActions: KeyboardActions = KeyboardActions(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    shape: CornerBasedShape = LiftingTheme.shapes.small,
+    shape: CornerBasedShape = LiftingTheme.shapes.medium,
     placeholder: String? = null
 ) {
     TextField(
@@ -33,17 +33,18 @@ fun LiftingTextField(
         value = value,
         onValueChange = onValueChange,
         singleLine = singleLine,
-        maxLines = if (singleLine) 1 else Int.MAX_VALUE,
+        maxLines = if (singleLine) 1 else maxLines,
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
         colors = TextFieldDefaults.colors(
             unfocusedTextColor = LiftingTheme.colors.onBackground,
             focusedTextColor = LiftingTheme.colors.onBackground,
-            unfocusedContainerColor = LiftingTheme.colors.background.lighterColor(),
-            focusedContainerColor = LiftingTheme.colors.background.lighterColor(),
+            unfocusedContainerColor = LiftingTheme.colors.surface,
+            focusedContainerColor = LiftingTheme.colors.surface,
             unfocusedIndicatorColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent
+            disabledIndicatorColor = Color.Transparent,
+            cursorColor = LiftingTheme.colors.primary,
         ),
         shape = shape,
         placeholder = placeholder?.let {
@@ -56,5 +57,3 @@ fun LiftingTextField(
         }
     )
 }
-
-

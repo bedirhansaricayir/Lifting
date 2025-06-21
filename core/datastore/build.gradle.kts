@@ -6,5 +6,6 @@ plugins {
 android { namespace = "com.lifting.app.core.datastore" }
 
 dependencies {
+    coreModel()
     api(Androidx.datastore)
 }

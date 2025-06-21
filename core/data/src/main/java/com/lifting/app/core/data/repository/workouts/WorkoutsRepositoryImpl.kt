@@ -9,9 +9,8 @@ import com.lifting.app.core.database.dao.WorkoutTemplateDao
 import com.lifting.app.core.database.dao.WorkoutsDao
 import com.lifting.app.core.database.model.ExerciseLogEntity
 import com.lifting.app.core.database.model.ExerciseLogEntryEntity
+import com.lifting.app.core.database.model.ExerciseLogEntryEntity.Companion.calculateTotalVolume
 import com.lifting.app.core.database.model.ExerciseWorkoutJunction
-import com.lifting.app.core.database.model.calculateTotalVolume
-import com.lifting.app.core.database.model.toDomain
 import com.lifting.app.core.datastore.PreferencesStorage
 import com.lifting.app.core.model.CountWithDate
 import com.lifting.app.core.model.ExerciseLogEntry
@@ -19,8 +18,12 @@ import com.lifting.app.core.model.ExerciseSetGroupNote
 import com.lifting.app.core.model.ExerciseWorkoutJunc
 import com.lifting.app.core.model.LogEntriesWithExercise
 import com.lifting.app.core.model.LogEntriesWithExtraInfo
+import com.lifting.app.core.model.MaxDurationPR
+import com.lifting.app.core.model.MaxWeightPR
+import com.lifting.app.core.model.PersonalRecord
 import com.lifting.app.core.model.Workout
 import com.lifting.app.core.model.WorkoutWithExtraInfo
+import com.lifting.app.core.model.addIfNot
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -29,7 +32,6 @@ import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
-import kotlin.collections.arrayListOf
 
 /**
  * Created by bedirhansaricayir on 08.02.2025
@@ -56,6 +58,9 @@ class WorkoutsRepositoryImpl @Inject constructor(
             workoutsDao.getWorkoutsWithExtraInfo().map { it.toDomain() }
         }
     }
+
+    override fun getWorkoutsWithExtraInfoByDate(date: LocalDate): Flow<List<WorkoutWithExtraInfo>> =
+        workoutsDao.getWorkoutsWithExtraInfoByDate(date.toEpochMillis()).map { it.toDomain() }
 
     override fun getActiveWorkoutId(): Flow<String> =
         preferencesStorage.activeWorkoutId
@@ -147,6 +152,9 @@ class WorkoutsRepositoryImpl @Inject constructor(
     override fun getWorkoutsCount(): Flow<List<CountWithDate>> =
         workoutsDao.getWorkoutsCount().map { it.toDomain() }
 
+    override fun getWorkouts(): Flow<List<Workout>> =
+        workoutsDao.getWorkouts().map { it.toDomain() }
+
     override fun getWorkoutsCountOnDateRange(dateStart: LocalDate, dateEnd: LocalDate) =
         workoutsDao.getWorkoutsCountOnDateRange(dateStart.toEpochMillis(), dateEnd.toEpochMillis())
 
@@ -181,6 +189,7 @@ class WorkoutsRepositoryImpl @Inject constructor(
                 setActiveWorkoutId(NONE_WORKOUT_ID)
                 false
             }
+
             else -> true
         }
     }
@@ -207,6 +216,21 @@ class WorkoutsRepositoryImpl @Inject constructor(
         )
 
         startWorkout(template.workoutId!!)
+    }
+
+    override suspend fun startWorkoutFromWorkout(
+        workoutId: String,
+        discardActive: Boolean,
+        onWorkoutAlreadyActive: () -> Unit
+    ) {
+        val isActive = checkIfWorkoutIsActive(discardActive)
+
+        if (isActive) {
+            onWorkoutAlreadyActive()
+            return
+        }
+
+        startWorkout(workoutId)
     }
 
     private suspend fun startWorkout(workoutId: String) {
@@ -288,5 +312,94 @@ class WorkoutsRepositoryImpl @Inject constructor(
         setActiveWorkoutId(newWorkoutId)
 
     }
+
+    override suspend fun finishWorkout(workoutId: String) {
+        val workout = workoutsDao.getWorkout(workoutId).first()
+        val now = LocalDateTime.now()
+        val updatedWorkout = workout.copy(
+            inProgress = false,
+            isHidden = false,
+            personalRecords = null,
+            completedAt = now,
+            updatedAt = now
+        )
+
+        val prs = buildList<PersonalRecord> {
+            val lastMaxDuration = workoutsDao.getLongestWorkoutDuration().firstOrNull()
+
+            if (lastMaxDuration == null || (updatedWorkout.getDuration() ?: 0) > lastMaxDuration) {
+                addIfNot(MaxDurationPR())
+            }
+        }
+
+        updatedWorkout.personalRecords = prs
+
+        val junctions = workoutsDao.getLogEntriesWithExerciseJunction(workoutId).first()
+
+        junctions.forEach { junction ->
+            val lastMaxWeightInExercise =
+                workoutsDao.getMaxWeightLiftedInExercise(junction.exercise.exerciseId).firstOrNull()
+                    ?: 0.0
+
+            junction.logEntries.sortedByDescending { it.weight }.getOrNull(0)
+                ?.let { maxWeightEntry ->
+                    if ((maxWeightEntry.weight ?: 0.0) > lastMaxWeightInExercise) {
+                        val entryPrs = buildList {
+                            maxWeightEntry.personalRecords?.let { addAll(it) }
+                            add(MaxWeightPR())
+
+                        }
+                        workoutsDao.updateExerciseLogEntry(
+                            maxWeightEntry.copy(
+                                personalRecords = entryPrs
+                            )
+                        )
+                    }
+                }
+        }
+
+        workoutsDao.updateWorkout(updatedWorkout)
+    }
+
+    override suspend fun createWorkout(
+        workoutId: String,
+        workoutName: String,
+        discardActive: Boolean,
+        onWorkoutAlreadyActive: () -> Unit
+    ): Boolean {
+        val isActive = checkIfWorkoutIsActive(discardActive)
+
+        if (isActive) {
+            onWorkoutAlreadyActive()
+            return false
+        }
+        val now = LocalDateTime.now()
+        val workout = Workout(
+            id = workoutId,
+            name = workoutName,
+            inProgress = true,
+            isHidden = true,
+            startAt = now,
+            createdAt = now,
+            updatedAt = now,
+            completedAt = null,
+            personalRecords = null,
+            duration = null,
+            note = null
+        )
+        workoutsDao.insertWorkout(workout.toEntity())
+        return true
+    }
+
+    override suspend fun updateExerciseWorkoutJunctionBarbellId(
+        junctionId: String,
+        barbellId: String
+    ) = workoutsDao.updateExerciseWorkoutJunctionBarbellId(junctionId, barbellId)
+
+    override suspend fun updateExerciseWorkoutJunctionSupersetId(
+        junctionId: String,
+        supersetId: Int?
+    ) = workoutsDao.updateExerciseWorkoutJunctionSupersetId(junctionId, supersetId)
+
 
 }

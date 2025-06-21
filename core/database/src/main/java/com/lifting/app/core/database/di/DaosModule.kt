@@ -1,8 +1,9 @@
 package com.lifting.app.core.database.di
 
 import com.lifting.app.core.database.LiftingDatabase
+import com.lifting.app.core.database.dao.BarbellsDao
 import com.lifting.app.core.database.dao.ExercisesDao
-import com.lifting.app.core.database.dao.MusclesDao
+import com.lifting.app.core.database.dao.PlatesDao
 import com.lifting.app.core.database.dao.WorkoutTemplateDao
 import com.lifting.app.core.database.dao.WorkoutsDao
 import dagger.Module
@@ -23,11 +24,6 @@ internal object DaosModule {
     ): ExercisesDao = database.exercisesDao()
 
     @Provides
-    fun provideMusclesDao(
-        database: LiftingDatabase
-    ): MusclesDao = database.musclesDao()
-
-    @Provides
     fun providesWorkoutTemplateDao(
         database: LiftingDatabase
     ): WorkoutTemplateDao = database.workoutTemplateDao()
@@ -36,4 +32,14 @@ internal object DaosModule {
     fun providesWorkoutsDao(
         database: LiftingDatabase
     ): WorkoutsDao = database.workoutsDao()
+
+    @Provides
+    fun providesBarbellsDao(
+        database: LiftingDatabase
+    ): BarbellsDao = database.barbellsDao()
+
+    @Provides
+    fun providesPlatesDao(
+        database: LiftingDatabase
+    ): PlatesDao = database.platesDao()
 }

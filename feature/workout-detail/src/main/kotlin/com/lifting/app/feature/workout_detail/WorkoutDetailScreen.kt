@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,13 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.ui.CollapsingToolBarScaffold
-import com.lifting.app.core.ui.components.LiftingIconButton
+import com.lifting.app.core.ui.components.LiftingAlertDialog
+import com.lifting.app.core.ui.components.LiftingButton
+import com.lifting.app.core.ui.components.LiftingButtonType
+import com.lifting.app.core.ui.components.PersonalRecordsRowComponent
+import com.lifting.app.core.ui.components.SessionExerciseCardItem
 import com.lifting.app.core.ui.top_bar.LiftingTopBar
-import com.lifting.app.feature.workout_detail.components.PersonalRecordsRowComponent
-import com.lifting.app.feature.workout_detail.components.SessionExerciseCardItem
 import com.lifting.app.feature.workout_detail.components.SessionQuickInfo
 import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
@@ -49,26 +48,8 @@ internal fun WorkoutDetailScreen(
 }
 
 @Composable
-internal fun WorkoutDetailScreenContent(
+private fun WorkoutDetailScreenContent(
     state: WorkoutDetailUIState,
-    onEvent: (WorkoutDetailUIEvent) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    when (state) {
-        WorkoutDetailUIState.Loading -> {}
-        WorkoutDetailUIState.Error -> {}
-        is WorkoutDetailUIState.Success ->
-            WorkoutDetailScreenSuccess(
-                state = state,
-                onEvent = onEvent,
-                modifier = modifier
-            )
-    }
-}
-
-@Composable
-internal fun WorkoutDetailScreenSuccess(
-    state: WorkoutDetailUIState.Success,
     onEvent: (WorkoutDetailUIEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -82,16 +63,42 @@ internal fun WorkoutDetailScreenSuccess(
         scrollStrategy = ScrollStrategy.EnterAlwaysCollapsed,
         toolbar = {
             LiftingTopBar(
-                title = state.workout.name
+                title = state.workout?.name
                     ?: stringResource(id = com.lifting.app.core.ui.R.string.workout),
                 toolbarState = scaffoldState.toolbarState,
                 toolbarScope = this@CollapsingToolBarScaffold,
                 navigationIcon = {
-                    LiftingIconButton(
-                        imageVector = LiftingTheme.icons.back,
-                        contentDescription = String.EMPTY,
-                        tint = LiftingTheme.colors.onBackground,
+                    LiftingButton(
+                        buttonType = LiftingButtonType.IconButton(
+                            icon = LiftingTheme.icons.back,
+                            tint = LiftingTheme.colors.onBackground,
+                        ),
                         onClick = { onEvent(WorkoutDetailUIEvent.OnBackClicked) }
+                    )
+                },
+                actions = {
+                    LiftingButton(
+                        buttonType = LiftingButtonType.IconButton(
+                            icon = LiftingTheme.icons.edit,
+                            tint = LiftingTheme.colors.onBackground,
+                        ),
+                        onClick = { onEvent(WorkoutDetailUIEvent.OnEditClicked) }
+                    )
+
+                    LiftingButton(
+                        buttonType = LiftingButtonType.IconButton(
+                            icon = LiftingTheme.icons.delete,
+                            tint = LiftingTheme.colors.onBackground,
+                        ),
+                        onClick = { onEvent(WorkoutDetailUIEvent.OnDeleteClicked) }
+                    )
+
+                    LiftingButton(
+                        buttonType = LiftingButtonType.IconButton(
+                            icon = LiftingTheme.icons.replay,
+                            tint = LiftingTheme.colors.onBackground,
+                        ),
+                        onClick = { onEvent(WorkoutDetailUIEvent.OnReplayClicked) }
                     )
                 }
             )
@@ -103,7 +110,7 @@ internal fun WorkoutDetailScreenSuccess(
                     .background(LiftingTheme.colors.background),
                 contentPadding = PaddingValues(LiftingTheme.dimensions.large)
             ) {
-                if (state.workout.personalRecords.isNullOrEmpty().not()) {
+                if (state.workout?.personalRecords.isNullOrEmpty().not()) {
                     item(key = "prs") {
                         PersonalRecordsRowComponent(
                             modifier = Modifier
@@ -134,42 +141,9 @@ internal fun WorkoutDetailScreenSuccess(
                             )
                             Spacer(Modifier.height(LiftingTheme.dimensions.extraSmall))
                             SessionQuickInfo(
-                                duration = state.workout.duration,
+                                duration = state.workout?.duration,
                                 volume = state.volume,
                                 prs = state.pr
-                            )
-                        }
-                        IconButton(
-                            onClick = {
-                                onEvent(WorkoutDetailUIEvent.OnEditClicked)
-                            }
-                        ) {
-                            Icon(
-                                imageVector = LiftingTheme.icons.edit,
-                                contentDescription = String.EMPTY,
-                                tint = LiftingTheme.colors.primary
-                            )
-                        }
-                        IconButton(
-                            onClick = {
-                                onEvent(WorkoutDetailUIEvent.OnDeleteClicked)
-                            }
-                        ) {
-                            Icon(
-                                imageVector = LiftingTheme.icons.delete,
-                                contentDescription = String.EMPTY,
-                                tint = LiftingTheme.colors.primary
-                            )
-                        }
-                        IconButton(
-                            onClick = {
-
-                            }
-                        ) {
-                            Icon(
-                                painter = LiftingTheme.icons.replay,
-                                contentDescription = String.EMPTY,
-                                tint = LiftingTheme.colors.primary
                             )
                         }
                     }
@@ -190,7 +164,17 @@ internal fun WorkoutDetailScreenSuccess(
                     )
                 }
             }
-        }
 
+            if (state.showActiveWorkoutDialog) {
+                LiftingAlertDialog(
+                    title = com.lifting.app.core.ui.R.string.workout_in_progress,
+                    text = com.lifting.app.core.ui.R.string.workout_in_progress_description,
+                    dismissText = com.lifting.app.core.ui.R.string.cancel,
+                    confirmText = com.lifting.app.core.ui.R.string.discard,
+                    onDismiss = { onEvent(WorkoutDetailUIEvent.OnDialogDismissClicked) },
+                    onConfirm = { onEvent(WorkoutDetailUIEvent.OnDialogConfirmClicked) }
+                )
+            }
+        }
     )
 }

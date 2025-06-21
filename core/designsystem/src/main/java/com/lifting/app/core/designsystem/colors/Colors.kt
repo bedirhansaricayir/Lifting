@@ -20,9 +20,9 @@ class LiftingColors(
     onSecondary: Color,
     background: Color,
     onBackground: Color,
+    surface: Color,
     error: Color,
     onError: Color,
-    isLight: Boolean
 ) {
     var primary by mutableStateOf(primary, structuralEqualityPolicy())
         internal set
@@ -36,11 +36,11 @@ class LiftingColors(
         internal set
     var onBackground by mutableStateOf(onBackground, structuralEqualityPolicy())
         internal set
+    var surface by mutableStateOf(surface, structuralEqualityPolicy())
+        internal set
     var error by mutableStateOf(error, structuralEqualityPolicy())
         internal set
     var onError by mutableStateOf(onError, structuralEqualityPolicy())
-        internal set
-    var isLight by mutableStateOf(isLight, structuralEqualityPolicy())
         internal set
 
     fun copy(
@@ -50,9 +50,9 @@ class LiftingColors(
         onSecondary: Color = this.onSecondary,
         background: Color = this.background,
         onBackground: Color = this.onBackground,
+        surface: Color = this.surface,
         error: Color = this.error,
         onError: Color = this.onError,
-        isLight: Boolean = this.isLight
     ): LiftingColors = LiftingColors(
         primary = primary,
         onPrimary = onPrimary,
@@ -60,19 +60,20 @@ class LiftingColors(
         onSecondary = onSecondary,
         background = background,
         onBackground = onBackground,
+        surface = surface,
         error = error,
         onError = onError,
-        isLight = isLight
     )
 }
 
-fun lightLiftingColors(
-    primary: Color = Color.Blue,
-    onPrimary: Color = Color.White,
+internal fun lightLiftingColors(
+    primary: Color = Color(0xFF607AFB),
+    onPrimary: Color = Color(0xFFFFFFFF),
     secondary: Color = Color(0xFF03DA6C),
     onSecondary: Color = Color(0xFFB3C33E),
-    background: Color = Color(0xFFF5F5F5),
-    onBackground: Color = Color(0xFF212121),
+    background: Color = Color(0xFFF4F5FB),
+    onBackground: Color = Color(0xFF000000),
+    surface: Color = Color(0xFFFFFFFF),
     error: Color = Color.Red,
     onError: Color = Color.White,
 ): LiftingColors = LiftingColors(
@@ -82,18 +83,19 @@ fun lightLiftingColors(
     onSecondary = onSecondary,
     background = background,
     onBackground = onBackground,
+    surface = surface,
     error = error,
     onError = onError,
-    isLight = true
 )
 
-fun darkLiftingColors(
-    primary: Color = Color(0xFF4a5df9),
-    onPrimary: Color = Color(0xFFffffff),
+internal fun darkLiftingColors(
+    primary: Color = Color(0xFF607AFB),
+    onPrimary: Color = Color(0xFFFFFFFF),
     secondary: Color = Color(0xFF03DA6C),
     onSecondary: Color = Color(0xFFB3C33E),
     background: Color = Color(0xFF0c1014),
     onBackground: Color = Color(0xFFf8f9f9),
+    surface: Color = Color(0xFF1A1F24),
     error: Color = Color.Red,
     onError: Color = Color.White,
 ): LiftingColors = LiftingColors(
@@ -103,9 +105,9 @@ fun darkLiftingColors(
     onSecondary = onSecondary,
     background = background,
     onBackground = onBackground,
+    surface = surface,
     error = error,
     onError = onError,
-    isLight = false
 )
 
 internal fun LiftingColors.updateColorsFrom(other: LiftingColors) {
@@ -115,9 +117,9 @@ internal fun LiftingColors.updateColorsFrom(other: LiftingColors) {
     onSecondary = other.onSecondary
     background = other.background
     onBackground = other.onBackground
+    surface = other.surface
     error = error
     onError = onError
-    isLight = other.isLight
 }
 
-internal val LocalColors = staticCompositionLocalOf { darkLiftingColors() }
+internal val LocalColors = staticCompositionLocalOf { lightLiftingColors() }

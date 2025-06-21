@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import com.lifting.app.core.common.extensions.EMPTY
 import com.lifting.app.core.designsystem.LiftingTheme
 import com.lifting.app.core.model.ExerciseCategory
+import com.lifting.app.core.ui.extensions.getExamplesString
+import com.lifting.app.core.ui.extensions.getReadableName
 
 /**
  * Created by bedirhansaricayir on 22.08.2024
@@ -39,28 +41,10 @@ internal fun ExerciseCategoryScreen(
 }
 
 @Composable
-internal fun ExerciseCategoryScreenContent(
-    modifier: Modifier = Modifier,
+private fun ExerciseCategoryScreenContent(
     state: ExercisesCategoryUIState,
-    onEvent: (ExercisesCategoryUIEvent) -> Unit
-) {
-    when (state) {
-        is ExercisesCategoryUIState.Error -> {}
-        ExercisesCategoryUIState.Loading -> {}
-        is ExercisesCategoryUIState.Success ->
-            ExercisesCategoryListScreen(
-                modifier = Modifier,
-                state = state,
-                onEvent = onEvent
-            )
-    }
-}
-
-@Composable
-internal fun ExercisesCategoryListScreen(
-    modifier: Modifier = Modifier,
-    state: ExercisesCategoryUIState.Success,
-    onEvent: (ExercisesCategoryUIEvent) -> Unit
+    onEvent: (ExercisesCategoryUIEvent) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(
         modifier = modifier
@@ -90,7 +74,7 @@ internal fun ExercisesCategoryListScreen(
 }
 
 @Composable
-internal fun ExerciseCategoryItem(
+private fun ExerciseCategoryItem(
     modifier: Modifier = Modifier,
     exerciseCategory: ExerciseCategory,
     isSelected: Boolean = false,
@@ -110,12 +94,12 @@ internal fun ExerciseCategoryItem(
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = exerciseCategory.readableName,
+                text = stringResource(exerciseCategory.getReadableName()),
                 color = LiftingTheme.colors.onBackground,
                 style = LiftingTheme.typography.subtitle1
             )
             Text(
-                text = exerciseCategory.readableName,
+                text = stringResource(exerciseCategory.getExamplesString()),
                 color = LiftingTheme.colors.onBackground.copy(alpha = 0.75f),
                 style = LiftingTheme.typography.caption
             )

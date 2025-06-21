@@ -1,5 +1,9 @@
 package com.lifting.app.core.model
 
+import com.lifting.app.core.model.ExerciseCategory.entries
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 /**
  * Created by bedirhansaricayir on 15.07.2024
  */
@@ -15,87 +19,66 @@ enum class SetFieldValueType {
     DURATION;
 }
 
-sealed class ExerciseCategory(open val tag: String, open val fields: List<SetFieldValueType>, open val readableName: String) {
-    data object WeightAndReps : ExerciseCategory(
+@Serializable
+enum class ExerciseCategory(val tag: String, val fields: List<SetFieldValueType>) {
+    @SerialName("weight_and_reps")
+    WEIGHT_AND_REPS(
         tag = "weight_and_reps",
-        fields = listOf(SetFieldValueType.WEIGHT, SetFieldValueType.REPS, SetFieldValueType.RPE),
-        readableName = "Weight & Reps"
-    )
+        fields = listOf(SetFieldValueType.WEIGHT, SetFieldValueType.REPS, SetFieldValueType.RPE)
+    ),
 
-    data object BodyweightReps : ExerciseCategory(
+    @SerialName("bodyweight_reps")
+    BODYWEIGHT_REPS(
         tag = "bodyweight_reps",
-        fields = listOf(SetFieldValueType.REPS, SetFieldValueType.RPE),
-        readableName = "Bodyweight Reps"
-    )
+        fields = listOf(SetFieldValueType.REPS, SetFieldValueType.RPE)
+    ),
 
-    data object WeightedBodyweight : ExerciseCategory(
+    @SerialName("weighted_bodyweight")
+    WEIGHTED_BODYWEIGHT(
         tag = "weighted_bodyweight",
         fields = listOf(
             SetFieldValueType.ADDITIONAL_WEIGHT,
             SetFieldValueType.REPS,
             SetFieldValueType.RPE
-        ),
-        readableName = "Weighted Bodyweight"
-    )
+        )
+    ),
 
-    data object AssistedBodyweight : ExerciseCategory(
+    @SerialName("assisted_bodyweight")
+    ASSISTED_BODYWEIGHT(
         tag = "assisted_bodyweight",
         fields = listOf(
             SetFieldValueType.ASSISTED_WEIGHT,
             SetFieldValueType.REPS,
             SetFieldValueType.RPE
-        ),
-        readableName = "Assisted Bodyweight"
-    )
+        )
+    ),
 
-    data object Duration : ExerciseCategory(
+    @SerialName("duration")
+    DURATION(
         tag = "duration",
-        fields = listOf(SetFieldValueType.DURATION),
-        readableName = "Duration"
-    )
+        fields = listOf(SetFieldValueType.DURATION)
+    ),
 
-    data object DistanceAndDuration : ExerciseCategory(
+    @SerialName("distance_and_duration")
+    DISTANCE_AND_DURATION(
         tag = "distance_and_duration",
-        fields = listOf(SetFieldValueType.DISTANCE, SetFieldValueType.DURATION),
-        readableName = "Distance & Duration"
-    )
+        fields = listOf(SetFieldValueType.DISTANCE, SetFieldValueType.DURATION)
+    ),
 
-    data object WeightAndDistance : ExerciseCategory(
+    @SerialName("weight_and_distance")
+    WEIGHT_AND_DISTANCE(
         tag = "weight_and_distance",
-        fields = listOf(SetFieldValueType.WEIGHT, SetFieldValueType.DISTANCE),
-        readableName = "Weight & Distance"
-    )
+        fields = listOf(SetFieldValueType.WEIGHT, SetFieldValueType.DISTANCE)
+    ),
 
-    data object WeightAndDuration : ExerciseCategory(
+    @SerialName("weight_and_duration")
+    WEIGHT_AND_DURATION(
         tag = "weight_and_duration",
-        fields = listOf(SetFieldValueType.WEIGHT, SetFieldValueType.DURATION),
-        readableName = "Weight & Duration"
-    )
+        fields = listOf(SetFieldValueType.WEIGHT, SetFieldValueType.DURATION)
+    );
 
-    data class Unknown(
-        override val tag: String,
-        override val fields: List<SetFieldValueType>
-    ) : ExerciseCategory(
-        tag = tag,
-        fields = fields,
-        readableName = "Unknown"
-    )
-}
-
-val allExerciseCategories = listOf(
-    ExerciseCategory.WeightAndReps,
-    ExerciseCategory.BodyweightReps,
-    ExerciseCategory.WeightedBodyweight,
-    ExerciseCategory.AssistedBodyweight,
-    ExerciseCategory.Duration,
-    ExerciseCategory.DistanceAndDuration,
-    ExerciseCategory.WeightAndDistance,
-    ExerciseCategory.WeightAndDuration,
-)
-
-fun String?.parseToExerciseCategory(): ExerciseCategory {
-    return allExerciseCategories.find { it.tag == this } ?: ExerciseCategory.Unknown(
-        tag = this ?: "",
-        fields = emptyList()
-    )
+    companion object {
+        fun allCategories(): List<ExerciseCategory> = entries
+        fun getExerciseCategoryByTag(tag: String): ExerciseCategory = entries.find { it.tag == tag } ?: WEIGHT_AND_REPS
+    }
 }

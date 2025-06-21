@@ -6,7 +6,6 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.lifting.app.core.database.model.ExerciseEntity
 import com.lifting.app.core.database.model.ExerciseWithInfoResource
-import com.lifting.app.core.database.model.ExerciseWithMuscleResource
 import com.lifting.app.core.database.model.LogEntriesWithWorkoutResource
 import kotlinx.coroutines.flow.Flow
 
@@ -40,9 +39,6 @@ interface ExercisesDao {
     )
     fun getAllExercisesWithInfo(searchQuery: String?): Flow<List<ExerciseWithInfoResource>>
 
-    @Query("SELECT * FROM exercises ORDER BY name")
-    fun getAllExercisesWithMuscles(): Flow<List<ExerciseWithMuscleResource>>
-
     @Transaction
     @Query("SELECT * FROM exercise_workout_junctions WHERE exercise_id = :exerciseId")
     fun getAllLogEntries(exerciseId: String): Flow<List<LogEntriesWithWorkoutResource>>
@@ -57,4 +53,7 @@ interface ExercisesDao {
 
     @Insert
     suspend fun insertExercise(exercise: ExerciseEntity)
+
+    @Insert
+    suspend fun insertExercises(exercises: List<ExerciseEntity>)
 }

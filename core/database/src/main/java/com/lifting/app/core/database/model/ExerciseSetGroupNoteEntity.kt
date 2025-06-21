@@ -3,7 +3,6 @@ package com.lifting.app.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.lifting.app.core.model.ExerciseSetGroupNote
 import java.time.LocalDateTime
 
 /**
@@ -27,13 +26,3 @@ data class ExerciseSetGroupNoteEntity(
     @ColumnInfo(name = "update_at")
     var updatedAt: LocalDateTime? = null,
 )
-
-fun ExerciseSetGroupNoteEntity.toDomain() = with(this) {
-    ExerciseSetGroupNote(
-        id = id,
-        note = note,
-        exerciseWorkoutJunctionId = exerciseWorkoutJunctionId,
-        createdAt = createdAt,
-        updatedAt = updatedAt
-    )
-}

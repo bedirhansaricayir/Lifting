@@ -2,12 +2,9 @@ package com.lifting.app.feature.exercises_muscle
 
 import androidx.lifecycle.viewModelScope
 import com.lifting.app.core.base.viewmodel.BaseViewModel
-import com.lifting.app.core.data.repository.muscles.MusclesRepository
 import com.lifting.app.core.model.Muscle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,13 +13,12 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class ExercisesMuscleViewModel @Inject constructor(
-    private val musclesRepository: MusclesRepository
+internal class ExercisesMuscleViewModel @Inject constructor(
 ) : BaseViewModel<ExercisesMuscleUIState, ExercisesMuscleUIEvent, ExercisesMuscleUIEffect>() {
 
     private val selectedMuscle = MutableStateFlow<String?>("")
 
-    override fun setInitialState(): ExercisesMuscleUIState = ExercisesMuscleUIState.Loading
+    override fun setInitialState(): ExercisesMuscleUIState = ExercisesMuscleUIState()
 
     override fun handleEvents(event: ExercisesMuscleUIEvent) {
         when (event) {
@@ -32,30 +28,18 @@ class ExercisesMuscleViewModel @Inject constructor(
     }
 
     init {
-        setUIState()
+        updateUIState()
     }
 
-    private fun setUIState() {
+    private fun updateUIState() {
         viewModelScope.launch {
-            musclesRepository.getMuscles()
-                .onStart {
-                    setState(ExercisesMuscleUIState.Loading)
-                }
-                .catch { throwable ->
-                    setState(
-                        ExercisesMuscleUIState.Error(
-                            message = throwable.message ?: "Something Went Wrong!"
-                        )
+            selectedMuscle.collect { muscle ->
+                updateState {
+                    it.copy(
+                        selectedMuscle = muscle
                     )
                 }
-                .collect { muscles ->
-                    setState(
-                        ExercisesMuscleUIState.Success(
-                            muscles = muscles,
-                            selectedMuscle = selectedMuscle.value
-                        )
-                    )
-                }
+            }
         }
     }
 

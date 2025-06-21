@@ -3,7 +3,6 @@ package com.lifting.app.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.lifting.app.core.model.WorkoutTemplate
 import java.time.LocalDateTime
 
 /**
@@ -28,14 +27,3 @@ data class WorkoutTemplateEntity(
     @ColumnInfo(name = "update_at")
     var updatedAt: LocalDateTime? = null,
 )
-
-fun WorkoutTemplateEntity.toDomain() = with(this) {
-    WorkoutTemplate(
-        id = id,
-        isHidden = isHidden,
-        workoutId = workoutId,
-        lastPerformedAt = lastPerformedAt,
-        createdAt = createdAt,
-        updatedAt = updatedAt,
-    )
-}
